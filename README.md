@@ -4,6 +4,6 @@
 
 **I. First year:**
    * First semester:
-     * [System Arhitecture]()
+     * [System Arhitecture](https://github.com/skpha13/Univeristy-Work/tree/main/First%20Year/First%20Semester/Sistem%20Arhitecture)
      * [Algorithm Programming]()
      * [Mathematical Logic]()
