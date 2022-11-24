@@ -1,0 +1,1 @@
+distance((A,B),(C,D),X) :- X is sqrt((A-C)*(A-C)+(B-D)*(B-D)).
