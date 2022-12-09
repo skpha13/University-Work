@@ -1,0 +1,6 @@
+12 rosu
+9 verde
+6 albastru
+4 rosu
+
+Inaltime totala: 31
