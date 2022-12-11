@@ -1,5 +1,7 @@
 .data
+	nr: .long 0
 	n: .long 0
+	v: .space 100
 	fs: .asciz "%ld"
 	fs1: .asciz "%ld\n"
 
@@ -9,47 +11,11 @@ perfect:
 	pushl %ebp
 	mov %esp,%ebp
 	
-	movl 8(%ebp),%eax
-	mov $2,%ecx
-	div %ecx
-	mov $1,%ecx
-	mov %eax,%ebx
+	movl 4(%ebp),%ebx
+	movl $0,
 	
-	sub $4,%esp
-	movl $0,-4(%ebp)
-	
-	loop:
-		cmp %ebx,%ecx
-		jg verif
-		
-		movl 8(%ebp),%eax		
-		div %ecx
-		cmp $0,%edx
-		je adunare
-				
-		add $1,%ecx
-		
-	adunare:
-		add %ecx,-4(%ebp)
-		
-		add $1,%ecx
-		jmp loop
-	verif:
-		mov 8(%ebp),%ebx
-		cmp -4(%ebp),%ebx
-		je return
-		
-		mov $0,%eax
-		jmp iesire
-	
-	return:	
-		mov $1,%eax
-		jmp iesire
-	
-	iesire: 
-		addl $4,%esp
-		popl %ebp
-		ret
+	popl %ebp
+	ret
 	
 .globl main
 
@@ -60,15 +26,56 @@ main:
 	popl %ebx
 	popl %ebx
 	
+	mov $0,%ecx
+	lea v,%edi
+	
+citire_loop:
+	cmp n,%ecx
+	je program
+	
+	pusha
+	pushl $aux
+	pushl $fs
+	call scanf
+	popl %ebx
+	popl %ebx
+	popa
+	
+	movl aux,%eax
+	movl %eax,(%edi,%ecx,4)
+	
+	add $1,%ecx
+	jmp citire_loop
+	
+program: 
+	mov $0,%ecx
+	jmp loop
+
+loop:
+	cmp n,%ecx
+	je afisare
+	
+	movl (%edi,%ecx,4),%edx
+	
 	pushl %eax
-	pushl n
+	pushl %edx
 	call perfect
 	popl %ebx
 	
-	jmp afisare
+	cmp $1,%eax
+	je add
+	
+	add $1,%ecx
+	
+add:
+	mov nr,%eax
+	add $1,%eax
+	mov %eax,nr
+	add $1,%ecx
+	jmp loop
 	
 afisare:
-	pushl %eax
+	pushl nr
 	pushl $fs1
 	call printf
 	popl %ebx
