@@ -11,6 +11,7 @@ perfect:
 	
 	movl 8(%ebp),%eax
 	mov $2,%ecx
+	mov $0,%edx
 	div %ecx
 	mov $1,%ecx
 	mov %eax,%ebx
