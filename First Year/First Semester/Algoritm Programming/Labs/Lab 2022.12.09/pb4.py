@@ -20,13 +20,20 @@ def greedy(lista,s):
             sol[ban] = 1
         else:
             sol[ban] += 1
+    else:
+        sol[0] = 1
     return sol
 
 def afisare(sol):
     g = open("pb4_plata.txt",'w')
     g.write("s = ")
+    afis = []
     for i in sol:
-        g.write(f"{i}*{sol[i]} + ")
+        afis.append(str(i) + '*' + str(sol[i]) + ' + ' )
+    afis[-1] = afis[-1][:-3]
+    for i in afis:
+        g.write(i)
+    g.close()
         
 lista,s = citire_date()
 sol = greedy(lista,s)
