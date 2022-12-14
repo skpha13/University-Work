@@ -1,0 +1,5 @@
+Ziua 2: c
+Ziua 2: a
+Ziua 4: e
+
+Profit maxim: 27 + 100 + 15 = 142
