@@ -1,0 +1,6 @@
+Reuniunea intervalelor:
+[500, 680]
+[690, 840]
+[900, 930]
+
+Lungimea reuniunii: 360
