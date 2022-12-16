@@ -1,0 +1,20 @@
+Pas: 1
+Structura contine: (20, 'L1')(20, 'L3')(30, 'L2')(35, 'L4')(45, 'L5').
+Din vectorii (20, 'L1') si (20, 'L3') rezulta (40,L6).
+
+Pas: 2
+Structura contine: (30, 'L2')(35, 'L4')(40, 'L6')(45, 'L5').
+Din vectorii (30, 'L2') si (35, 'L4') rezulta (65,L7).
+
+Pas: 3
+Structura contine: (40, 'L6')(45, 'L5')(65, 'L7').
+Din vectorii (40, 'L6') si (45, 'L5') rezulta (85,L8).
+
+Pas: 4
+Structura contine: (65, 'L7')(85, 'L8').
+Din vectorii (65, 'L7') si (85, 'L8') rezulta (150,L9).
+
+Pas: 5
+Structura contine: (150, 'L9').
+
+Numar total deplasari: 40 + 65 + 85 + 150 = 340
