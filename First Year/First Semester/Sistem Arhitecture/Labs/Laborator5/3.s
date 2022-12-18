@@ -2,7 +2,6 @@
 	s: .space 100
 	fs: .asciz "%s"
 	fs1: .asciz "%ld\n"
-	aux: .long 0
 	
 .text
 
