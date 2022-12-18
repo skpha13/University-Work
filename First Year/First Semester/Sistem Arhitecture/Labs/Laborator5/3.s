@@ -11,12 +11,14 @@ atoi:
 	mov %esp,%ebp
 	
 	movl $0,%ecx
-	lea 8(%ebp),%edi
-	movl $0,12(%ebp) 
+	movl $0,12(%ebp)
+	movl $0,%eax
 	
 	sub $4,%esp
 	
+	lea 8(%ebp),%edi
 	movb (%edi,%ecx,1),%dl
+	
 	cmp $'-',%dl
 	je intreg
 	
@@ -34,28 +36,43 @@ atoi:
 		cmp $'0',%dl
 		jge cond1
 		
+		movl $-1,%eax
+		jmp iesire2
+		
 		add $1,%ecx
 		jmp loop
 		
 	cond1:
 		cmp $'9',%dl
 		jle cond2
+		
+		movl $-1,%eax
+		jmp iesire2
 	
 	cond2:
 		mov $10,%ebx
 		mul %ebx
-		sub %dl,'0'
+		movb (%edi,%ecx,1),%dl
+		sub $'0',%dl
+		add %edx,%eax
 		
-		add %dl,%eax
 		add $1,%ecx
 		jmp loop
 		
 	iesire:	
+		movl -4(%ebp),%ebx 
+		cmp $1,%ebx
+		je semn
+		
+	iesire2:	
 		add $4,%esp
 		popl %ebp
 		ret
-		
-
+	
+	semn:
+		movl $-1,%ebx
+		imul %ebx
+		jmp iesire2
 
 .globl main
 
@@ -66,9 +83,8 @@ main:
 	popl %ebx
 	popl %ebx
 	
-	movl $-1,%eax
 	pushl %eax
-	pushl $s
+	pushl s
 	call atoi
 	popl %ebx
 	
