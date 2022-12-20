@@ -12,6 +12,8 @@ perfect:
 	pushl %ebp
 	mov %esp,%ebp
 	
+	popl %ebx
+	
 	movl 8(%ebp),%eax
 	mov $2,%ecx
 	mov $0,%edx
@@ -54,6 +56,7 @@ perfect:
 	
 	iesire: 
 		addl $4,%esp
+		popl %ebx
 		popl %ebp
 		ret
 	
@@ -131,3 +134,6 @@ exit:
 	mov $1,%eax
 	xor %ebx,%ebx
 	int $0x80
+	
+#list of perfect numbers:6, 28, 496, 8128, 33550336, 8589869056, 137438691328, 2305843008139952128
+#so we don't need to implement the whole algorithm we can just use 4 if statements
