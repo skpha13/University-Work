@@ -1,0 +1,8 @@
+S1 1 papusa
+S2 1 papusa
+S3 1 masinuta
+S1 10 trenulet
+S2 1 papusa
+S2 2 masinuta
+S1 10 ponei
+S3 15 ponei
