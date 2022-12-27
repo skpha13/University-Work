@@ -1,4 +1,11 @@
 def min_max(l):
     return min(l),max(l)
 
-print(min_max([3,-3,1,7,3,2]))
+def incarca_fisier(fisier):
+    l = []
+    with open(fisier) as f:
+        for line in f:
+            l.append([int(x) for x in line.split()])
+    return l
+
+nume_fisier = input("nume fisier: ")
