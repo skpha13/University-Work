@@ -22,7 +22,30 @@ def prelucrare_lista(l):
         if len(l[i]) > 1:
             l[i] = l[i][:m]      
 
+def d(M):
+    k = int(input("k = "))
+    cifre = []
+    for i in M:
+        for j in i:
+            if len(str(j)) == k:
+                cifre.append(j)
+
+    with open("cifre.out",'w') as g:
+        if len(cifre) == 0:
+            g.write("Imposibil!")
+        else:
+            cifre = set(cifre)
+            cifre = list(cifre)
+            cifre.sort(reverse=True)
+            print(cifre)
+            for i in cifre:
+                g.write(str(i))
+                g.write(" ")
+
+
 M = citire_numere()
+d(M)
 prelucrare_lista(M)
 for line in M:
     print(*line)
+
