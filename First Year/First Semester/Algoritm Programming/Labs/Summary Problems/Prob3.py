@@ -15,8 +15,10 @@ def insereaza_cifra_control(l):
         n += 1
         i += 2
 
-lista = [11,24,1,0]
-print(lista)
-insereaza_cifra_control(lista)
-print(lista)
+def egale(*liste):
+    for i in range(len(liste)-1):
+        if liste[i] != liste[i+1]:
+            return False
+    return True
 
+print(egale([1,2,3],[1,2,4]))
