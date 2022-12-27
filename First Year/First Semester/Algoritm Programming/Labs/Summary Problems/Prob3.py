@@ -21,4 +21,8 @@ def egale(*liste):
             return False
     return True
 
-print(egale([1,2,3],[1,2,4]))
+def d():
+    with open("numere.in") as f:
+        l = [int(x) for x in f.read().split()]
+        for i in l:
+            print(i,cifra_control(i))
