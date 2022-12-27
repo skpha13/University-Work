@@ -29,13 +29,14 @@ def cinema_film(lista,ora_minima,ora_maxima,*cinema,):
                         ore.append(ora)
                 if len(ore) != 0:
                     l_tupluri.append((j[1],j[0],ore))
+    l_tupluri.sort(key = lambda x:(x[0],-len(x[2])))
     return l_tupluri
 
 date = citire_date()
 #sterge_ore(date,input("cinema: "),input("film: "),input("ora: "))
 #for line in date:
 #    print(*line)
-l = cinema_film(date,"10:00","18:00","Cinema 1","Cinema 2")
+l = cinema_film(date,"14:00","22:00","Cinema 1","Cinema 2")
 for line in l:
     print(line)
 
