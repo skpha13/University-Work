@@ -13,5 +13,28 @@ def deviruseaza(prop):
             prop[len(prop)-i-1] = temp
     return prop
 
-print(deviruseaza("aorectc aropozitip este aceasta"))
-    
+def prime(n,nr_max = 0):
+    l = []
+    def prim(n):
+        if n < 2:
+            return False
+        d = 2
+        while d*d <= n:
+            if n % d == 0:
+                return False
+            d += 1
+        return True
+
+    if nr_max == 0:
+        for i in range(2,n):
+            if prim(i):
+                l.append(i)
+    else:
+        nr = 0
+        for i in range(2,n):
+            if prim(i) and nr != nr_max:
+                l.append(i)
+                nr += 1
+    return l
+
+print(prime(1000))
