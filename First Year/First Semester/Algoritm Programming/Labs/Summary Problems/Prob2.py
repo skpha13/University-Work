@@ -2,15 +2,20 @@ def deviruseaza(prop):
     prop = prop.split()
     
     def schimbare(cuv):
-        temp = cuv[-1] + cuv[1:-1] + cuv[0] 
-        cuv = temp
+        if len(cuv) > 1:
+            temp = cuv[-1] + cuv[1:-1] + cuv[0] 
+            cuv = temp
         return cuv
+
+    for i in range(len(prop)):
+        prop[i] = schimbare(prop[i])
 
     for i in range(len(prop)//2 + 1):
         if i < len(prop)//2:
-            temp = schimbare(prop[i])
-            prop[i] = schimbare(prop[len(prop)-i-1])
+            temp = prop[i]
+            prop[i] = prop[len(prop)-i-1]
             prop[len(prop)-i-1] = temp
+    prop = " ".join(prop)
     return prop
 
 def prime(n,nr_max = 0):
@@ -37,4 +42,13 @@ def prime(n,nr_max = 0):
                 nr += 1
     return l
 
-print(prime(1000))
+with open("intrare_devirusata.out",'w') as g:
+    sol = []
+    with open("intrare.in") as f:
+        for i,line in enumerate(f):
+            if i+1 != 1 and prime(i+2)[-1] == i+1:
+                sol.append(deviruseaza(line))
+            else:
+                sol.append(line.strip())
+    for line in sol:
+        g.write(line + "\n")
