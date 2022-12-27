@@ -16,6 +16,12 @@ def despre_spiridus(date,cod):
     l.sort(key = lambda x:(-x[1],x[0]))
     return l
 
+def jucarii(date):
+    s = set()
+    for i in date:
+        for j in date[i]:
+            s.add(j[0])
+    return s
 
 date = citire_date()
-print(despre_spiridus(date,"S1"))
+print(jucarii(date))
