@@ -26,3 +26,23 @@ def d():
         l = [int(x) for x in f.read().split()]
         for i in l:
             print(i,cifra_control(i))
+
+def e():
+    with open("numere.in") as f:
+        l1 = [int(x) for x in f.read().split()]
+    with open("numere2.in") as e:
+        l2 = [int(x) for x in e.read().split()]
+    l1 = list(set(l1))
+    l2 = list(set(l2))
+    l1.sort()
+    l2.sort()
+    if len(l1) != len(l2):
+        print("NU")
+        return
+    for i in range(len(l1)):
+        if cifra_control(l1[i]) != cifra_control(l2[i]):
+            print("NU")
+            return
+    print("DA")
+
+e()
