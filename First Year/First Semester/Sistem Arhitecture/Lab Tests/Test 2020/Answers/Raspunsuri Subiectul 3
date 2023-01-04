@@ -1,8 +1,12 @@
 1) v[i] e doar o notatie care este = v + i
    analog i[v] => i + v
    din cele doua se observa comutativitatea
+
+R: Trebuie si o scriere in asm -> aici ne vom mula pe formatul acela a(b,c,d) (= b + c * d + a) si practic v[i] = (v + i * 4), 
+iar i[v] = (i * 4 + v), deci trebuie sa te gandesti cum ai scrie in asm pe format
    
-2) popl %ebx e ca si cum ai adauga 4 in %esp deci valoarea va fi 0xFFFFD060
+2) popl %ebx e ca si cum ai adauga 4 in %esp ** deci valoarea va fi 0xFFFFD060
+R: ** si am muta valoarea din topul stivei in ebx 
 
 .data
 
@@ -22,9 +26,25 @@ exit:
     int $0x80
     
    secventa asta de cod e doar o functie care se apeleaza incontinuu ceea ce da eroarea de stack overflow
+
+R: E ok, cred ar fi fost punctat, dar e un pic ciudat ca programul in sine e si un loop infinit, ce era pe barem din cate imi amintesc
+era ceva corect din punctul acesta de vedere. Se facea sub din esp sau push de un numar foarte mare de ori.
    
 3) daca intram in gdb si punem un breakpoint la o eticheta atunci ne va spune la ce adresa se afla. Deci are adresa. Putem sa modificam adresa daca mutam eticheta pe alta linie de cod.
 
+R: GDB-ul e doar ustensila pentru a va ajuta sa lucrati, intrebarea era daca se pot modifica/citi in cod etichetele deja create.
+Si se pot citi incarcand pur si simplu ca la o variabila adresa etichetei cu mov si $ sau lea. Dar nu se poate si modifica. Zona de text
+este read-only, nu puteti avea un mov $1, label.
+
 4) vectorul ar fi: 00 00 00 0A 00 00 00 14 00 00 00 1E
    si cum merge doar 2*1 bytes atunci numarul va fi egal cu 00 0A 00 00 adica 655360
-   
+
+R: Am mai scris si pe tabla, este ceva ce tine de conceptul de endianness, numerotarea byte-lor intr-un long e de la dreapta la stanga
+
+00 00 00 0A    00 00 00 14     00 00 00 1E
+03 02 01 00    07 06 05 04     11 10 09 08
+
+Deci daca vrem sa incarcam incepand cu byte-ul 2 o sa avem 
+
+00 14 00 00
+05 04 03 02
