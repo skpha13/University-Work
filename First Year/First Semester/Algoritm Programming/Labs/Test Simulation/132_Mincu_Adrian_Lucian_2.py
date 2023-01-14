@@ -17,7 +17,7 @@ def sterge_ore(d,cinema,film,ore):
         d[cinema][film].remove(i)    
     return d
 
-def cinema_film(d,cinematografe,ora_min,ora_max):
+def cinema_film(d,ora_min,ora_max,*cinematografe):
     l = []
 
     for c in cinematografe:
@@ -33,6 +33,6 @@ def cinema_film(d,cinematografe,ora_min,ora_max):
     l.sort(key=lambda x:(x[0],-len(x[2])))
     return l
 
-print(cinema_film(d,input("cinemauri: ").split(' % '),input("ora minima: "),input("ora maxima: ")))
+print(cinema_film(d,"14:00","22:00","Cinema 1","Cinema 2"))
 
 
