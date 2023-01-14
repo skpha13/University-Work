@@ -1,42 +1,38 @@
-def citire_date():
+d = {}
+with open("cinema.in") as f:
+    for line in f:
+        temp = line.strip().split('%')
+        temp[0] = temp[0][:-1]
+        temp[1] = temp[1][1:]
+        temp[1] = temp[1][:-1]
+        temp[2] = temp[2].split()
+        
+        if temp[0] not in d:
+            d[temp[0]] = {temp[1]:temp[2]}
+        else:
+            d[temp[0]][temp[1]] = temp[2]
+
+def sterge_ore(d,cinema,film,ore):
+    for i in ore.split(" % "):
+        d[cinema][film].remove(i)    
+    return d
+
+def cinema_film(d,cinematografe,ora_min,ora_max):
     l = []
-    with open("cinema.in") as f:
-        for line in f:
-            temp = line.strip().split('%')
-            temp[0] = temp[0][:-1]
-            temp[1] = temp[1][1:]
-            temp[1] = temp[1][:-1]
-            temp[2] = temp[2].split()
-            l.append(temp)
+
+    for c in cinematografe:
+        for i in d[c]:
+            temp = []
+            verif = False
+            for ora in d[c][i]:
+                if ora_min <= ora and ora_max >= ora:
+                    temp.append(ora)
+                    verif = True
+            if verif:
+                l.append((i,c,temp))
+    l.sort(key=lambda x:(x[0],-len(x[2])))
     return l
 
-def sterge_ore(lista,cinema,film,ora):
-    for x in lista:
-        if x[0] == cinema and x[1] == film:
-            x[2].remove(ora)
+print(cinema_film(d,input("cinemauri: ").split(' % '),input("ora minima: "),input("ora maxima: ")))
 
-def cinema_film(lista,ora_minima,ora_maxima,*cinema,):
-    l_tupluri = []
-    lista.sort(key = lambda x: x[0])
-    cinema = list(cinema)
-    cinema.sort()
-    for i in cinema:
-        for j in lista:
-            if j[0] == i:
-                ore = []
-                for ora in j[2]:
-                    if ora >= ora_minima and ora <= ora_maxima:
-                        ore.append(ora)
-                if len(ore) != 0:
-                    l_tupluri.append((j[1],j[0],ore))
-    l_tupluri.sort(key = lambda x:(x[0],-len(x[2])))
-    return l_tupluri
-
-date = citire_date()
-#sterge_ore(date,input("cinema: "),input("film: "),input("ora: "))
-#for line in date:
-#    print(*line)
-l = cinema_film(date,"14:00","22:00","Cinema 1","Cinema 2")
-for line in l:
-    print(line)
 
