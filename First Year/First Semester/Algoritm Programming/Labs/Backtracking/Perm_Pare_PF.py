@@ -7,7 +7,7 @@ def bkt(k):
         if use[i] == 0:
             sol[k] = i
             use[i] = 1
-            if sol[k]%2 == 0 and sol[k] == k:
+            if sol[k]%2 != 0 or sol[k] == k:
                 if k == n:
                     print(*sol[1:])
                 else:
