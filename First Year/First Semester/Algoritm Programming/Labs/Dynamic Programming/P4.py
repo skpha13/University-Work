@@ -10,8 +10,7 @@ for i in range(1,len(cuvinte)):
             pozitii[i] = j
             numere[i] = numere[j] + 1
 
-cuv = max(pozitii)
-ind = pozitii.index(cuv)
+ind = numere.index(max(numere))
 sol = []
 
 while ind != -1:
