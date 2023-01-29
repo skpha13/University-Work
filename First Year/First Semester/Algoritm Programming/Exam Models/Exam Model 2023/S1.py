@@ -24,3 +24,4 @@ litere_10 = [chr(ord('a') + i) for i in range(10)]
 # T(n) = 1 * T(n/3) + 1 => f(n) = functie constanta => 
 # => p = 0, b = 3, a = 1
 # p = 0 == logb(a) = 0 => (Teorema de master) T(n) = O(log2(n))
+
