@@ -17,3 +17,6 @@ def divizori(*arg):
 
 # b
 
+litere_10 = [chr(ord('a') + i) for i in range(10)]
+
+# c
