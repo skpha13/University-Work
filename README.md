@@ -10,3 +10,7 @@
      * [Differential and Integral Calculus](https://github.com/skpha13/Univeristy-Work/tree/main/First%20Year/First%20Semester/Differential%20and%20Integral%20Calculus)
      * [Mathematical Logic](https://github.com/skpha13/Univeristy-Work/tree/main/First%20Year/First%20Semester/Mathematical%20Logic)
      * [System Arhitecture](https://github.com/skpha13/Univeristy-Work/tree/main/First%20Year/First%20Semester/Sistem%20Arhitecture)
+   * Second semester:
+     * [Databases](https://github.com/skpha13/University-Work/tree/main/First%20Year/Second%20Semester/Databases)
+     * [Object-oriented programming](https://github.com/skpha13/University-Work/tree/main/First%20Year/Second%20Semester/Object-oriented%20programming)
+     * [Web Technologies](https://github.com/skpha13/University-Work/tree/main/First%20Year/Second%20Semester/Web%20Technologies)
