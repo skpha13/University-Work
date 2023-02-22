@@ -4,4 +4,3 @@ from employees
 where sal > 10000
 order by sal desc;
 
-
