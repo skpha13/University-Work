@@ -46,4 +46,4 @@ where lower(last_name) like '%l%l%' and (department_id = 30 or manager_id = 102)
 
 select last_name,first_name,job_id,salary
 from employees
-where lower(job_id) like '%clerk%' or lower(job_id) like '%rep%' and salary not in (3200,2700,2500,3100,6200);
+where (lower(job_id) like '%clerk%' or lower(job_id) like '%rep%') and salary not in (3200,2700,2500,3100,6200);
