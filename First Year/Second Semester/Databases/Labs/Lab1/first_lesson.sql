@@ -35,5 +35,15 @@ order by comis desc; --pentru a scapa de null si a afisa 0 in loc de el
 select to_char(sysdate,'DD/MM/YYYY') data,to_char(sysdate,'HH24:MI:SS') timp
 from dual;
 
+select employee_id,last_name
+from employees
+where lower(last_name) like '__a%';
+
+select last_name,first_name
+from employees
+where lower(last_name) like '%l%l%' and (department_id = 30 or manager_id = 102);
 
 
+select last_name,first_name,job_id,salary
+from employees
+where lower(job_id) like '%clerk%' or lower(job_id) like '%rep%' and salary not in (3200,2700,2500,3100,6200);
