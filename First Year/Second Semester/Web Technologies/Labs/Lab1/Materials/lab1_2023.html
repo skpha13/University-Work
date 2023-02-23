@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8" />
+<title>Laborator1</title>
+</head>
+<body>
+<h1>Laborator 1</h1>
+<h2> Prezentare teoretica a limbajului HTML (Hypertext Markup Language)</h2>
+<ul>
+<li>descrie structura unei pagini web</li>
+<li>contine elemente intre paranteze unghiulare = tag-uri
+ ex: &lt;a&gt;, &lt;img&gt;, &lt;p&gt;, &lt;table&gt; (cuvinte cheie)</li>
+<li>documentul are o structura ierarhică arborescentă</li>
+</ul>
+Exista doua tipuri de taguri:
+<ul>
+<li>taguri container : &lt;numeTag&gt; continut &lt;/numeTag&gt; (ex: &lt;p&gt;Paragraf1&lt;/p&gt;)</li>
+<li>taguri goale: &lt;numeTag&gt; (ex: &lt;img&gt;)</li>
+<li>in tagul de inceput pot aparea atribute = informatii suplimentare (ex: &lt;img src="numeFisier.jpg" &gt;)
+</li>
+</ul>
+<h4>Atribute:</h4>
+<ul>
+<li>sintaxa: &lt;tag atribut1="valoare1" atribut2="valoare2"&gt;</li>
+<li>pot fi globale = valabile pentru toate tagurile (ex: <b>id</b>, <b>class</b>, <b>style</b>)</li>
+<li>sau specifice unor taguri (ex: <b>src</b> pentru tagul &lt;img&gt;, <b>href</b> pentru tagul &lt;a&gt;)</li>
+</ul>
+<h4>Structura fisier html:</h4>
+&lt;!DOCTYPE html&gt;<br>
+&lt;html&gt;<br><br>
+
+&lt;head&gt;<br>
+&lt;/head&gt;<br><br>
+
+&lt;body&gt;<br>
+&lt;/body&gt;<br><br>
+
+&lt;/html&gt;<br><br>
+
+<h4>Taguri:</h4>
+<ul>
+<li>&lt;!DOCTYPE&gt; = versiunea html (&lt;!DOCTYPE html&gt; folosit pentru HTML5) </li>
+<li>&lt;html&gt; = intreaga pagina din browser (&lt;head&gt; si &lt;body&gt; sunt tagurile copii)</li>
+<li>&lt;head&gt;
+<ul>
+<li>contine informatii specifice despre document</li>
+<li>conținutul nu este afisat in pagina web</li>
+<li>tag-uri folosite in head: title, style, meta, link, script, etc.</li>
+</ul>
+</li>
+<li>&lt;body&gt; = continutul paginii</li>
+</ul>
+<b>Taguri semantice</b>: au efect de structurare al documentului (nevizibil)
+<ul>
+<li>&lt;header&gt; - descriere rapida de inceput a continutului paginii -ex: sigla, motto, denumire</li>
+<li>&lt;nav&gt; - meniul principal al paginii</li>
+<li>&lt;section&gt; - parti mari care au legatura intre ele</li>
+<li>&lt;article&gt; - parti mari independente  similare</li>
+<li>&lt;aside&gt; - publicitate sau continut legat de text</li>
+<li>&lt;footer&gt; - drept de copyright</li>
+<li>&lt;h1&gt;Titlu cu font mare&lt;/h1&gt; sau ...&lt;h6&gt;Titlu cu font mic&lt;/h6&gt;
+</ul>
+<b>Taguri de grupare</b>
+<ul>
+<li>&lt;main&gt; - defineste continutul specific al paginii (nu include elemente care se repeta pe pagina cum ar fi header, footer, nav)</li>
+<li>&lt;div&gt; - defineste o sectiune/diviziune generala a paginii</li>
+<li>&lt;span&gt; - defineste o sectiune/diviziune la nivelul unei linii</li>
+<li>&lt;p&gt;Paragraf&lt;/p&gt; - defineste un paragraf (poate contine doar text sau taguri "phrasing"- span, em, strong, a)</li>
+<li>&lt;figure&gt; si &lt;figcaption&gt; - grupeaza o imagine/diagrama/ilustratie impreuna cu o descriere</li>
+</ul>
+<b>Taguri pentru liste</b><br><br>
+va
+&lt;li&gt;element1 lista neordonata &lt;/li&gt;<br>
+&lt;li&gt;element2 lista neordonata &lt;/li&gt;<br>
+&lt;/ul&gt;<br><br>
+
+&lt;ol&gt;- defineste o lista ordonata<br>
+&lt;li&gt;element1 lista ordonata &lt;/li&gt;<br>
+&lt;li&gt;element2 lista ordonata &lt;/li&gt;<br>
+&lt;/ol&gt;<br><br>
+atributul <b>type</b> - folosit pentru tipul markerului elementelor din lista ordonata<br>
+listele pot avea numai copii de tipul <b>li</b>, insa elementele <b>li</b> pot avea orice continut, inclusiv alte liste<br>
+<br>
+<b>Tagul pentru linkuri</b><br><br>
+&lt;a href="calePaginaNoua"&gt;elementClickabilAncora&lt;/a&gt; - defineste o hiperlegatura
+<ul>
+<li><b>href</b> este cel mai important atribut: destinatia linkului (un URL sau un id al unui element din pagina)</li>
+<li>alte atribute: target (cu valorile "_self/_blank/_parent/_top/nume-iframe"), download</li>
+<li>poate contine alte elemente</li>
+</ul>
+<br>
+<b>Taguri media</b><br><br>
+&lt;img src="caleFisierImagine" alt="text" &gt; - introduce o imagine in pagina
+<ul>
+<li><b>src:</b> locatia imaginii (URL sau local)</li>
+<li>alt: text afisat cand imaginea nu se poate incarca</li>
+</ul><br>
+&lt;video src="caleFisierVideo" controls autoplay&gt; mesaj &lt;/video&gt;- introduce un fisier video in pagina<br><br>
+&lt;audio src="caleFisierAudio" controls autoplay&gt; mesaj &lt;/audio&gt;- introduce un fisier audio in pagina
+<ul>
+<li>tagurile &lt;video&gt; si &lt;audio&gt; se pot folosi impreuna cu tagul &lt;source src="URL video"&gt;</li>
+</ul><br>
+&lt;iframe src="sursaPaginii"&gt;&lt;/iframe&gt;- introduce un frame in pagina
+<br><br>
+<b>Tagul pentru tabel</b><br><br>
+&lt;table&gt; - defineste un tabel<br>
+&lt;tr&gt;&lt;td&gt;dataRow1Col1&lt;/td&gt;&lt;td&gt;dataRow1Col2&lt;/td&gt;&lt;/tr&gt;<br>
+&lt;tr&gt;&lt;td&gt;dataRow2Col1&lt;/td&gt;&lt;td&gt;dataRow2Col2&lt;/td&gt;&lt;/tr&gt;<br>
+&lt;/table&gt;
+
+(tr=tableRow si td=tableData)
+<hr>
+
+<h2>Tema 1.1</h2>
+<p>Creati o pagina <b>librarie.html</b> pentru o librarie folosind informatiile din fisierul <b>librarie.doc</b>.  <p>Indicatii privind crearea paginii:</p>
+<ul>
+<li>folosind tagul &lt;title&gt; adaugati un titlu pentru pagina voastra</li>
+<li>pentru structurarea documentului html folositi tagurile semantice (&lt;header&gt;, &lt;section&gt;, &lt;article&gt;, &lt;aside&gt;, &lt;footer&gt;, &lt;h1&gt,...,&lt;h6&gt;) tinand seama de semnificatia acestora. Folositi si alte taguri sugestive pentru elementele din document (liste, tabel, paragrafe, imagini, ancore, etc.)
+ </li>
+ <li>creati un meniu de navigare in interiorul fisierului, asemanator unui cuprins.</li>
+ <li> adaugati elemente ancora (de exemplu, numele autorului sa trimita la o pagina cu informatii)</li>
+<li>adaugati un favicon paginii </li>
+<li>validati documentul html folosind <a href="https://validator.w3.org/">validatorul html</a></li>
+</ul>
+
+<h2>Tema 1.2</h2>
+<p>Creati un site personal care sa contina trei pagini. Structurati paginile folosind tagurile semantice (&lt;header&gt;, &lt;nav&gt;, &lt;main&gt;, &lt;section&gt;, &lt;article&gt;, &lt;aside&gt;, &lt;footer&gt;).<br> Folositi si alte taguri sugestive pentru elementele din document (liste, tabel, paragrafe, imagini, video, iframe, ancore, etc.)
+<p>Detalii despre structura paginilor:</p>
+<ol>
+<li>pagina "despre.html" contine descrierea personala (includeti o poza, un motto preferat). Adaugati informatii precum date personale (data nasterii, adresa, telefon, mail), educatie (formele de invatamant absolvite), cursuri urmate, orarul vostru.  </li>
+<li>pagina "activitate.html" va contine informatii despre activitatea voastra: competente (limbaje de programare cunoscute, limbi straine,..), experienta (concursuri,..), proiecte realizate, voluntariat.</li>
+<li>pagina, "hobby.html" va contine informatii despre pasiunile si principiile voastre de viata.</li>
+</ol>
+<p>Creati meniul de navigare intre pagini.<br>
+Faceti legaturi la siteurile sociale pe care aveti conturi,
+<a href="https://iconarchive.com/tag/social" target="_blank">imaginile specifice</a> siteurilor respective (de exemplu, imaginea Facebook sa trimita la pagina voastra de Facebook).</p>
+
+<h2>Tema 1.3</h2>
+<p>Creati un fisier html care sa contina o prezentare detaliata a unui film preferat. Structurati documentul folosind tagurile semantice (&lt;header&gt;, &lt;nav&gt;, &lt;section&gt;, &lt;article&gt;, &lt;aside&gt;, &lt;footer&gt;).<br> Folositi si alte taguri sugestive pentru elementele din document (liste, tabel, paragrafe, imagini, video, iframe, ancore, etc.).  Includeti informatii ca:
+</p>
+<ul>
+<li>titlul filmului, o imagine reprezentativa (poster),</li>
+<li>informatii generale despre film (gen, data lansare, durata, regizor, actori principali, premii),</li>
+<li>o scurta prezentare (rezumat),</li>
+<li>distributia,</li>
+<li>galerie de imagini si video,</li>
+<li>review-uri.</li>
+</ul>
+<p>Includeti trailerul oficial folosind un element &lt;iframe&gt;. </p>
+<p>Faceti legaturi la pagina filmului si la paginile actorilor de pe IMDb.</p>
+
+
+</body>
+</html>
