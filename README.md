@@ -12,6 +12,6 @@
      * [System Arhitecture](https://github.com/skpha13/Univeristy-Work/tree/main/First%20Year/First%20Semester/Sistem%20Arhitecture)
    * Second semester:
      * [Databases](https://github.com/skpha13/University-Work/tree/main/First%20Year/Second%20Semester/Databases)
+     * [Data Structures](https://github.com/skpha13/University-Work/tree/main/First%20Year/Second%20Semester/Data%20Structures)
      * [Object-oriented programming](https://github.com/skpha13/University-Work/tree/main/First%20Year/Second%20Semester/Object-oriented%20programming)
      * [Web Technologies](https://github.com/skpha13/University-Work/tree/main/First%20Year/Second%20Semester/Web%20Technologies)
-     * [Data Structures](https://github.com/skpha13/University-Work/tree/main/First%20Year/Second%20Semester/Data%20Structures)
