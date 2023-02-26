@@ -13,6 +13,6 @@
    * Second semester:
      * [Databases](https://github.com/skpha13/University-Work/tree/main/First%20Year/Second%20Semester/Databases)
      * [Data Structures](https://github.com/skpha13/University-Work/tree/main/First%20Year/Second%20Semester/Data%20Structures)
-     * [Geometry and Linear Algebra] (https://github.com/skpha13/University-Work/tree/main/First%20Year/Second%20Semester/Geometry%20and%20Linear%20Algebra)
+     * [Geometry and Linear Algebra](https://github.com/skpha13/University-Work/tree/main/First%20Year/Second%20Semester/Geometry%20and%20Linear%20Algebra)
      * [Object-oriented programming](https://github.com/skpha13/University-Work/tree/main/First%20Year/Second%20Semester/Object-oriented%20programming)
      * [Web Technologies](https://github.com/skpha13/University-Work/tree/main/First%20Year/Second%20Semester/Web%20Technologies)
