@@ -1,1 +1,1 @@
-Geomtry and Linear Algebra
+Geometry and Linear Algebra
