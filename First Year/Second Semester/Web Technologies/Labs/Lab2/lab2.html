@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8" />
+<title>LABORATORUL 2 | Tehnici Web</title>
+</head>
+<body>
+<h1>Laboratorul 2</h1>
+<h2>CSS = Cascading Style Sheets</h2>
+<ul><li>limbajul folosit pentru stilizarea unui document HTML</li>
+<li>
+codul CSS este format din reguli CSS</li>
+</ul>
+<h4>Sintaxa unei reguli CSS:<p><b>selector{proprietate1:valoare1; proprietate2:valoare2;}</b></p></h4>
+
+Codul CSS poate fi introdus:<br>
+&lt;!-- <b>Inline</b> --&gt;<br>
+&lt;tag style="proprietate: valoare;"&gt;(in interiorul tagului de inceput)<br><br>
+
+&lt;!-- <b>In &lt;head&gt;, folosind tagul &lt;style&gt;</b> --&gt;<br>
+&lt;head&gt;<br>
+  &lt;style type="text/css"&gt;<br>
+    selector { proprietate: valoare; }<br>
+  &lt;/style&gt;<br>
+&lt;/head&gt;<br><br>
+
+&lt;!-- <b>In fisier extern</b> --&gt;<br>
+&lt;head&gt;<br>
+  &lt;link rel="stylesheet" type="text/css" href="style.css" /&gt;<br>
+&lt;/head&gt;<br>
+<h4>Proprietati:</h4>
+<ul><li>simple (o valoare)</li>
+<li>reuniune de proprietati (valori separate prin spatiu ex: border: 3px solid red;)</li></ul>
+
+
+<h4>Unitati de masura:</h4>
+<ul>
+   <li>absolute : px, cm, mm, pt, in,..</li> 
+   <li>relative : %(din dimensiunea parintelui), vh, vw, vmin, vmax (1% din dimensiunea ferestrei), 
+			  em (fontul parinte), rem(fontul radacina)</li>
+			  </ul>
+
+<h4> BoxModel:</h4>
+<ul>
+ <li>elementele pot fi inconjurate de un chenar (proprietatea <b>border</b>)</li>
+ <li>spatiul dintre element si chenar (proprietatea <b>padding</b>)</li>
+ <li>spatiul dintre chenar si elementele exterioare (proprietatea <b>margin</b>)</li>
+ <li>continutul elementului este definit prin dimensiunile <b>width</b> si <b>height</b></li>
+</ul>
+
+<h4>Proprietati de baza si valori:</h4> 
+<ul>
+ <li>color: red sau #ff0000 sau rgb(0,255,255),.. </li>
+ <li>text-align: center/left/right</li>
+ <li>vertical-align: top/bottom/middle/...</li>
+ <li>background:<ul><li>background-color:culoare</li>
+ <li>background-image:url("URLImagine")</li>
+ <li>background-repeat: repeat/repeat-x/repeat-y/no-repeat </li>
+<li>background-position: center/top/left/etc</li>
+<li>background-size: dimensiune/cover/contain</li>
+ </ul>
+ </li>
+ <li>border:<ul><li>border-width:grosime</li>
+                <li>border-style:stil</li>
+                <li>border-color:culoare</li>
+                <li>border-radius:margini rotunjite</li>
+                </ul></li>
+ <li>width: dimensiune(pixeli/ procent din parinte/vw ) </li>
+ <li>height: dimensiune(auto pastreaza raportul inaltime-latime) </li>
+ <li>font:<ul><li>font-familiy:familia de fonturi</li>
+              <li>font-size:dimensiunea</li>
+              <li>font-style:normal/italic/oblique/inherit</li>
+              <li>font-weight:normal/bold/int(100-900)</li></ul></li>
+ <li>visibility: visible/hidden(invizibil cu pastrarea spatiului) </li>
+ <li>display: 
+ <ul><li>block (latimea implicita a elementului egala cu a parintelui ) </li>
+          <li>inline (mai multe pe linie, nu permite dimensionare si includere elem block) </li>
+          <li>inline-block (mai multe elemente pe linie, permite dimensionare si includere elem block) </li>
+          <li>none (invizibil -fara pastrarea spatiului) </li>
+          </ul>
+          </li>
+ 
+ </ul>
+<h4>Alte proprietati:</h4>
+ <ul><li>border-collapse: collapse/ separate (unifica sau nu chenarul)</li>
+ <li>list-style-type: none/circle/square/...</li></ul>
+
+<h4>Selectori:</h4> 
+<ul><li>Simpli
+ <ul><li>* (toate elementele)</li>
+ <li>numeTag (tagurile cu numele numeTag (ex: p selecteaza toate paragrafele))</li>
+ <li>#numeId (tagul cu atributul id="nume")</li>
+ <li>.numeClasa (tagurile cu atributul class="numeClasa")</li>
+ </ul></li>
+ <li>Combinati<ul>
+ <li>element1 , element2 (elementul 1 si elementul2)</li>
+ <li>elementContainer elementContinut (elementulContinut din elementulContainer)</li>
+ <li>elementParinte > elementCopil (elementCopil direct al elementParinte)</li>
+ <li>element1 + element2 (elementul de tipul element2 este primul frate care urmeaza imediat dupa element1)</li>
+  <li>element1 ~ element2 (elementele de tipul element2 care sunt frati cu element1 si urmeaza dupa element1)</li>
+  </ul></li>
+  <li>Pseudo-clase
+  <ul>
+ <li>selector:nth-of-type(2n+1) (al 2n+1 -lea element de tip selector)</li>
+ <li>selector:nth-child(2n)(selectorul care este al 2n-lea copil (fratii anteriori pot sa nu fie de tip selector))</li>
+ <li>selector:hover (elementul de tip selector pe care se afla mouse-ul)</li></ul>
+ </li>
+ <li>Atribut selector
+ <ul>
+ <li>selector[atrib="val"](element de tip selector cu atributul atrib avand valoarea "val")</li>
+ <li>selector[atrib*="val"](element de tip selector cu atributul atrib avand valoarea ce contine cuvantul "val")</li></ul>
+ <li>Pseudo-elemente<ul>
+ <li>selector::before, selector::after (adauga continut inainte/dupa elementul selectat)</li>
+ <li>selector::first-line (prima linie a unui element block)</li>
+ <li>selector:first-letter (prima litera a unui text-element block)</li>
+</ul>
+</li>
+</ul>
+<h4>Specificitate</h4>
+<ul>
+<li> se pleaca de la valoarea 0
+<li>
+se adauga<ul> 
+	<li>1000 pt stilizare inline </li>
+	<li>100 pt selectare prin id (#id)</li>
+        <li>10 pt selectare prin clasa (.clasa), atribut ([atribut]), pseudo-clasa (:hover..)</li>
+	<li>1 pt selectare prin element (p,..), pseudo-element(:before)</li></ul>
+<li>selectarea cu specificitate mai mare este prioritara, chiar daca este urmata de o alta selectare cu o prioritate mai mica</li>
+</ul>
+
+
+<h2>Tema 2.1</h2>
+<p>Scrieti cod CSS in fisier extern pentru documentul html creat in primul laborator astfel incat:</p>
+<ul>
+<li>setati un font de 17px elementului radacina (html)</li>
+<li>pagina sa aiba culoare/imagine de background</li>
+<li>setati pentru body un padding de 1.5rem si margin 0</li>
+<li>stilizati elemenul h1 din header (titlul paginii) astfel incat sa aiba urmatoarele proprietati:
+   <ul>
+    <li>tipul fontului sa fie Open Sans</li>
+    <li>marimea fontului sa fie de 2 ori mare decat fontul radacina</li>
+    <li>grosimea fontului sa fie 900</li>
+    <li>al doilea cuvant (numele librariei) sa fie scris numai cu litere mari, italic si cu alta culoare</li>
+    <li>textul sa fie aliniat centrat</li>
+    </ul>
+</li>
+<li>sectiunile sa aiba border punctat, width si height, margin si padding si background transparent</li>
+<li>titlurile sectiunilor sa fie scrise cu alta culoare si alt font</li>
+<li>ancorele care incep cu # sa fie stilizate diferit</li>
+<li>eliminati numerotarea la listele neordonate</li>
+<li>paragrafele din sectiunea Noutati sa aiba box-shadow de culoare verde si un text shadow de culoare rosie</li>
+<li>dupa fiecare paragraf din sectiunea Anunturi sa apara imaginea 😀</li>
+<li>stilizati tabelul:border, border-collapse, centrare text, padding, linii/coloane colorate diferit, prima celula de pe fiecare rand (inclusiv primul rand, cu headerul) sa aiba textul subliniat, la hover pe o linie se schimba stilul</li>
+<li>figurile din sectiunea galerie sa fie pozitionate cate 3 pe linie, imaginile continute de acestea sa aiba opacitate de 0.7 iar la hover sa-si schimbe opacitatea in 1</li>
+<li>stilizati linkul de la sfarsitul paginii astfel incat la hover sa schimbe dimensiunea literelor in 20px, iar la momentul click-ului pe el (link activ) sa aiba background galben</li>
+</ul>
+
+<h2>Tema 2.2</h2>
+<p>Creati si stilizati meniul drop-down pentru pagina creata in primul laborator folosind numai HTML si CSS.</p>
+
+
+<h2>Tema 2.3 (pentru exersare)</h2>
+<div>
+<p> <strong>Exemplificare selectori si proprietati CSS: pornind de la pagina</strong> <a href="ex-css.html" target="_blank">ex-css.html</a></p>
+<div>&#8211; <b>(tagul style)</b> Sa se adauge in &lt;head&gt; tagul &lt;style&gt;. Sa se defineasca o regula css care face ca toate paragrafele sa fie scrise cu roz. Se va observa rezultatul.<br />
+&#8211; Tot in tagul style, sub prima regula, sa se defineasca apoi o regula care face toate paragrafele sa se scrie cu gri. Ce observati? Scrieti observatia intr-un comentariu CSS.</div>
+<p>&#8211;<b> (fisier extern) </b>Sa se creeze un fisier cu extensia css. Folosind tagul &lt;link&gt; atribuiti-l ca fisier de stil pentru pagina html. Aceasta este metoda pe care trebuie sa o folositi in teme si proiect.</p>
+<div>&#8211; Adaugati cod in fisierul css astfel incat sa culoarea de background a paginii sa fie #EEEEEE. Adaugati si o imagine de background transparenta (cautati pe net un png sau gif). Observati ca sunt luate in considerare si imaginea si culoarea de background care poate fi observata in spatiile transparente ale imaginii.<br />
+&#8211; Sa se defineasca o regula pentru h1 astfel incat sa fie subliniat si scris cu culoare rosie.<br />
+&#8211; Sa se defineasca o regula css prin care numai paragrafele de dupa h3 sa aiba border albastru punctat de 2 pixeli. Adaugati regulii si faptul ca paragrafele trebuie sa fie scrise cu verde.<br />
+&#8211; Creati o clasa, c1, care face background-ul mov. Grupati al doilea h2 si paragrafele de dupa el intr-un div care sa aiba atribuita aceasta clasa.<br />
+&#8211; Creati clasa c2 cu font italic si atribuiti-o primelor 3 paragrafe si unui h3.<br />
+&#8211; Creati setul de de reguli cu selectorul p.c3 cu font bold si culoare magenta. Alegeti doua paragrafe carora sa le adaugati clasa c3 (cu ajutorul atributului class). Incercati sa adaugati clasa c3 si unui alt tip de element, de exemplu un h3, va merge?<br />
+&#8211; Adaugati clasei c2 o regula astfel incat textul sa fie taiat cu o linie, adaugati clasei c3 o regula astfel incat textul sa fie &#8222;supra-liniat&#8221; (adica sa aiba linia deasupra). Alegeti un paragraf caruia sa ii atribuiti ambele clase, si c2 si c3. Mutati setul de reguli pentru p.c3 inaintea regulilor lui c2 si vizualizati pagina. Apoi puneti setul de reguli pentru p.c3 dupa cele pentru c2 si vizualizati pagina. Explicati intr-un comentariu CSS ce ati observat si de ce se intampla asa.<br />
+&#8211; Dati id-ul pgf unuia dintre paragrafe. Creati un set de reguli astfel incat paragraful cu id sa fie scris cu culoare portocalie, si sa fie si subliniat si supraliniat.<br />
+&#8211; Creati inca un fisier cu extensia &lt;i&gt;.css&lt;/i&gt;. In acest fisier creati un set de reguli pentru paragraful cu id-ul pgf, astfel incat acesta sa fie scris cu verde si cu font Comic Sans MS. Introduceti acest fisier ca stil extern (printr-un al tag &lt;link&gt;), mai intai inaintea tagului &lt;link&gt; de dinainte, apoi dupa acesta. Ce observati?<br />
+&#8211; Sa se testeze selectorul * cu proprietatea outline</p>
+</div>
+<div>
+
+<h2>Tema 2.4</h2>
+<p><strong>Un mic test despre selectorii CSS:</strong> <a href="https://flukeout.github.io/">https://flukeout.github.io</a></p>.
+
+</body>
+</html>
