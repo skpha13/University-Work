@@ -15,3 +15,9 @@ from dual;
 
 select substr('primavara',-4)
 from dual;
+
+select first_name || ' ' || last_name || ' castiga ' || salary || ' lunar dar doreste ' || salary*3 as "Salariu Ideal"
+from employees;
+
+select upper(substr(first_name,1,1)) || lower(substr(first_name,2,length(first_name))) 'Nume'
+from employees;
