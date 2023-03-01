@@ -37,3 +37,25 @@ select employee_id,last_name,instr(lower(last_name),'a')
 from employees
 where lower(substr(last_name,-1)) = 'e';
 
+select last_name,first_name,nvl2(manager_id,1,0)
+from employees;
+
+select last_name,first_name,nvl2(manager_id,'Are manager','Nu are manager')
+from employees;
+
+select to_char(sysdate+30,'DD/MON/YYYY HH:MM')
+from dual;
+
+--to_date pune automat ora la 00:00
+select to_char(to_date('31/12/2023')-trunc(sysdate))
+from dual;
+
+select to_date('31-12' || to_char(sysdate,'YYYY')) - trunc(sysdate)
+from dual;
+
+select 365 - to_char(sysdate,'DDD')
+from dual;
+
+select last_name,salary,salary*nvl(commission_pct,1),commission_pct
+from employees
+where salary + nvl(commission_pct,0) > 10000;
