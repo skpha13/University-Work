@@ -43,9 +43,18 @@ void quicksort(int st,int dr)
                         temp[poz_left++] = v[i];
                 }
     }
+    for(int i=st;i<=dr;i++) cout<<v[i]<<" ";
+    cout<<endl;
     temp[poz_right] = aux;
     for(int i=st;i<=dr;i++)
         v[i] = temp[i];
+    cout<<"/ ";
+    for(int i=st;i<=poz_left-1;i++)
+        cout<<v[i]<<" ";
+    cout<<endl<<"// ";
+    for(int i=poz_right+1;i<=dr;i++)
+        cout<<v[i]<<" ";
+    cout<<endl;
     
     quicksort(st,poz_left-1);
     quicksort(poz_right+1,dr);
