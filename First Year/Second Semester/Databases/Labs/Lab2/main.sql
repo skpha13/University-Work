@@ -56,6 +56,6 @@ from dual;
 select 365 - to_char(sysdate,'DDD')
 from dual;
 
-select last_name,salary,salary*nvl(commission_pct,1),commission_pct
+select last_name,salary,salary + salary*nvl(commission_pct,1) as Venit,nvl(commission_pct,0) as Comision
 from employees
-where salary + nvl(commission_pct,0) > 10000;
+where salary + salary * nvl(commission_pct,0) > 10000;
