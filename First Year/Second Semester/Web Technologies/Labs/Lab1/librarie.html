@@ -2,6 +2,7 @@
 
 <html lang="ro">
     <head>
+        <meta charset="UTF-8"> 
         <title>Book Library</title>
         <link rel="stylesheet" href="style.css">
         <link rel="icon" type="image/x-icon" href=".\Materials\resurse\book.ico"
@@ -54,9 +55,9 @@
                 Anunturi
             </h1>
                 <ul>
-                    <li> 1 Martie 2023 Lansarea de carte</li>
-                    <li> 8 martie 2023 <b>Promotie:</b> la doua carti cumparate primiti una gratis!</li>
-                    <li> 1 iunie 2023 La multi ani copii! Va invitam la <b>petrecere!</b></li>
+                    <li class="anunt"> 1 Martie 2023 Lansarea de carte</li>
+                    <li class="anunt"> 8 martie 2023 <b>Promotie:</b> la doua carti cumparate primiti una gratis!</li>
+                    <li class="anunt"> 1 iunie 2023 La multi ani copii! Va invitam la <b>petrecere!</b></li>
                 </ul>
         </section>
         <section>
@@ -69,7 +70,7 @@
                     <th>Dupa-amiaza</th>
                 </tr>
                 <tr>
-                    <td rowspan="5">Zile lucratoare</td>
+                    <td rowspan="5" class="celule">Zile lucratoare</td>
                     <td>Luni</td>
                     <td rowspan="5">8-12</td>
                     <td rowspan="5">14-20</td>
@@ -87,7 +88,7 @@
                     <td>Vineri</td>
                 </tr>
                 <tr>
-                    <td rowspan="2">Weekend</td>
+                    <td rowspan="2" class="celule">Weekend</td>
                     <td>Sambata</td>
                     <td>10-12</td>
                     <td>14-18</td>
@@ -128,8 +129,10 @@
                 Ploiesti, Strada Marasesti, Nr. 286
             </address>
         </section>
-        <a href="#top">
-            <button>Inapoi Sus</button>
+    <div>
+        <a href="#top" class="back-to-top-link">
+            <button>Back to Top</button>
         </a>
+    </div>
     </body>
 </html>

@@ -8,6 +8,7 @@ Culori:
     #45A29E
 */
 table,td,th{
+    margin: 0 auto;
     border: 1px solid #66FCF1;
     border-collapse: collapse;
     text-align: center;
@@ -18,7 +19,25 @@ td{
     padding: 5px;
 }
 
+tr:first-child{
+    background-color: rgba(0, 208, 255, 0.15);
+}
+
+td:hover{
+    border: 1px solid red;
+}
+
+tr:hover{
+    color: #66fc9b;
+}
+
+.celule{
+    background-color: rgba(255,255,255,0.15);
+}
+
 h1{
+    transition: text-shadow 250ms;
+    transition-timing-function: ease-in-out;
     font-family: "Open Sans";
     font-size: 2rem;
     font-weight: 900;
@@ -40,7 +59,7 @@ html{
     font-size: 17px;
     background-color: #0b0c10;
     font-display: color #C5C6C7;
-
+    scroll-behavior: smooth;
 }
 
 body{
@@ -75,6 +94,8 @@ ul{
 img{
     max-width: 100%;
     max-height: 100%;
+
+    border-radius: 10px;
 }
 
 .parent{
@@ -82,13 +103,38 @@ img{
     grid-template-columns: 1fr 1fr 1fr;
     column-gap: 0px;
     overflow: hidden;
-
 }
 
 figure:hover{
-    opacity: 100%;
+    opacity: 1;
 }
 
 figure{
-    opacity: 30%;
+    transition: opacity 250ms;
+    transition-timing-function: ease-in-out;
+    opacity: 0.3;
+}
+
+.anunt::after{
+    content: "😀";
+}
+
+div{
+    text-align: center;
+}
+
+button{
+    transition: font-size 250ms;
+    transition-timing-function: ease-in-out;
+
+    border-radius: 15px;
+    font-family: "Open Sans";
+    color: #c5c6c7;
+    background-color: transparent;
+    border-color: #66FCF1;
+    padding: 6.5px;
+}
+
+button:hover{
+    font-size: 20px;
 }
