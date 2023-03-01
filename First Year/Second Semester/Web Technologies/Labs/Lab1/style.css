@@ -1,5 +1,14 @@
+
+/*
+Culori:
+    #0b0c10 
+    #1F2833
+    #C5C6C7
+    #66FCF1
+    #45A29E
+*/
 table,td,th{
-    border: 1px solid black;
+    border: 1px solid #66FCF1;
     border-collapse: collapse;
 }
 
@@ -8,6 +17,55 @@ td{
 }
 
 h1{
-    color: darkorchid;
+    font-family: "Open Sans";
+    font-size: 2rem;
+    font-weight: 900;
+    color: #66FCF1;
     text-align: center;
+}
+
+h1:hover{
+    text-shadow: red -2px 0, cyan 2px 0;
+}
+
+#italic{
+    font-style: italic;
+    color: #C5C6C7;
+
+}
+
+html{
+    font-size: 17px;
+    background-color: #0b0c10;
+    font-display: color #C5C6C7;
+
+}
+
+body{
+    color: #c5c6c7;
+    padding: 1.5rem;
+    margin: 0;
+}
+
+#logo{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+section{
+    border: 1px solid rgba(255,255,255,0.3);
+    border-style: dotted;
+    border-width: 3px;
+    margin: 5px;
+    padding: 15px;
+}
+
+ul{
+    list-style-type: none;
+}
+
+.ParagrafeNoutati{
+    box-shadow:1px 1px 5px #66fc9b,-1px -1px 5px #66fc9b;
+    text-shadow: red -1px 0;
 }
