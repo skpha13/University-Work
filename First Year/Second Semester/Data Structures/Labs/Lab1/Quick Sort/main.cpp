@@ -7,16 +7,16 @@ using namespace std;
 ifstream f("algsort.in");
 ofstream g("algsort.out");
 
-int n,v[500001],temp[500001];
+int n,v[500001];
 
 void quicksort(int st,int dr)
 {
     if(st>=dr) return;
-    int k,l,p,pivot,poz_left=st,poz_right=dr,aux=0,nr=0;
-    
+    int k,l,p,pivot;
+
     k = v[rand()%(dr-st+1) + st];
     l = v[rand()%(dr-st+1) + st];
-    p = v[rand()%(dr-st+1) + st];    
+    p = v[rand()%(dr-st+1) + st];
 
     if((k<l && l<p) || (p < l && l < k))
         pivot = l;
@@ -25,31 +25,17 @@ void quicksort(int st,int dr)
     else
         pivot = p;
 
-    for(int i=st;i<=dr;i++)
-    {
-        if(v[i]<pivot)
-            temp[poz_left++] = v[i];
-        else 
-            if(v[i]>pivot)
-                temp[poz_right--] = v[i];
-            else
-                {
-                    if(!nr)
-                    {
-                        aux = v[i];
-                        nr++;
-                    }
-                    else
-                        temp[poz_left++] = v[i];
-                }
-    }
-    temp[poz_right] = aux;
+    int i = st - 1;
+    for(int j=st;j<=dr;j++)
+        if(v[j]<pivot)
+            swap(v[++i],v[j]);
 
-    for(int i=st;i<=dr;i++)
-        v[i] = temp[i];
-    
-    quicksort(st,poz_left-1);
-    quicksort(poz_right+1,dr);
+    for(int j=st;j<=dr;j++)
+        if(v[j]==pivot)
+            swap(v[++i],v[j]);
+
+    quicksort(st,i-1);
+    quicksort(i+1,dr);
 }
 
 int main()
