@@ -13,23 +13,17 @@ void quicksort(int st,int dr)
 {
     if(st>=dr) return;
     int k,l,p,pivot,poz_left=st,poz_right=dr,aux=0,nr=0;
-    // the length of the current array
-    srand(time(NULL));
-    k = rand()%(dr-st+1) + st;
-    l = rand()%(dr-st+1) + st;
-    p = rand()%(dr-st+1) + st;    
+    
+    k = v[rand()%(dr-st+1) + st];
+    l = v[rand()%(dr-st+1) + st];
+    p = v[rand()%(dr-st+1) + st];    
 
-    if((v[k]<v[l] && v[l]<v[p]) || (v[p] < v[l] && v[l] < v[k]))
-        pivot = v[l];
-    else if ((v[l]<v[k] && v[k]<v[p]) || (v[p]<v[k] && v[k]<v[l]))
-        pivot = v[k];
+    if((k<l && l<p) || (p < l && l < k))
+        pivot = l;
+    else if ((l<k && k<p) || (p<k && k<l))
+        pivot = k;
     else
-        pivot = v[p];
-
-    cout<<"Pivot = "<<pivot<<" | ";
-    cout<<"V = ";
-    for(int i=st;i<=dr;i++)
-        cout<<v[i]<<" ";
+        pivot = p;
 
     for(int i=st;i<=dr;i++)
     {
@@ -51,17 +45,11 @@ void quicksort(int st,int dr)
     }
     temp[poz_right] = aux;
 
-    cout<<" | temp = ";
-    for(int i=st;i<=dr;i++) 
-        cout<<temp[i]<<" ";
-    cout<<" | "<<st<<" "<<dr<<" "<<poz_left<<" "<<poz_right<<endl;
-
     for(int i=st;i<=dr;i++)
         v[i] = temp[i];
     
-    // daca merg mai intai in stanga merge perfect, dar in dreapta e loop infinit
-    quicksort(poz_right+1,dr);
     quicksort(st,poz_left-1);
+    quicksort(poz_right+1,dr);
 }
 
 int main()
