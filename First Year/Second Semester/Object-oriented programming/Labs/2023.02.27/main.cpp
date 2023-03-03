@@ -23,7 +23,7 @@ public:
     static int getContorID(){return Calculator::contorID;}
     float getPret();
     string &getPlacaVideo();
-    int *getMemorieRam();
+    int* getMemorieRam() const;
     int getNrRam();
     bool isOnStock();
     char getClasaE();
@@ -148,7 +148,7 @@ string &Calculator::getPlacaVideo() {
     return PlacaVideo;
 }
 
-int *Calculator::getMemorieRam() {
+int* Calculator::getMemorieRam() const{
     return MemorieRam;
 }
 
@@ -255,6 +255,11 @@ int main()
     cout<<"Mem RAM: ";
     for(int i=0;i<C2.getNrRam();i++)
         cout<<p[i]<<" ";
+
+    // intreaba profesor ce sa fac in acest caz
+    int *v = C2.getMemorieRam();
+    v[0] = -100;
+    cout<<endl<<"*"<<p[0];
     cout<<endl;
     return 0;
 }
