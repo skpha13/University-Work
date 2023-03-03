@@ -56,7 +56,6 @@ Calculator::Calculator(char* NumeProcesor,string PlacaVideo,float Pret,int NrRam
     this->MemorieRam = new int[NrRam];
     for(int i=0;i<NrRam;i++)
         this->MemorieRam[i] = MemorieRam[i];
-    this->MemorieRam = MemorieRam;
     this->OnStock = OnStock;
     this->ClasaE = ClasaE;
 }
@@ -143,7 +142,6 @@ int main()
     cout<<endl<<C4.getPret()<<endl<<C4.getNumeProcesor()<<endl;
 
     C1 = C2;
-
     return 0;
 }
 
