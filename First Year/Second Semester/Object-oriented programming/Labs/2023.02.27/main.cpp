@@ -20,7 +20,7 @@ private:
 
 public:
     static int getContorID(){return Calculator::contorID;}
-    int getPret();
+    float getPret();
     char* getNumeProcesor(){return this->NumeProcesor;}
 
     Calculator();
@@ -120,7 +120,7 @@ Calculator& Calculator::operator =(const Calculator &obj)
     return *this;
 }
 
-int Calculator::getPret() {return Pret;}
+float Calculator::getPret() {return Pret;}
 // operator de rezolutie(accesare) ::
 // variabilele statice poat fi accesate de o instanta(numele clasei), nu neaparat de un obiect
 // in metode statice avem voie sa folosim doar atribute statice
