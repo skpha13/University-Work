@@ -20,7 +20,17 @@ private:
 
 public:
     static int getContorID(){return Calculator::contorID;}
+    //getters
     float getPret();
+    string &getPlacaVideo();
+    int *getMemorieRam();
+    int getNrRam();
+    bool isOnStock();
+    char getClasaE();
+    static int getContorId();
+    const int getIdCalculator();
+
+    //setters
     char* getNumeProcesor(){return this->NumeProcesor;}
 
     Calculator();
@@ -126,15 +136,44 @@ float Calculator::getPret() {return Pret;}
 // in metode statice avem voie sa folosim doar atribute statice
 int Calculator::contorID=1000;
 
+string &Calculator::getPlacaVideo() {
+    return PlacaVideo;
+}
+
+int *Calculator::getMemorieRam() {
+    return MemorieRam;
+}
+
+int Calculator::getNrRam() {
+    return NrRam;
+}
+
+bool Calculator::isOnStock() {
+    return OnStock;
+}
+
+char Calculator::getClasaE() {
+    return ClasaE;
+}
+
+int Calculator::getContorId() {
+    return contorID;
+}
+
+const int Calculator::getIdCalculator() {
+    return idCalculator;
+}
+
 int main()
 {
-    cout<<Calculator::getContorID();
+//    cout<<Calculator::getContorID();
     int a[] = {1,2,3,4};
     char c[] = "Intel";
 
     Calculator C1;
     Calculator C2(c,"Nvidia",100,4,a,true,'A');
 
+    /*
     cout<<endl<<C2.getPret()<<endl<<C2.getNumeProcesor()<<endl;
 
     Calculator C3(C2), C4 = C2;
@@ -142,7 +181,11 @@ int main()
     cout<<endl<<C4.getPret()<<endl<<C4.getNumeProcesor()<<endl;
 
     C1 = C2;
+    */
+    cout<<C2.getPlacaVideo()<<" "<<C2.getClasaE()<<" "<<C2.getIdCalculator()<<" "<<C2.getMemorieRam()<<" "<<C2.getNrRam();
+    cout<<" "<<C2.getPret()<<" "<<C2.isOnStock()<<" "<<C2.getNumeProcesor()<<endl;
+
     return 0;
 }
 
-//tema toti get eri si toti set eri
+//tema toti getters si setters
