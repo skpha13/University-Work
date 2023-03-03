@@ -189,12 +189,22 @@ void Calculator::setClasaE(char ClasaE) {
 }
 
 void Calculator::setMemorieRam(int *MemorieRam) {
+    if (this->MemorieRam!=NULL)
+    {
+        delete[] this->MemorieRam;
+        this->MemorieRam = NULL;
+    }
     this->MemorieRam = new int[NrRam];
     for(int i=0;i<NrRam;i++)
         this->MemorieRam[i] = MemorieRam[i];
 }
 
 void Calculator::setNumeProcesor(char *NumeProcesor) {
+    if(this->NumeProcesor != NULL)
+    {
+        delete[] this->NumeProcesor;
+        this->NumeProcesor = NULL;
+    }
     this->NumeProcesor = new char[strlen(NumeProcesor)+1];
     strcpy(this->NumeProcesor,NumeProcesor);
 }
@@ -207,7 +217,7 @@ int main()
 {
 //    cout<<Calculator::getContorID();
     int a[] = {1,2,3,4}, b[] = {4,5};
-    char c[] = "Intel";
+    char c[] = "Intel",d[] = "AMD";
 
     Calculator C1;
     Calculator C2(c,"Nvidia",100,4,a,true,'A');
@@ -233,10 +243,10 @@ int main()
     C2.setPret(200);
     C2.setNrRam(2);
     C2.setPlacaVideo("AMD");
-    C2.setNumeProcesor("AMD");
+    C2.setNumeProcesor(d);
     C2.setMemorieRam(b);
     C2.setClasaE('B');
-    C2.setOnStock(0);
+    C2.setOnStock(false);
 
     //after setters
     cout<<C2.getPlacaVideo()<<" "<<C2.getClasaE()<<" "<<C2.getIdCalculator()<<" "<<" "<<C2.getNrRam();
