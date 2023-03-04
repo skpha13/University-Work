@@ -1,0 +1,10 @@
+#pgf{
+    color: green;
+    font-family: "Comic Sans MS";
+}
+
+/* o sa ia mereu ulitmul link catre .css */
+
+*{
+    outline: auto;
+}

@@ -15,3 +15,26 @@ h3 + p{
     border-width: 2px;
     color: green;
 }
+
+.c1{
+    background-color: purple;
+}
+
+
+.c2{
+    font-style: italic;
+    text-decoration: line-through;
+}    
+
+/* nu merge si pentru h3 */
+p.c3{
+    font-weight: bold;
+    color: magenta;
+    text-decoration: overline;
+}
+/* paragraful ia doar proprietatile primei clase din ordinea atributelor */
+
+#pgf{
+    color: orange;
+    text-decoration: underline overline;
+}
