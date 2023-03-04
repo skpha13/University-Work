@@ -1,0 +1,17 @@
+html{
+    background-color: #EEEEEE;
+    background-image: url("Images/brick-wall.png");
+}
+
+h1{
+    color: red;
+    text-decoration-line: underline;
+    text-decoration-color: red;
+}
+
+h3 + p{
+    border-style: dotted;
+    border-color: blue;
+    border-width: 2px;
+    color: green;
+}
