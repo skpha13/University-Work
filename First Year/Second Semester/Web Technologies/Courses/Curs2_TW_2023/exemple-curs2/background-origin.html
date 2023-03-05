@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+          <html>
+            <head>
+            <title>Background-origin</title>
+         
+<style>
+body{
+
+--padding-div:25px;
+--imagine:url("vara.jpg");
+--background-repeat:no-repeat;
+--border-div:30px solid black;
+--width:300px;
+--height:300px;
+}
+#div1, #div2, #div3{
+            background-image:var(--imagine);
+            padding: var(--padding-div);
+            background-repeat:var(--background-repeat);
+            border:var(--border-div);
+            width:var(--width);
+            height:var(--height);
+            margin-top:10px;
+            text-align:right;
+            }
+
+#div1{
+            background-origin:border-box;
+     }
+#div2{
+            background-origin:padding-box;
+     }
+
+#div3{
+            background-origin:content-box;
+     }
+    
+     </style>
+            </head>
+            <body>
+             <div id="div1"> border-box</div>
+             <div id="div2"> padding-box</div>
+             <div id="div3"> content-box</div>
+            </body>
+          </html>
