@@ -19,9 +19,27 @@ private:
     static int contorID; // o zona de memorie care e impartita pentru toate obiectele, daca modific ceva se modifica la toate obiectele
 
 public:
+    //getters
     static int getContorID(){return Calculator::contorID;}
-    int getPret();
+    float getPret();
+    string &getPlacaVideo();
+    int* getMemorieRam() const;
+    int getNrRam();
+    bool isOnStock();
+    char getClasaE();
+    static int getContorId();
+    const int getIdCalculator();
     char* getNumeProcesor(){return this->NumeProcesor;}
+
+    //setters
+    void setPret(float Pret);
+    void setNrRam(int NrRam);
+    void setOnStock(bool OnStock);
+    void setClasaE(char ClasaE);
+    void setMemorieRam(int* MemorieRam);
+    void setPlacaVideo(string PlacaVideo);
+    void setNumeProcesor(char* NumeProcesor);
+
 
     Calculator();
     Calculator(char* NumeProcesor,string PlacaVideo,float Pret,int NrRam,int* MemorieRam,bool OnStock,char ClasaE);
@@ -56,7 +74,6 @@ Calculator::Calculator(char* NumeProcesor,string PlacaVideo,float Pret,int NrRam
     this->MemorieRam = new int[NrRam];
     for(int i=0;i<NrRam;i++)
         this->MemorieRam[i] = MemorieRam[i];
-    this->MemorieRam = MemorieRam;
     this->OnStock = OnStock;
     this->ClasaE = ClasaE;
 }
@@ -121,21 +138,91 @@ Calculator& Calculator::operator =(const Calculator &obj)
     return *this;
 }
 
-int Calculator::getPret() {return Pret;}
+float Calculator::getPret() {return this->Pret;}
 // operator de rezolutie(accesare) ::
 // variabilele statice poat fi accesate de o instanta(numele clasei), nu neaparat de un obiect
 // in metode statice avem voie sa folosim doar atribute statice
 int Calculator::contorID=1000;
 
+string &Calculator::getPlacaVideo() {
+    return PlacaVideo;
+}
+
+int* Calculator::getMemorieRam() const{
+    return MemorieRam;
+}
+
+int Calculator::getNrRam() {
+    return NrRam;
+}
+
+bool Calculator::isOnStock() {
+    return OnStock;
+}
+
+char Calculator::getClasaE() {
+    return ClasaE;
+}
+
+int Calculator::getContorId() {
+    return contorID;
+}
+
+const int Calculator::getIdCalculator() {
+    return idCalculator;
+}
+
+void Calculator::setPret(float Pret) {
+    this->Pret = Pret;
+}
+
+void Calculator::setNrRam(int NrRam) {
+    this->NrRam = NrRam;
+}
+
+void Calculator::setOnStock(bool OnStock) {
+    this->OnStock = OnStock;
+}
+
+void Calculator::setClasaE(char ClasaE) {
+    this->ClasaE = ClasaE;
+}
+
+void Calculator::setMemorieRam(int *MemorieRam) {
+    if (this->MemorieRam!=NULL)
+    {
+        delete[] this->MemorieRam;
+        this->MemorieRam = NULL;
+    }
+    this->MemorieRam = new int[NrRam];
+    for(int i=0;i<NrRam;i++)
+        this->MemorieRam[i] = MemorieRam[i];
+}
+
+void Calculator::setNumeProcesor(char *NumeProcesor) {
+    if(this->NumeProcesor != NULL)
+    {
+        delete[] this->NumeProcesor;
+        this->NumeProcesor = NULL;
+    }
+    this->NumeProcesor = new char[strlen(NumeProcesor)+1];
+    strcpy(this->NumeProcesor,NumeProcesor);
+}
+
+void Calculator::setPlacaVideo(string PlacaVideo) {
+    this->PlacaVideo = PlacaVideo;
+}
+
 int main()
 {
-    cout<<Calculator::getContorID();
-    int a[] = {1,2,3,4};
-    char c[] = "Intel";
+//    cout<<Calculator::getContorID();
+    int a[] = {1,2,3,4}, b[] = {4,5};
+    char c[] = "Intel",d[] = "AMD";
 
     Calculator C1;
     Calculator C2(c,"Nvidia",100,4,a,true,'A');
 
+    /*
     cout<<endl<<C2.getPret()<<endl<<C2.getNumeProcesor()<<endl;
 
     Calculator C3(C2), C4 = C2;
@@ -143,8 +230,38 @@ int main()
     cout<<endl<<C4.getPret()<<endl<<C4.getNumeProcesor()<<endl;
 
     C1 = C2;
+    */
+    //before setters
+    cout<<C2.getPlacaVideo()<<" "<<C2.getClasaE()<<" "<<C2.getIdCalculator()<<" "<<" "<<C2.getNrRam();
+    cout<<" "<<C2.getPret()<<" "<<C2.isOnStock()<<" "<<C2.getNumeProcesor()<<" ";
+    int* p = C2.getMemorieRam();
+    cout<<"Mem RAM: ";
+    for(int i=0;i<C2.getNrRam();i++)
+        cout<<p[i]<<" ";
+    cout<<endl;
 
+    C2.setPret(200);
+    C2.setNrRam(2);
+    C2.setPlacaVideo("AMD");
+    C2.setNumeProcesor(d);
+    C2.setMemorieRam(b);
+    C2.setClasaE('B');
+    C2.setOnStock(false);
+
+    //after setters
+    cout<<C2.getPlacaVideo()<<" "<<C2.getClasaE()<<" "<<C2.getIdCalculator()<<" "<<" "<<C2.getNrRam();
+    cout<<" "<<C2.getPret()<<" "<<C2.isOnStock()<<" "<<C2.getNumeProcesor()<<" ";
+    p = C2.getMemorieRam();
+    cout<<"Mem RAM: ";
+    for(int i=0;i<C2.getNrRam();i++)
+        cout<<p[i]<<" ";
+
+    // intreaba profesor ce sa fac in acest caz
+    int *v = C2.getMemorieRam();
+    v[0] = -100;
+    cout<<endl<<"*"<<p[0];
+    cout<<endl;
     return 0;
 }
 
-//tema toti get eri si toti set eri
+//tema toti getters si setters
