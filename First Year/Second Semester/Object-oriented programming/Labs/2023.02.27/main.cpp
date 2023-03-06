@@ -23,7 +23,7 @@ public:
     static int getContorID(){return Calculator::contorID;}
     float getPret();
     string &getPlacaVideo();
-    int* getMemorieRam() const;
+    const int* getMemorieRam();
     int getNrRam();
     bool isOnStock();
     char getClasaE();
@@ -148,7 +148,7 @@ string &Calculator::getPlacaVideo() {
     return PlacaVideo;
 }
 
-int* Calculator::getMemorieRam() const{
+const int* Calculator::getMemorieRam(){
     return MemorieRam;
 }
 
@@ -234,7 +234,7 @@ int main()
     //before setters
     cout<<C2.getPlacaVideo()<<" "<<C2.getClasaE()<<" "<<C2.getIdCalculator()<<" "<<" "<<C2.getNrRam();
     cout<<" "<<C2.getPret()<<" "<<C2.isOnStock()<<" "<<C2.getNumeProcesor()<<" ";
-    int* p = C2.getMemorieRam();
+    const int* p = C2.getMemorieRam();
     cout<<"Mem RAM: ";
     for(int i=0;i<C2.getNrRam();i++)
         cout<<p[i]<<" ";
@@ -257,7 +257,7 @@ int main()
         cout<<p[i]<<" ";
 
     // intreaba profesor ce sa fac in acest caz
-    int *v = C2.getMemorieRam();
+    const int *v = C2.getMemorieRam();
     v[0] = -100;
     cout<<endl<<"*"<<p[0];
     cout<<endl;
