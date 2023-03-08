@@ -26,3 +26,23 @@ where j.max_salary<(select salary
                     from employees
                     where employee_id = 100);
                     
+select E.last_name, E.hire_date
+from employees E
+join employees E2 on(E.hire_date>E2.hire_date)
+where initcap(E2.last_name) = 'Gates';
+
+select e.last_name,to_char(e.hire_date,'Month'),to_char(e.hire_date,'YYYY')
+from employees e
+where e.department_id = (select e2.department_id -- putem folosi egal pentru ca e doar un Gates
+                        from employees e2
+                        where initcap(e2.last_name) = 'Gates') 
+    and lower(e.last_name) like '%a%' and e.last_name != 'Gates';
+    
+select e.last_name,to_char(e.hire_date,'Month'),to_char(e.hire_date,'YYYY')
+from employees e
+join employees e2 using(department_id)
+where initcap(e2.last_name) = 'Gates' and lower(e.last_name) like '%a%';
+
+-- daca cererea necorelata are mai multe rezultate nu mai merege cu = < >
+-- dar putem folosi in
+-- in subcerere necorelata nu returnam mai mult de 1 coloana, doar 1
