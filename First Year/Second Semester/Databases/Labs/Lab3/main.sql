@@ -46,3 +46,14 @@ where initcap(e2.last_name) = 'Gates' and lower(e.last_name) like '%a%';
 -- daca cererea necorelata are mai multe rezultate nu mai merege cu = < >
 -- dar putem folosi in
 -- in subcerere necorelata nu returnam mai mult de 1 coloana, doar 1
+
+-- select e.* afiseaza toate coloanele pentru employees
+
+-- union face reuniunea, dar elimina duplicatele
+
+select e.last_name || ' ' || e.first_name Nume, c.country_name, l.location_id
+from employees e, departments d, countries c, locations l
+where l.country_id(+) = c.country_id
+and d.location_id(+) = l.location_id
+and e.department_id(+) = d.department_id;
+
