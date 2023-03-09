@@ -1,4 +1,5 @@
 #include <iostream>
+#include <string.h>
 #include <fstream>
 #include <vector>
 
@@ -25,7 +26,11 @@ public:
     const vector<int> &getStariFinale();
     const vector<vector<Drum>> &getMatrice();
 
+    //setter
     void setValues();
+
+    //metode
+    void verificaCuvant(char cuvant[]);
 };
 
 int Graf::getNrMuchii() {
@@ -76,21 +81,61 @@ void Graf::setValues() {
     }
 }
 
+void Graf::verificaCuvant(char cuvant[]) {
+    int nrLitere = 0, stare = 0;
+    for(int i=0;i<strlen(cuvant);i++)
+    {
+        int ok = 0;
+        for(int j=0;j<Matrice[stare].size();j++)
+            if(Matrice[stare][j].litera == cuvant[i])
+            {
+                stare = Matrice[stare][j].urmatorul;
+                ok = 1;
+                break;
+            }
+        if(ok == 0)
+        {
+            cout<<"Nu accepta";
+            return;
+        }
+    }
+    for(int i=0;i<StariFinale.size();i++)
+        if(stare == StariFinale[i])
+            cout<<"Accepta";
+}
+
 int main() {
+    // 0 va fi by default stare initiala
     Graf g;
     g.setValues();
-    cout<<g.getNrNod()<<" "<<g.getNrMuchii()<<" "<<g.getNrStariFinale()<<endl;
+
+    //afisare graf
+    cout<<"Numar noduri: "<<g.getNrNod()<<endl;
+    cout<<"Numar muchii: "<<g.getNrMuchii()<<endl;
+    cout<<"Numar stari finale: "<<g.getNrStariFinale()<<endl;
+
     const vector<int> &v = g.getStariFinale();
     const vector<vector<Drum>> &graf = g.getMatrice();
 
+    cout<<"Tranzitii:"<<endl;
+    for(int i=0;i<g.getNrNod();i++) {
+        cout<<"\t";
+        for (int j=0;j<graf[i].size();j++)
+            cout<<"curent: "<<i<<" urmatorul: "<< graf[i][j].urmatorul << " litera: " << graf[i][j].litera<<" ";
+        cout<<endl;
+    }
+
+    cout<<"Stari finale: ";
     for(int i=0;i<g.getNrStariFinale();i++)
         cout<<v[i]<<" ";
     cout<<endl;
 
-    for(int i=0;i<g.getNrNod();i++) {
-        for (int j = 0; j < graf[i].size(); j++)
-            cout <<"curent: "<<i<<" urmatorul: "<< graf[i][j].urmatorul << " litera: " << graf[i][j].litera<<" ";
-        cout<<endl;
-    }
+    //procesare cuvant
+    char cuvant[256];
+
+    cout<<"Introduceti cuvantul:";
+    cin.getline(cuvant,256);
+    g.verificaCuvant(cuvant);
+
     return 0;
 }
