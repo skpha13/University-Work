@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8" />
+<title>LABORATORUL 3 | Tehnici Web</title>
+<h1>Laborator 3</h1>
+<h2>CSS-afisare si asezare in pagina</h2>
+
+<h3>Proprietatea <i>visibility</i></h3>
+
+<dl>
+<dt>visibility: hidden</dt>
+<dd>elementul devine invizibil in pagina (dar i se pastreaza locul)</dd>
+
+<dt> visibility: visible</dt>
+<dd> elementul devine vizibil</dd>
+</dl>
+
+<h3>Proprietatea <i>display</i>:</h3>
+<dl>
+<dt> display: none</dt>
+<dd>elementul este eliminat din pagină (a nu se confunda cu visibility: hidden;)</dd>
+
+<dt> display: block</dt>
+<dd>elementul ocupă intreaga latime disponibila; i se pot atribui proprietățile width și height</dd>
+
+<dt> display: inline-block</dt>
+<dd> nu ocupa intreaga linie, și accepta width, height, margin-top, margin-bottom</dd>
+
+</dd><dt> display: inline</dt>
+<dd>elementul ocupa cat spatiu are nevoie,
+nu acceptă width si height sau margin-top și margin-bottom</dd>
+
+</dl>
+<h3>Proprietatea <i>position</i></h3>
+<dl>
+<dt>position: static<dt>
+<dd>valoarea implicita a elementului in document</dd>
+
+<dt>position: relative<dt>
+<dd> elementul poate fi repozitionat relativ fata de pozitia naturala (initiala) din pagina;
+i se pot atribui proprietățile top, right, bottom și left (se aplica in afara margin-ului);<br>
+celelalte elemente nu se vor re-poziționa pentru a face loc (apar suprapuneri);
+în poziția inițială a elementului rămâne un gol</dd>
+
+<dt>position: fixed</dt>
+
+<dd>elementul poate fi repozitionat relativ fata de viewport (ramane pe loc indiferent de scroll)
+i se pot atribui proprietățile top, right, bottom și left;<br>
+nu lasa un gol in pozitia initiala</dd>
+<dt> position: absolute</dt>
+<dd> elementul poate fi repozitionat relativ fata de ultimul parinte cu pozitie ne-statica;
+i se pot atribui proprietatile top, right, bottom si left;<br>
+dacă nu are niciun parinte ne-static, se poziționează după viewport</dd>
+<dt> position: sticky</dt>
+<dd>se face toggle intre fixed si relative la scroll pentru a pastra elementul in pagina;
+i se pot atribui proprietățile top, right, bottom și left</dd>
+</dl>
+
+<h3>Proprietatea <i>z-index</i></h3>
+<dl>
+<dt>z-index: numar intreg</dt>
+<dd>defineste nivelul pe care se afla elementul<br>
+functioneaza doar pe elementele pozitionate (position diferit de static)<br>
+poate avea valori pozitive sau negative</dd>
+</dl>
+
+<h3>Proprietatea <i>float</i></h3>
+<ul>
+<li>are efect pentru elemente de tip bloc, inclusiv imagini (pentru elemente inline nu functioneaza, cum ar fi elemente span, q, i, b etc.) </li>
+<li>
+<dl>
+<dt>float: left<dt>
+<dd>elementul este pozitionat in partea stanga a containerului sau</dd>
+
+<dt>float: right<dt>
+<dd>elementul este pozitionat in partea dreapta a containerului sau</dd>
+
+<dt>float: none<dt>
+<dd>pozitia implicita a elementului</dd>
+
+<dt>float: inherit<dt>
+<dd>elementul mosteneste valoarea proprietatii float de la parinte</dd>
+
+</dl>
+</li>
+<li>restul continutului se va rearanja pe langa elementul asupra caruia i s-a aplicat float; <br> 
+<b>clear:left / right / both</b> anuleaza efectul rearanjarii</li>
+<li>elementele pozitionate <b>absolut</b> ignora proprietatea float</li>
+</ul>
+
+
+<h2>Tema 3.1</h2>
+<p>Vom lucra cu fisierele html si css realizate in primele doua laboratoare. Realizati layoutul paginii folosind metodele flex, grid si alte proprietati: position, float, display, visibility.</b>.
+
+</p>
+Se vor considera:
+<ul>
+<li>Headerul va avea o inaltime de 5rem, o culoare de background aleasa de voi, titlul din interiorul headerului va fi centrat atat pe orizontala cat si pe verticala<br> iar imaginea (logo) va avea o pozitie fixa in partea dreapta a headerului, ocupand toata inaltimea headerului;</li>
+<li>Adaugati codul html pentru meniul drop-down(puteti folosi ca model codul din fisierul nav.html) si stilizati-l cu css folosind metoda flex: meniul va fi dispus pe orizontala si va avea o inaltime de 50px;</li>
+<li>Folositi proprietatea float pentru a pozitiona imaginile din articolele sectiunii "Noutati";</li>
+<li>Galeria de figuri va fi realizata cu flex, imaginile fiind pozitionate cate 3 pe linie;</li>
+<li>Realizati layoutul continutului paginii folosind metoda grid (un model de layout gasiti in fisierul layout.pdf);</li>
+<li>Footerul va avea o inaltime de 5rem si o culoare de background aleasa de voi</li>
+</ul>
+</body>
+</html>
