@@ -30,6 +30,7 @@ public:
     void setValues();
 
     //metode
+    void afiseazaInfo();
     void verificaCuvant(char cuvant[]);
 };
 
@@ -81,6 +82,29 @@ void Graf::setValues() {
     }
 }
 
+void Graf::afiseazaInfo() {
+    cout<<"Numar noduri: "<<NrNod<<endl;
+    cout<<"Numar muchii: "<<NrMuchii<<endl;
+    cout<<"Numar stari finale: "<<NrStariFinale<<endl;
+
+    cout<<"Tranzitii:"<<endl;
+    for(int i=0;i<NrNod;i++) {
+        cout<<"\t";
+        cout<<"Starea: q"<<i;
+        for (int j=0;j<Matrice[i].size();j++)
+        {
+            cout<<" are tranzitie cu: q"<< Matrice[i][j].urmatorul<< ", daca litera == " << Matrice[i][j].litera<<" ";
+            cout<<"\t";
+        }
+        cout<<endl;
+    }
+
+    cout<<"Stari finale: ";
+    for(int i=0;i<NrStariFinale;i++)
+        cout<<StariFinale[i]<<" ";
+    cout<<endl;
+}
+
 void Graf::verificaCuvant(char cuvant[]) {
     int stare = 0;
     vector<int> path;
@@ -118,31 +142,21 @@ void Graf::verificaCuvant(char cuvant[]) {
     else cout<<"Nu accepta";
 }
 
+class Meniu{
+private:
+    bool TipCitire;
+    char* NumeFisier;
+
+public:
+
+};
+
 int main() {
     // 0 va fi by default stare initiala
     Graf g;
     g.setValues();
 
-    //afisare graf
-    cout<<"Numar noduri: "<<g.getNrNod()<<endl;
-    cout<<"Numar muchii: "<<g.getNrMuchii()<<endl;
-    cout<<"Numar stari finale: "<<g.getNrStariFinale()<<endl;
-
-    const vector<int> &v = g.getStariFinale();
-    const vector<vector<Drum>> &graf = g.getMatrice();
-
-    cout<<"Tranzitii:"<<endl;
-    for(int i=0;i<g.getNrNod();i++) {
-        cout<<"\t";
-        for (int j=0;j<graf[i].size();j++)
-            cout<<"curent: "<<i<<" urmatorul: "<< graf[i][j].urmatorul << " litera: " << graf[i][j].litera<<" ";
-        cout<<endl;
-    }
-
-    cout<<"Stari finale: ";
-    for(int i=0;i<g.getNrStariFinale();i++)
-        cout<<v[i]<<" ";
-    cout<<endl;
+    g.afiseazaInfo();
 
     //procesare cuvant
     char cuvant[256];
