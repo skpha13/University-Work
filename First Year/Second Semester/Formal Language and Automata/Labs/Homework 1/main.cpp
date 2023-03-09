@@ -2,10 +2,14 @@
 #include <string.h>
 #include <fstream>
 #include <vector>
+#include <stdlib.h>
 
 using namespace std;
 
 ifstream f("graf2.in");
+
+//global variable for menu
+char NumeFisier[50];
 
 struct Drum{
     int urmatorul;
@@ -145,7 +149,6 @@ void Graf::verificaCuvant(char cuvant[]) {
 class Meniu{
 private:
     static bool TipCitire;
-    char* NumeFisier;
 
 public:
     //getters & setters
@@ -159,6 +162,7 @@ public:
     void afisareMeniu(int lungimeBreak = 20);
     const void prelucrareOptiune(const Graf &obj);
     void selectareModCitire(int opt = 0);
+    void verificaCuvant();
 };
 
 //initializare tip citire
@@ -172,20 +176,6 @@ void Meniu::setTipCitire(bool TipCitire) {
     this->TipCitire = TipCitire;
 }
 
-const char* const Meniu::getNumeFisier() {
-    if(this->NumeFisier != NULL)
-    {
-        delete[] this->NumeFisier;
-        this->NumeFisier = NULL;
-    }
-    this->NumeFisier = new char[strlen(NumeFisier)+1];
-    strcpy(this->NumeFisier,NumeFisier);
-}
-
-void Meniu::setNumeFisier(char* NumeFisier) {
-    this->NumeFisier = NumeFisier;
-}
-
 void Meniu::afisareMeniu(int lungimeBreak) {
     for(int i=0;i<lungimeBreak/2;i++) cout<<"-";
     cout<<" MENIU ";
@@ -194,7 +184,7 @@ void Meniu::afisareMeniu(int lungimeBreak) {
     cout<<endl<<endl;
     cout<<"1. Afisare informatii graf"<<endl;
     cout<<"2. Selectare mod citire"<<endl;
-    cout<<"3. Citire cuvant"<<endl;
+    cout<<"3. Verifica cuvant"<<endl;
     cout<<"4. Apasati 4 pentru ajutor"<<endl;
     cout<<"5. Iesiti din program"<<endl;
 
@@ -205,36 +195,43 @@ void Meniu::afisareMeniu(int lungimeBreak) {
 }
 
 const void Meniu::prelucrareOptiune(const Graf &obj) {
-    Meniu m;
     int nrCitit;
 
     cout<<endl<<"Optiune:";
     cin>>nrCitit;
+    cin.get();
 
     switch (nrCitit) {
         case 1:
             obj.afiseazaInfo();
             Meniu::afisareMeniu();
             Meniu::prelucrareOptiune(obj);
+            break;
 
         case 2:
             Meniu::selectareModCitire();
             Meniu::afisareMeniu();
             Meniu::prelucrareOptiune(obj);
+            break;
 
         case 3:
+            Meniu::verificaCuvant();
+            Meniu::afisareMeniu();
+            Meniu::prelucrareOptiune(obj);
             break;
 
         case 4:
             cout<<endl<<"\t"<<"Tastati un numar(cu optiunea pe care o doriti) si apasati enter"<<endl;
             Meniu::prelucrareOptiune(obj);
+            break;
 
         case 5:
-            break;
+            exit(0);
 
         default:
             cout<<endl<<"\t"<<"Selectati o optiune valida"<<endl;
             Meniu::prelucrareOptiune(obj);
+            break;
     }
 }
 
@@ -251,22 +248,26 @@ void Meniu::selectareModCitire(int tipCitire) {
 
     if(Meniu::getTipCitire() == 1)
     {
-        char input[256];
         cout<<"\t"<<"Introduceti numele fisierului:";
-        cin>>input;
-        cin.get();
-        Meniu::setNumeFisier(input);
+        cin.getline(NumeFisier,49);
+        cout<<" "<<NumeFisier<<endl;
     }
+}
+
+void Meniu::verificaCuvant() {
+    //code
 }
 
 int main() {
     // 0 va fi by default stare initiala
+    Meniu menu;
+    menu.afisareMeniu();
+
     Graf g;
     g.setValues();
 
-    Meniu menu;
-    menu.afisareMeniu();
     menu.prelucrareOptiune(g);
+
 //    g.afiseazaInfo();
 //
 //    //procesare cuvant
