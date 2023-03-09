@@ -5,7 +5,7 @@
 
 using namespace std;
 
-ifstream f("graf.in");
+ifstream f("graf2.in");
 
 struct Drum{
     int urmatorul;
@@ -102,12 +102,20 @@ void Graf::verificaCuvant(char cuvant[]) {
             return;
         }
     }
+    int stareVerif = 0;
     for(int i=0;i<StariFinale.size();i++)
         if(stare == StariFinale[i])
+        {
             cout<<"Accepta";
-    cout<<endl<<"Drum: ";
-    for(int i=0;i<path.size();i++)
-        cout<<"q"<<path[i]<<" ";
+            stareVerif = 1;
+        }
+    if(stareVerif == 1)
+    {
+        cout<<endl<<"Drum: ";
+        for(int i=0;i<path.size();i++)
+            cout<<"q"<<path[i]<<" ";
+    }
+    else cout<<"Nu accepta";
 }
 
 int main() {
