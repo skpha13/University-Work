@@ -82,7 +82,9 @@ void Graf::setValues() {
 }
 
 void Graf::verificaCuvant(char cuvant[]) {
-    int nrLitere = 0, stare = 0;
+    int stare = 0;
+    vector<int> path;
+    path.push_back(0);
     for(int i=0;i<strlen(cuvant);i++)
     {
         int ok = 0;
@@ -90,6 +92,7 @@ void Graf::verificaCuvant(char cuvant[]) {
             if(Matrice[stare][j].litera == cuvant[i])
             {
                 stare = Matrice[stare][j].urmatorul;
+                path.push_back(stare);
                 ok = 1;
                 break;
             }
@@ -102,6 +105,9 @@ void Graf::verificaCuvant(char cuvant[]) {
     for(int i=0;i<StariFinale.size();i++)
         if(stare == StariFinale[i])
             cout<<"Accepta";
+    cout<<endl<<"Drum: ";
+    for(int i=0;i<path.size();i++)
+        cout<<"q"<<path[i]<<" ";
 }
 
 int main() {
