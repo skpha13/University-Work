@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Grid layout</title>
+<style>
+
+#container{display:grid; 
+           grid-template-columns: 1fr 200px 1fr auto;
+           grid-template-rows:300px 200px;
+           grid-column-gap:10px;
+           grid-row-gap: 40px;
+           margin:40px;
+           font-size:30px;
+           height:700px;
+           width:50%;
+           border:1px dotted black;
+           }
+
+
+#red{
+ background-color:red;
+ }
+ 
+#green{
+ background-color:green;
+ }
+
+#blue{
+ background-color:blue;
+ }
+
+#purple{
+ background-color:purple;
+ }
+
+#yellow{
+ background-color:yellow;
+ }
+
+#orange{
+ background-color:orange;
+ }
+
+#brown{
+ background-color:brown;
+ }
+
+#violet{
+ background-color:violet;
+ }
+
+
+</style>
+</head>
+<body>
+<h1>Grid fr vs auto</h1>
+
+<div id="container">
+
+<div id="red">DIV1</div>
+<div id="green">DIV2</div>
+<div id="blue">DIV3</div>
+<div id="purple">DIV4</div>
+<div id="yellow">DIV5</div>
+<div id="orange">DIV6</div>
+<div id="brown">DIV7</div>
+<div id="violet">DIV8</div>
+</div>
+</body>
+</html>
+
+
+
+
+

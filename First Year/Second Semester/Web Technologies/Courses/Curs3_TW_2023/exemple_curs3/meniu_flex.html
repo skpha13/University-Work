@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Meniu</title>
+	<meta charset="UTF-8">
+
+<style>
+
+ *{
+	margin:0;
+	padding:0;
+}
+
+ html{
+	 font-size:20px;
+}
+
+ nav {
+       height:3.5rem;
+       background-color:tomato;
+}
+
+ nav ul li a {
+  	text-decoration:none;
+  	color:black;
+   	font-size:1.2rem;
+/*   	display:block;
+        /*height:100%;*/
+   }
+
+  nav ul {
+  	list-style-type:none;
+ }
+
+
+ nav > ul.meniu{
+        display:flex;
+        justify-content:space-between;
+        text-align:center;
+}
+
+  nav > ul.meniu  li{
+        flex-grow:1;
+        border:1px solid white;
+        height:3.5rem;
+        line-height:3.5rem;
+	 background-color:tomato;
+
+                }
+
+  nav > ul.meniu > li > ul.submeniu {visibility:hidden;}
+  nav > ul.meniu > li:hover > ul.submeniu {visibility:visible; background-color:tomato;}
+  nav > ul.meniu  a:hover  {transition: background-color 3s; background-color:lightpink;}
+  /*nav > ul.meniu  li {transition: background-color 3s;}*/
+
+
+</style>
+</head>
+
+<body>
+	<nav>
+	<ul class="meniu">
+		<li><a href="#">Meniu1</a></li>
+		<li><a href="#">Meniu2</a>
+		  <ul class="submeniu">
+            		<li><a href="#">Submeniu2.1</a></li>
+            		<li><a href="#">Submeniu2.2</a></li>
+
+            	    </ul>
+            	</li>
+        	<li><a href="#">Meniu3</a>
+        	    <ul class="submeniu">
+            		<li><a href="#">Submeniu3.1</a></li>
+            		<li><a href="#">Submeniu3.2</a></li>
+            		<li><a href="#">Submeniu3.3</a></li>
+            	    </ul></li>
+        	<li><a href="#">Meniu4</a></li>
+		<li><a href="#">Meniu5</a>
+          		<ul class="submeniu">
+            		<li><a href="#">Submeniu5.1</a></li>
+            		<li><a href="#">Submeniu5.2</a></li>
+          		</ul>
+        	</li>
+	</ul>
+		</nav>
+
+</body>
+</html>

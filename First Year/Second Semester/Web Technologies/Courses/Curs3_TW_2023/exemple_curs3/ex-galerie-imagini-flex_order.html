@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+
+<style type="text/css">
+
+figcaption, section {
+ text-align:center;
+ }
+
+h2{
+ text-shadow: 2px 2px 2px blue;
+ color:red;
+ }
+
+#container {
+ display: flex;
+ flex-flow: row wrap;
+ width:70%;
+ border:1px solid black;
+ margin-top:10px;
+ align-items: center;
+ justify-content: space-evenly;
+}
+
+.item {
+  flex: 1 0 auto;
+  margin: 1em;
+ }
+
+.imgf {
+ width:100%; height:auto;
+ border-radius:10px;}
+
+button:hover{
+ background-color:orange;
+ }
+
+#ord_dr_s:hover ~ #container{
+ flex-direction: row-reverse;
+}
+
+#ord_3124:hover ~ #container > figure:nth-child(1){
+  order: 2;
+}
+#ord_3124:hover ~ #container > figure:nth-child(2){
+  order: 3;
+}
+#ord_3124:hover ~ #container > figure:nth-child(3){
+  order: 1;
+}
+#ord_3124:hover ~ #container > figure:nth-child(4){
+  order: 4;
+}
+
+</style>
+
+<meta charset="utf-8">
+<title>Galerie</title>
+
+</head>
+
+
+<body>
+
+<h2>Galerie de imagini cu flex</h2>
+
+<button class="buton" id="ord_dr_s">ordonare dreapta stanga</button>
+<button class="buton" id="ord_3124">ordonare 3124</button>
+
+<section id="container">
+
+<figure class="item">
+<img src="primavara.jpg" alt="primavara" class="imgf">
+<figcaption> flori de primavara </figcaption>
+</figure>
+
+<figure class="item" >
+<img src="vara.jpg" alt="vara" class="imgf">
+<figcaption> flori de vara </figcaption>
+</figure>
+
+<figure class="item">
+<img src="toamna.jpg" alt="toamna" class="imgf">
+<figcaption> peisaj de toamna </figcaption>
+</figure>
+
+<figure class="item">
+<img src="Iarna.jpg" alt="iarna"  class="imgf">
+<figcaption> peisaj de iarna </figcaption>
+</figure>
+
+
+</body>
+
+
+
+
+
+
+ </html>
