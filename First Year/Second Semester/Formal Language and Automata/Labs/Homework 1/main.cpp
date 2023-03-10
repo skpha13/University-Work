@@ -6,8 +6,6 @@
 
 using namespace std;
 
-ifstream f("graf2.in");
-
 //global variable for menu
 char NumeFisier[50];
 
@@ -31,11 +29,11 @@ public:
     const vector<vector<Drum>> &getMatrice();
 
     //setter
-    void setValues();
+    void setValues(char numeFisier[]);
 
     //methods
     void afiseazaInfo() const;
-    void verificaCuvant(char cuvant[]);
+    void verificaCuvant(char cuvant[]) const;
 };
 
 int Graf::getNrMuchii() {
@@ -58,7 +56,8 @@ const vector<vector<Drum>> &Graf::getMatrice() {
     return Matrice;
 }
 
-void Graf::setValues() {
+void Graf::setValues(char numeFisier[]) {
+    ifstream f(numeFisier);
     int nod_curent,nod_tranzitie,stare_finala;
     char valoare;
     Drum d;
@@ -84,6 +83,7 @@ void Graf::setValues() {
         f>>stare_finala;
         StariFinale.push_back(stare_finala);
     }
+    f.close();
 }
 
 void Graf::afiseazaInfo() const {
@@ -109,7 +109,7 @@ void Graf::afiseazaInfo() const {
     cout<<endl;
 }
 
-void Graf::verificaCuvant(char cuvant[]) {
+void Graf::verificaCuvant(char cuvant[]) const {
     int stare = 0;
     vector<int> path;
     path.push_back(0);
@@ -161,8 +161,8 @@ public:
     //methods
     void afisareMeniu(int lungimeBreak = 20);
     const void prelucrareOptiune(const Graf &obj);
-    void selectareModCitire(int opt = 0);
-    void verificaCuvant();
+    void selectareModCitire(const Graf &obj,int opt = 0);
+    void verificaCuvant(const Graf &obj);
 };
 
 //initializare tip citire
@@ -209,13 +209,13 @@ const void Meniu::prelucrareOptiune(const Graf &obj) {
             break;
 
         case 2:
-            Meniu::selectareModCitire();
+            Meniu::selectareModCitire(obj);
             Meniu::afisareMeniu();
             Meniu::prelucrareOptiune(obj);
             break;
 
         case 3:
-            Meniu::verificaCuvant();
+            Meniu::verificaCuvant(obj);
             Meniu::afisareMeniu();
             Meniu::prelucrareOptiune(obj);
             break;
@@ -235,8 +235,7 @@ const void Meniu::prelucrareOptiune(const Graf &obj) {
     }
 }
 
-void Meniu::selectareModCitire(int tipCitire) {
-    //if anything besides 0 and 1 are entered it doesn't work
+void Meniu::selectareModCitire(const Graf &obj,int tipCitire) {
     cout<<endl<<"\t"<<"Va rog selectati modul de citire al cuvintelor: "<<endl;
     cout<<"\t 1. De la tastatura"<<endl;
     cout<<"\t 2. Din fisier"<<endl;
@@ -248,48 +247,55 @@ void Meniu::selectareModCitire(int tipCitire) {
 
     if(Meniu::getTipCitire() == 1)
     {
+        char cuvant[256];
         cout<<"\t"<<"Introduceti numele fisierului:";
         cin.getline(NumeFisier,49);
-        cout<<" "<<NumeFisier<<endl;
+        ifstream a(NumeFisier);
+
+        while (a >> cuvant)
+        {
+            cout<<endl;
+            cout<<cuvant<<": ";
+            obj.verificaCuvant(cuvant);
+            cout<<endl;
+        }
+        cout<<endl;
+        a.close();
     }
 }
 
-void Meniu::verificaCuvant() {
-    //code
+void Meniu::verificaCuvant(const Graf &obj) {
+    if(Meniu::getTipCitire() == 0)
+    {
+        char cuvant[256];
+        cout<<endl;
+        cout<<"Introduceti cuvant:";
+        cin.getline(cuvant,255);
+        obj.verificaCuvant(cuvant);
+        cout<<endl<<endl;
+    }
+    Meniu::afisareMeniu();
+    Meniu::prelucrareOptiune(obj);
+}
+
+char* fisier()
+{
+    char* nume;
+    nume = new char[50];
+    cout<<"Va rog introduceti numele fisierului care contine graful:";
+    cin.getline(nume,255);
+
+    return nume;
 }
 
 int main() {
     // 0 va fi by default stare initiala
+    Graf g;
+    g.setValues(fisier());
+
     Meniu menu;
     menu.afisareMeniu();
 
-    Graf g;
-    g.setValues();
-
     menu.prelucrareOptiune(g);
-
-//    g.afiseazaInfo();
-//
-//    //procesare cuvant
-//    char cuvant[256];
-//
-//    cout<<"Introduceti cuvantul:";
-//    cin.getline(cuvant,255);
-//    g.verificaCuvant(cuvant);
-
     return 0;
 }
-
-/*
-
-    cuvinte:
-110001010
-110101002
-10101010
-
-bbabbabba
-abbabba
-ababababababaaaaaba
-bbbbbbaaaaabbbabbaaaaaaab
-
-*/
