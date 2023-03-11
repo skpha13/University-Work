@@ -1,6 +1,10 @@
 #include <iostream>
+#include <fstream>
 
 using namespace std;
+
+ifstream f("numere.in");
+ofstream g("numere.out");
 
 int n,v[500001],temp[500001],i,j;
 
