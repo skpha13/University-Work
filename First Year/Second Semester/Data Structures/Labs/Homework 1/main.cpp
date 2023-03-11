@@ -6,7 +6,7 @@ using namespace std;
 ifstream f("numere.in");
 ofstream g("numere.out");
 
-int n,v[500001],temp[500001],i,j;
+int n,v[500001],temp[500001],i,j,mx=0;
 
 void mergesort(int st,int dr)
 {
@@ -32,12 +32,39 @@ void mergesort(int st,int dr)
     }
 }
 
+void countsort()
+{
+    int *vf = new int[1000000000],k=0;
+
+    for(int i=0;i<=mx;i++)
+        vf[i] = 0;
+
+    for(int i=0;i<n;i++)
+        vf[v[i]]++;
+
+    for(int i=0;i<=mx;i++)
+        if(vf[i] != 0)
+            for(int j=0;j<vf[i];j++)
+                v[k++] = i;
+
+    if (vf!=NULL)
+    {
+        delete[] vf;
+        vf = NULL;
+    }
+}
+
 int main()
 {
     f>>n;
-    for(int i=0;i<n;i++) f>>v[i];
+    for(int i=0;i<n;i++)
+    {
+        f>>v[i];
+        if(v[i]>mx) mx = v[i];
+    }
 
-    mergesort(0,n-1);
+//    mergesort(0,n-1);
+    countsort();
     for(int i=0;i<n;i++) g<<v[i]<<" ";
 
     return 0;
