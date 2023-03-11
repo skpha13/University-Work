@@ -1,4 +1,7 @@
-Mergesort: 95
-Countsort: 2189
+Mergesort: 111
+Countsort: 2181
 Interschimbare: 0
-Radixsort: 11
+Radixsort(10): 11
+Radixsort(16): 10
+Radixsort(64): 21
+Radixsort(2^16): 10443

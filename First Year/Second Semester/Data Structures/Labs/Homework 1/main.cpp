@@ -13,8 +13,8 @@ int *vcopy = new int[1000000000];
 int n,mx=0;
 
 void generareFisierIn();
-
 bool verificaSortare(int v[],int n);
+void verificaTimpi();
 
 void mergesort(int v[],int st,int dr)
 {
@@ -112,11 +112,117 @@ void radixsort10(int v[],int n)
 
         exp *= 10;
     }
+}
+
+void radixsort16(int v[],int n)
+{
+    vector<vector <int>> count;
+    int exp=0;
+
+    vector<int> temp(0);
+    for(int i=0;i<=16;i++)
+        count.push_back(temp);
+
+    while(mx>>exp > 0)
+    {
+        for(int i=0;i<=16;i++) count[i].clear();
+
+        for(int i=0;i<n;i++)
+            count[(v[i]>>exp) & 0xf].push_back(v[i]);
+
+        int k = 0;
+        for(int i=0;i<16;i++)
+            if(count[i].size())
+                for(int j=0;j<count[i].size();j++)
+                    v[k++] = count[i][j];
+
+        exp += 4;
+    }
+}
+
+void radixsort64(int v[],int n)
+{
+    vector<vector <int>> count;
+    int exp=0;
+
+    vector<int> temp(0);
+    for(int i=0;i<=64;i++)
+        count.push_back(temp);
+
+    while(mx>>exp > 0)
+    {
+        for(int i=0;i<=64;i++) count[i].clear();
+
+        for(int i=0;i<n;i++)
+            count[(v[i]>>exp) & 0x11f].push_back(v[i]);
+
+        int k = 0;
+        for(int i=0;i<64;i++)
+            if(count[i].size())
+                for(int j=0;j<count[i].size();j++)
+                    v[k++] = count[i][j];
+
+        exp += 6;
+    }
+}
+
+void radixsort216(int v[],int n)
+{
+    //2^16 = 65536
+    vector<vector <int>> count;
+    int exp=0;
+
+    vector<int> temp(0);
+    for(int i=0;i<=65536;i++)
+        count.push_back(temp);
+
+    while(mx>>exp > 0 && exp < 32)
+    {
+        for(int i=0;i<=65536;i++) count[i].clear();
+
+        for(int i=0;i<n;i++)
+            count[(v[i]>>exp) & 0xffff].push_back(v[i]);
+
+        int k = 0;
+        for(int i=0;i<65536;i++)
+            if(count[i].size())
+                for(int j=0;j<count[i].size();j++)
+                    v[k++] = count[i][j];
+
+        exp += 16;
+    }
+}
+
+void shellsort(int v[],int n)
+{
+    
+}
+
+int main()
+{
+    verificaTimpi();
+    return 0;
+}
+
+//putine numere
+//crescator
+//descrescator
+//5 cu destule numere
+//2 cu multe numere
+void generareFisierIn()
+{
 
 }
 
+bool verificaSortare(int v[],int n)
+{
+    if(n==0 || n==1) return true;
+    for(int i=1;i<n;i++)
+        if(v[i] < v[i-1]) return false;
+    return true;
+}
 
-int main()
+void verificaTimpi()
 {
     clock_t start,end;
     f>>n;
@@ -161,15 +267,58 @@ int main()
 
     for(int i=0;i<n;i++) vcopy[i] = v[i];
     start = clock();
-    radixsort10(vcopy,n);
+    shellsort(vcopy,n);
     end = clock();
     if(verificaSortare(vcopy,n))
     {
-        g<<"Radixsort: "<<(double)(end-start);
+        g<<"Shellsort: "<<(double)(end-start);
         g<<endl;
     }
     else g<<"Nu a sortat corect";
 
+    for(int i=0;i<n;i++) vcopy[i] = v[i];
+    start = clock();
+    radixsort10(vcopy,n);
+    end = clock();
+    if(verificaSortare(vcopy,n))
+    {
+        g<<"Radixsort(10): "<<(double)(end-start);
+        g<<endl;
+    }
+    else g<<"Nu a sortat corect";
+
+    for(int i=0;i<n;i++) vcopy[i] = v[i];
+    start = clock();
+    radixsort16(vcopy,n);
+    end = clock();
+    if(verificaSortare(vcopy,n))
+    {
+        g<<"Radixsort(16): "<<(double)(end-start);
+        g<<endl;
+    }
+    else g<<"Nu a sortat corect";
+
+    for(int i=0;i<n;i++) vcopy[i] = v[i];
+    start = clock();
+    radixsort64(vcopy,n);
+    end = clock();
+    if(verificaSortare(vcopy,n))
+    {
+        g<<"Radixsort(64): "<<(double)(end-start);
+        g<<endl;
+    }
+    else g<<"Nu a sortat corect";
+
+    for(int i=0;i<n;i++) vcopy[i] = v[i];
+    start = clock();
+    radixsort216(vcopy,n);
+    end = clock();
+    if(verificaSortare(vcopy,n))
+    {
+        g<<"Radixsort(2^16): "<<(double)(end-start);
+        g<<endl;
+    }
+    else g<<"Nu a sortat corect";
 
     if (v!=NULL)
     {
@@ -182,24 +331,4 @@ int main()
         delete[] vcopy;
         vcopy = NULL;
     }
-
-    return 0;
-}
-
-//putine numere
-//crescator
-//descrescator
-//5 cu destule numere
-//2 cu multe numere
-void generareFisierIn()
-{
-
-}
-
-bool verificaSortare(int v[],int n)
-{
-    if(n==0 || n==1) return true;
-    for(int i=1;i<n;i++)
-        if(v[i] < v[i-1]) return false;
-    return true;
 }
