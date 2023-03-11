@@ -13,6 +13,8 @@ int n,mx=0;
 
 void generareFisierIn();
 
+bool verificaSortare(int v[],int n);
+
 void mergesort(int v[],int st,int dr)
 {
     int *temp = new int[1000000000];
@@ -44,7 +46,7 @@ void mergesort(int v[],int st,int dr)
     }
 }
 
-void countsort(int v[])
+void countsort(int v[],int n)
 {
     int *vf = new int[1000000000],k=0;
 
@@ -66,7 +68,7 @@ void countsort(int v[])
     }
 }
 
-void interschimbare(int v[])
+void interschimbare(int v[],int n)
 {
     for(int i=0;i<n-1;i++)
         for(int j=i;j<n;j++)
@@ -87,22 +89,35 @@ int main()
     start = clock();
     mergesort(vcopy,0,n-1);
     end = clock();
-    g<<"Mergesort: "<<(double)(end-start);
-    g<<endl;
+    if(verificaSortare(vcopy,n))
+    {
+        g<<"Mergesort: "<<(double)(end-start);
+        g<<endl;
+    }
+    else g<<"Nu a sortat corect";
 
     for(int i=0;i<n;i++) vcopy[i] = v[i];
     start = clock();
-    countsort(vcopy);
+    countsort(vcopy,n);
     end = clock();
-    g<<"Countsort: "<<(double)(end-start);
-    g<<endl;
+    if(verificaSortare(vcopy,n))
+    {
+        g<<"Countsort: "<<(double)(end-start);
+        g<<endl;
+    }
+    else g<<"Nu a sortat corect";
 
     for(int i=0;i<n;i++) vcopy[i] = v[i];
     start = clock();
-    interschimbare(vcopy);
+    interschimbare(vcopy,n);
     end = clock();
-    g<<"Interschimbare: "<<(double)(end-start);
-    g<<endl;
+    if(verificaSortare(vcopy,n))
+    {
+        g<<"Interschimbare: "<<(double)(end-start);
+        g<<endl;
+    }
+    else g<<"Nu a sortat corect";
+
 
     if (v!=NULL)
     {
@@ -127,4 +142,12 @@ int main()
 void generareFisierIn()
 {
 
+}
+
+bool verificaSortare(int v[],int n)
+{
+    if(n==0 || n==1) return true;
+    for(int i=1;i<n;i++)
+        if(v[i] < v[i-1]) return false;
+    return true;
 }
