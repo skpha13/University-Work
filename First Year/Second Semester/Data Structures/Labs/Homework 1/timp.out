@@ -1,8 +1,10 @@
-	Mergesort: 104
-	Countsort: 2177
+	Mergesort: 102
+	Countsort: 2165
 	Interschimbare: 1
-	Shellsort: 0
+	Shellsort: 1
 	Radixsort(10): 10
-	Radixsort(16): 10
-	Radixsort(64): 21
-	Radixsort(2^16): 13855
+	Radixsort(2^4): 9
+	Radixsort(2^5): 14
+	Radixsort(2^6): 20
+	Radixsort(2^8): 49
+	Radixsort(2^16): 11107

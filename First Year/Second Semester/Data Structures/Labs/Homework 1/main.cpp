@@ -114,82 +114,35 @@ void radixsort10(int v[],int n)
     }
 }
 
-void radixsort16(int v[],int n)
+void radixsort2(int v[],int n,int baza)
 {
     vector<vector <int>> count;
-    int exp=0;
+    int exp=0,nrShift = 1,putere = 2;
 
-    vector<int> temp(0);
-    for(int i=0;i<=16;i++)
-        count.push_back(temp);
-
-    while(mx>>exp > 0)
+    while(putere < baza)
     {
-        for(int i=0;i<=16;i++) count[i].clear();
-
-        for(int i=0;i<n;i++)
-            count[(v[i]>>exp) & 0xf].push_back(v[i]);
-
-        int k = 0;
-        for(int i=0;i<16;i++)
-            if(count[i].size())
-                for(int j=0;j<count[i].size();j++)
-                    v[k++] = count[i][j];
-
-        exp += 4;
+        nrShift++;
+        putere = putere<<1;
     }
-}
-
-void radixsort64(int v[],int n)
-{
-    vector<vector <int>> count;
-    int exp=0;
 
     vector<int> temp(0);
-    for(int i=0;i<=64;i++)
-        count.push_back(temp);
-
-    while(mx>>exp > 0)
-    {
-        for(int i=0;i<=64;i++) count[i].clear();
-
-        for(int i=0;i<n;i++)
-            count[(v[i]>>exp) & 0x11f].push_back(v[i]);
-
-        int k = 0;
-        for(int i=0;i<64;i++)
-            if(count[i].size())
-                for(int j=0;j<count[i].size();j++)
-                    v[k++] = count[i][j];
-
-        exp += 6;
-    }
-}
-
-void radixsort216(int v[],int n)
-{
-    //2^16 = 65536
-    vector<vector <int>> count;
-    int exp=0;
-
-    vector<int> temp(0);
-    for(int i=0;i<=65536;i++)
+    for(int i=0;i<=baza;i++)
         count.push_back(temp);
 
     while(mx>>exp > 0 && exp < 32)
     {
-        for(int i=0;i<=65536;i++) count[i].clear();
+        for(int i=0;i<=baza;i++) count[i].clear();
 
         for(int i=0;i<n;i++)
-            count[(v[i]>>exp) & 0xffff].push_back(v[i]);
+            count[(v[i]>>exp) & (baza-1)].push_back(v[i]);
 
         int k = 0;
-        for(int i=0;i<65536;i++)
+        for(int i=0;i<baza;i++)
             if(count[i].size())
                 for(int j=0;j<count[i].size();j++)
                     v[k++] = count[i][j];
 
-        exp += 16;
+        exp += nrShift;
     }
 }
 
@@ -308,29 +261,51 @@ void verificaTimpi()
 
     for(int i=0;i<n;i++) vcopy[i] = v[i];
     start = clock();
-    radixsort16(vcopy,n);
+    radixsort2(vcopy,n,16);
     end = clock();
     if(verificaSortare(vcopy,n))
     {
-        g<<"\tRadixsort(16): "<<(double)(end-start);
+        g<<"\tRadixsort(2^4): "<<(double)(end-start);
         g<<endl;
     }
-    else g<<"\tRadixsort(16): Nu a sortat corect"<<endl;
+    else g<<"\tRadixsort(2^4): Nu a sortat corect"<<endl;
 
     for(int i=0;i<n;i++) vcopy[i] = v[i];
     start = clock();
-    radixsort64(vcopy,n);
+    radixsort2(vcopy,n,32);
     end = clock();
     if(verificaSortare(vcopy,n))
     {
-        g<<"\tRadixsort(64): "<<(double)(end-start);
+        g<<"\tRadixsort(2^5): "<<(double)(end-start);
         g<<endl;
     }
-    else g<<"\tRadixsort(64): Nu a sortat corect"<<endl;
+    else g<<"\tRadixsort(2^5): Nu a sortat corect"<<endl;
 
     for(int i=0;i<n;i++) vcopy[i] = v[i];
     start = clock();
-    radixsort216(vcopy,n);
+    radixsort2(vcopy,n,64);
+    end = clock();
+    if(verificaSortare(vcopy,n))
+    {
+        g<<"\tRadixsort(2^6): "<<(double)(end-start);
+        g<<endl;
+    }
+    else g<<"\tRadixsort(2^6): Nu a sortat corect"<<endl;
+
+    for(int i=0;i<n;i++) vcopy[i] = v[i];
+    start = clock();
+    radixsort2(vcopy,n,256);
+    end = clock();
+    if(verificaSortare(vcopy,n))
+    {
+        g<<"\tRadixsort(2^8): "<<(double)(end-start);
+        g<<endl;
+    }
+    else g<<"\tRadixsort(2^8): Nu a sortat corect"<<endl;
+
+    for(int i=0;i<n;i++) vcopy[i] = v[i];
+    start = clock();
+    radixsort2(vcopy,n,65536); //65536 = 2^16
     end = clock();
     if(verificaSortare(vcopy,n))
     {
