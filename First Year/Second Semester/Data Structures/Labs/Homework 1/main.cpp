@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <time.h>
+#include <vector>
 
 using namespace std;
 
@@ -75,6 +76,46 @@ void interschimbare(int v[],int n)
             if(v[i]>v[j]) swap(v[i],v[j]);
 }
 
+int nrcifre(int n)
+{
+    int cifre = 0;
+    if(n<10) return 1;
+    while(n!=0)
+    {
+        n/=10;
+        cifre++;
+    }
+    return cifre;
+}
+
+void radixsort10(int v[],int n)
+{
+    vector<vector <int>> count;
+    int nrCifre = nrcifre(mx),exp=1;
+
+    vector<int> temp(0);
+    for(int i=0;i<10;i++)
+        count.push_back(temp);
+
+    for(int l=0;l<nrCifre;l++)
+    {
+        for(int i=0;i<10;i++) count[i].clear();
+
+        for(int i=0;i<n;i++)
+            count[(v[i]/exp)%10].push_back(v[i]);
+
+        int k = 0;
+        for(int i=0;i<10;i++)
+            if(count[i].size())
+                for(int j=0;j<count[i].size();j++)
+                    v[k++] = count[i][j];
+
+        exp *= 10;
+    }
+
+}
+
+
 int main()
 {
     clock_t start,end;
@@ -114,6 +155,17 @@ int main()
     if(verificaSortare(vcopy,n))
     {
         g<<"Interschimbare: "<<(double)(end-start);
+        g<<endl;
+    }
+    else g<<"Nu a sortat corect";
+
+    for(int i=0;i<n;i++) vcopy[i] = v[i];
+    start = clock();
+    radixsort10(vcopy,n);
+    end = clock();
+    if(verificaSortare(vcopy,n))
+    {
+        g<<"Radixsort: "<<(double)(end-start);
         g<<endl;
     }
     else g<<"Nu a sortat corect";
