@@ -193,9 +193,31 @@ void radixsort216(int v[],int n)
     }
 }
 
+void insertionsort(int v[],int n,int pos,int gap)
+{
+    int temp,j;
+    for(int i=pos + gap;i<n;i+=gap)
+    {
+        temp = v[i];
+        j = i-gap;
+        while(j>=0 && v[j] > temp)
+            v[j+gap] = v[j], j-=gap;
+        v[j+gap] = temp;
+    }
+}
+
 void shellsort(int v[],int n)
 {
-    
+    int gap = n/2;
+    while(gap > 0)
+    {
+        for(int i=0;i<gap;i++)
+            insertionsort(v,n,i,gap);
+        gap /= 2;
+    }
+    for(int i=0;i<n;i++)
+        cout<<v[i]<<" ";
+    cout<<endl;
 }
 
 int main()
@@ -241,7 +263,7 @@ void verificaTimpi()
         g<<"Mergesort: "<<(double)(end-start);
         g<<endl;
     }
-    else g<<"Nu a sortat corect";
+    else g<<"Mergesort: Nu a sortat corect"<<endl;
 
     for(int i=0;i<n;i++) vcopy[i] = v[i];
     start = clock();
@@ -252,7 +274,7 @@ void verificaTimpi()
         g<<"Countsort: "<<(double)(end-start);
         g<<endl;
     }
-    else g<<"Nu a sortat corect";
+    else g<<"Countsort: Nu a sortat corect"<<endl;
 
     for(int i=0;i<n;i++) vcopy[i] = v[i];
     start = clock();
@@ -263,7 +285,7 @@ void verificaTimpi()
         g<<"Interschimbare: "<<(double)(end-start);
         g<<endl;
     }
-    else g<<"Nu a sortat corect";
+    else g<<"Interschimbare: Nu a sortat corect"<<endl;
 
     for(int i=0;i<n;i++) vcopy[i] = v[i];
     start = clock();
@@ -274,7 +296,7 @@ void verificaTimpi()
         g<<"Shellsort: "<<(double)(end-start);
         g<<endl;
     }
-    else g<<"Nu a sortat corect";
+    else g<<"Shellsort: Nu a sortat corect"<<endl;
 
     for(int i=0;i<n;i++) vcopy[i] = v[i];
     start = clock();
@@ -285,7 +307,7 @@ void verificaTimpi()
         g<<"Radixsort(10): "<<(double)(end-start);
         g<<endl;
     }
-    else g<<"Nu a sortat corect";
+    else g<<"Radix(10): Nu a sortat corect"<<endl;
 
     for(int i=0;i<n;i++) vcopy[i] = v[i];
     start = clock();
@@ -296,7 +318,7 @@ void verificaTimpi()
         g<<"Radixsort(16): "<<(double)(end-start);
         g<<endl;
     }
-    else g<<"Nu a sortat corect";
+    else g<<"Radixsort(16): Nu a sortat corect"<<endl;
 
     for(int i=0;i<n;i++) vcopy[i] = v[i];
     start = clock();
@@ -307,7 +329,7 @@ void verificaTimpi()
         g<<"Radixsort(64): "<<(double)(end-start);
         g<<endl;
     }
-    else g<<"Nu a sortat corect";
+    else g<<"Radixsort(64): Nu a sortat corect"<<endl;
 
     for(int i=0;i<n;i++) vcopy[i] = v[i];
     start = clock();
@@ -318,7 +340,7 @@ void verificaTimpi()
         g<<"Radixsort(2^16): "<<(double)(end-start);
         g<<endl;
     }
-    else g<<"Nu a sortat corect";
+    else g<<"Radixsort(2^16): Nu a sortat corect"<<endl;
 
     if (v!=NULL)
     {
