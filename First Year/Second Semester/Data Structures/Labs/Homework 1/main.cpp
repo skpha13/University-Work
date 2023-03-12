@@ -183,19 +183,19 @@ int main()
 void generareFisierIn()
 {
     ofstream a("test.txt");
-    a<<12<<endl;
+    a<<20<<endl;
     // test cu un numar mic de elemente, hardcoded
     a<<10<<endl<<"248206 585825 652412 335040 72031 179768 282309 975160 609689 473890"<<endl;
 
     // numere in ordine crescatoare
-    a<<1000<<endl;
-    for(int i=0;i<1000;i++)
+    a<<100000<<endl;
+    for(int i=0;i<10000;i++)
         a<<i<<" ";
     a<<endl;
 
     // numere in ordine descrecatoare
-    a<<1000<<endl;
-    for(int i=1000;i>0;i--)
+    a<<100000<<endl;
+    for(int i=10000;i>0;i--)
         a<<i<<" ";
     a<<endl;
 
@@ -226,6 +226,54 @@ void generareFisierIn()
     // 100.000 de numere
     a<<100000<<endl;
     for(int i=0;i<100000;i++)
+        a<<rand()%100000000<<" ";
+    a<<endl;
+
+    // 200.000 de numere
+    a<<200000<<endl;
+    for(int i=0;i<200000;i++)
+        a<<rand()%100000000<<" ";
+    a<<endl;
+
+    // 300.000 de numere
+    a<<300000<<endl;
+    for(int i=0;i<300000;i++)
+        a<<rand()%100000000<<" ";
+    a<<endl;
+
+    // 400.000 de numere
+    a<<400000<<endl;
+    for(int i=0;i<400000;i++)
+        a<<rand()%100000000<<" ";
+    a<<endl;
+
+    // 500.000 de numere
+    a<<500000<<endl;
+    for(int i=0;i<500000;i++)
+        a<<rand()%100000000<<" ";
+    a<<endl;
+
+    // 600.000 de numere
+    a<<600000<<endl;
+    for(int i=0;i<600000;i++)
+        a<<rand()%100000000<<" ";
+    a<<endl;
+
+    // 700.000 de numere
+    a<<700000<<endl;
+    for(int i=0;i<700000;i++)
+        a<<rand()%100000000<<" ";
+    a<<endl;
+
+    // 800.000 de numere
+    a<<800000<<endl;
+    for(int i=0;i<800000;i++)
+        a<<rand()%100000000<<" ";
+    a<<endl;
+
+    // 900.000 de numere
+    a<<900000<<endl;
+    for(int i=0;i<900000;i++)
         a<<rand()%100000000<<" ";
     a<<endl;
 
@@ -306,19 +354,22 @@ void verificaTimpi()
         }
         else g<<"\tCountsort: Nu a sortat corect"<<endl;
 
-        for(int i=0;i<n;i++) vcopy[i] = v[i];
-//        start = clock();
-        start = chrono::steady_clock::now();
-        interschimbare(vcopy,n);
-//        end = clock();
-        end = chrono::steady_clock::now();
-        if(verificaSortare(vcopy,n))
+        if(t < 10)
         {
-            g<<"\tInterschimbare: "<<chrono::duration_cast<chrono::milliseconds>(end-start).count();
-            g<<endl;
-            b<<(chrono::duration_cast<chrono::milliseconds>(end-start).count())<<" ";
+            for(int i=0;i<n;i++) vcopy[i] = v[i];
+//        start = clock();
+            start = chrono::steady_clock::now();
+            interschimbare(vcopy,n);
+//        end = clock();
+            end = chrono::steady_clock::now();
+            if(verificaSortare(vcopy,n))
+            {
+                g<<"\tInterschimbare: "<<chrono::duration_cast<chrono::milliseconds>(end-start).count();
+                g<<endl;
+                b<<(chrono::duration_cast<chrono::milliseconds>(end-start).count())<<" ";
+            }
+            else g<<"\tInterschimbare: Nu a sortat corect"<<endl;
         }
-        else g<<"\tInterschimbare: Nu a sortat corect"<<endl;
 
         for(int i=0;i<n;i++) vcopy[i] = v[i];
 //        start = clock();
