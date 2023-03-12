@@ -2,10 +2,11 @@
 #include <fstream>
 #include <time.h>
 #include <vector>
+#include <chrono>
 
 using namespace std;
 
-ifstream f("test.in");
+ifstream f("test.txt");
 ofstream g("timp.out");
 
 int *v = new int[1000000000];
@@ -20,7 +21,7 @@ void mergesort(int v[],int st,int dr)
 {
     if(st<dr)
     {
-        int *temp = new int[1000000000];
+        int *temp = new int[n];
         int m  = (st + dr) / 2;
 
         mergesort(v,st,m);
@@ -50,7 +51,7 @@ void mergesort(int v[],int st,int dr)
 
 void countsort(int v[],int n)
 {
-    int *vf = new int[1000000000],k=0;
+    int *vf = new int[mx],k=0;
 
     for(int i=0;i<=mx;i++)
         vf[i] = 0;
@@ -173,27 +174,70 @@ void shellsort(int v[],int n)
 
 int main()
 {
-    generareFisierIn();
+//    generareFisierIn();
     verificaTimpi();
     return 0;
 }
 
-//putine numere
-//crescator
-//descrescator
-//5 cu destule numere
-//2 cu multe numere
 void generareFisierIn()
 {
-    ofstream a("test.in");
-    a<<2<<endl;
+    ofstream a("test.txt");
+    a<<10<<endl;
     // test cu un numar mic de elemente, hardcoded
     a<<10<<endl<<"248206 585825 652412 335040 72031 179768 282309 975160 609689 473890"<<endl;
 
     // numere in ordine crescatoare
-    a<<1001<<endl;
-    for(int i=0;i<=1000;i++)
+    a<<1000<<endl;
+    for(int i=0;i<1000;i++)
         a<<i<<" ";
+    a<<endl;
+
+    // numere in ordine descrecatoare
+    a<<1000<<endl;
+    for(int i=1000;i>0;i--)
+        a<<i<<" ";
+    a<<endl;
+
+    // numere mici
+    a<<100000<<endl;
+    for(int i=0;i<100000;i++)
+        a<<rand()%100<<" ";
+    a<<endl;
+
+    // numere mari
+    a<<100000<<endl;
+    for(int i=0;i<100000;i++)
+        a<<rand()%100000000 + 10000000<<" ";
+    a<<endl;
+
+    // 1000 de numere
+    a<<1000<<endl;
+    for(int i=0;i<1000;i++)
+        a<<rand()%100000000<<" ";
+    a<<endl;
+
+    // 100.000 de numere
+    a<<100000<<endl;
+    for(int i=0;i<100000;i++)
+        a<<rand()%100000000<<" ";
+    a<<endl;
+
+    // 1.000.000 de numere
+    a<<1000000<<endl;
+    for(int i=0;i<1000000;i++)
+        a<<rand()%100000000<<" ";
+    a<<endl;
+
+    // 100.000.000 de numere
+    a<<100000000<<endl;
+    for(int i=0;i<100000000;i++)
+        a<<rand()%100000000<<" ";
+    a<<endl;
+
+    // 1.000.000.000 de numere
+    a<<1000000000<<endl;
+    for(int i=0;i<1000000000;i++)
+        a<<rand()%100000000<<" ";
     a<<endl;
 }
 
@@ -207,12 +251,15 @@ bool verificaSortare(int v[],int n)
 
 void verificaTimpi()
 {
-    clock_t start,end;
+    n = 10;
+//    clock_t start,end;
     f>>nrteste;
     for(int t=0;t<nrteste;t++)
     {
         g<<"Testul: "<<t+1<<endl;
+        for(int i=0;i<n;i++) v[i] = 0;
         f>>n;
+        cout<<n<<endl;
         for(int i=0;i<n;i++)
         {
             f>>v[i];
@@ -220,111 +267,129 @@ void verificaTimpi()
         }
 
         for(int i=0;i<n;i++) vcopy[i] = v[i];
-        start = clock();
+        auto start = chrono::steady_clock::now();
         mergesort(vcopy,0,n-1);
-        end = clock();
+        auto end = chrono::steady_clock::now();
         if(verificaSortare(vcopy,n))
         {
-            g<<"\tMergesort: "<<(double)(end-start);
+            g<<"\tMergesort: "<<chrono::duration_cast<chrono::milliseconds>(end-start).count();
             g<<endl;
         }
         else g<<"\tMergesort: Nu a sortat corect"<<endl;
 
         for(int i=0;i<n;i++) vcopy[i] = v[i];
-        start = clock();
+//        start = clock();
+        start = chrono::steady_clock::now();
         countsort(vcopy,n);
-        end = clock();
+//        end = clock();
+        end = chrono::steady_clock::now();
         if(verificaSortare(vcopy,n))
         {
-            g<<"\tCountsort: "<<(double)(end-start);
+            g<<"\tCountsort: "<<chrono::duration_cast<chrono::milliseconds>(end-start).count();
             g<<endl;
         }
         else g<<"\tCountsort: Nu a sortat corect"<<endl;
 
         for(int i=0;i<n;i++) vcopy[i] = v[i];
-        start = clock();
-        interschimbare(vcopy,n);
-        end = clock();
+//        start = clock();
+        start = chrono::steady_clock::now();
+//        interschimbare(vcopy,n);
+//        end = clock();
+        end = chrono::steady_clock::now();
         if(verificaSortare(vcopy,n))
         {
-            g<<"\tInterschimbare: "<<(double)(end-start);
+            g<<"\tInterschimbare: "<<chrono::duration_cast<chrono::milliseconds>(end-start).count();
             g<<endl;
         }
         else g<<"\tInterschimbare: Nu a sortat corect"<<endl;
 
         for(int i=0;i<n;i++) vcopy[i] = v[i];
-        start = clock();
+//        start = clock();
+        start = chrono::steady_clock::now();
         shellsort(vcopy,n);
-        end = clock();
+//        end = clock();
+        end = chrono::steady_clock::now();
         if(verificaSortare(vcopy,n))
         {
-            g<<"\tShellsort: "<<(double)(end-start);
+            g<<"\tShellsort: "<<chrono::duration_cast<chrono::milliseconds>(end-start).count();
             g<<endl;
         }
         else g<<"\tShellsort: Nu a sortat corect"<<endl;
 
         for(int i=0;i<n;i++) vcopy[i] = v[i];
-        start = clock();
+//        start = clock();
+        start = chrono::steady_clock::now();
         radixsort10(vcopy,n);
-        end = clock();
+//        end = clock();
+        end = chrono::steady_clock::now();
         if(verificaSortare(vcopy,n))
         {
-            g<<"\tRadixsort(10): "<<(double)(end-start);
+            g<<"\tRadixsort(10): "<<chrono::duration_cast<chrono::milliseconds>(end-start).count();
             g<<endl;
         }
         else g<<"\tRadixsort(10): Nu a sortat corect"<<endl;
 
         for(int i=0;i<n;i++) vcopy[i] = v[i];
-        start = clock();
+//        start = clock();
+        start = chrono::steady_clock::now();
         radixsort2(vcopy,n,16);
-        end = clock();
+//        end = clock();
+        end = chrono::steady_clock::now();
         if(verificaSortare(vcopy,n))
         {
-            g<<"\tRadixsort(2^4): "<<(double)(end-start);
+            g<<"\tRadixsort(2^4): "<<chrono::duration_cast<chrono::milliseconds>(end-start).count();
             g<<endl;
         }
         else g<<"\tRadixsort(2^4): Nu a sortat corect"<<endl;
 
         for(int i=0;i<n;i++) vcopy[i] = v[i];
-        start = clock();
+//        start = clock();
+        start = chrono::steady_clock::now();
         radixsort2(vcopy,n,32);
-        end = clock();
+//        end = clock();
+        end = chrono::steady_clock::now();
         if(verificaSortare(vcopy,n))
         {
-            g<<"\tRadixsort(2^5): "<<(double)(end-start);
+            g<<"\tRadixsort(2^5): "<<chrono::duration_cast<chrono::milliseconds>(end-start).count();
             g<<endl;
         }
         else g<<"\tRadixsort(2^5): Nu a sortat corect"<<endl;
 
         for(int i=0;i<n;i++) vcopy[i] = v[i];
-        start = clock();
+//        start = clock();
+        start = chrono::steady_clock::now();
         radixsort2(vcopy,n,64);
-        end = clock();
+//        end = clock();
+        end = chrono::steady_clock::now();
         if(verificaSortare(vcopy,n))
         {
-            g<<"\tRadixsort(2^6): "<<(double)(end-start);
+            g<<"\tRadixsort(2^6): "<<chrono::duration_cast<chrono::milliseconds>(end-start).count();
             g<<endl;
         }
         else g<<"\tRadixsort(2^6): Nu a sortat corect"<<endl;
 
         for(int i=0;i<n;i++) vcopy[i] = v[i];
-        start = clock();
+//        start = clock();
+        start = chrono::steady_clock::now();
         radixsort2(vcopy,n,256);
-        end = clock();
+//        end = clock();
+        end = chrono::steady_clock::now();
         if(verificaSortare(vcopy,n))
         {
-            g<<"\tRadixsort(2^8): "<<(double)(end-start);
+            g<<"\tRadixsort(2^8): "<<chrono::duration_cast<chrono::milliseconds>(end-start).count();
             g<<endl;
         }
         else g<<"\tRadixsort(2^8): Nu a sortat corect"<<endl;
 
         for(int i=0;i<n;i++) vcopy[i] = v[i];
-        start = clock();
+//        start = clock();
+        start = chrono::steady_clock::now();
         radixsort2(vcopy,n,65536); //65536 = 2^16
-        end = clock();
+//        end = clock();
+        end = chrono::steady_clock::now();
         if(verificaSortare(vcopy,n))
         {
-            g<<"\tRadixsort(2^16): "<<(double)(end-start);
+            g<<"\tRadixsort(2^16): "<<chrono::duration_cast<chrono::milliseconds>(end-start).count();
             g<<endl;
         }
         else g<<"\tRadixsort(2^16): Nu a sortat corect"<<endl;
