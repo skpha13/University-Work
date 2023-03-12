@@ -175,15 +175,15 @@ void shellsort(int v[],int n)
 
 int main()
 {
-//    generareFisierIn();
-    verificaTimpi();
+    generareFisierIn();
+//    verificaTimpi();
     return 0;
 }
 
 void generareFisierIn()
 {
     ofstream a("test.txt");
-    a<<10<<endl;
+    a<<12<<endl;
     // test cu un numar mic de elemente, hardcoded
     a<<10<<endl<<"248206 585825 652412 335040 72031 179768 282309 975160 609689 473890"<<endl;
 
@@ -211,9 +211,15 @@ void generareFisierIn()
         a<<rand()%100000000 + 10000000<<" ";
     a<<endl;
 
-    // 1000 de numere
+    // 1.000 de numere
     a<<1000<<endl;
     for(int i=0;i<1000;i++)
+        a<<rand()%100000000<<" ";
+    a<<endl;
+
+    // 10.000 de numere
+    a<<10000<<endl;
+    for(int i=0;i<10000;i++)
         a<<rand()%100000000<<" ";
     a<<endl;
 
@@ -226,6 +232,12 @@ void generareFisierIn()
     // 1.000.000 de numere
     a<<1000000<<endl;
     for(int i=0;i<1000000;i++)
+        a<<rand()%100000000<<" ";
+    a<<endl;
+
+    // 10.000.000 de numere
+    a<<10000000<<endl;
+    for(int i=0;i<10000000;i++)
         a<<rand()%100000000<<" ";
     a<<endl;
 
