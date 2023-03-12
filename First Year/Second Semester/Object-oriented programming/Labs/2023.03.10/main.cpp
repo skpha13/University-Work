@@ -63,6 +63,7 @@ float* cantitateMiereNLuni, bool regina): idStup(contorId++){
     this->culoare = culoare;
     this->nrLuni = nrLuni;
     this->cantitateMiereNLuni = cantitateMiereNLuni;
+    //gresit trebuie alocata memorie pentru this->cantitateMiereNluni
     this->regina = regina;
 }
 
@@ -81,8 +82,8 @@ StupAlbine::StupAlbine(const StupAlbine& obj): idStup(contorId++){
 StupAlbine& StupAlbine::operator = (const StupAlbine& obj){
     if(this != &obj){
         if(this->numeStup != NULL){
-        delete[] this->numeStup;
-        this->numeStup = NULL;
+            delete[] this->numeStup;
+            this->numeStup = NULL;
         }
 
         if(this->cantitateMiereNLuni != NULL){
