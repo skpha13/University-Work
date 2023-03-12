@@ -1,0 +1,120 @@
+Testul: 1
+	Mergesort: 0
+	Countsort: 2
+	Interschimbare: 0
+	Shellsort: 0
+	Radixsort(10): 0
+	Radixsort(2^4): 0
+	Radixsort(2^5): 0
+	Radixsort(2^6): 0
+	Radixsort(2^8): 0
+	Radixsort(2^16): 16
+	Sortare nativa: 0
+
+Testul: 2
+	Mergesort: 1
+	Countsort: 3
+	Interschimbare: 0
+	Shellsort: 0
+	Radixsort(10): 0
+	Radixsort(2^4): 0
+	Radixsort(2^5): 0
+	Radixsort(2^6): 0
+	Radixsort(2^8): 0
+	Radixsort(2^16): 16
+	Sortare nativa: 0
+
+Testul: 3
+	Mergesort: 1
+	Countsort: 2
+	Interschimbare: 2
+	Shellsort: 0
+	Radixsort(10): 0
+	Radixsort(2^4): 0
+	Radixsort(2^5): 0
+	Radixsort(2^6): 0
+	Radixsort(2^8): 0
+	Radixsort(2^16): 14
+	Sortare nativa: 0
+
+Testul: 4
+	Mergesort: 294
+	Countsort: 2
+	Interschimbare: 4905
+	Shellsort: 10
+	Radixsort(10): 12
+	Radixsort(2^4): 8
+	Radixsort(2^5): 7
+	Radixsort(2^6): 6
+	Radixsort(2^8): 5
+	Radixsort(2^16): 16
+	Sortare nativa: 8
+
+Testul: 5
+	Mergesort: 270
+	Countsort: 24
+	Interschimbare: 17333
+	Shellsort: 15
+	Radixsort(10): 16
+	Radixsort(2^4): 10
+	Radixsort(2^5): 8
+	Radixsort(2^6): 6
+	Radixsort(2^8): 5
+	Radixsort(2^16): 28
+	Sortare nativa: 10
+
+Testul: 6
+	Mergesort: 0
+	Countsort: 20
+	Interschimbare: 1
+	Shellsort: 0
+	Radixsort(10): 0
+	Radixsort(2^4): 0
+	Radixsort(2^5): 0
+	Radixsort(2^6): 0
+	Radixsort(2^8): 0
+	Radixsort(2^16): 13
+	Sortare nativa: 0
+
+Testul: 7
+	Mergesort: 2
+	Countsort: 21
+	Interschimbare: 205
+	Shellsort: 1
+	Radixsort(10): 1
+	Radixsort(2^4): 0
+	Radixsort(2^5): 0
+	Radixsort(2^6): 0
+	Radixsort(2^8): 0
+	Radixsort(2^16): 15
+	Sortare nativa: 0
+
+Testul: 8
+	Mergesort: 255
+	Countsort: 21
+	Interschimbare: 16911
+	Shellsort: 14
+	Radixsort(10): 15
+	Radixsort(2^4): 9
+	Radixsort(2^5): 8
+	Radixsort(2^6): 6
+	Radixsort(2^8): 5
+	Radixsort(2^16): 27
+	Sortare nativa: 10
+
+Testul: 9
+	Mergesort: 6952
+	Countsort: 23
+	Interschimbare: 1079526
+	Shellsort: 204
+	Radixsort(10): 164
+	Radixsort(2^4): 100
+	Radixsort(2^5): 85
+	Radixsort(2^6): 69
+	Radixsort(2^8): 51
+	Radixsort(2^16): 83
+	Sortare nativa: 113
+
+Testul: 10
+	Mergesort: 69992
+	Countsort: 45

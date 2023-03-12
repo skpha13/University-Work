@@ -175,8 +175,8 @@ void shellsort(int v[],int n)
 
 int main()
 {
-    generareFisierIn();
-//    verificaTimpi();
+//    generareFisierIn();
+    verificaTimpi();
     return 0;
 }
 
@@ -309,13 +309,14 @@ void verificaTimpi()
         for(int i=0;i<n;i++) vcopy[i] = v[i];
 //        start = clock();
         start = chrono::steady_clock::now();
-//        interschimbare(vcopy,n);
+        interschimbare(vcopy,n);
 //        end = clock();
         end = chrono::steady_clock::now();
         if(verificaSortare(vcopy,n))
         {
             g<<"\tInterschimbare: "<<chrono::duration_cast<chrono::milliseconds>(end-start).count();
             g<<endl;
+            b<<(chrono::duration_cast<chrono::milliseconds>(end-start).count())<<" ";
         }
         else g<<"\tInterschimbare: Nu a sortat corect"<<endl;
 
