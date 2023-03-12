@@ -6,7 +6,7 @@
 
 using namespace std;
 
-ifstream f("test.txt");
+ifstream f("D:\\UNI CODE\\test.txt");
 ofstream g("timp.out");
 
 int *v = new int[1000000000];
@@ -251,6 +251,7 @@ bool verificaSortare(int v[],int n)
 
 void verificaTimpi()
 {
+    ofstream b("plot.txt");
     n = 10;
 //    clock_t start,end;
     f>>nrteste;
@@ -259,7 +260,7 @@ void verificaTimpi()
         g<<"Testul: "<<t+1<<endl;
         for(int i=0;i<n;i++) v[i] = 0;
         f>>n;
-        cout<<n<<endl;
+        b<<n<<" ";
         for(int i=0;i<n;i++)
         {
             f>>v[i];
@@ -274,6 +275,7 @@ void verificaTimpi()
         {
             g<<"\tMergesort: "<<chrono::duration_cast<chrono::milliseconds>(end-start).count();
             g<<endl;
+            b<<(chrono::duration_cast<chrono::milliseconds>(end-start).count())<<" ";
         }
         else g<<"\tMergesort: Nu a sortat corect"<<endl;
 
@@ -287,6 +289,7 @@ void verificaTimpi()
         {
             g<<"\tCountsort: "<<chrono::duration_cast<chrono::milliseconds>(end-start).count();
             g<<endl;
+            b<<(chrono::duration_cast<chrono::milliseconds>(end-start).count())<<" ";
         }
         else g<<"\tCountsort: Nu a sortat corect"<<endl;
 
@@ -313,6 +316,7 @@ void verificaTimpi()
         {
             g<<"\tShellsort: "<<chrono::duration_cast<chrono::milliseconds>(end-start).count();
             g<<endl;
+            b<<(chrono::duration_cast<chrono::milliseconds>(end-start).count())<<" ";
         }
         else g<<"\tShellsort: Nu a sortat corect"<<endl;
 
@@ -326,6 +330,7 @@ void verificaTimpi()
         {
             g<<"\tRadixsort(10): "<<chrono::duration_cast<chrono::milliseconds>(end-start).count();
             g<<endl;
+            b<<(chrono::duration_cast<chrono::milliseconds>(end-start).count())<<" ";
         }
         else g<<"\tRadixsort(10): Nu a sortat corect"<<endl;
 
@@ -339,6 +344,7 @@ void verificaTimpi()
         {
             g<<"\tRadixsort(2^4): "<<chrono::duration_cast<chrono::milliseconds>(end-start).count();
             g<<endl;
+            b<<(chrono::duration_cast<chrono::milliseconds>(end-start).count())<<" ";
         }
         else g<<"\tRadixsort(2^4): Nu a sortat corect"<<endl;
 
@@ -352,6 +358,7 @@ void verificaTimpi()
         {
             g<<"\tRadixsort(2^5): "<<chrono::duration_cast<chrono::milliseconds>(end-start).count();
             g<<endl;
+            b<<(chrono::duration_cast<chrono::milliseconds>(end-start).count())<<" ";
         }
         else g<<"\tRadixsort(2^5): Nu a sortat corect"<<endl;
 
@@ -365,6 +372,7 @@ void verificaTimpi()
         {
             g<<"\tRadixsort(2^6): "<<chrono::duration_cast<chrono::milliseconds>(end-start).count();
             g<<endl;
+            b<<(chrono::duration_cast<chrono::milliseconds>(end-start).count())<<" ";
         }
         else g<<"\tRadixsort(2^6): Nu a sortat corect"<<endl;
 
@@ -378,6 +386,7 @@ void verificaTimpi()
         {
             g<<"\tRadixsort(2^8): "<<chrono::duration_cast<chrono::milliseconds>(end-start).count();
             g<<endl;
+            b<<(chrono::duration_cast<chrono::milliseconds>(end-start).count())<<" ";
         }
         else g<<"\tRadixsort(2^8): Nu a sortat corect"<<endl;
 
@@ -391,9 +400,11 @@ void verificaTimpi()
         {
             g<<"\tRadixsort(2^16): "<<chrono::duration_cast<chrono::milliseconds>(end-start).count();
             g<<endl;
+            b<<(chrono::duration_cast<chrono::milliseconds>(end-start).count())<<" ";
         }
         else g<<"\tRadixsort(2^16): Nu a sortat corect"<<endl;
 
+        b<<endl;
         g<<endl;
     }
     if (v!=NULL)

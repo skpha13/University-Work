@@ -1,6 +1,6 @@
 Testul: 1
 	Mergesort: 0
-	Countsort: 4
+	Countsort: 2
 	Interschimbare: Nu a sortat corect
 	Shellsort: 0
 	Radixsort(10): 0
@@ -8,11 +8,11 @@ Testul: 1
 	Radixsort(2^5): 0
 	Radixsort(2^6): 0
 	Radixsort(2^8): 0
-	Radixsort(2^16): 22
+	Radixsort(2^16): 15
 
 Testul: 2
-	Mergesort: 1
-	Countsort: 3
+	Mergesort: 0
+	Countsort: 2
 	Interschimbare: 0
 	Shellsort: 0
 	Radixsort(10): 0
@@ -20,11 +20,11 @@ Testul: 2
 	Radixsort(2^5): 0
 	Radixsort(2^6): 0
 	Radixsort(2^8): 0
-	Radixsort(2^16): 23
+	Radixsort(2^16): 15
 
 Testul: 3
-	Mergesort: 1
-	Countsort: 3
+	Mergesort: 0
+	Countsort: 2
 	Interschimbare: Nu a sortat corect
 	Shellsort: 0
 	Radixsort(10): 0
@@ -32,35 +32,35 @@ Testul: 3
 	Radixsort(2^5): 0
 	Radixsort(2^6): 0
 	Radixsort(2^8): 0
-	Radixsort(2^16): 22
+	Radixsort(2^16): 15
 
 Testul: 4
-	Mergesort: 749
-	Countsort: 4
+	Mergesort: 263
+	Countsort: 2
 	Interschimbare: Nu a sortat corect
-	Shellsort: 17
-	Radixsort(10): 23
-	Radixsort(2^4): 18
-	Radixsort(2^5): 15
-	Radixsort(2^6): 16
-	Radixsort(2^8): 13
-	Radixsort(2^16): 37
+	Shellsort: 9
+	Radixsort(10): 12
+	Radixsort(2^4): 7
+	Radixsort(2^5): 6
+	Radixsort(2^6): 6
+	Radixsort(2^8): 4
+	Radixsort(2^16): 16
 
 Testul: 5
-	Mergesort: 577
-	Countsort: 41
+	Mergesort: 264
+	Countsort: 21
 	Interschimbare: Nu a sortat corect
-	Shellsort: 29
-	Radixsort(10): 30
-	Radixsort(2^4): 20
-	Radixsort(2^5): 17
-	Radixsort(2^6): 14
-	Radixsort(2^8): 11
-	Radixsort(2^16): 51
+	Shellsort: 15
+	Radixsort(10): 16
+	Radixsort(2^4): 9
+	Radixsort(2^5): 8
+	Radixsort(2^6): 6
+	Radixsort(2^8): 5
+	Radixsort(2^16): 28
 
 Testul: 6
 	Mergesort: 0
-	Countsort: 40
+	Countsort: 21
 	Interschimbare: Nu a sortat corect
 	Shellsort: 0
 	Radixsort(10): 0
@@ -68,30 +68,30 @@ Testul: 6
 	Radixsort(2^5): 0
 	Radixsort(2^6): 0
 	Radixsort(2^8): 0
-	Radixsort(2^16): 24
+	Radixsort(2^16): 13
 
 Testul: 7
-	Mergesort: 829
-	Countsort: 51
+	Mergesort: 262
+	Countsort: 22
 	Interschimbare: Nu a sortat corect
-	Shellsort: 27
-	Radixsort(10): 31
-	Radixsort(2^4): 21
-	Radixsort(2^5): 18
-	Radixsort(2^6): 14
-	Radixsort(2^8): 11
-	Radixsort(2^16): 56
+	Shellsort: 15
+	Radixsort(10): 18
+	Radixsort(2^4): 10
+	Radixsort(2^5): 8
+	Radixsort(2^6): 7
+	Radixsort(2^8): 5
+	Radixsort(2^16): 30
 
 Testul: 8
-	Mergesort: 12557
-	Countsort: 45
+	Mergesort: 6923
+	Countsort: 23
 	Interschimbare: Nu a sortat corect
-	Shellsort: 370
-	Radixsort(10): 324
-	Radixsort(2^4): 206
-	Radixsort(2^5): 178
-	Radixsort(2^6): 137
-	Radixsort(2^8): 100
-	Radixsort(2^16): 160
+	Shellsort: 203
+	Radixsort(10): 165
+	Radixsort(2^4): 95
+	Radixsort(2^5): 79
+	Radixsort(2^6): 67
+	Radixsort(2^8): 48
+	Radixsort(2^16): 100
 
 Testul: 9
