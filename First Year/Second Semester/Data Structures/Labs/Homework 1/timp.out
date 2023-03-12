@@ -8,7 +8,8 @@ Testul: 1
 	Radixsort(2^5): 0
 	Radixsort(2^6): 0
 	Radixsort(2^8): 0
-	Radixsort(2^16): 15
+	Radixsort(2^16): 14
+	Sortare nativa: 0
 
 Testul: 2
 	Mergesort: 0
@@ -20,7 +21,8 @@ Testul: 2
 	Radixsort(2^5): 0
 	Radixsort(2^6): 0
 	Radixsort(2^8): 0
-	Radixsort(2^16): 15
+	Radixsort(2^16): 14
+	Sortare nativa: 0
 
 Testul: 3
 	Mergesort: 0
@@ -32,35 +34,38 @@ Testul: 3
 	Radixsort(2^5): 0
 	Radixsort(2^6): 0
 	Radixsort(2^8): 0
-	Radixsort(2^16): 15
+	Radixsort(2^16): 14
+	Sortare nativa: 0
 
 Testul: 4
-	Mergesort: 263
+	Mergesort: 310
 	Countsort: 2
 	Interschimbare: Nu a sortat corect
 	Shellsort: 9
-	Radixsort(10): 12
-	Radixsort(2^4): 7
-	Radixsort(2^5): 6
-	Radixsort(2^6): 6
-	Radixsort(2^8): 4
-	Radixsort(2^16): 16
-
-Testul: 5
-	Mergesort: 264
-	Countsort: 21
-	Interschimbare: Nu a sortat corect
-	Shellsort: 15
-	Radixsort(10): 16
-	Radixsort(2^4): 9
-	Radixsort(2^5): 8
+	Radixsort(10): 11
+	Radixsort(2^4): 8
+	Radixsort(2^5): 7
 	Radixsort(2^6): 6
 	Radixsort(2^8): 5
-	Radixsort(2^16): 28
+	Radixsort(2^16): 16
+	Sortare nativa: 8
+
+Testul: 5
+	Mergesort: 306
+	Countsort: 22
+	Interschimbare: Nu a sortat corect
+	Shellsort: 16
+	Radixsort(10): 17
+	Radixsort(2^4): 11
+	Radixsort(2^5): 9
+	Radixsort(2^6): 7
+	Radixsort(2^8): 5
+	Radixsort(2^16): 34
+	Sortare nativa: 15
 
 Testul: 6
 	Mergesort: 0
-	Countsort: 21
+	Countsort: 28
 	Interschimbare: Nu a sortat corect
 	Shellsort: 0
 	Radixsort(10): 0
@@ -68,30 +73,20 @@ Testul: 6
 	Radixsort(2^5): 0
 	Radixsort(2^6): 0
 	Radixsort(2^8): 0
-	Radixsort(2^16): 13
+	Radixsort(2^16): 16
+	Sortare nativa: 0
 
 Testul: 7
-	Mergesort: 262
-	Countsort: 22
+	Mergesort: 345
+	Countsort: 32
 	Interschimbare: Nu a sortat corect
-	Shellsort: 15
-	Radixsort(10): 18
-	Radixsort(2^4): 10
-	Radixsort(2^5): 8
-	Radixsort(2^6): 7
+	Shellsort: 16
+	Radixsort(10): 20
+	Radixsort(2^4): 13
+	Radixsort(2^5): 11
+	Radixsort(2^6): 9
 	Radixsort(2^8): 5
-	Radixsort(2^16): 30
+	Radixsort(2^16): 35
+	Sortare nativa: 11
 
 Testul: 8
-	Mergesort: 6923
-	Countsort: 23
-	Interschimbare: Nu a sortat corect
-	Shellsort: 203
-	Radixsort(10): 165
-	Radixsort(2^4): 95
-	Radixsort(2^5): 79
-	Radixsort(2^6): 67
-	Radixsort(2^8): 48
-	Radixsort(2^16): 100
-
-Testul: 9

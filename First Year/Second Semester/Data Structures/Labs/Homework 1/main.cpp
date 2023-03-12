@@ -3,6 +3,7 @@
 #include <time.h>
 #include <vector>
 #include <chrono>
+#include <algorithm>
 
 using namespace std;
 
@@ -403,6 +404,20 @@ void verificaTimpi()
             b<<(chrono::duration_cast<chrono::milliseconds>(end-start).count())<<" ";
         }
         else g<<"\tRadixsort(2^16): Nu a sortat corect"<<endl;
+
+        for(int i=0;i<n;i++) vcopy[i] = v[i];
+//        start = clock();
+        start = chrono::steady_clock::now();
+        sort(vcopy,vcopy+n);
+//        end = clock();
+        end = chrono::steady_clock::now();
+        if(verificaSortare(vcopy,n))
+        {
+            g<<"\tSortare nativa: "<<chrono::duration_cast<chrono::milliseconds>(end-start).count();
+            g<<endl;
+            b<<(chrono::duration_cast<chrono::milliseconds>(end-start).count())<<" ";
+        }
+        else g<<"\tSortare nativa: Nu a sortat corect"<<endl;
 
         b<<endl;
         g<<endl;
