@@ -189,13 +189,13 @@ void generareFisierIn()
 
     // numere in ordine crescatoare
     a<<100000<<endl;
-    for(int i=0;i<10000;i++)
+    for(int i=0;i<100000;i++)
         a<<i<<" ";
     a<<endl;
 
     // numere in ordine descrecatoare
     a<<100000<<endl;
-    for(int i=10000;i>0;i--)
+    for(int i=100000;i>0;i--)
         a<<i<<" ";
     a<<endl;
 
