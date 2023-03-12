@@ -5,12 +5,12 @@
 
 using namespace std;
 
-ifstream f("teste.in");
+ifstream f("test.in");
 ofstream g("timp.out");
 
 int *v = new int[1000000000];
 int *vcopy = new int[1000000000];
-int n,mx=0;
+int n,mx=0,nrteste;
 
 void generareFisierIn();
 bool verificaSortare(int v[],int n);
@@ -18,10 +18,11 @@ void verificaTimpi();
 
 void mergesort(int v[],int st,int dr)
 {
-    int *temp = new int[1000000000];
     if(st<dr)
     {
+        int *temp = new int[1000000000];
         int m  = (st + dr) / 2;
+
         mergesort(v,st,m);
         mergesort(v,m+1,dr);
 
@@ -38,12 +39,12 @@ void mergesort(int v[],int st,int dr)
 
         i=st; j=0;
         while(i<=dr) v[i++]=temp[j++];
-    }
 
-    if(temp != NULL)
-    {
-        delete[] temp;
-        temp = NULL;
+        if(temp != NULL)
+        {
+            delete[] temp;
+            temp = NULL;
+        }
     }
 }
 
@@ -172,6 +173,7 @@ void shellsort(int v[],int n)
 
 int main()
 {
+    generareFisierIn();
     verificaTimpi();
     return 0;
 }
@@ -183,7 +185,16 @@ int main()
 //2 cu multe numere
 void generareFisierIn()
 {
+    ofstream a("test.in");
+    a<<2<<endl;
+    // test cu un numar mic de elemente, hardcoded
+    a<<10<<endl<<"248206 585825 652412 335040 72031 179768 282309 975160 609689 473890"<<endl;
 
+    // numere in ordine crescatoare
+    a<<1001<<endl;
+    for(int i=0;i<=1000;i++)
+        a<<i<<" ";
+    a<<endl;
 }
 
 bool verificaSortare(int v[],int n)
@@ -197,123 +208,129 @@ bool verificaSortare(int v[],int n)
 void verificaTimpi()
 {
     clock_t start,end;
-    f>>n;
-    for(int i=0;i<n;i++)
+    f>>nrteste;
+    for(int t=0;t<nrteste;t++)
     {
-        f>>v[i];
-        if(v[i]>mx) mx = v[i];
-    }
+        g<<"Testul: "<<t+1<<endl;
+        f>>n;
+        for(int i=0;i<n;i++)
+        {
+            f>>v[i];
+            if(v[i]>mx) mx = v[i];
+        }
 
-    for(int i=0;i<n;i++) vcopy[i] = v[i];
-    start = clock();
-    mergesort(vcopy,0,n-1);
-    end = clock();
-    if(verificaSortare(vcopy,n))
-    {
-        g<<"\tMergesort: "<<(double)(end-start);
+        for(int i=0;i<n;i++) vcopy[i] = v[i];
+        start = clock();
+        mergesort(vcopy,0,n-1);
+        end = clock();
+        if(verificaSortare(vcopy,n))
+        {
+            g<<"\tMergesort: "<<(double)(end-start);
+            g<<endl;
+        }
+        else g<<"\tMergesort: Nu a sortat corect"<<endl;
+
+        for(int i=0;i<n;i++) vcopy[i] = v[i];
+        start = clock();
+        countsort(vcopy,n);
+        end = clock();
+        if(verificaSortare(vcopy,n))
+        {
+            g<<"\tCountsort: "<<(double)(end-start);
+            g<<endl;
+        }
+        else g<<"\tCountsort: Nu a sortat corect"<<endl;
+
+        for(int i=0;i<n;i++) vcopy[i] = v[i];
+        start = clock();
+        interschimbare(vcopy,n);
+        end = clock();
+        if(verificaSortare(vcopy,n))
+        {
+            g<<"\tInterschimbare: "<<(double)(end-start);
+            g<<endl;
+        }
+        else g<<"\tInterschimbare: Nu a sortat corect"<<endl;
+
+        for(int i=0;i<n;i++) vcopy[i] = v[i];
+        start = clock();
+        shellsort(vcopy,n);
+        end = clock();
+        if(verificaSortare(vcopy,n))
+        {
+            g<<"\tShellsort: "<<(double)(end-start);
+            g<<endl;
+        }
+        else g<<"\tShellsort: Nu a sortat corect"<<endl;
+
+        for(int i=0;i<n;i++) vcopy[i] = v[i];
+        start = clock();
+        radixsort10(vcopy,n);
+        end = clock();
+        if(verificaSortare(vcopy,n))
+        {
+            g<<"\tRadixsort(10): "<<(double)(end-start);
+            g<<endl;
+        }
+        else g<<"\tRadixsort(10): Nu a sortat corect"<<endl;
+
+        for(int i=0;i<n;i++) vcopy[i] = v[i];
+        start = clock();
+        radixsort2(vcopy,n,16);
+        end = clock();
+        if(verificaSortare(vcopy,n))
+        {
+            g<<"\tRadixsort(2^4): "<<(double)(end-start);
+            g<<endl;
+        }
+        else g<<"\tRadixsort(2^4): Nu a sortat corect"<<endl;
+
+        for(int i=0;i<n;i++) vcopy[i] = v[i];
+        start = clock();
+        radixsort2(vcopy,n,32);
+        end = clock();
+        if(verificaSortare(vcopy,n))
+        {
+            g<<"\tRadixsort(2^5): "<<(double)(end-start);
+            g<<endl;
+        }
+        else g<<"\tRadixsort(2^5): Nu a sortat corect"<<endl;
+
+        for(int i=0;i<n;i++) vcopy[i] = v[i];
+        start = clock();
+        radixsort2(vcopy,n,64);
+        end = clock();
+        if(verificaSortare(vcopy,n))
+        {
+            g<<"\tRadixsort(2^6): "<<(double)(end-start);
+            g<<endl;
+        }
+        else g<<"\tRadixsort(2^6): Nu a sortat corect"<<endl;
+
+        for(int i=0;i<n;i++) vcopy[i] = v[i];
+        start = clock();
+        radixsort2(vcopy,n,256);
+        end = clock();
+        if(verificaSortare(vcopy,n))
+        {
+            g<<"\tRadixsort(2^8): "<<(double)(end-start);
+            g<<endl;
+        }
+        else g<<"\tRadixsort(2^8): Nu a sortat corect"<<endl;
+
+        for(int i=0;i<n;i++) vcopy[i] = v[i];
+        start = clock();
+        radixsort2(vcopy,n,65536); //65536 = 2^16
+        end = clock();
+        if(verificaSortare(vcopy,n))
+        {
+            g<<"\tRadixsort(2^16): "<<(double)(end-start);
+            g<<endl;
+        }
+        else g<<"\tRadixsort(2^16): Nu a sortat corect"<<endl;
+
         g<<endl;
     }
-    else g<<"\tMergesort: Nu a sortat corect"<<endl;
-
-    for(int i=0;i<n;i++) vcopy[i] = v[i];
-    start = clock();
-    countsort(vcopy,n);
-    end = clock();
-    if(verificaSortare(vcopy,n))
-    {
-        g<<"\tCountsort: "<<(double)(end-start);
-        g<<endl;
-    }
-    else g<<"\tCountsort: Nu a sortat corect"<<endl;
-
-    for(int i=0;i<n;i++) vcopy[i] = v[i];
-    start = clock();
-    interschimbare(vcopy,n);
-    end = clock();
-    if(verificaSortare(vcopy,n))
-    {
-        g<<"\tInterschimbare: "<<(double)(end-start);
-        g<<endl;
-    }
-    else g<<"\tInterschimbare: Nu a sortat corect"<<endl;
-
-    for(int i=0;i<n;i++) vcopy[i] = v[i];
-    start = clock();
-    shellsort(vcopy,n);
-    end = clock();
-    if(verificaSortare(vcopy,n))
-    {
-        g<<"\tShellsort: "<<(double)(end-start);
-        g<<endl;
-    }
-    else g<<"\tShellsort: Nu a sortat corect"<<endl;
-
-    for(int i=0;i<n;i++) vcopy[i] = v[i];
-    start = clock();
-    radixsort10(vcopy,n);
-    end = clock();
-    if(verificaSortare(vcopy,n))
-    {
-        g<<"\tRadixsort(10): "<<(double)(end-start);
-        g<<endl;
-    }
-    else g<<"\tRadixsort(10): Nu a sortat corect"<<endl;
-
-    for(int i=0;i<n;i++) vcopy[i] = v[i];
-    start = clock();
-    radixsort2(vcopy,n,16);
-    end = clock();
-    if(verificaSortare(vcopy,n))
-    {
-        g<<"\tRadixsort(2^4): "<<(double)(end-start);
-        g<<endl;
-    }
-    else g<<"\tRadixsort(2^4): Nu a sortat corect"<<endl;
-
-    for(int i=0;i<n;i++) vcopy[i] = v[i];
-    start = clock();
-    radixsort2(vcopy,n,32);
-    end = clock();
-    if(verificaSortare(vcopy,n))
-    {
-        g<<"\tRadixsort(2^5): "<<(double)(end-start);
-        g<<endl;
-    }
-    else g<<"\tRadixsort(2^5): Nu a sortat corect"<<endl;
-
-    for(int i=0;i<n;i++) vcopy[i] = v[i];
-    start = clock();
-    radixsort2(vcopy,n,64);
-    end = clock();
-    if(verificaSortare(vcopy,n))
-    {
-        g<<"\tRadixsort(2^6): "<<(double)(end-start);
-        g<<endl;
-    }
-    else g<<"\tRadixsort(2^6): Nu a sortat corect"<<endl;
-
-    for(int i=0;i<n;i++) vcopy[i] = v[i];
-    start = clock();
-    radixsort2(vcopy,n,256);
-    end = clock();
-    if(verificaSortare(vcopy,n))
-    {
-        g<<"\tRadixsort(2^8): "<<(double)(end-start);
-        g<<endl;
-    }
-    else g<<"\tRadixsort(2^8): Nu a sortat corect"<<endl;
-
-    for(int i=0;i<n;i++) vcopy[i] = v[i];
-    start = clock();
-    radixsort2(vcopy,n,65536); //65536 = 2^16
-    end = clock();
-    if(verificaSortare(vcopy,n))
-    {
-        g<<"\tRadixsort(2^16): "<<(double)(end-start);
-        g<<endl;
-    }
-    else g<<"\tRadixsort(2^16): Nu a sortat corect"<<endl;
-
     if (v!=NULL)
     {
         delete[] v;

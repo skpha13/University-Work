@@ -1,10 +1,24 @@
-	Mergesort: 102
-	Countsort: 2165
-	Interschimbare: 1
+Testul: 1
+	Mergesort: 4
+	Countsort: 6
+	Interschimbare: 0
+	Shellsort: 0
+	Radixsort(10): 0
+	Radixsort(2^4): 0
+	Radixsort(2^5): 0
+	Radixsort(2^6): 1
+	Radixsort(2^8): 0
+	Radixsort(2^16): 31
+
+Testul: 2
+	Mergesort: 68
+	Countsort: 3
+	Interschimbare: 0
 	Shellsort: 1
-	Radixsort(10): 10
-	Radixsort(2^4): 9
-	Radixsort(2^5): 14
-	Radixsort(2^6): 20
-	Radixsort(2^8): 49
-	Radixsort(2^16): 11107
+	Radixsort(10): 0
+	Radixsort(2^4): 0
+	Radixsort(2^5): 0
+	Radixsort(2^6): 1
+	Radixsort(2^8): 0
+	Radixsort(2^16): 22
+
