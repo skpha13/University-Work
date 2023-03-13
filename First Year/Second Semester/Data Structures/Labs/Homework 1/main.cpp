@@ -176,7 +176,7 @@ void shellsort(int v[],int n)
 int main()
 {
 //    generareFisierIn();
-    verificaTimpi();
+//    verificaTimpi();
     return 0;
 }
 
