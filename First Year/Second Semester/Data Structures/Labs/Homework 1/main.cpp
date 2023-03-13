@@ -183,7 +183,7 @@ int main()
 void generareFisierIn()
 {
     ofstream a("test.txt");
-    a<<20<<endl;
+    a<<24<<endl;
     // test cu un numar mic de elemente, hardcoded
     a<<10<<endl<<"248206 585825 652412 335040 72031 179768 282309 975160 609689 473890"<<endl;
 
@@ -289,9 +289,33 @@ void generareFisierIn()
         a<<rand()%100000000<<" ";
     a<<endl;
 
+    // 30.000.000 de numere
+    a<<30000000<<endl;
+    for(int i=0;i<30000000;i++)
+        a<<rand()%100000000<<" ";
+    a<<endl;
+
+    // 50.000.000 de numere
+    a<<50000000<<endl;
+    for(int i=0;i<50000000;i++)
+        a<<rand()%100000000<<" ";
+    a<<endl;
+
+    // 70.000.000 de numere
+    a<<70000000<<endl;
+    for(int i=0;i<70000000;i++)
+        a<<rand()%100000000<<" ";
+    a<<endl;
+
     // 100.000.000 de numere
     a<<100000000<<endl;
     for(int i=0;i<100000000;i++)
+        a<<rand()%100000000<<" ";
+    a<<endl;
+
+    // 500.000.000 de numere
+    a<<500000000<<endl;
+    for(int i=0;i<500000000;i++)
         a<<rand()%100000000<<" ";
     a<<endl;
 
@@ -312,7 +336,7 @@ bool verificaSortare(int v[],int n)
 
 void verificaTimpi()
 {
-    ofstream b("plot.txt");
+    ofstream b("plot2.txt");
     n = 10;
 //    clock_t start,end;
     f>>nrteste;
@@ -328,17 +352,23 @@ void verificaTimpi()
             if(v[i]>mx) mx = v[i];
         }
 
-        for(int i=0;i<n;i++) vcopy[i] = v[i];
         auto start = chrono::steady_clock::now();
-        mergesort(vcopy,0,n-1);
         auto end = chrono::steady_clock::now();
-        if(verificaSortare(vcopy,n))
+
+        if(t<18)
         {
-            g<<"\tMergesort: "<<chrono::duration_cast<chrono::milliseconds>(end-start).count();
-            g<<endl;
-            b<<(chrono::duration_cast<chrono::milliseconds>(end-start).count())<<" ";
+            for(int i=0;i<n;i++) vcopy[i] = v[i];
+            start = chrono::steady_clock::now();
+            mergesort(vcopy,0,n-1);
+            end = chrono::steady_clock::now();
+            if(verificaSortare(vcopy,n))
+            {
+                g<<"\tMergesort: "<<chrono::duration_cast<chrono::milliseconds>(end-start).count();
+                g<<endl;
+                b<<(chrono::duration_cast<chrono::milliseconds>(end-start).count())<<" ";
+            }
+            else g<<"\tMergesort: Nu a sortat corect"<<endl;
         }
-        else g<<"\tMergesort: Nu a sortat corect"<<endl;
 
         for(int i=0;i<n;i++) vcopy[i] = v[i];
 //        start = clock();

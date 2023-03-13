@@ -1,6 +1,6 @@
 Testul: 1
 	Mergesort: 0
-	Countsort: 1
+	Countsort: 2
 	Interschimbare: 0
 	Shellsort: 0
 	Radixsort(10): 0
@@ -8,64 +8,64 @@ Testul: 1
 	Radixsort(2^5): 0
 	Radixsort(2^6): 0
 	Radixsort(2^8): 0
-	Radixsort(2^16): 11
+	Radixsort(2^16): 14
 	Sortare nativa: 0
 
 Testul: 2
-	Mergesort: 301
+	Mergesort: 320
 	Countsort: 2
-	Interschimbare: 4862
+	Interschimbare: 4753
 	Shellsort: 3
-	Radixsort(10): 12
-	Radixsort(2^4): 8
-	Radixsort(2^5): 7
-	Radixsort(2^6): 6
-	Radixsort(2^8): 5
-	Radixsort(2^16): 25
-	Sortare nativa: 4
-
-Testul: 3
-	Mergesort: 303
-	Countsort: 2
-	Interschimbare: 24254
-	Shellsort: 5
-	Radixsort(10): 12
-	Radixsort(2^4): 9
-	Radixsort(2^5): 7
-	Radixsort(2^6): 8
-	Radixsort(2^8): 8
-	Radixsort(2^16): 28
-	Sortare nativa: 3
-
-Testul: 4
-	Mergesort: 273
-	Countsort: 2
-	Interschimbare: 4915
-	Shellsort: 10
 	Radixsort(10): 12
 	Radixsort(2^4): 8
 	Radixsort(2^5): 6
 	Radixsort(2^6): 6
 	Radixsort(2^8): 5
-	Radixsort(2^16): 15
+	Radixsort(2^16): 26
+	Sortare nativa: 3
+
+Testul: 3
+	Mergesort: 258
+	Countsort: 2
+	Interschimbare: 24802
+	Shellsort: 5
+	Radixsort(10): 12
+	Radixsort(2^4): 7
+	Radixsort(2^5): 6
+	Radixsort(2^6): 6
+	Radixsort(2^8): 4
+	Radixsort(2^16): 26
+	Sortare nativa: 3
+
+Testul: 4
+	Mergesort: 245
+	Countsort: 2
+	Interschimbare: 4744
+	Shellsort: 9
+	Radixsort(10): 11
+	Radixsort(2^4): 8
+	Radixsort(2^5): 6
+	Radixsort(2^6): 6
+	Radixsort(2^8): 5
+	Radixsort(2^16): 16
 	Sortare nativa: 7
 
 Testul: 5
 	Mergesort: 261
-	Countsort: 20
-	Interschimbare: 16797
-	Shellsort: 15
+	Countsort: 21
+	Interschimbare: 16982
+	Shellsort: 16
 	Radixsort(10): 16
 	Radixsort(2^4): 10
-	Radixsort(2^5): 8
+	Radixsort(2^5): 7
 	Radixsort(2^6): 6
 	Radixsort(2^8): 5
-	Radixsort(2^16): 26
+	Radixsort(2^16): 28
 	Sortare nativa: 10
 
 Testul: 6
 	Mergesort: 0
-	Countsort: 21
+	Countsort: 22
 	Interschimbare: 1
 	Shellsort: 0
 	Radixsort(10): 0
@@ -73,167 +73,220 @@ Testul: 6
 	Radixsort(2^5): 0
 	Radixsort(2^6): 0
 	Radixsort(2^8): 0
-	Radixsort(2^16): 12
+	Radixsort(2^16): 13
 	Sortare nativa: 0
 
 Testul: 7
 	Mergesort: 2
-	Countsort: 21
+	Countsort: 22
 	Interschimbare: 210
 	Shellsort: 1
 	Radixsort(10): 1
-	Radixsort(2^4): 1
+	Radixsort(2^4): 0
 	Radixsort(2^5): 0
 	Radixsort(2^6): 0
 	Radixsort(2^8): 0
-	Radixsort(2^16): 13
+	Radixsort(2^16): 15
 	Sortare nativa: 0
 
 Testul: 8
-	Mergesort: 249
-	Countsort: 21
-	Interschimbare: 16876
+	Mergesort: 252
+	Countsort: 23
+	Interschimbare: 16730
 	Shellsort: 15
-	Radixsort(10): 17
+	Radixsort(10): 15
 	Radixsort(2^4): 9
-	Radixsort(2^5): 8
+	Radixsort(2^5): 7
 	Radixsort(2^6): 6
-	Radixsort(2^8): 5
-	Radixsort(2^16): 26
+	Radixsort(2^8): 4
+	Radixsort(2^16): 27
 	Sortare nativa: 10
 
 Testul: 9
-	Mergesort: 1389
-	Countsort: 22
-	Interschimbare: 49085
+	Mergesort: 1330
+	Countsort: 24
+	Interschimbare: 49097
 	Shellsort: 32
-	Radixsort(10): 33
-	Radixsort(2^4): 20
-	Radixsort(2^5): 16
-	Radixsort(2^6): 13
-	Radixsort(2^8): 10
-	Radixsort(2^16): 35
+	Radixsort(10): 31
+	Radixsort(2^4): 18
+	Radixsort(2^5): 15
+	Radixsort(2^6): 12
+	Radixsort(2^8): 9
+	Radixsort(2^16): 37
 	Sortare nativa: 21
 
 Testul: 10
-	Mergesort: 1787
-	Countsort: 21
-	Interschimbare: 91727
-	Shellsort: 54
+	Mergesort: 1798
+	Countsort: 25
+	Interschimbare: 90037
+	Shellsort: 52
 	Radixsort(10): 48
-	Radixsort(2^4): 31
+	Radixsort(2^4): 29
 	Radixsort(2^5): 24
 	Radixsort(2^6): 20
 	Radixsort(2^8): 15
-	Radixsort(2^16): 42
-	Sortare nativa: 32
+	Radixsort(2^16): 44
+	Sortare nativa: 33
 
 Testul: 11
-	Mergesort: 2623
-	Countsort: 21
-	Shellsort: 70
-	Radixsort(10): 69
-	Radixsort(2^4): 43
-	Radixsort(2^5): 35
-	Radixsort(2^6): 28
+	Mergesort: 2592
+	Countsort: 24
+	Shellsort: 68
+	Radixsort(10): 65
+	Radixsort(2^4): 39
+	Radixsort(2^5): 32
+	Radixsort(2^6): 25
 	Radixsort(2^8): 20
-	Radixsort(2^16): 49
-	Sortare nativa: 44
+	Radixsort(2^16): 51
+	Sortare nativa: 45
 
 Testul: 12
-	Mergesort: 3386
-	Countsort: 22
-	Shellsort: 88
-	Radixsort(10): 86
-	Radixsort(2^4): 52
-	Radixsort(2^5): 41
-	Radixsort(2^6): 34
-	Radixsort(2^8): 27
-	Radixsort(2^16): 58
-	Sortare nativa: 57
+	Mergesort: 3318
+	Countsort: 24
+	Shellsort: 83
+	Radixsort(10): 78
+	Radixsort(2^4): 47
+	Radixsort(2^5): 38
+	Radixsort(2^6): 31
+	Radixsort(2^8): 25
+	Radixsort(2^16): 55
+	Sortare nativa: 54
 
 Testul: 13
-	Mergesort: 4102
-	Countsort: 22
-	Shellsort: 115
-	Radixsort(10): 91
-	Radixsort(2^4): 59
-	Radixsort(2^5): 48
-	Radixsort(2^6): 42
-	Radixsort(2^8): 33
-	Radixsort(2^16): 61
-	Sortare nativa: 67
+	Mergesort: 3989
+	Countsort: 23
+	Shellsort: 117
+	Radixsort(10): 99
+	Radixsort(2^4): 58
+	Radixsort(2^5): 47
+	Radixsort(2^6): 40
+	Radixsort(2^8): 30
+	Radixsort(2^16): 64
+	Sortare nativa: 68
 
 Testul: 14
-	Mergesort: 4702
-	Countsort: 22
+	Mergesort: 4754
+	Countsort: 26
 	Shellsort: 132
-	Radixsort(10): 116
-	Radixsort(2^4): 74
-	Radixsort(2^5): 62
-	Radixsort(2^6): 46
-	Radixsort(2^8): 37
-	Radixsort(2^16): 68
-	Sortare nativa: 78
+	Radixsort(10): 117
+	Radixsort(2^4): 72
+	Radixsort(2^5): 58
+	Radixsort(2^6): 51
+	Radixsort(2^8): 34
+	Radixsort(2^16): 69
+	Sortare nativa: 79
 
 Testul: 15
-	Mergesort: 5474
-	Countsort: 23
-	Shellsort: 159
-	Radixsort(10): 137
-	Radixsort(2^4): 93
-	Radixsort(2^5): 70
-	Radixsort(2^6): 54
-	Radixsort(2^8): 43
-	Radixsort(2^16): 74
-	Sortare nativa: 93
+	Mergesort: 5476
+	Countsort: 26
+	Shellsort: 154
+	Radixsort(10): 133
+	Radixsort(2^4): 79
+	Radixsort(2^5): 65
+	Radixsort(2^6): 53
+	Radixsort(2^8): 40
+	Radixsort(2^16): 75
+	Sortare nativa: 90
 
 Testul: 16
-	Mergesort: 6179
-	Countsort: 23
-	Shellsort: 182
-	Radixsort(10): 153
-	Radixsort(2^4): 98
-	Radixsort(2^5): 79
-	Radixsort(2^6): 64
+	Mergesort: 6125
+	Countsort: 26
+	Shellsort: 179
+	Radixsort(10): 152
+	Radixsort(2^4): 92
+	Radixsort(2^5): 76
+	Radixsort(2^6): 59
 	Radixsort(2^8): 47
-	Radixsort(2^16): 78
-	Sortare nativa: 105
+	Radixsort(2^16): 81
+	Sortare nativa: 106
 
 Testul: 17
-	Mergesort: 7091
-	Countsort: 23
-	Shellsort: 193
-	Radixsort(10): 167
-	Radixsort(2^4): 109
-	Radixsort(2^5): 92
-	Radixsort(2^6): 74
-	Radixsort(2^8): 51
-	Radixsort(2^16): 86
-	Sortare nativa: 120
+	Mergesort: 6793
+	Countsort: 26
+	Shellsort: 184
+	Radixsort(10): 152
+	Radixsort(2^4): 91
+	Radixsort(2^5): 75
+	Radixsort(2^6): 63
+	Radixsort(2^8): 47
+	Radixsort(2^16): 83
+	Sortare nativa: 113
 
 Testul: 18
-	Mergesort: 71863
+	Mergesort: 71731
 	Countsort: 44
-	Shellsort: 2627
-	Radixsort(10): 1677
-	Radixsort(2^4): 1086
-	Radixsort(2^5): 869
-	Radixsort(2^6): 715
-	Radixsort(2^8): 510
-	Radixsort(2^16): 531
-	Sortare nativa: 1192
+	Shellsort: 2610
+	Radixsort(10): 1687
+	Radixsort(2^4): 1014
+	Radixsort(2^5): 863
+	Radixsort(2^6): 700
+	Radixsort(2^8): 514
+	Radixsort(2^16): 518
+	Sortare nativa: 1211
 
 Testul: 19
-	Mergesort: 999500
-	Countsort: 272
-	Shellsort: 35266
-	Radixsort(10): 17013
-	Radixsort(2^4): 10162
-	Radixsort(2^5): 8798
-	Radixsort(2^6): 6971
-	Radixsort(2^8): 5464
-	Radixsort(2^16): 5996
-	Sortare nativa: 13146
+	Countsort: 95
+	Shellsort: 9306
+	Radixsort(10): 5101
+	Radixsort(2^4): 3032
+	Radixsort(2^5): 2483
+	Radixsort(2^6): 2011
+	Radixsort(2^8): 1564
+	Radixsort(2^16): 1548
+	Sortare nativa: 3725
 
 Testul: 20
+	Countsort: 143
+	Shellsort: 17049
+	Radixsort(10): 8222
+	Radixsort(2^4): 5018
+	Radixsort(2^5): 4195
+	Radixsort(2^6): 3370
+	Radixsort(2^8): 2609
+	Radixsort(2^16): 2665
+	Sortare nativa: 6341
+
+Testul: 21
+	Countsort: 195
+	Shellsort: 24994
+	Radixsort(10): 11594
+	Radixsort(2^4): 7296
+	Radixsort(2^5): 5963
+	Radixsort(2^6): 4903
+	Radixsort(2^8): 3780
+	Radixsort(2^16): 4070
+	Sortare nativa: 9161
+
+Testul: 22
+	Countsort: 267
+	Shellsort: 35741
+	Radixsort(10): 16429
+	Radixsort(2^4): 9975
+	Radixsort(2^5): 8202
+	Radixsort(2^6): 6718
+	Radixsort(2^8): 5244
+	Radixsort(2^16): 6000
+	Sortare nativa: 13323
+
+Testul: 23
+	Countsort: 1265
+	Shellsort: 223636
+	Radixsort(10): 81891
+	Radixsort(2^4): 50056
+	Radixsort(2^5): 40864
+	Radixsort(2^6): 42698
+	Radixsort(2^8): 26056
+	Radixsort(2^16): 32835
+	Sortare nativa: 70261
+
+Testul: 24
+	Countsort: 3091
+	Shellsort: 489588
+	Radixsort(10): 178666
+	Radixsort(2^4): 108606
+	Radixsort(2^5): 92508
+	Radixsort(2^6): 80345
+	Radixsort(2^8): 59779
+	Radixsort(2^16): 85871
+	Sortare nativa: 144801
+
