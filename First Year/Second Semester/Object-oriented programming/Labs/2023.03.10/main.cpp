@@ -237,14 +237,14 @@ int main(){
     //cout << a2.getTipMiere() << endl;
 
     StupAlbine a3(a2);
-    StupAlbine a4 = a2;  // Tot copy constructor
+    StupAlbine a4;  // Tot copy constructor
 
     //cout << a3.getTipMiere() << endl;
 
     //cout << StupAlbine::getContorId(); // 1004, avem 4 stupi
 
-    a = a4;
-    cout << a.getTipMiere() << endl;
+    cin>>a4;
+    // cout << a.getTipMiere() << endl;
 
     //a4.afisare();
     //a4.citire();
