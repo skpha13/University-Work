@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string.h>
+#include <vector>
 
 using namespace std;
 
@@ -274,6 +275,79 @@ void Movie::setDescription(char *description) {
     }
     this->description = new char[strlen(description)+1];
     strcpy(this->description,description);
+}
+
+class Series{
+private:
+    string name;
+    int nrSeasons;
+    int* nrEpisodes;
+    // for every season store duration of every episode;
+    vector<vector<float>> durationEpisodes;
+    float rating;
+    int releaseYear;
+public:
+    // constructors
+    Series();
+    Series(string name);
+    Series(string name,int nrSeasons,int* nrEpsiodes);
+    Series(const Series &obj);
+    ~Series();
+    // operators
+
+    // methods
+
+    // getters
+
+    // setters
+};
+
+Series::Series() {
+    this->name = "No name";
+    this->nrSeasons = 0;
+    this->nrEpisodes = NULL;
+    this->durationEpisodes = NULL;
+    this->rating = 0;
+    this->releaseYear = 0;
+}
+
+Series::Series(string name) {
+    this->name = name;
+    this->nrSeasons = 0;
+    this->nrEpisodes = NULL;
+}
+
+Series::Series(string name,int nrSeasons,int* nrEpsiodes) {
+    this->name = name;
+    this->nrSeasons = nrSeasons;
+    this->nrEpisodes = new int[nrSeasons];
+    for(int i=0;i<nrSeasons;i++)
+        this->nrEpisodes[i] = nrEpisodes[i];
+}
+
+Series::Series(const Series &obj) {
+    this->name = obj.name;
+    this->nrSeasons = obj.nrSeasons;
+    if(this->nrEpisodes != NULL)
+    {
+        delete[] this->nrEpisodes;
+        this->nrEpisodes = NULL;
+    }
+    this->nrEpisodes = new int[obj.nrSeasons];
+    for(int i = 0;i<this->nrSeasons;i++)
+        this->nrEpisodes[i] = obj.nrEpisodes[i];
+}
+
+Series::~Series() {
+    if(this->nrEpisodes != NULL)
+    {
+        delete[] this->nrEpisodes;
+        this->nrEpisodes = NULL;
+    }
+    this->name = "";
+    this->nrSeasons = 0;
+    this->rating = 0;
+    this->releaseYear = 0;
 }
 
 int main() {
