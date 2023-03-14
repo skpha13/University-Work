@@ -283,59 +283,114 @@ private:
     int nrSeasons;
     int* nrEpisodes;
     // for every season store duration of every episode;
-    vector<vector<float>> durationEpisodes;
+    vector<vector<int>> durationEpisodes;
     float rating;
     int releaseYear;
 public:
     // constructors
     Series();
-    Series(string name);
-    Series(string name,int nrSeasons,int* nrEpsiodes);
+    Series(string name,float rating,int releaseYear);
+    Series(string name,int nrSeasons,int* nrEpisodes,vector<vector<int>> durationEpisodes);
+    Series(string name,int nrSeasons,int* nrEpisodes,vector<vector<int>> durationEpisodes,float rating,int releaseYear);
     Series(const Series &obj);
     ~Series();
-    // operators
 
+    // operators
+    friend ostream& operator<<(ostream& out,const Series &obj);
+    friend istream& operator>>(istream& in,Series &obj);
+    Series& operator=(const Series &obj);
     // methods
 
     // getters
+    string getName() const;
+    int getNrSeasons();
+    const int* getNrEpisodes() const;
+    float getRating();
+    int getReleaseYear();
+    const vector<vector<int>> getDurationEpisodes() const;
 
     // setters
+    void setName(string name);
+    void setNrSeasons(int nrSeasons);
+    void setNrEpisodes(int* nrEpisodes,int nrSeasons);
+    void setRating(float rating);
+    void setReleaseYear(int releaseYear);
+    void setDurationEpisodes(vector<vector<int>> durationEpisodes);
 };
 
 Series::Series() {
     this->name = "No name";
     this->nrSeasons = 0;
     this->nrEpisodes = NULL;
-    this->durationEpisodes = NULL;
     this->rating = 0;
     this->releaseYear = 0;
 }
 
-Series::Series(string name) {
+Series::Series(string name,float rating,int releaseYear) {
     this->name = name;
     this->nrSeasons = 0;
     this->nrEpisodes = NULL;
+    this->rating = rating;
+    this->releaseYear = releaseYear;
 }
 
-Series::Series(string name,int nrSeasons,int* nrEpsiodes) {
+Series::Series(string name,int nrSeasons,int* nrEpisodes,vector<vector<int>> durationEpisodes) {
     this->name = name;
     this->nrSeasons = nrSeasons;
     this->nrEpisodes = new int[nrSeasons];
     for(int i=0;i<nrSeasons;i++)
         this->nrEpisodes[i] = nrEpisodes[i];
+
+    for(int i=0;i<durationEpisodes.size();i++)
+    {
+        vector<int> temp;
+        for(int j=0;j<durationEpisodes[i].size();j++)
+            temp.push_back(durationEpisodes[i][j]);
+        this->durationEpisodes.push_back(temp);
+    }
+
+    this->releaseYear = 0;
+    this->rating = 0;
+}
+
+Series::Series(string name,int nrSeasons,int* nrEpisodes,vector<vector<int>> durationEpisodes,float rating,int releaseYear) {
+    this->name = name;
+    this->nrSeasons = nrSeasons;
+    this->nrEpisodes = new int[nrSeasons];
+    for(int i=0;i<nrSeasons;i++)
+        this->nrEpisodes[i] = nrEpisodes[i];
+
+    for(int i=0;i<durationEpisodes.size();i++)
+    {
+        vector<int> temp;
+        for(int j=0;j<durationEpisodes[i].size();j++)
+            temp.push_back(durationEpisodes[i][j]);
+        this->durationEpisodes.push_back(temp);
+    }
+
+    this->rating = rating;
+    this->releaseYear = releaseYear;
 }
 
 Series::Series(const Series &obj) {
     this->name = obj.name;
     this->nrSeasons = obj.nrSeasons;
-    if(this->nrEpisodes != NULL)
-    {
-        delete[] this->nrEpisodes;
-        this->nrEpisodes = NULL;
-    }
+    this->rating = obj.rating;
+    this->releaseYear = obj.releaseYear;
+
+    // don't delete nrEpisodes
     this->nrEpisodes = new int[obj.nrSeasons];
-    for(int i = 0;i<this->nrSeasons;i++)
+    for(int i = 0;i<obj.nrSeasons;i++)
         this->nrEpisodes[i] = obj.nrEpisodes[i];
+
+    if(this->durationEpisodes.empty() == 0) this->durationEpisodes.clear();
+    for(int i=0;i<obj.durationEpisodes.size();i++)
+    {
+        vector<int> temp;
+        for(int j=0;j<obj.durationEpisodes[i].size();j++)
+            temp.push_back(obj.durationEpisodes[i][j]);
+        this->durationEpisodes.push_back(temp);
+    }
 }
 
 Series::~Series() {
@@ -344,13 +399,158 @@ Series::~Series() {
         delete[] this->nrEpisodes;
         this->nrEpisodes = NULL;
     }
+    if(this->durationEpisodes.empty() == 0) this->durationEpisodes.clear();
     this->name = "";
     this->nrSeasons = 0;
     this->rating = 0;
     this->releaseYear = 0;
 }
 
+ostream& operator<<(ostream& out,const Series &obj) {
+    out<<"Name: "<<obj.name<<endl;
+    out<<"Release Year: "<<obj.releaseYear<<endl;
+    out<<"Rating: "<<obj.rating<<endl;
+    out<<"Number of Seasons: "<<obj.nrSeasons<<endl;
+    out<<"Number of episodes for each season: "<<endl;
+    if(obj.nrSeasons == 0) cout<<"\t0"<<endl;
+    for(int i=0;i<obj.nrSeasons;i++)
+        cout<<"\tSeason "<<i+1<<": "<<obj.nrEpisodes[i]<<" episodes"<<endl;
+
+    out<<"Duration for each episode: "<<endl;
+    if(obj.durationEpisodes.empty()) cout<<"\t0"<<endl;
+    for(int i=0;i<obj.durationEpisodes.size();i++)
+    {
+        cout<<"\tFor season "<<i+1<<": "<<endl;
+        for(int j=0;j<obj.durationEpisodes[i].size();j++)
+            cout<<"\t\tEpisode "<<j+1<<" takes "<<obj.durationEpisodes[i][j]<<" minutes"<<endl;
+    }
+    return out;
+}
+
+istream& operator>>(istream& in,Series &obj) {
+    cout<<"Enter name: "<<endl;
+    in>>obj.name;
+    cout<<"Enter release year: "<<endl;
+    in>>obj.releaseYear;
+    cout<<"Enter rating: "<<endl;
+    in>>obj.rating;
+    cout<<"Enter number of season: "<<endl;
+    in>>obj.nrSeasons;
+    if(obj.nrEpisodes != NULL)
+    {
+        delete[] obj.nrEpisodes;
+        obj.nrEpisodes = NULL;
+    }
+    obj.nrEpisodes = new int[obj.nrSeasons];
+    for(int i=0;i<obj.nrSeasons;i++)
+    {
+        cout<<"Enter number of episodes for season "<<i+1<<": "<<endl;
+        in>>obj.nrEpisodes[i];
+    }
+    for(int i=0;i<obj.nrSeasons;i++)
+    {
+        vector<int> temp;
+        cout<<"Enter duration for season "<<i+1<<" (in minutes): "<<endl;
+        for(int j=0;j<obj.nrEpisodes[i];j++)
+        {
+            int aux;
+            cout<<"\tEpisode "<<j+1<<": "<<endl;
+            in>>aux;
+            temp.push_back(aux);
+        }
+        obj.durationEpisodes.push_back(temp);
+    }
+
+    return in;
+}
+
+Series& Series::operator=(const Series &obj) {
+    if(this != &obj)
+    {
+        this->name = obj.name;
+        this->nrSeasons = obj.nrSeasons;
+        this->rating = obj.rating;
+        this->releaseYear = obj.releaseYear;
+
+        if(this->nrEpisodes != NULL)
+        {
+            delete[] this->nrEpisodes;
+            this->nrEpisodes = NULL;
+        }
+        this->nrEpisodes = new int[obj.nrSeasons];
+        for(int i = 0;i<obj.nrSeasons;i++)
+            this->nrEpisodes[i] = obj.nrEpisodes[i];
+
+        if(this->durationEpisodes.empty() == 0) this->durationEpisodes.clear();
+        for(int i=0;i<obj.durationEpisodes.size();i++)
+        {
+            vector<int> temp;
+            for(int j=0;j<obj.durationEpisodes[i].size();j++)
+                temp.push_back(obj.durationEpisodes[i][j]);
+            this->durationEpisodes.push_back(temp);
+        }
+    }
+    return *this;
+}
+
+string Series::getName() const {
+    return this->name;
+}
+
+int Series::getNrSeasons() {
+    return this->nrSeasons;
+}
+
+const int *Series::getNrEpisodes() const {
+    return this->nrEpisodes;
+}
+
+float Series::getRating() {
+    return this->rating;
+}
+
+int Series::getReleaseYear() {
+    return this->releaseYear;
+}
+
+const vector<vector<int>> Series::getDurationEpisodes() const{
+    return this->durationEpisodes;
+}
+
+void Series::setName(string name) {
+    this->name = name;
+}
+
+void Series::setNrSeasons(int nrSeasons) {
+    this->nrSeasons = nrSeasons;
+}
+
+void Series::setNrEpisodes(int *nrEpisodes, int nrSeasons) {
+    if(this->nrEpisodes != NULL)
+    {
+        delete[] this->nrEpisodes;
+        this->nrEpisodes = NULL;
+    }
+    this->nrEpisodes = new int[nrSeasons];
+    for(int i=0;i<nrSeasons;i++)
+        this->nrEpisodes[i] = nrEpisodes[i];
+}
+
+void Series::setRating(float rating) {
+    this->rating = rating;
+}
+
+void Series::setReleaseYear(int releaseYear) {
+    this->releaseYear = releaseYear;
+}
+
+void Series::setDurationEpisodes(vector<vector<int>> durationEpisodes) {
+    this->durationEpisodes = durationEpisodes;
+}
+
 int main() {
+//    MOVIES TESTS:
+    /*
     Movie film("Spargerea",126,9.03,'G');
     cout<<film<<endl;
 
@@ -361,5 +561,48 @@ int main() {
     Movie film3;
     cin>>film3;
     cout<<endl<<film3;
+     */
+
+//    SERIES TESTS:
+    /*
+    int v[] = {2,3,1};
+    vector<vector<int>> m{
+            {23,44},
+            {15,74,22},
+            {68},
+    };
+
+    vector<vector<int>> t{
+            {2,5},
+            {1,7,2},
+            {6},
+    };
+    Series serial("Buciumeala",3,v,m);
+    cout<<serial<<endl;
+
+    Series serial2(serial);
+    cout<<serial2<<endl;
+
+    serial2.setDurationEpisodes(t);
+
+    for(int i=0;i<serial2.getDurationEpisodes().size();i++)
+    {
+        for(int j=0;j<serial2.getDurationEpisodes()[i].size();j++)
+            cout<<serial2.getDurationEpisodes()[i][j]<<" ";
+        cout<<endl;
+    }
+
+    Series serial3;
+    serial3.setNrSeasons(3);
+    serial3.setNrEpisodes(v,3);
+    cout<<serial3<<endl;
+
+
+//    Series serial3;
+    cin>>serial3;
+    serial3 = serial;
+    cout<<serial3<<endl;
+     */
+
     return 0;
 }
