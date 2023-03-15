@@ -1,0 +1,89 @@
+Punctajul pentru proiect:
+
+  –  partea de HTML + CSS + responsive:  10 puncte;
+
+  –  partea de JavaScript: 12 puncte;
+
+  –  partea de Node.js: 8 puncte;
+
+ 
+
+Cerinte pentru partea de HTML si CSS (10 puncte):
+
+   - fisiere separate pentru HTML si CSS;
+
+   - HTML: proiectul sa foloseasca tagurile semantice prezentate la curs/laborator;
+
+   - sa treaca testul de validare HTML (http://validator.w3.org/ ) si testul de validare CSS (https://jigsaw.w3.org/css-validator/);
+
+   - site-ul sa fie responsive (media query, unitati relative, tipuri de display);
+
+   - selectori CSS de baza (dupa id, clasa, tag, elementContinut, elementCopil, al n-lea copil de tipul unui tag (:nth-of-type));
+
+   - proprietati: width, height, color, background, font-size, border, padding, margin, display;
+
+   - layout-ul sa contina coloane (pe minim o pagina) si fie realizat fara tabele (folosind flex si grid);
+
+   - sa contina un menu drop-down realizat cu CSS;
+
+   - continut generat (:after, :before);
+
+   - tranzitie care implica schimbarea mai multor proprietati la intervale diferite de timp;
+
+   - animatie care sa modifice mai multe proprietati ale aceluiasi element;
+
+   - continutul siteului sa aiba sens.
+
+ 
+
+Cerinte pentru partea de JavaScript (12 puncte):
+
+   - fisier separat JavaScript;
+
+   - modificarea stilului unui element sau al unui grup de elemente;
+
+   - manevrarea DOM-ului (selectare dupa id, tag, clasa, selectorCSS);
+
+   - creare si stergere de elemente;
+
+   - folosirea si modificarea evenimentelor generate de mouse si tastatura;
+
+   - modificare de proprietati;
+
+   - inputuri functionale (de exemplu: input de tip text/range/number/radio/checkbox, select, textarea);
+
+   - setTimeout, setInterval;
+
+   - folosirea localStorage (sa se pastreze in localStorage o colectie de elemente);
+
+   - folosirea a cel putin unei metode din clasele: Math, Array, String, Date;
+
+   - schimbarea aleatoare a valorilor unor proprietati (de exemplu: culoare, dimensiuni, pozitii);
+
+   - folosirea proprietatilor classList, target, currentTarget;
+
+   - folosirea metodelor getComputedStyle si stopPropagation cu un sens relevant;
+
+   - validarea datelor dintr-un formular folosind expresii regulate;
+
+   - elementele de JavaScript sa fie integrate cu sens in cadrul proiectului ( aplicatie javascript).
+
+
+Cerinte pentru partea de Node.js (8 puncte):
+
+   - cereri get/post: preluare date din formular
+
+   - cereri Ajax cu preluare date din fisier json
+
+   - sesiuni:login+logout
+
+   - template-uri (de exemplu create prin EJS)
+
+   - pagina pentru eroarea 404
+
+
+Atentie!
+
+    - nu puteti folosi librarii, framework-uri CSS sau JavaScript (cum ar fi jQuery, Bootstrap, Angular, React, etc) pentru realizarea frontend-ului.
+
+    - aceste cerinte pot si modificare si/sau completate de fiecare laborant
