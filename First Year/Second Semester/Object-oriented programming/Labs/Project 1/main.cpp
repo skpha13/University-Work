@@ -304,7 +304,7 @@ public:
     // methods
 
     // getters
-    string getName() const;
+    const string getName() const;
     int getNrSeasons();
     const int* getNrEpisodes() const;
     float getRating();
@@ -495,7 +495,7 @@ Series& Series::operator=(const Series &obj) {
     return *this;
 }
 
-string Series::getName() const {
+const string Series::getName() const {
     return this->name;
 }
 
@@ -549,6 +549,120 @@ void Series::setReleaseYear(int releaseYear) {
 void Series::setDurationEpisodes(vector<vector<int>> durationEpisodes) {
     this->durationEpisodes = durationEpisodes;
 }
+
+class User {
+private:
+    // ask how to get all movies from user class
+    static int contorID;
+    const int idUser;
+    string lastName,firstName;
+    vector<string> watched;
+    int year;
+public:
+    // constructors
+    User();
+    User(string lastName,string firstName);
+    User(string lastName,string firstName,int year);
+    User(string lastName,string firstName,int year,vector<string> watched);
+    ~User();
+
+    // operators
+
+    // methods
+//        method to format name
+
+    // getters
+    int getIdUser();
+    static int getContorId();
+    const string getLastName() const;
+    const string getFirstName() const;
+    const vector<string> &getWatched() const;
+    int getYear();
+
+    // setters
+    void setLastName(string lastName);
+    void setFirstName(string firstName);
+    void setWatched(const vector<string> watched);
+    void setYear(int year);
+};
+
+// global declaration for static variable
+int User::contorID = 100000000;
+// using initializer list
+User::User():idUser(contorID++) {
+    this->lastName = "None";
+    this->firstName = "None";
+    this->year = 0;
+}
+
+User::User(string lastName,string firstName):idUser(contorID++) {
+    this->lastName = lastName;
+    this->firstName = firstName;
+    this->year = 0;
+}
+
+User::User(string lastName,string firstName,int year):idUser(contorID++) {
+    this->lastName = lastName;
+    this->firstName = firstName;
+    this->year = year;
+}
+
+User::User(string lastName,string firstName,int year,vector<string> watched):idUser(contorID++) {
+    this->lastName = lastName;
+    this->firstName = firstName;
+    this->year = year;
+    for(int i=0;i<watched.size();i++)
+        this->watched.push_back(watched[i]);
+}
+
+User::~User() {
+    contorID--;
+    this->lastName = "";
+    this->firstName = "";
+    this->year = 0;
+    if(this->watched.empty() == 0) this->watched.clear();
+}
+
+int User::getIdUser() {
+    return this->idUser;
+}
+
+int User::getContorId() {
+    return contorID;
+}
+
+const string User::getLastName() const {
+    return this->lastName;
+}
+
+const string User::getFirstName() const {
+    return this->firstName;
+}
+
+const vector<string> &User::getWatched() const {
+    return this->watched;
+}
+
+int User::getYear() {
+    return this->year;
+}
+
+void User::setLastName(string lastName) {
+    this->lastName = lastName;
+}
+
+void User::setFirstName(string firstName) {
+    this->firstName = firstName;
+}
+
+void User::setWatched(vector<string> watched) {
+    this->watched = watched;
+}
+
+void User::setYear(int year) {
+    this->year = year;
+}
+
 
 int main() {
 //    MOVIES TESTS:
