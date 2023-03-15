@@ -564,9 +564,13 @@ public:
     User(string lastName,string firstName);
     User(string lastName,string firstName,int year);
     User(string lastName,string firstName,int year,vector<string> watched);
+    User(const User &obj);
     ~User();
 
     // operators
+    User& operator=(const User &obj);
+    friend ostream& operator<<(ostream& out,const User &obj);
+    friend istream& operator>>(istream& in,User &obj);
 
     // methods
 //        method to format name
@@ -615,12 +619,72 @@ User::User(string lastName,string firstName,int year,vector<string> watched):idU
         this->watched.push_back(watched[i]);
 }
 
+User::User(const User &obj):idUser(contorID++) {
+    this->lastName = obj.lastName;
+    this->firstName = obj.firstName;
+    this->year = obj.year;
+    for(int i=0;i<obj.watched.size();i++)
+        this->watched.push_back(obj.watched[i]);
+}
+
 User::~User() {
     contorID--;
     this->lastName = "";
     this->firstName = "";
     this->year = 0;
     if(this->watched.empty() == 0) this->watched.clear();
+}
+
+User& User::operator=(const User &obj) {
+    if(this != &obj)
+    {
+        this->lastName = obj.lastName;
+        this->firstName = obj.firstName;
+        this->year = obj.year;
+        if(this->watched.empty() == 0) this->watched.clear();
+        for(int i=0;i<obj.watched.size();i++)
+            this->watched.push_back(obj.watched[i]);
+    }
+    return *this;
+}
+
+ostream& operator<<(ostream& out,const User &obj) {
+    out<<"Last name: "<<obj.lastName<<endl;
+    out<<"First name: "<<obj.firstName<<endl;
+    out<<"Born in year: "<<obj.year<<endl;
+    out<<"Has watched: "<<endl;
+    for(int i=0;i<obj.watched.size();i++)
+        out<<"\t - "<<obj.watched[i]<<endl;
+    out<<endl;
+
+    return out;
+}
+
+istream& operator>>(istream& in,User &obj) {
+    int temp;
+    string tempString;
+
+    cout<<"Enter last name: "<<endl;
+    in>>obj.lastName;
+    cout<<"Enter first name: "<<endl;
+    in>>obj.firstName;
+    cout<<"Enter year in which he was born: "<<endl;
+    in>>obj.year;
+
+    if(obj.watched.empty() == 0) obj.watched.clear();
+    cout<<"Enter how many movies he has watched: "<<endl;
+    in>>temp;
+    // to get rid off \n character after number
+    in.get();
+    for(int i=0;i<temp;i++)
+    {
+        cout<<"\tEnter movie "<<i+1<<": "<<endl;
+        // to read full line with spaces
+        getline(in,tempString);
+        obj.watched.push_back(tempString);
+    }
+
+    return in;
 }
 
 int User::getIdUser() {
@@ -720,5 +784,18 @@ int main() {
     cout<<serial3<<endl;
      */
 
+//    USER TESTS:
+    vector<string> t = {"test","movie"};
+    User A("mihai","ciupercescu",2000,t);
+    cout<<A;
+
+    User B;
+    cin>>B;
+    cout<<endl<<B<<endl;
+
+    User C(B);
+
+    B = A;
+    cout<<B<<endl<<C<<endl;
     return 0;
 }
