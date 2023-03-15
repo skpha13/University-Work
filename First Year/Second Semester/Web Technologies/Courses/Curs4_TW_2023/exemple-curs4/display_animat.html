@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ro">
+	<head>
+		<meta charset="UTF-8"/>
+		<title>Animatie</title>
+		
+                <style>
+			
+		.animat{
+			border:1px solid black;
+			background:blue;
+			width:100px;
+			height:100px;
+			display:block;
+			margin:20px;
+                       animation-name: mic;
+                       animation-duration: 7s;
+      			animation-delay: 2s;
+      			animation-iteration-count:5;
+      			animation-direction:alternate;
+
+      
+                        }
+     
+     @keyframes mic{
+                       100% {display: inline; background-color:red;width:1200px;}
+     
+                }
+
+     .animat:first-child{transition: display 5s;}
+     .animat:first-child:hover{display:inline;}
+                </style>
+		</head>
+	<body>
+	<div class="animat">AAAAAA</div>	
+        <div class="animat">BBBBBB</div>	
+	</body>
+</html>
+
+
+
+
+

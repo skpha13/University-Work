@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ro">
+	<head>
+		<meta charset="UTF-8"/>
+		<title>Animatie</title>
+		
+                <style>
+			
+		.animat{
+			border:1px solid black;
+			background:blue;
+			width:100px;
+			height:100px;
+        		position:absolute;
+        		left:1200px; top:500px;
+     			animation-name: animatie2;
+      			animation-duration: 7s;
+      			animation-delay: 2s;
+      			animation-iteration-count:1;
+      			animation-direction:normal;
+      			animation-fill-mode:both;
+      
+                        }
+
+
+
+
+     @keyframes animatie1{
+       100% {background-color: red;
+            left: 0px;
+            top: 0px;
+            transform: scale(0);}
+     }
+     @keyframes animatie2{
+       100% {background-color: yellow;
+            left: 0px;
+            top: 0px;
+            transform: rotate(360deg);}
+     }
+                </style>
+		</head>
+	<body>
+	<div class="animat"></div>	
+	</body>
+</html>
+
+
+
+
+

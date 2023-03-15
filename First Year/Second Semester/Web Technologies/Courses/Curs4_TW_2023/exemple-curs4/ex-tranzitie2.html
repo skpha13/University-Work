@@ -1,0 +1,52 @@
+<!DOCTYPE html> 
+<html lang="ro"> 
+<head> 
+<style text="text/css">
+
+div{
+ 
+  margin-top:60px;
+  width:200px;
+  height:300px;
+  position:absolute;
+  border:1px solid green;
+  transition: z-index 4s, background-color 4s, width 4s, height 4s, transform 4s;  
+}
+div:nth-of-type(1){
+  left:100px; 
+  background-color:red;
+  transform: rotate(-30deg);
+}
+div:nth-of-type(2){
+  top:-15px;
+  left:200px;
+  background-color:blue;
+}
+div:nth-of-type(3){
+  left:300px;
+  background-color:green;
+  transform: rotate(30deg);
+}
+
+div:hover{
+  z-index: 1;
+  background-color: blueviolet;
+  width:400px;
+  height:600px;
+  transform: rotate(0deg);
+}
+
+</style>
+<meta charset="utf-8">
+<title> transform,transition, animation </title>
+ </head>
+<body> 
+
+    <div>Hello1</div>
+    <div>Hello2</div>
+    <div>Hello3</div>
+
+</body>
+</html>
+
+
