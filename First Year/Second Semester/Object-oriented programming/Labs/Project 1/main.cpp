@@ -125,6 +125,8 @@ Movie& Movie::operator=(const Movie &obj) {
         this->rating = obj.rating;
         this->ageRating = obj.ageRating;
     }
+    // ask why it works without
+    return *this;
 }
 
 ostream& operator<<(ostream& out,const Movie &obj) {
