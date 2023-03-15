@@ -33,6 +33,9 @@ public:
     friend istream& operator>>(istream& in,Movie &obj);
 
     // methods
+//      method to verify if a movie is good enough (high rating + top10)
+//      method to find in which era the movie is {silent,sound,golden age of cinema,blockbuster,independent,new age}
+//      method to see if movie is good for kids or not
 
     // getters
     int getReleaseYear();
@@ -301,7 +304,9 @@ public:
     friend ostream& operator<<(ostream& out,const Series &obj);
     friend istream& operator>>(istream& in,Series &obj);
     Series& operator=(const Series &obj);
+
     // methods
+//        method to see how long a season is or the whole series
 
     // getters
     const string getName() const;
@@ -574,6 +579,9 @@ public:
 
     // methods
 //        method to format name
+//        method to show his age, and restrictions
+    void formatName();
+    void ageRestriction(int currentYear);
 
     // getters
     int getIdUser();
@@ -727,6 +735,48 @@ void User::setYear(int year) {
     this->year = year;
 }
 
+void User::formatName() {
+    if(this->lastName.empty() == 0)
+    {
+        this->lastName[0] = toupper(this->lastName[0]);
+        for(int i=1;i<this->lastName.size();i++)
+            this->lastName[i] = ::tolower(this->lastName[i]);
+    }
+
+    if(this->firstName.empty() == 0)
+    {
+        this->firstName[0] = toupper(this->firstName[0]);
+        for(int i=1;i<this->firstName.size();i++)
+            this->firstName[i] = ::tolower(this->firstName[i]);
+    }
+}
+
+void User::ageRestriction(int currentYear) {
+    int age;
+    age = currentYear - this->year;
+    cout<<"Age of user is: "<<age<<endl;
+    if(age<18)
+    {
+        cout<<"Restrictions: "<<endl;
+        cout<<"\tUsers under the age of 18 are recommended to not watch the R rated Movies, which stands for Restricted,\n as it can show impactful images and showcase violence, unless they are accompanied by an adult";
+    }
+    else
+    {
+        cout<<"Restrictions: "<<endl;
+        cout<<"\tThere are no restrictions, but please keep in mind that it may contain one, or more of the following:\n";
+        cout<<"\t\t - Abuse\n";
+        cout<<"\t\t - Sexual assault\n";
+        cout<<"\t\t - Drug use\n";
+        cout<<"\t\t - Violence\n";
+    }
+}
+
+class Actor {
+private:
+
+public:
+
+};
 
 int main() {
 //    MOVIES TESTS:
@@ -785,6 +835,7 @@ int main() {
      */
 
 //    USER TESTS:
+    /*
     vector<string> t = {"test","movie"};
     User A("mihai","ciupercescu",2000,t);
     cout<<A;
@@ -797,5 +848,10 @@ int main() {
 
     B = A;
     cout<<B<<endl<<C<<endl;
+
+    C.formatName();
+    cout<<C<<endl;
+    C.ageRestriction(2023);
+    */
     return 0;
 }
