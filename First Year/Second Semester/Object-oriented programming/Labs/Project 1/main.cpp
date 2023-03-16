@@ -685,8 +685,8 @@ User::User(const User &obj):idUser(contorID++) {
 
 User::~User() {
     contorID--;
-    this->lastName = "";
-    this->firstName = "";
+    if(this->lastName.empty() == 0) this->lastName.clear();
+    if(this->firstName.empty() == 0) this->firstName.clear();
     this->year = 0;
     if(this->watched.empty() == 0) this->watched.clear();
 }
@@ -711,7 +711,6 @@ ostream& operator<<(ostream& out,const User &obj) {
     out<<"Has watched: "<<endl;
     for(int i=0;i<obj.watched.size();i++)
         out<<"\t - "<<obj.watched[i]<<endl;
-    out<<endl;
 
     return out;
 }
@@ -788,14 +787,14 @@ void User::formatName() {
     {
         this->lastName[0] = toupper(this->lastName[0]);
         for(int i=1;i<this->lastName.size();i++)
-            this->lastName[i] = ::tolower(this->lastName[i]);
+            this->lastName[i] = tolower(this->lastName[i]);
     }
 
     if(this->firstName.empty() == 0)
     {
         this->firstName[0] = toupper(this->firstName[0]);
         for(int i=1;i<this->firstName.size();i++)
-            this->firstName[i] = ::tolower(this->firstName[i]);
+            this->firstName[i] = tolower(this->firstName[i]);
     }
 }
 
@@ -821,10 +820,144 @@ void User::ageRestriction(int currentYear) {
 
 class Actor {
 private:
+    string name;
+    vector<string> starsIn;
+    int age;
+    float salary;
 
 public:
+    // constructors
+    Actor();
+    Actor(string name);
+    Actor(string name,int age);
+    Actor(string name,int age,float salary,vector<string> starsIn);
+    Actor(const Actor &obj);
+    ~Actor();
+
+    // operators
+    Actor& operator=(const Actor &obj);
+    friend ostream& operator<<(ostream& out,const Actor &obj);
+    friend istream& operator>>(istream& in,Actor &obj);
+
+    // methods
+//      see if an actors stars in a given movie
+//      format names of movies
+    void formatMovies();
+    void playsIn(string movie);
 
 };
+
+Actor::Actor() {
+    this->name = "None";
+    this->age = 0;
+    this->salary = 0;
+}
+
+Actor::Actor(string name) {
+    this->name = name;
+    this->age = 0;
+    this->salary = 0;
+}
+
+Actor::Actor(string name, int age) {
+    this->name = name;
+    this->age = age;
+    this->salary = 0;
+}
+
+Actor::Actor(string name, int age, float salary, vector<string> starsIn) {
+    this->name = name;
+    this->age = age;
+    this->salary = salary;
+    for(int i=0;i<starsIn.size();i++)
+        this->starsIn.push_back(starsIn[i]);
+}
+
+Actor::Actor(const Actor &obj) {
+    this->name = obj.name;
+    this->age = obj.age;
+    this->salary = obj.salary;
+    for(int i=0;i<obj.starsIn.size();i++)
+        this->starsIn.push_back(obj.starsIn[i]);
+}
+
+Actor::~Actor() {
+    if(this->name.empty() == 0) this->name.clear();
+    this->age = 0;
+    this->salary = 0;
+    if(this->starsIn.empty() == 0) this->starsIn.clear();
+}
+
+Actor& Actor::operator=(const Actor &obj) {
+    if(this != &obj)
+    {
+        this->name = obj.name;
+        this->age = obj.age;
+        this->salary = obj.salary;
+        if(this->starsIn.empty() == 0) this->starsIn.clear();
+        for(int i=0;i<obj.starsIn.size();i++)
+            this->starsIn.push_back(obj.starsIn[i]);
+    }
+    return *this;
+}
+
+ostream& operator<<(ostream& out,const Actor &obj) {
+    out<<"Name: "<<obj.name<<endl;
+    out<<"Age: "<<obj.age<<endl;
+    out<<"Salary: "<<obj.salary<<endl;
+    out<<"Stars in: "<<endl;
+    for(int i=0;i<obj.starsIn.size();i++)
+        out<<"\t - "<<obj.starsIn[i]<<endl;
+
+    return out;
+}
+
+istream& operator>>(istream& in,Actor &obj) {
+    int temp;
+    string tempString;
+    cout<<"Enter name: "<<endl;
+    getline(in,obj.name);
+    cout<<"Enter age: "<<endl;
+    in>>obj.age;
+    cout<<"Enter salary: "<<endl;
+    in>>obj.salary;
+    cout<<"Enter number of movies in which he/she stars:\n";
+    in>>temp;
+    in.get();
+    if(obj.starsIn.empty() == 0) obj.starsIn.clear();
+    for(int i=0;i<temp;i++)
+    {
+        cout<<"\tEnter movie "<<i+1<<": "<<endl;
+        getline(in,tempString);
+        obj.starsIn.push_back(tempString);
+    }
+
+    return in;
+}
+
+void Actor::formatMovies() {
+    for(int i=0;i<this->starsIn.size();i++)
+    {
+        this->starsIn[i][0] = toupper(this->starsIn[i][0]);
+        for(int j=1;j<this->starsIn[i].size();j++)
+            this->starsIn[i][j] = tolower(this->starsIn[i][j]);
+    }
+}
+
+void Actor::playsIn(string movie) {
+    int ok = 0;
+    for(int i=0;i<movie.size();i++) movie[i] = tolower(movie[i]);
+    movie[0] = toupper(movie[0]);
+    for(int i=0;i<this->starsIn.size();i++)
+        if(movie == this->starsIn[i])
+        {
+            ok = 1;
+            break;
+        }
+    if(ok) cout<<"Yes, he stars in: "<<movie;
+    else cout<<"No, he doesn't star in: "<<movie;
+    cout<<endl;
+}
 
 int main() {
 //    MOVIES TESTS:
@@ -909,5 +1042,24 @@ int main() {
     cout<<C<<endl;
     C.ageRestriction(2023);
     */
+
+//    ACTOR TESTS:
+    /*
+    vector<string> x{"Sugus","Maximus"};
+    Actor A1("marius",23,1000,x);
+
+    A1.formatMovies();
+    A1.playsIn("sugus");
+
+    Actor A2(A1);
+    cout<<A2<<endl;
+
+    Actor A3;
+    cin>>A3;
+    cout<<A3<<endl;
+    A3 = A1;
+    cout<<A3<<endl;
+    */
+
     return 0;
 }
