@@ -36,6 +36,9 @@ public:
 //      method to verify if a movie is good enough (high rating + top10)
 //      method to find in which era the movie is {silent,sound,golden age of cinema,blockbuster,independent,new age}
 //      method to see if movie is good for kids or not
+    void verifyRating();
+    void eraOfMovie();
+    void verifyAge();
 
     // getters
     int getReleaseYear();
@@ -282,6 +285,30 @@ void Movie::setDescription(char *description) {
     strcpy(this->description,description);
 }
 
+void Movie::verifyAge() {
+    if(this->ageRating == 'R')
+        cout<<"This movie isn't recommended for kids. No-one younger than 18 years old may see a 'R' rated movie, which stands for restricted.\n";
+    else
+        cout<<"This movie can be watched by anyone as it is categorised as a 'G' movie, which stands for general audience.\n";
+}
+
+void Movie::eraOfMovie() {
+    if(this->releaseYear >= 1815 && this->releaseYear <= 1910) cout<<"The movie "<<this->name<<" belongs in the Pioneer era.\n";
+    if(this->releaseYear >= 1911 && this->releaseYear <= 1926) cout<<"The movie "<<this->name<<" belongs in the Silent era.\n";
+    if(this->releaseYear >= 1927 && this->releaseYear <= 1940) cout<<"The movie "<<this->name<<" belongs in the Sound era.\n";
+    if(this->releaseYear >= 1941 && this->releaseYear <= 1954) cout<<"The movie "<<this->name<<" belongs in the Golden era.\n";
+    if(this->releaseYear >= 1955 && this->releaseYear <= 1976) cout<<"The movie "<<this->name<<" belongs in the Blockbuster era.\n";
+    if(this->releaseYear >= 1977 && this->releaseYear <= 1990) cout<<"The movie "<<this->name<<" belongs in the Independent era.\n";
+    if(this->releaseYear >= 1991) cout<<"The movie "<<this->name<<" belongs in the New age era.\n";
+}
+
+void Movie::verifyRating() {
+    if(this->isTop10 && this->rating > 7.5)
+        cout<<"This movie is highly recommended.\n";
+    else
+        cout<<"This movie is seen as not that appealing.\n";
+}
+
 class Series{
 private:
     string name;
@@ -307,6 +334,8 @@ public:
 
     // methods
 //        method to see how long a season is or the whole series
+    void getLengthSeason();
+    void getLengthSeries();
 
     // getters
     const string getName() const;
@@ -555,6 +584,25 @@ void Series::setDurationEpisodes(vector<vector<int>> durationEpisodes) {
     this->durationEpisodes = durationEpisodes;
 }
 
+void Series::getLengthSeason() {
+    int sum = 0,indexSeason = 0;
+    cout<<"Enter number of season: "<<endl;
+    cin>>indexSeason;
+    indexSeason--;
+    cin.get();
+    for(int i=0;i<this->durationEpisodes[indexSeason].size();i++)
+        sum += this->durationEpisodes[indexSeason][i];
+    cout<<"Season "<<indexSeason+1<<" takes "<<sum<<" minutes to watch\n";
+}
+
+void Series::getLengthSeries() {
+    int sum = 0;
+    for(int i=0;i<this->durationEpisodes.size();i++)
+        for(int j=0;j<this->durationEpisodes[i].size();j++)
+            sum += this->durationEpisodes[i][j];
+    cout<<"The whole series takes "<<sum<<" minutes to watch\n";
+}
+
 class User {
 private:
     // ask how to get all movies from user class
@@ -784,6 +832,9 @@ int main() {
     Movie film("Spargerea",126,9.03,'G');
     cout<<film<<endl;
 
+    film.verifyRating();
+    film.verifyAge();
+
     Movie film2;
     film2 = film;
     cout<<film2<<endl;
@@ -791,7 +842,8 @@ int main() {
     Movie film3;
     cin>>film3;
     cout<<endl<<film3;
-     */
+    film3.eraOfMovie();
+    */
 
 //    SERIES TESTS:
     /*
@@ -809,6 +861,10 @@ int main() {
     };
     Series serial("Buciumeala",3,v,m);
     cout<<serial<<endl;
+
+    serial.getLengthSeason();
+    serial.getLengthSeries();
+
 
     Series serial2(serial);
     cout<<serial2<<endl;
@@ -832,7 +888,7 @@ int main() {
     cin>>serial3;
     serial3 = serial;
     cout<<serial3<<endl;
-     */
+    */
 
 //    USER TESTS:
     /*
