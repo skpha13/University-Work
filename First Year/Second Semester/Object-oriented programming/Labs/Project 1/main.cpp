@@ -186,7 +186,8 @@ istream& operator>>(istream& in,Movie &obj) {
     cout<<"Rating: "<<endl;
     in>>obj.rating;
 
-    cout<<"Age rating: "<<endl;
+    in.get();
+    cout<<"Age rating(G/R): "<<endl;
     in>>obj.ageRating;
 
     return in;
@@ -964,13 +965,26 @@ class SubMenu {
 private:
     string keyWord;
     bool back;
+    vector<Movie*> movies;
+    vector<Series*> series;
+    vector<User*> users;
+    vector<Actor*> actors;
+
 public:
     // constructors
-    SubMenu(string _class);
+    SubMenu(string _class, vector<Movie*> movies);
+    SubMenu(string _class, vector<Series*> series);
+    SubMenu(string _class, vector<User*> users);
+    SubMenu(string _class, vector<Actor*> actors);
+    ~SubMenu();
 
     // methods
     void showSubMenu();
-    void submenuEngine();
+//    overloading for submenuEngine for every class
+    void submenuEngine(vector<Movie*> movies);
+    void submenuEngine(vector<Series*> series);
+    void submenuEngine(vector<User*> users);
+    void submenuEngine(vector<Actor*> actors);
 
     // getter
     bool getBack(){return this->back;}
@@ -993,7 +1007,7 @@ void SubMenu::showSubMenu() {
     cout<<"0. Go back\n";
 }
 
-void SubMenu::submenuEngine() {
+void SubMenu::submenuEngine(vector<Movie*> movies) {
     this->showSubMenu();
     while (true)
     {
@@ -1008,22 +1022,53 @@ void SubMenu::submenuEngine() {
                 return;
             case 1:
             {
+                // read obj and add to vector
+                Movie *mov = new Movie();
+                cin>>*mov;
+                movies.push_back(mov);
+                this->showSubMenu();
                 break;
             }
             case 2:
             {
+                // delete object at given index from vector
+                int index;
+                cout<<"Give index of movie(starting from 0): "<<endl;
+                cin>>index;
+                movies.erase(movies.begin() + index);
+                this->showSubMenu();
                 break;
             }
             case 3:
             {
+                // update object at given index
+                int index;
+                char tempName[255];
+                cout<<"Give index of movie(starting from 0): \n";
+                cin>>index;
+                cin.get();
+                cout<<"Enter new name for movie: \n";
+                cin.getline(tempName,255);
+                movies[index]->setName(tempName);
+                cout<<*movies[index]<<endl;
+                cout<<"Movie was updated successfully\n";
+                this->showSubMenu();
                 break;
             }
             case 4:
             {
+                // print objects info on screen
+                for(int i=0;i<movies.size();i++)
+                {
+                    cout<<"--- MOVIE "<<i+1<<" ---\n";
+                    cout<<*movies[i]<<endl;
+                }
+                this->showSubMenu();
                 break;
             }
             case 5:
             {
+                // functionalities
                 break;
             }
             default:
@@ -1032,9 +1077,37 @@ void SubMenu::submenuEngine() {
     }
 }
 
-SubMenu::SubMenu(string _class) {
+SubMenu::SubMenu(string _class,vector<Movie*> movies) {
     this->keyWord = _class;
     this->back = false;
+    this->movies = movies;
+}
+
+SubMenu::SubMenu(string _class,vector<Series*> series) {
+    this->keyWord = _class;
+    this->back = false;
+    this->series = series;
+}
+
+SubMenu::SubMenu(string _class,vector<User*> users) {
+    this->keyWord = _class;
+    this->back = false;
+    this->users = users;
+}
+
+SubMenu::SubMenu(string _class,vector<Actor*> actors) {
+    this->keyWord = _class;
+    this->back = false;
+    this->actors = actors;
+}
+
+SubMenu::~SubMenu() {
+    if(this->keyWord.empty() == 0) this->keyWord.clear();
+    this->back = false;
+    if(this->movies.empty() == 0) this->movies.clear();
+    if(this->series.empty() == 0) this->series.clear();
+    if(this->users.empty() == 0) this->users.clear();
+    if(this->actors.empty() == 0) this->actors.clear();
 }
 
 class FunctionMenu {
@@ -1088,6 +1161,10 @@ unsigned short int MainMenu::getOption() {
 
 void MainMenu::processOption() {
     bool jump = false;
+
+    vector<Movie*> m;
+
+    this->showMainMenu();
     while(true)
     {
         int option = this->getOption();
@@ -1096,13 +1173,14 @@ void MainMenu::processOption() {
                 return;
             case 1:
             {
-                SubMenu SM("Movie");
-                SM.submenuEngine();
+                SubMenu SM("Movie",m);
+                SM.submenuEngine(m);
                 jump = SM.getBack();
                 if(SM.getBack() == false) return;
                 this->showMainMenu();
                 break;
             }
+            /*
             case 2:
             {
                 SubMenu SM("Series");
@@ -1130,6 +1208,7 @@ void MainMenu::processOption() {
                 this->showMainMenu();
                 break;
             }
+             */
             default:
                 if(jump == false) cout<<"Options is not valid, please enter another number\n";
         }
@@ -1238,9 +1317,21 @@ int main() {
     cout<<A3<<endl;
     */
 
+//    CC IS CALLED WHEN PUSHING BACK IN VECTOR
+    /*
+    User A,B;
+    vector<User*> u;
+    u.push_back(&A);
+    u.push_back(&B);
+    for(int i=0;i<u.size();i++)
+        cout<<*u[i]<<endl;
+    */
+
 //    MENU TESTS
+
     MainMenu M;
-    M.showMainMenu();
     M.processOption();
+
+
     return 0;
 }
