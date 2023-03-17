@@ -22,3 +22,31 @@ select department_id
 from employees
 where upper(job_id) = 'HR_REP';
 
+select last_name, salary
+from employees 
+where manager_id in (select employee_id
+                    from employees
+                    where manager_id is NULL);
+                    
+select last_name, department_id, salary
+from employees
+where department_id in (select department_id
+                        from employees
+                        where commission_pct is not NULL)
+                    and salary in (select salary
+                                    from employees
+                                    where commission_pct is not NULL);
+                                    
+select last_name, salary
+from employees
+where salary > ANY (select salary
+                    from employees
+                    where upper(job_id) like '%CLERK%')
+order by salary desc;
+
+select last_name, salary
+from employees
+where salary > ALL (select salary
+                    from employees
+                    where upper(job_id) like '%CLERK%')
+order by salary desc;
