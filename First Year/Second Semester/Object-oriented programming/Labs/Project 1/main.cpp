@@ -960,6 +960,182 @@ void Actor::playsIn(string movie) {
     cout<<endl;
 }
 
+class SubMenu {
+private:
+    string keyWord;
+    bool back;
+public:
+    // constructors
+    SubMenu(string _class);
+
+    // methods
+    void showSubMenu();
+    void submenuEngine();
+
+    // getter
+    bool getBack(){return this->back;}
+
+    // setter
+    void setBack(bool back){this->back = back;}
+};
+
+void SubMenu::showSubMenu() {
+    for(int i=0;i<10;i++) cout<<"-";
+    cout<<" SUB-MENU ";
+    for(int i=0;i<10;i++) cout<<"-";
+    cout<<endl;
+
+    cout<<"1. Add "<<this->keyWord<<endl;
+    cout<<"2. Delete "<<this->keyWord<<endl;
+    cout<<"3. Update "<<this->keyWord<<endl;
+    cout<<"4. Print "<<this->keyWord<<endl;
+    cout<<"5. Functionalities for "<<this->keyWord<<endl;
+    cout<<"0. Go back\n";
+}
+
+void SubMenu::submenuEngine() {
+    this->showSubMenu();
+    while (true)
+    {
+        int option;
+        cout<<"Enter option: "<<endl;
+        cin>>option;
+        cin.get();
+        switch (option)
+        {
+            case 0:
+                this->back = true;
+                return;
+            case 1:
+            {
+                break;
+            }
+            case 2:
+            {
+                break;
+            }
+            case 3:
+            {
+                break;
+            }
+            case 4:
+            {
+                break;
+            }
+            case 5:
+            {
+                break;
+            }
+            default:
+                cout<<"Options is not valid, please enter another number\n";
+        }
+    }
+}
+
+SubMenu::SubMenu(string _class) {
+    this->keyWord = _class;
+    this->back = false;
+}
+
+class FunctionMenu {
+    // constructors with 4 diff paramaters "Movie" "Series", etc
+    // for each one builds another menu
+};
+
+class MainMenu {
+private:
+    unsigned short int nrOptions;
+    vector<string> nameOptions;
+
+public:
+    // constructors
+    MainMenu();
+    ~MainMenu();
+
+    // methods
+    void showMainMenu();
+    unsigned short int getOption();
+    void processOption();
+};
+
+MainMenu::MainMenu() {
+    this->nrOptions = 4;
+    this->nameOptions = {"Movie","Series","User","Actor"};
+}
+
+MainMenu::~MainMenu() {
+    this->nrOptions = 0;
+    if(this->nameOptions.empty() == 0) this->nameOptions.clear();
+}
+
+void MainMenu::showMainMenu() {
+    for(int i=0;i<10;i++) cout<<"-";
+    cout<<" MENU ";
+    for(int i=0;i<10;i++) cout<<"-";
+    cout<<endl;
+    for(int i=1;i<=this->nrOptions;i++)
+        cout<<i<<". Access "<<this->nameOptions[i-1]<<" menu\n";
+    cout<<"0. Exit\n";
+}
+
+unsigned short int MainMenu::getOption() {
+    int temp;
+    cout<<"Enter option: "<<endl;
+    cin>>temp;
+    cin.get();
+    return temp;
+}
+
+void MainMenu::processOption() {
+    bool jump = false;
+    while(true)
+    {
+        int option = this->getOption();
+        switch (option) {
+            case 0:
+                return;
+            case 1:
+            {
+                SubMenu SM("Movie");
+                SM.submenuEngine();
+                jump = SM.getBack();
+                if(SM.getBack() == false) return;
+                this->showMainMenu();
+                break;
+            }
+            case 2:
+            {
+                SubMenu SM("Series");
+                SM.submenuEngine();
+                jump = SM.getBack();
+                if(SM.getBack() == false) return;
+                this->showMainMenu();
+                break;
+            }
+            case 3:
+            {
+                SubMenu SM("User");
+                SM.submenuEngine();
+                jump = SM.getBack();
+                if(SM.getBack() == false) return;
+                this->showMainMenu();
+                break;
+            }
+            case 4:
+            {
+                SubMenu SM("Actor");
+                SM.submenuEngine();
+                jump = SM.getBack();
+                if(SM.getBack() == false) return;
+                this->showMainMenu();
+                break;
+            }
+            default:
+                if(jump == false) cout<<"Options is not valid, please enter another number\n";
+        }
+    }
+}
+
 int main() {
 //    MOVIES TESTS:
     /*
@@ -1043,7 +1219,7 @@ int main() {
     cout<<C<<endl;
     C.ageRestriction(2023);
     */
-    
+
 //    ACTOR TESTS:
     /*
     vector<string> x{"Sugus","Maximus"};
@@ -1062,5 +1238,9 @@ int main() {
     cout<<A3<<endl;
     */
 
+//    MENU TESTS
+    MainMenu M;
+    M.showMainMenu();
+    M.processOption();
     return 0;
 }
