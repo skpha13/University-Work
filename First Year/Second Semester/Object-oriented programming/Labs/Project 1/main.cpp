@@ -636,7 +636,7 @@ public:
     static int getContorId();
     const string getLastName() const;
     const string getFirstName() const;
-    const vector<string> &getWatched() const;
+    const vector<string> getWatched() const;
     int getYear();
 
     // setters
@@ -707,6 +707,7 @@ User& User::operator=(const User &obj) {
 ostream& operator<<(ostream& out,const User &obj) {
     out<<"Last name: "<<obj.lastName<<endl;
     out<<"First name: "<<obj.firstName<<endl;
+    out<<"ID: "<<obj.idUser<<endl;
     out<<"Born in year: "<<obj.year<<endl;
     out<<"Has watched: "<<endl;
     for(int i=0;i<obj.watched.size();i++)
@@ -758,7 +759,7 @@ const string User::getFirstName() const {
     return this->firstName;
 }
 
-const vector<string> &User::getWatched() const {
+const vector<string> User::getWatched() const {
     return this->watched;
 }
 
@@ -1042,7 +1043,7 @@ int main() {
     cout<<C<<endl;
     C.ageRestriction(2023);
     */
-
+    
 //    ACTOR TESTS:
     /*
     vector<string> x{"Sugus","Maximus"};
