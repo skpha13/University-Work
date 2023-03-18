@@ -32,6 +32,28 @@ public:
     friend ostream& operator<<(ostream& out,const Movie &obj);
     friend istream& operator>>(istream& in,Movie &obj);
 
+    Movie &operator++();
+    // without & because i don't want it to modify
+    Movie operator++(int);
+
+    // without & because i don't want it to modify
+    Movie operator+(const Movie &obj);
+    Movie operator+(int var);
+
+    Movie operator-(const Movie &obj);
+    Movie operator-(int var);
+
+    // cast operator, explicit/implicit
+    operator double();
+    operator double() const;
+
+    // relational operators
+    bool operator==(const Movie &obj);
+    bool operator<(const Movie &obj);
+    bool operator>(const Movie &obj);
+    bool operator<=(const Movie &obj);
+    bool operator>=(const Movie &obj);
+
     // methods
 //      method to verify if a movie is good enough (high rating + top10)
 //      method to find in which era the movie is {silent,sound,golden age of cinema,blockbuster,independent,new age}
@@ -194,6 +216,83 @@ istream& operator>>(istream& in,Movie &obj) {
     return in;
 }
 
+Movie &Movie::operator++() {
+    this->rating += 1;
+    return *this;
+}
+
+// without & because i don't want it to modify
+Movie Movie::operator++(int) {
+    Movie temp(*this);
+    this->rating += 1;
+    return temp;
+}
+
+// without & because i don't want it to modify
+Movie Movie::operator+(const Movie &obj) {
+    Movie temp(*this);
+    temp.duration = temp.duration + obj.duration;
+    return temp;
+}
+
+Movie Movie::operator+(int var) {
+    Movie temp(*this);
+    temp.duration = temp.duration + var;
+    return temp;
+}
+
+Movie Movie::operator-(const Movie &obj) {
+    Movie temp(*this);
+    temp.duration = temp.duration - obj.duration;
+    return temp;
+}
+
+Movie Movie::operator-(int var) {
+    Movie temp(*this);
+    temp.duration = temp.duration - var;
+    return temp;
+}
+
+Movie::operator double() {
+    return this->rating;
+}
+
+Movie::operator double() const {
+    return this->rating;
+}
+
+bool Movie::operator==(const Movie &obj) {
+    if(strcmp(this->name,obj.name) != 0) return false;
+    if(strcmp(this->description,obj.description) != 0) return false;
+    if(this->releaseYear != obj.releaseYear) return false;
+    if(this->isTop10 != obj.isTop10) return false;
+    if(this->rating != obj.rating) return false;
+    if(this->ageRating != obj.ageRating) return false;
+
+    return true;
+}
+
+bool Movie::operator<(const Movie &obj) {
+    if(strcmp(this->name,obj.name) >= 0) return false;
+    if(this->rating >= obj.rating) return false;
+    if(this->isTop10 >= obj.isTop10) return false;
+
+    return true;
+}
+
+bool Movie::operator>(const Movie &obj) {
+    if(*this == obj) return false;
+    return !(*this < obj);
+}
+
+bool Movie::operator<=(const Movie &obj) {
+    return !(*this > obj);
+}
+
+bool Movie::operator>=(const Movie &obj) {
+    return !(*this <= obj);
+}
+
 Movie::Movie(const Movie &obj) {
     this->releaseYear = obj.releaseYear;
     this->name = new char[strlen(obj.name)+1];
@@ -333,6 +432,26 @@ public:
     friend ostream& operator<<(ostream& out,const Series &obj);
     friend istream& operator>>(istream& in,Series &obj);
     Series& operator=(const Series &obj);
+
+    Series &operator++();
+    Series operator++(int);
+
+    Series operator+(const Series &obj);
+    Series operator+(float var);
+
+    Series operator-(const Series &obj);
+    Series operator-(float var);
+
+    operator string();
+    operator string() const;
+
+    bool operator==(const Series &obj);
+    bool operator<(const Series &obj);
+    bool operator>(const Series &obj);
+    bool operator<=(const Series &obj);
+    bool operator>=(const Series &obj);
+
+    int operator[](int index);
 
     // methods
 //        method to see how long a season is or the whole series
@@ -503,6 +622,97 @@ istream& operator>>(istream& in,Series &obj) {
     }
 
     return in;
+}
+
+Series &Series::operator++() {
+    this->rating += 1;
+    return *this;
+}
+
+Series Series::operator++(int) {
+    Series temp(*this);
+    this->rating += 1;
+    return temp;
+}
+
+Series Series::operator+(const Series &obj) {
+    Series temp(*this);
+    // for commutative relation
+    if(temp.name > obj.name) temp.name += obj.name;
+    else temp.name = obj.name + temp.name;
+    temp.rating += obj.rating;
+    return temp;
+}
+
+Series Series::operator+(float var) {
+    Series temp(*this);
+    temp.rating += var;
+    return temp;
+}
+
+Series Series::operator-(const Series &obj) {
+    Series temp(*this);
+    temp.rating -= obj.rating;
+    return temp;
+}
+
+Series Series::operator-(float var) {
+    Series temp(*this);
+    temp.rating -= var;
+    return temp;
+}
+
+Series::operator string() {
+    return this->name;
+}
+
+Series::operator string() const {
+    return this->name;
+}
+
+bool Series::operator==(const Series &obj) {
+    if(this->name != obj.name) return false;
+    if(this->nrSeasons != obj.nrSeasons) return false;
+    else
+    {
+        for(int i=0;i<this->nrSeasons;i++)
+            if(this->nrEpisodes[i] != obj.nrEpisodes[i])
+                return false;
+    }
+    if(this->durationEpisodes != obj.durationEpisodes) return false;
+    if(this->rating != obj.rating) return false;
+    if(this->releaseYear != obj.releaseYear) return false;
+
+    return true;
+}
+
+bool Series::operator<(const Series &obj) {
+    if(this->name >= obj.name) return false;
+    // this comparation will automatically determine if nrSeasons == and nrEpisodes==
+    if(this->durationEpisodes >= obj.durationEpisodes) return false;
+    if(this->rating >= obj.rating) return false;
+    if(this->releaseYear >= obj.releaseYear) return false;
+
+    return true;
+}
+
+bool Series::operator<=(const Series &obj) {
+    if((*this == obj) || (*this < obj)) return true;
+    return false;
+}
+
+bool Series::operator>(const Series &obj) {
+    return !(*this <= obj);
+}
+
+bool Series::operator>=(const Series &obj) {
+    return !(*this<obj);
+}
+
+int Series::operator[](int index) {
+    if(this->nrEpisodes != NULL && index >= 0 && index < this->nrSeasons)
+        return this->nrEpisodes[index];
+    cout<<"~ Index invalid\n";
 }
 
 Series& Series::operator=(const Series &obj) {
@@ -1798,7 +2008,14 @@ int main() {
 
     Movie film2;
     film2 = film;
+    cout<<(film2 == film)<<endl;
+    film2++;
     cout<<film2<<endl;
+    cout<<(film2 == film)<<endl;
+    float x;
+    x = film;
+    cout<<x<<endl;
+
 
     Movie film3;
     cin>>film3;
@@ -1901,8 +2118,11 @@ int main() {
         cout<<*u[i]<<endl;
     */
 
+//    RUN CONFIGURATION
+    /*
     MainMenu M;
     M.processOption();
+    */
 
     return 0;
 }
