@@ -34,6 +34,7 @@ public:
     //methods
     void afiseazaInfo() const;
     void verificaCuvant(char cuvant[]) const;
+    void verificaCuvantNFA(char cuvant[],vector<int> path,int i,int stare) const;
 };
 
 int Graf::getNrMuchii() {
@@ -64,7 +65,7 @@ void Graf::setValues(char numeFisier[]) {
 
     f>>NrNod>>NrMuchii>>NrStariFinale;
 
-    for(int j=0;j<NrMuchii;j++)
+    for(int j=0;j<NrNod;j++)
     {
         vector<Drum> linie;
         Matrice.push_back(linie);
@@ -144,6 +145,34 @@ void Graf::verificaCuvant(char cuvant[]) const {
             cout<<"q"<<path[i]<<" ";
     }
     else cout<<"Nu accepta";
+}
+
+bool stareVerif = 0;
+void Graf::verificaCuvantNFA(char cuvant[],vector<int> path,int i,int stare) const {
+    for(int j=0;j<Matrice[stare].size();j++)
+    {
+        if(Matrice[stare][j].litera == cuvant[i])
+        {
+            path.push_back(stare);
+            verificaCuvantNFA(cuvant,path,i+1,Matrice[stare][j].urmatorul);
+            path.pop_back();
+        }
+    }
+    if(i == strlen(cuvant))
+    {
+        for(int j=0;j<StariFinale.size();j++)
+            if(stare == StariFinale[j])
+            {
+                path.push_back(stare);
+                cout<<"Accepta ";
+                stareVerif = 1;
+
+                cout<<endl<<"Drum: ";
+                for(int k=0;k<path.size();k++)
+                    cout<<"q"<<path[k]<<" ";
+                cout<<endl;
+            }
+    }
 }
 
 class Meniu{
@@ -267,11 +296,19 @@ void Meniu::selectareModCitire(const Graf &obj,int tipCitire) {
 void Meniu::verificaCuvant(const Graf &obj) {
     if(Meniu::getTipCitire() == 0)
     {
+        vector<int> path;
         char cuvant[256];
         cout<<endl;
         cout<<"Introduceti cuvant:";
         cin.getline(cuvant,255);
-        obj.verificaCuvant(cuvant);
+//        DFA:
+//        obj.verificaCuvant(cuvant);
+
+//        NFA:
+        obj.verificaCuvantNFA(cuvant,path,0,0);
+        if(stareVerif == 0) cout<<"Nu accepta\n";
+        else stareVerif = 0;
+
         cout<<endl<<endl;
     }
     Meniu::afisareMeniu();
