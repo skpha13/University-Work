@@ -4,7 +4,6 @@
 
 using namespace std;
 
-
 // class user
 // class movie
 // class series
@@ -133,7 +132,7 @@ Movie& Movie::operator=(const Movie &obj) {
         this->rating = obj.rating;
         this->ageRating = obj.ageRating;
     }
-    // ask why it works without
+
     return *this;
 }
 
@@ -166,7 +165,7 @@ istream& operator>>(istream& in,Movie &obj) {
     strcpy(obj.name,name);
 
     cout<<"Enter description: "<<endl;
-    // in.getline() to read the whole line until \n
+    // in.getline() to read the whole line inluding \n
     in.getline(description,255);
     if(obj.description != NULL)
     {
@@ -354,6 +353,7 @@ public:
     void setNrEpisodes(int* nrEpisodes,int nrSeasons);
     void setRating(float rating);
     void setReleaseYear(int releaseYear);
+    // done without const because it is passed by value
     void setDurationEpisodes(vector<vector<int>> durationEpisodes);
 };
 
@@ -380,6 +380,7 @@ Series::Series(string name,int nrSeasons,int* nrEpisodes,vector<vector<int>> dur
     for(int i=0;i<nrSeasons;i++)
         this->nrEpisodes[i] = nrEpisodes[i];
 
+    // could have used this->durationEpisodes = durationEpisodes
     for(int i=0;i<durationEpisodes.size();i++)
     {
         vector<int> temp;
@@ -399,6 +400,7 @@ Series::Series(string name,int nrSeasons,int* nrEpisodes,vector<vector<int>> dur
     for(int i=0;i<nrSeasons;i++)
         this->nrEpisodes[i] = nrEpisodes[i];
 
+    // could have used this->durationEpisodes = durationEpisodes
     for(int i=0;i<durationEpisodes.size();i++)
     {
         vector<int> temp;
@@ -583,6 +585,7 @@ void Series::setReleaseYear(int releaseYear) {
     this->releaseYear = releaseYear;
 }
 
+// done without const because it is passed by value
 void Series::setDurationEpisodes(vector<vector<int>> durationEpisodes) {
     this->durationEpisodes = durationEpisodes;
 }
@@ -608,7 +611,6 @@ void Series::getLengthSeries() const {
 
 class User {
 private:
-    // ask how to get all movies from user class
     static int contorID;
     const int idUser;
     string lastName,firstName;
@@ -631,6 +633,7 @@ public:
     // methods
 //        method to format name
 //        method to show his age, and restrictions
+//  formatName not const because i need to modify it
     void formatName();
     void ageRestriction(int currentYear) const;
 
@@ -645,7 +648,7 @@ public:
     // setters
     void setLastName(string lastName);
     void setFirstName(string firstName);
-    void setWatched(const vector<string> watched);
+    void setWatched(vector<string> watched);
     void setYear(int year);
 };
 
@@ -972,6 +975,7 @@ void Actor::formatMovies() {
     }
 }
 
+// const so i can use it in const function for functionalities
 void Actor::playsIn(string movie) const {
     int ok = 0;
     for(int i=0;i<movie.size();i++) movie[i] = tolower(movie[i]);
@@ -1014,6 +1018,10 @@ public:
     // setter
     void setReturn(bool ret){this->ret = ret;}
 };
+
+Functionalities::Functionalities() {
+    this->ret = false;
+}
 
 void Functionalities::showMovie() {
     for(int i=0;i<10;i++) cout<<"-";
@@ -1214,10 +1222,6 @@ void Functionalities::functionalitiesActor(Actor &obj) {
     }
 }
 
-Functionalities::Functionalities() {
-    this->ret = false;
-}
-
 class SubMenu {
 private:
     string keyWord;
@@ -1229,6 +1233,8 @@ private:
 
 public:
     // constructors
+//    didn't make constructor with no parameters because i don't need it
+//    i add only addresses in vector
     SubMenu(string _class, vector<Movie*> movies);
     SubMenu(string _class, vector<Series*> series);
     SubMenu(string _class, vector<User*> users);
@@ -1242,7 +1248,7 @@ public:
     void submenuEngine(vector<Series*> &series);
     void submenuEngine(vector<User*> &users);
     void submenuEngine(vector<Actor*> &actors);
-
+//    overloading for all types of vector
     bool verifyIndex(const vector<Movie*> &movies,int index);
     bool verifyIndex(const vector<Series*> &series,int index);
     bool verifyIndex(const vector<User*> &users,int index);
@@ -1270,7 +1276,6 @@ void SubMenu::showSubMenu() {
 }
 
 void SubMenu::submenuEngine(vector<Movie*> &movies) {
-    bool ret = false;
     this->showSubMenu();
     while (true)
     {
@@ -1288,6 +1293,7 @@ void SubMenu::submenuEngine(vector<Movie*> &movies) {
                 // read obj and add to vector
                 Movie *mov = new Movie();
                 cin>>*mov;
+                // i add only addresses in vector
                 movies.push_back(mov);
                 this->showSubMenu();
                 break;
@@ -1337,22 +1343,29 @@ void SubMenu::submenuEngine(vector<Movie*> &movies) {
             }
             case 5:
             {
+                int index;
                 Functionalities F;
-                F.functionalitiesMovie(*movies[0]);
-                ret = F.getReturn();
-                if(ret == false) return;
-                F.setReturn(false);
+
+                cout<<"Give index of movie(starting from 0): \n";
+                cin>>index;
+                cin.get();
+                if (this->verifyIndex(movies,index))
+                {
+                    F.functionalitiesMovie(*movies[index]);
+                    if(F.getReturn() == false) return;
+                    F.setReturn(false);
+                }
+                else cout<<"~ Index invalid\n";
                 this->showSubMenu();
                 break;
             }
             default:
-                if(ret == false) cout<<"Options is not valid, please enter another number\n";
+                cout<<"Options is not valid, please enter another number\n";
         }
     }
 }
 
 void SubMenu::submenuEngine(vector<Series*> &series) {
-    bool ret = false;
     this->showSubMenu();
     while (true)
     {
@@ -1368,6 +1381,7 @@ void SubMenu::submenuEngine(vector<Series*> &series) {
             case 1:
             {
                 // read obj and add to vector
+                // i add only addresses in vector
                 Series *ser = new Series();
                 cin>>*ser;
                 series.push_back(ser);
@@ -1419,22 +1433,29 @@ void SubMenu::submenuEngine(vector<Series*> &series) {
             }
             case 5:
             {
+                int index;
                 Functionalities F;
-                F.functionalitiesSeries(*series[0]);
-                ret = F.getReturn();
-                if(ret == false) return;
-                F.setReturn(false);
+
+                cout<<"Give index of series(starting from 0): "<<endl;
+                cin>>index;
+                cin.get();
+                if(this->verifyIndex(series,index))
+                {
+                    F.functionalitiesSeries(*series[index]);
+                    if(F.getReturn() == false) return;
+                    F.setReturn(false);
+                }
+                else cout<<"~ Index invalid\n";
                 this->showSubMenu();
                 break;
             }
             default:
-                if(ret == false) cout<<"Options is not valid, please enter another number\n";
+                cout<<"Options is not valid, please enter another number\n";
         }
     }
 }
 
 void SubMenu::submenuEngine(vector<User*> &users) {
-    bool ret = false;
     this->showSubMenu();
     while (true)
     {
@@ -1450,6 +1471,7 @@ void SubMenu::submenuEngine(vector<User*> &users) {
             case 1:
             {
                 // read obj and add to vector
+                // i add only addresses in vector
                 User *usr = new User();
                 cin>>*usr;
                 users.push_back(usr);
@@ -1460,7 +1482,7 @@ void SubMenu::submenuEngine(vector<User*> &users) {
             {
                 // delete object at given index from vector
                 int index;
-                cout<<"Give index of users(starting from 0): "<<endl;
+                cout<<"Give index of user(starting from 0): "<<endl;
                 cin>>index;
                 cin.get();
                 if (this->verifyIndex(users,index)) users.erase(users.begin() + index);
@@ -1473,7 +1495,7 @@ void SubMenu::submenuEngine(vector<User*> &users) {
                 // update object at given index
                 int index;
                 char tempName[255];
-                cout<<"Give index of users(starting from 0): \n";
+                cout<<"Give index of user(starting from 0): \n";
                 cin>>index;
                 cin.get();
                 if(this->verifyIndex(users,index))
@@ -1501,22 +1523,28 @@ void SubMenu::submenuEngine(vector<User*> &users) {
             }
             case 5:
             {
+                int index;
                 Functionalities F;
-                F.functionalitiesUser(*users[0]);
-                ret = F.getReturn();
-                if(ret == false) return;
-                F.setReturn(false);
+                cout<<"Give index of user(starting from 0): "<<endl;
+                cin>>index;
+                cin.get();
+                if (this->verifyIndex(users,index))
+                {
+                    F.functionalitiesUser(*users[index]);
+                    if(F.getReturn() == false) return;
+                    F.setReturn(false);
+                }
+                else cout<<"~ Index invalid\n";
                 this->showSubMenu();
                 break;
             }
             default:
-                if(ret == false) cout<<"Options is not valid, please enter another number\n";
+                cout<<"Options is not valid, please enter another number\n";
         }
     }
 }
 
 void SubMenu::submenuEngine(vector<Actor*> &actors) {
-    bool ret = false;
     this->showSubMenu();
     while (true)
     {
@@ -1532,6 +1560,7 @@ void SubMenu::submenuEngine(vector<Actor*> &actors) {
             case 1:
             {
                 // read obj and add to vector
+                // i add only addresses in vector
                 Actor *act = new Actor();
                 cin>>*act;
                 actors.push_back(act);
@@ -1555,7 +1584,7 @@ void SubMenu::submenuEngine(vector<Actor*> &actors) {
                 // update object at given index
                 int index;
                 char tempName[255];
-                cout<<"Give index of actors(starting from 0): \n";
+                cout<<"Give index of actor(starting from 0): \n";
                 cin>>index;
                 cin.get();
                 if(this->verifyIndex(actors,index))
@@ -1583,17 +1612,25 @@ void SubMenu::submenuEngine(vector<Actor*> &actors) {
             }
             case 5:
             {
+                int index;
                 Functionalities F;
-                F.functionalitiesActor(*actors[0]);
-                ret = F.getReturn();
-                if(ret == false) return;
-                F.setReturn(false);
+
+                cout<<"Give index of actor(starting from 0): "<<endl;
+                cin>>index;
+                cin.get();
+                if(this->verifyIndex(actors,index))
+                {
+                    F.functionalitiesActor(*actors[index]);
+                    if(F.getReturn() == false) return;
+                    F.setReturn(false);
+                    this->showSubMenu();
+                }
+                else cout<<"~ Index invalid\n";
                 this->showSubMenu();
-                break;
                 break;
             }
             default:
-                if(ret == false) cout<<"Options is not valid, please enter another number\n";
+                cout<<"Options is not valid, please enter another number\n";
         }
     }
 }
@@ -1623,8 +1660,8 @@ SubMenu::SubMenu(string _class,vector<Actor*> actors) {
 }
 
 SubMenu::~SubMenu() {
-    if(this->keyWord.empty() == 0) this->keyWord.clear();
     this->back = false;
+    if(this->keyWord.empty() == 0) this->keyWord.clear();
     if(this->movies.empty() == 0) this->movies.clear();
     if(this->series.empty() == 0) this->series.clear();
     if(this->users.empty() == 0) this->users.clear();
@@ -1696,8 +1733,7 @@ unsigned short int MainMenu::getOption() {
 }
 
 void MainMenu::processOption() {
-    bool jump = false;
-
+    // vectors for each class containing addresses to objects
     vector<Movie*> m;
     vector<Series*> s;
     vector<User*> u;
@@ -1714,10 +1750,8 @@ void MainMenu::processOption() {
                 return;
             case 1:
             {
-//                SubMenu SM("Movie",m);
 //              pass by reference to modify "global" vectors m,s,u,a
                 M.submenuEngine(m);
-                jump = M.getBack();
                 if(M.getBack() == false) return;
                 M.setBack(false);
                 this->showMainMenu();
@@ -1725,9 +1759,7 @@ void MainMenu::processOption() {
             }
             case 2:
             {
-//                SubMenu SM("Series",s);
                 S.submenuEngine(s);
-                jump = S.getBack();
                 if(S.getBack() == false) return;
                 S.setBack(false);
                 this->showMainMenu();
@@ -1735,9 +1767,7 @@ void MainMenu::processOption() {
             }
             case 3:
             {
-//                SubMenu SM("User",u);
                 U.submenuEngine(u);
-                jump = U.getBack();
                 if(U.getBack() == false) return;
                 U.setBack(false);
                 this->showMainMenu();
@@ -1745,16 +1775,14 @@ void MainMenu::processOption() {
             }
             case 4:
             {
-//                SubMenu SM("Actor",a);
                 A.submenuEngine(a);
-                jump = A.getBack();
                 if(A.getBack() == false) return;
                 A.setBack(false);
                 this->showMainMenu();
                 break;
             }
             default:
-                if(jump == false) cout<<"Options is not valid, please enter another number\n";
+                cout<<"Options is not valid, please enter another number\n";
         }
     }
 }
@@ -1861,6 +1889,8 @@ int main() {
     cout<<A3<<endl;
     */
 
+//    MENU TESTS
+
 //    CC IS CALLED WHEN PUSHING BACK IN VECTOR
     /*
     User A,B;
@@ -1871,11 +1901,8 @@ int main() {
         cout<<*u[i]<<endl;
     */
 
-//    MENU TESTS
-
     MainMenu M;
     M.processOption();
-
 
     return 0;
 }
