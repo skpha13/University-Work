@@ -37,16 +37,17 @@ public:
 //      method to verify if a movie is good enough (high rating + top10)
 //      method to find in which era the movie is {silent,sound,golden age of cinema,blockbuster,independent,new age}
 //      method to see if movie is good for kids or not
-    void verifyRating();
-    void eraOfMovie();
-    void verifyAge();
+    void verifyRating() const;
+    void eraOfMovie() const;
+    void verifyAge() const;
 
     // getters
-    int getReleaseYear();
-    float getDuration();
-    bool getIsTop10();
-    double getRating();
-    char getAgeRating();
+//    functionalitiesMovie(const Movie &obj) cannot access or modify with non-const fucntions
+    int getReleaseYear() const;
+    float getDuration() const;
+    bool getIsTop10() const;
+    double getRating() const;
+    char getAgeRating() const;
     const char* getName() const;
     const char* getDescription() const;
 
@@ -219,23 +220,23 @@ Movie::~Movie() {
     }
 }
 
-int Movie::getReleaseYear() {
+int Movie::getReleaseYear() const{
     return releaseYear;
 }
 
-float Movie::getDuration() {
+float Movie::getDuration() const{
     return duration;
 }
 
-bool Movie::getIsTop10() {
+bool Movie::getIsTop10() const{
     return isTop10;
 }
 
-double Movie::getRating() {
+double Movie::getRating() const{
     return rating;
 }
 
-char Movie::getAgeRating() {
+char Movie::getAgeRating() const{
     return ageRating;
 }
 
@@ -287,14 +288,14 @@ void Movie::setDescription(char *description) {
     strcpy(this->description,description);
 }
 
-void Movie::verifyAge() {
+void Movie::verifyAge() const{
     if(this->ageRating == 'R')
         cout<<"This movie isn't recommended for kids. No-one younger than 18 years old may see a 'R' rated movie, which stands for restricted.\n";
     else
         cout<<"This movie can be watched by anyone as it is categorised as a 'G' movie, which stands for general audience.\n";
 }
 
-void Movie::eraOfMovie() {
+void Movie::eraOfMovie() const {
     if(this->releaseYear >= 1815 && this->releaseYear <= 1910) cout<<"The movie "<<this->name<<" belongs in the Pioneer era.\n";
     if(this->releaseYear >= 1911 && this->releaseYear <= 1926) cout<<"The movie "<<this->name<<" belongs in the Silent era.\n";
     if(this->releaseYear >= 1927 && this->releaseYear <= 1940) cout<<"The movie "<<this->name<<" belongs in the Sound era.\n";
@@ -304,7 +305,7 @@ void Movie::eraOfMovie() {
     if(this->releaseYear >= 1991) cout<<"The movie "<<this->name<<" belongs in the New age era.\n";
 }
 
-void Movie::verifyRating() {
+void Movie::verifyRating() const {
     if(this->isTop10 && this->rating > 7.5)
         cout<<"This movie is highly recommended.\n";
     else
@@ -336,8 +337,8 @@ public:
 
     // methods
 //        method to see how long a season is or the whole series
-    void getLengthSeason();
-    void getLengthSeries();
+    void getLengthSeason() const;
+    void getLengthSeries() const;
 
     // getters
     const string getName() const;
@@ -586,7 +587,7 @@ void Series::setDurationEpisodes(vector<vector<int>> durationEpisodes) {
     this->durationEpisodes = durationEpisodes;
 }
 
-void Series::getLengthSeason() {
+void Series::getLengthSeason() const {
     int sum = 0,indexSeason = 0;
     cout<<"Enter number of season: "<<endl;
     cin>>indexSeason;
@@ -597,7 +598,7 @@ void Series::getLengthSeason() {
     cout<<"Season "<<indexSeason+1<<" takes "<<sum<<" minutes to watch\n";
 }
 
-void Series::getLengthSeries() {
+void Series::getLengthSeries() const {
     int sum = 0;
     for(int i=0;i<this->durationEpisodes.size();i++)
         for(int j=0;j<this->durationEpisodes[i].size();j++)
@@ -631,7 +632,7 @@ public:
 //        method to format name
 //        method to show his age, and restrictions
     void formatName();
-    void ageRestriction(int currentYear);
+    void ageRestriction(int currentYear) const;
 
     // getters
     int getIdUser();
@@ -801,7 +802,7 @@ void User::formatName() {
     }
 }
 
-void User::ageRestriction(int currentYear) {
+void User::ageRestriction(int currentYear) const {
     int age;
     age = currentYear - this->year;
     cout<<"Age of user is: "<<age<<endl;
@@ -845,8 +846,9 @@ public:
     // methods
 //      see if an actors stars in a given movie
 //      format names of movies
+// not const because i modify it's name
     void formatMovies();
-    void playsIn(string movie);
+    void playsIn(string movie) const;
 
     // setter
     void setName(string name);
@@ -970,7 +972,7 @@ void Actor::formatMovies() {
     }
 }
 
-void Actor::playsIn(string movie) {
+void Actor::playsIn(string movie) const {
     int ok = 0;
     for(int i=0;i<movie.size();i++) movie[i] = tolower(movie[i]);
     movie[0] = toupper(movie[0]);
@@ -983,6 +985,237 @@ void Actor::playsIn(string movie) {
     if(ok) cout<<"Yes, he stars in: "<<movie;
     else cout<<"No, he doesn't star in: "<<movie;
     cout<<endl;
+}
+
+// 4 functions for every class to show functionalities
+class Functionalities {
+private:
+    bool ret;
+
+public:
+    // constructor
+    Functionalities();
+
+    // methods
+    void showMovie();
+    void showSeries();
+    void showUser();
+    void showActor();
+
+    void functionalitiesMovie(const Movie &obj);
+    void functionalitiesSeries(const Series &obj);
+    // not const because i modify it's name
+    void functionalitiesUser(User &obj);
+    // not const because i modify it's name
+    void functionalitiesActor(Actor &obj);
+
+    // getter
+    bool getReturn() {return this->ret;}
+    // setter
+    void setReturn(bool ret){this->ret = ret;}
+};
+
+void Functionalities::showMovie() {
+    for(int i=0;i<10;i++) cout<<"-";
+    cout<<" FUNCTIONALITIES ";
+    for(int i=0;i<10;i++) cout<<"-";
+    cout<<endl;
+
+    cout<<"1. Find in which era the movie belongs to \n";
+    cout<<"2. Find if the movie is appropriate for kids \n";
+    cout<<"3. See if it's a highly rated film \n";
+    cout<<"0. Go back\n";
+}
+
+void Functionalities::showSeries() {
+    for(int i=0;i<10;i++) cout<<"-";
+    cout<<" FUNCTIONALITIES ";
+    for(int i=0;i<10;i++) cout<<"-";
+    cout<<endl;
+
+    cout<<"1. See how long a season is\n";
+    cout<<"2. See how long the whole series is \n";
+    cout<<"0. Go back\n";
+}
+
+void Functionalities::showUser() {
+    for(int i=0;i<10;i++) cout<<"-";
+    cout<<" FUNCTIONALITIES ";
+    for(int i=0;i<10;i++) cout<<"-";
+    cout<<endl;
+
+    cout<<"1. Format name of user\n";
+    cout<<"2. See age restrictions \n";
+    cout<<"0. Go back\n";
+}
+
+void Functionalities::showActor() {
+    for(int i=0;i<10;i++) cout<<"-";
+    cout<<" FUNCTIONALITIES ";
+    for(int i=0;i<10;i++) cout<<"-";
+    cout<<endl;
+
+    cout<<"1. Format names of movies\n";
+    cout<<"2. See if he plays in a movie \n";
+    cout<<"0. Go back\n";
+}
+
+void Functionalities::functionalitiesMovie(const Movie &obj) {
+    this->showMovie();
+    while(true)
+    {
+        int option;
+        cout<<"Enter option: "<<endl;
+        cin>>option;
+        cin.get();
+
+        switch (option) {
+            case 0:
+            {
+                this->ret = true;
+                return;
+            }
+
+            case 1:
+            {
+                obj.eraOfMovie();
+                this->showMovie();
+                break;
+            }
+
+            case 2:
+            {
+                obj.verifyAge();
+                this->showMovie();
+                break;
+            }
+
+            case 3:
+            {
+                obj.verifyRating();
+                this->showMovie();
+                break;
+            }
+
+            default:
+                cout<<"Options is not valid, please enter another number\n";
+        }
+    }
+}
+
+void Functionalities::functionalitiesSeries(const Series &obj) {
+    this->showSeries();
+    while(true)
+    {
+        int option;
+        cout<<"Enter option: "<<endl;
+        cin>>option;
+        cin.get();
+
+        switch (option) {
+            case 0:
+            {
+                this->ret = true;
+                return;
+            }
+
+            case 1:
+            {
+                obj.getLengthSeason();
+                this->showSeries();
+                break;
+            }
+
+            case 2:
+            {
+                obj.getLengthSeries();
+                this->showSeries();
+                break;
+            }
+
+            default:
+                cout<<"Options is not valid, please enter another number\n";
+        }
+    }
+}
+
+void Functionalities::functionalitiesUser(User &obj) {
+    this->showUser();
+    while(true)
+    {
+        int option;
+        cout<<"Enter option: "<<endl;
+        cin>>option;
+        cin.get();
+
+        switch (option) {
+            case 0:
+            {
+                this->ret = true;
+                return;
+            }
+
+            case 1:
+            {
+                obj.formatName();
+                this->showUser();
+                break;
+            }
+
+            case 2:
+            {
+                obj.ageRestriction(2023);
+                this->showUser();
+                break;
+            }
+
+            default:
+                cout<<"Options is not valid, please enter another number\n";
+        }
+    }
+}
+
+void Functionalities::functionalitiesActor(Actor &obj) {
+    this->showActor();
+    while(true)
+    {
+        int option;
+        cout<<"Enter option: "<<endl;
+        cin>>option;
+        cin.get();
+
+        switch (option) {
+            case 0:
+            {
+                this->ret = true;
+                return;
+            }
+
+            case 1:
+            {
+                obj.formatMovies();
+                this->showActor();
+                break;
+            }
+
+            case 2:
+            {
+                string temp;
+                cout<<"Enter movie: \n";
+                getline(cin,temp);
+                obj.playsIn(temp);
+                this->showActor();
+                break;
+            }
+
+            default:
+                cout<<"Options is not valid, please enter another number\n";
+        }
+    }
+}
+
+Functionalities::Functionalities() {
+    this->ret = false;
 }
 
 class SubMenu {
@@ -1009,6 +1242,7 @@ public:
     void submenuEngine(vector<Series*> &series);
     void submenuEngine(vector<User*> &users);
     void submenuEngine(vector<Actor*> &actors);
+
     bool verifyIndex(const vector<Movie*> &movies,int index);
     bool verifyIndex(const vector<Series*> &series,int index);
     bool verifyIndex(const vector<User*> &users,int index);
@@ -1036,6 +1270,7 @@ void SubMenu::showSubMenu() {
 }
 
 void SubMenu::submenuEngine(vector<Movie*> &movies) {
+    bool ret = false;
     this->showSubMenu();
     while (true)
     {
@@ -1102,16 +1337,22 @@ void SubMenu::submenuEngine(vector<Movie*> &movies) {
             }
             case 5:
             {
-                // functionalities
+                Functionalities F;
+                F.functionalitiesMovie(*movies[0]);
+                ret = F.getReturn();
+                if(ret == false) return;
+                F.setReturn(false);
+                this->showSubMenu();
                 break;
             }
             default:
-                cout<<"Options is not valid, please enter another number\n";
+                if(ret == false) cout<<"Options is not valid, please enter another number\n";
         }
     }
 }
 
 void SubMenu::submenuEngine(vector<Series*> &series) {
+    bool ret = false;
     this->showSubMenu();
     while (true)
     {
@@ -1178,16 +1419,22 @@ void SubMenu::submenuEngine(vector<Series*> &series) {
             }
             case 5:
             {
-                // functionalities
+                Functionalities F;
+                F.functionalitiesSeries(*series[0]);
+                ret = F.getReturn();
+                if(ret == false) return;
+                F.setReturn(false);
+                this->showSubMenu();
                 break;
             }
             default:
-                cout<<"Options is not valid, please enter another number\n";
+                if(ret == false) cout<<"Options is not valid, please enter another number\n";
         }
     }
 }
 
 void SubMenu::submenuEngine(vector<User*> &users) {
+    bool ret = false;
     this->showSubMenu();
     while (true)
     {
@@ -1254,16 +1501,22 @@ void SubMenu::submenuEngine(vector<User*> &users) {
             }
             case 5:
             {
-                // functionalities
+                Functionalities F;
+                F.functionalitiesUser(*users[0]);
+                ret = F.getReturn();
+                if(ret == false) return;
+                F.setReturn(false);
+                this->showSubMenu();
                 break;
             }
             default:
-                cout<<"Options is not valid, please enter another number\n";
+                if(ret == false) cout<<"Options is not valid, please enter another number\n";
         }
     }
 }
 
 void SubMenu::submenuEngine(vector<Actor*> &actors) {
+    bool ret = false;
     this->showSubMenu();
     while (true)
     {
@@ -1330,11 +1583,17 @@ void SubMenu::submenuEngine(vector<Actor*> &actors) {
             }
             case 5:
             {
-                // functionalities
+                Functionalities F;
+                F.functionalitiesActor(*actors[0]);
+                ret = F.getReturn();
+                if(ret == false) return;
+                F.setReturn(false);
+                this->showSubMenu();
+                break;
                 break;
             }
             default:
-                cout<<"Options is not valid, please enter another number\n";
+                if(ret == false) cout<<"Options is not valid, please enter another number\n";
         }
     }
 }
@@ -1391,11 +1650,6 @@ bool SubMenu::verifyIndex(const vector<Actor *> &actors,int index) {
     if(index < 0 || index >= actors.size()) return false;
     return true;
 }
-
-class FunctionMenu {
-    // constructors with 4 diff paramaters "Movie" "Series", etc
-    // for each one builds another menu
-};
 
 class MainMenu {
 private:
