@@ -1,0 +1,6 @@
+			Instructions
+		Proiectați diagrama E/R pentru gestionarea activităților didactice ale unei universități.
+	- Diagrama va trata cel puțin aspectele din descrierea următoare:
+Universitatea are mai multe facultăți și domenii de studiu la care se înscriu studenți. Activitatea universității se desfășoară pe ani universitari (exemplu: 2022-2023). Studenții urmează mai mulți ani de studiu (anul 1, anul 2 etc) și aparțin unor formațiuni de studiu (serii, grupe). În funcție de anul de studiu și domeniul ales, studenții urmează anumite cursuri, seminarii  și laboratoare predate de cadre didactice ale universității. Pentru fiecare curs la care este înscris, fiecare student obține o notă în cadrul unei sesiuni (examinare, restanță, reexaminare/mărire).
+	- Diagrama va respecta modul de reprezentare folosit la curs.
+	- Denumirea fișierului încărcat va respecta formatul: <grupa>_<Nume>_<Prenume>_tema_1.<extensie> (de exemplu, 131_Popescu_Andrei_tema_1.pdf).

@@ -959,6 +959,8 @@ istream& operator>>(istream& in,User &obj) {
     return in;
 }
 
+
+
 int User::getIdUser() {
     return this->idUser;
 }
@@ -2060,6 +2062,19 @@ int main() {
     serial3.setNrSeasons(3);
     serial3.setNrEpisodes(v,3);
     cout<<serial3<<endl;
+
+    Series ser1("nume",4.55,1999);
+
+    Series ser2;
+    ser2 = ser1;
+    cout<<(ser2 == ser1)<<endl;
+    ser2++;
+    cout<<ser2<<endl;
+    cout<<ser2+ser1<<endl;
+    cout<<(ser2 == ser1)<<endl;
+    string x;
+    x = ser1;
+    cout<<x<<endl;
 
 
 //    Series serial3;
