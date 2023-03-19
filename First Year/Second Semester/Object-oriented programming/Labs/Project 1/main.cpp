@@ -840,6 +840,22 @@ public:
     friend ostream& operator<<(ostream& out,const User &obj);
     friend istream& operator>>(istream& in,User &obj);
 
+    User &operator++();
+    User operator++(int);
+
+    User operator+(const User &obj);
+    User operator+(int year);
+    User operator-(const User &obj);
+    User operator-(int year);
+
+    operator string();
+    operator string() const;
+
+    string operator[](int index);
+
+    bool operator==(const User &obj);
+    bool operator<(const User &obj);
+
     // methods
 //        method to format name
 //        method to show his age, and restrictions
@@ -959,7 +975,73 @@ istream& operator>>(istream& in,User &obj) {
     return in;
 }
 
+User &User::operator++() {
+    this->year += 1;
+    return *this;
+}
 
+User User::operator++(int) {
+    User temp(*this);
+    this->year += 1;
+    return temp;
+}
+
+User User::operator+(const User &obj) {
+    User temp(*this);
+    temp.year += obj.year;
+    return temp;
+}
+
+User User::operator+(int year) {
+    User temp(*this);
+    temp.year += year;
+    return temp;
+}
+
+User User::operator-(const User &obj) {
+    User temp(*this);
+    temp.year -= obj.year;
+    return temp;
+}
+
+User User::operator-(int year) {
+    User temp(*this);
+    temp.year -= year;
+    return temp;
+}
+
+User::operator string() {
+    return this->lastName;
+}
+
+User::operator string() const {
+    return this->lastName;
+}
+
+string User::operator[](int index) {
+    if(this->watched.empty() == 0 && index >= 0 && index < this->watched.size())
+        return this->watched[index];
+    cout<<"~ Index invalid\n";
+}
+
+bool User::operator==(const User &obj) {
+    if(this->idUser != obj.idUser) return false;
+    if(this->lastName != obj.lastName) return false;
+    if(this->firstName != obj.firstName) return false;
+    if(this->watched != obj.watched) return false;
+    if(this->year != obj.year) return false;
+
+    return true;
+}
+
+bool User::operator<(const User &obj) {
+    if(this->year >= obj.year) return false;
+    if(this->lastName >= obj.lastName) return false;
+    if(this->firstName >= obj.firstName) return false;
+    if(this->watched >= obj.watched) return false;
+
+    return true;
+}
 
 int User::getIdUser() {
     return this->idUser;
@@ -2093,7 +2175,16 @@ int main() {
     cin>>B;
     cout<<endl<<B<<endl;
 
-    User C(B);
+    User C;
+    C = A;
+    cout<<(A==A)<<endl;
+    cout<<C<<endl;
+    cout<<C[0]<<endl;
+    string a = C;
+    cout<<a<<endl;
+    C++;
+    cout<<(A<C)<<endl;
+
 
     B = A;
     cout<<B<<endl<<C<<endl;
