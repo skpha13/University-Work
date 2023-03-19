@@ -1168,6 +1168,9 @@ public:
     void formatMovies();
     void playsIn(string movie) const;
 
+    // getter
+    string getName(){return this->name;}
+
     // setter
     void setName(string name);
     void setAge(int age);
@@ -1700,6 +1703,8 @@ void SubMenu::submenuEngine(vector<Movie*> &movies) {
             {
                 // delete object at given index from vector
                 int index;
+                for(int i=0;i<movies.size();i++)
+                    cout<<i<<": "<<movies[i]->getName()<<endl;
                 cout<<"Give index of movie(starting from 0): "<<endl;
                 cin>>index;
                 cin.get();
@@ -1713,16 +1718,55 @@ void SubMenu::submenuEngine(vector<Movie*> &movies) {
                 // update object at given index
                 int index;
                 char tempName[255];
+                for(int i=0;i<movies.size();i++)
+                    cout<<i<<": "<<movies[i]->getName()<<endl;
                 cout<<"Give index of movie(starting from 0): \n";
                 cin>>index;
                 cin.get();
                 if (this->verifyIndex(movies,index))
                 {
-                    cout<<"Enter new name for movie: \n";
-                    cin.getline(tempName,255);
-                    movies[index]->setName(tempName);
-                    cout<<*movies[index]<<endl;
-                    cout<<"Movie was updated successfully\n";
+                    bool update = false;
+                    cout<<"Do you want to update the name of the movie? (0:no 1:yes): "<<endl;
+                    cin>>update;
+                    cin.get();
+                    if(update == true)
+                    {
+                        cout<<"Enter new name for movie: \n";
+                        cin.getline(tempName,255);
+                        movies[index]->setName(tempName);
+                        cout<<*movies[index]<<endl;
+                        cout<<"Movie was updated successfully\n";
+                        update = false;
+                    }
+
+                    cout<<"Do you want to update the description of the movie? (0:no 1:yes)\n";
+                    cin>>update;
+                    cin.get();
+                    if(update == true)
+                    {
+                        char tempDescription[255];
+                        cout<<"Enter new description for movie: \n";
+                        cin.getline(tempDescription,255);
+                        movies[index]->setDescription(tempDescription);
+                        cout<<*movies[index]<<endl;
+                        cout<<"Movie was updated successfully\n";
+                        update = false;
+                    }
+
+                    cout<<"Do you want to update the rating of the movie? (0:no 1:yes)\n";
+                    cin>>update;
+                    cin.get();
+                    if(update == true)
+                    {
+                        double rating;
+                        cout<<"Enter new rating for movie: \n";
+                        cin>>rating;
+                        cin.get();
+                        movies[index]->setRating(rating);
+                        cout<<*movies[index]<<endl;
+                        cout<<"Movie was updated successfully\n";
+                        update = false;
+                    }
                 }
                 else cout<<"~ Index invalid\n";
                 this->showSubMenu();
@@ -1743,7 +1787,8 @@ void SubMenu::submenuEngine(vector<Movie*> &movies) {
             {
                 int index;
                 Functionalities F;
-
+                for(int i=0;i<movies.size();i++)
+                    cout<<i<<": "<<movies[i]->getName()<<endl;
                 cout<<"Give index of movie(starting from 0): \n";
                 cin>>index;
                 cin.get();
@@ -1790,6 +1835,9 @@ void SubMenu::submenuEngine(vector<Series*> &series) {
             {
                 // delete object at given index from vector
                 int index;
+
+                for(int i=0;i<series.size();i++)
+                    cout<<i<<": "<<series[i]->getName()<<endl;
                 cout<<"Give index of series(starting from 0): "<<endl;
                 cin>>index;
                 cin.get();
@@ -1803,16 +1851,42 @@ void SubMenu::submenuEngine(vector<Series*> &series) {
                 // update object at given index
                 int index;
                 char tempName[255];
+
+                for(int i=0;i<series.size();i++)
+                    cout<<i<<": "<<series[i]->getName()<<endl;
                 cout<<"Give index of series(starting from 0): \n";
                 cin>>index;
                 cin.get();
                 if(this->verifyIndex(series,index))
                 {
-                    cout<<"Enter new name for series: \n";
-                    cin.getline(tempName,255);
-                    series[index]->setName(tempName);
-                    cout<<*series[index]<<endl;
-                    cout<<"Series was updated successfully\n";
+                    bool update = false;
+                    cout<<"Do you want to update the name of the series? (0:no 1:yes)\n";
+                    cin>>update;
+                    cin.get();
+                    if(update == true)
+                    {
+                        cout<<"Enter new name for series: \n";
+                        cin.getline(tempName,255);
+                        series[index]->setName(tempName);
+                        cout<<*series[index]<<endl;
+                        cout<<"Series was updated successfully\n";
+                        update = false;
+                    }
+
+                    cout<<"Do you want to update the rating of the series? (0:no 1:yes)\n";
+                    cin>>update;
+                    cin.get();
+                    if(update == true)
+                    {
+                        float rating;
+                        cout<<"Enter new rating for series: \n";
+                        cin>>rating;
+                        cin.get();
+                        series[index]->setRating(rating);
+                        cout<<*series[index]<<endl;
+                        cout<<"Series was updated successfully\n";
+                        update = false;
+                    }
                 }
                 else cout<<"~ Invalid index\n";
                 this->showSubMenu();
@@ -1834,6 +1908,8 @@ void SubMenu::submenuEngine(vector<Series*> &series) {
                 int index;
                 Functionalities F;
 
+                for(int i=0;i<series.size();i++)
+                    cout<<i<<": "<<series[i]->getName()<<endl;
                 cout<<"Give index of series(starting from 0): "<<endl;
                 cin>>index;
                 cin.get();
@@ -1880,6 +1956,9 @@ void SubMenu::submenuEngine(vector<User*> &users) {
             {
                 // delete object at given index from vector
                 int index;
+
+                for(int i=0;i<users.size();i++)
+                    cout<<i<<": "<<users[i]->getLastName()<<" "<<users[i]->getFirstName()<<" "<<users[i]->getIdUser()<<endl;
                 cout<<"Give index of user(starting from 0): "<<endl;
                 cin>>index;
                 cin.get();
@@ -1892,17 +1971,42 @@ void SubMenu::submenuEngine(vector<User*> &users) {
             {
                 // update object at given index
                 int index;
-                char tempName[255];
+                char tempLName[255];
+                char tempFName[255];
+
+                for(int i=0;i<users.size();i++)
+                    cout<<i<<": "<<users[i]->getLastName()<<" "<<users[i]->getFirstName()<<" "<<users[i]->getIdUser()<<endl;
                 cout<<"Give index of user(starting from 0): \n";
                 cin>>index;
                 cin.get();
                 if(this->verifyIndex(users,index))
                 {
-                    cout<<"Enter new last name for user: \n";
-                    cin.getline(tempName,255);
-                    users[index]->setLastName(tempName);
-                    cout<<*users[index]<<endl;
-                    cout<<"User was updated successfully\n";
+                    bool update = false;
+                    cout<<"Do you want to update the last name of the user? (0:no 1:yes)\n";
+                    cin>>update;
+                    cin.get();
+                    if(update == true)
+                    {
+                        cout<<"Enter new last name for user: \n";
+                        cin.getline(tempLName,255);
+                        users[index]->setLastName(tempLName);
+                        cout<<*users[index]<<endl;
+                        cout<<"User was updated successfully\n";
+                        update = false;
+                    }
+
+                    cout<<"Do you want to update the first name of the user? (0:no 1:yes)\n";
+                    cin>>update;
+                    cin.get();
+                    if(update == true)
+                    {
+                        cout<<"Enter new first name for user: \n";
+                        cin.getline(tempFName,255);
+                        users[index]->setLastName(tempFName);
+                        cout<<*users[index]<<endl;
+                        cout<<"User was updated successfully\n";
+                        update = false;
+                    }
                 }
                 else cout<<"~ Index invalid\n";
                 this->showSubMenu();
@@ -1923,6 +2027,9 @@ void SubMenu::submenuEngine(vector<User*> &users) {
             {
                 int index;
                 Functionalities F;
+
+                for(int i=0;i<users.size();i++)
+                    cout<<i<<": "<<users[i]->getLastName()<<" "<<users[i]->getFirstName()<<" "<<users[i]->getIdUser()<<endl;
                 cout<<"Give index of user(starting from 0): "<<endl;
                 cin>>index;
                 cin.get();
@@ -1969,6 +2076,9 @@ void SubMenu::submenuEngine(vector<Actor*> &actors) {
             {
                 // delete object at given index from vector
                 int index;
+
+                for(int i=0;i<actors.size();i++)
+                    cout<<i<<": "<<actors[i]->getName()<<endl;
                 cout<<"Give index of actors(starting from 0): "<<endl;
                 cin>>index;
                 cin.get();
@@ -1981,17 +2091,57 @@ void SubMenu::submenuEngine(vector<Actor*> &actors) {
             {
                 // update object at given index
                 int index;
-                char tempName[255];
+                string tempName;
+                for(int i=0;i<actors.size();i++)
+                    cout<<i<<": "<<actors[i]->getName()<<endl;
                 cout<<"Give index of actor(starting from 0): \n";
                 cin>>index;
                 cin.get();
                 if(this->verifyIndex(actors,index))
                 {
-                    cout<<"Enter new last name for user: \n";
-                    cin.getline(tempName,255);
-                    actors[index]->setName(tempName);
-                    cout<<*actors[index]<<endl;
-                    cout<<"Actor was updated successfully\n";
+                    bool update = false;
+                    cout<<"Do you want to update the name of the actor? (0:no 1:yes)\n";
+                    cin>>update;
+                    cin.get();
+                    if(update == true)
+                    {
+                        cout<<"Enter new name for actor: \n";
+                        getline(cin,tempName);
+                        actors[index]->setName(tempName);
+                        cout<<*actors[index]<<endl;
+                        cout<<"Actor was updated successfully\n";
+                        update = false;
+                    }
+
+                    cout<<"Do you want to update the age of the actor? (0:no 1:yes)\n";
+                    cin>>update;
+                    cin.get();
+                    if(update == true)
+                    {
+                        int age;
+                        cout<<"Enter new age for actor: \n";
+                        cin>>age;
+                        cin.get();
+                        actors[index]->setAge(age);
+                        cout<<*actors[index]<<endl;
+                        cout<<"Actor was updated successfully\n";
+                        update = false;
+                    }
+
+                    cout<<"Do you want to update the salary of the actor? (0:no 1:yes)\n";
+                    cin>>update;
+                    cin.get();
+                    if(update == true)
+                    {
+                        float salary;
+                        cout<<"Enter new salary for actor: \n";
+                        cin>>salary;
+                        cin.get();
+                        actors[index]->setSalary(salary);
+                        cout<<*actors[index]<<endl;
+                        cout<<"Actor was updated successfully\n";
+                        update = false;
+                    }
                 }
                 else cout<<"~ Invalid index\n";
                 this->showSubMenu();
@@ -2013,6 +2163,8 @@ void SubMenu::submenuEngine(vector<Actor*> &actors) {
                 int index;
                 Functionalities F;
 
+                for(int i=0;i<actors.size();i++)
+                    cout<<i<<": "<<actors[i]->getName()<<endl;
                 cout<<"Give index of actor(starting from 0): "<<endl;
                 cin>>index;
                 cin.get();
@@ -2346,10 +2498,10 @@ int main() {
     */
 
 //    RUN CONFIGURATION
-    /*
+
     MainMenu M;
     M.processOption();
-    */
+
 
     return 0;
 }
