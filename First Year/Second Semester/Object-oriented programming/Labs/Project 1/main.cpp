@@ -1156,6 +1156,11 @@ public:
 
     string operator[](int index);
 
+    // no & for Actor because we don't want to modify it, passed by value
+    // commutative, and friend so we can access private members
+    friend Actor operator+(Actor A,const Movie &obj);
+    friend Actor operator+(const Movie &obj,Actor A);
+
     // methods
 //      see if an actors stars in a given movie
 //      format names of movies
@@ -1341,6 +1346,22 @@ bool Actor::operator<(const Actor &obj) {
     if(this->starsIn >= obj.starsIn) return false;
 
     return true;
+}
+
+// no & for Actor because we want to modify it, passed by value
+// commutative, and friend so we can access private members
+Actor operator+(Actor A,const Movie &obj) {
+    string temp;
+    temp = obj.getName();
+    A.starsIn.push_back(temp);
+    return A;
+}
+
+Actor operator+(const Movie &obj,Actor A) {
+    string temp;
+    temp = obj.getName();
+    A.starsIn.push_back(temp);
+    return A;
 }
 
 void Actor::formatMovies() {
@@ -2311,6 +2332,17 @@ int main() {
     u.push_back(&B);
     for(int i=0;i<u.size();i++)
         cout<<*u[i]<<endl;
+    */
+
+//    TWO CLASS ADDITION TESTS
+    /*
+    Movie film("Spargerea",126,9.03,'G');
+    vector<string> x{"Sugus","Maximus"};
+    Actor A1("marius",23,1000,x);
+    cout<<A1+film<<endl;
+    cout<<film+A1<<endl;
+    cout<<A1<<endl;
+    cout<<film<<endl;
     */
 
 //    RUN CONFIGURATION
