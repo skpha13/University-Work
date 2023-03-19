@@ -1140,6 +1140,22 @@ public:
     friend ostream& operator<<(ostream& out,const Actor &obj);
     friend istream& operator>>(istream& in,Actor &obj);
 
+    Actor &operator++();
+    Actor operator++(int);
+
+    Actor operator+(const Actor &obj);
+    Actor operator+(int age);
+    Actor operator-(const Actor &obj);
+    Actor operator-(int age);
+
+    operator string();
+    operator string() const;
+
+    bool operator==(const Actor &obj);
+    bool operator<(const Actor &obj);
+
+    string operator[](int index);
+
     // methods
 //      see if an actors stars in a given movie
 //      format names of movies
@@ -1258,6 +1274,73 @@ istream& operator>>(istream& in,Actor &obj) {
     }
 
     return in;
+}
+
+Actor &Actor::operator++() {
+    this->age += 1;
+    return *this;
+}
+
+Actor Actor::operator++(int) {
+    Actor temp(*this);
+    this->age += 1;
+    return temp;
+}
+
+Actor Actor::operator+(const Actor &obj) {
+    Actor temp(*this);
+    temp.age += obj.age;
+    return temp;
+}
+
+Actor Actor::operator+(int age) {
+    Actor temp(*this);
+    temp.age += age;
+    return temp;
+}
+
+Actor Actor::operator-(const Actor &obj) {
+    Actor temp(*this);
+    temp.age -= obj.age;
+    return temp;
+}
+
+Actor Actor::operator-(int age) {
+    Actor temp(*this);
+    temp.age -= age;
+    return temp;
+}
+
+Actor::operator string() {
+    return this->name;
+}
+
+Actor::operator string() const {
+    return this->name;
+}
+
+string Actor::operator[](int index) {
+    if(this->starsIn.empty() == 0 && index >= 0 && index < this->starsIn.size())
+        return this->starsIn[index];
+    cout<<"~ Index invalid\n";
+}
+
+bool Actor::operator==(const Actor &obj) {
+    if(this->name != obj.name) return false;
+    if(this->starsIn != obj.starsIn) return false;
+    if(this->age != obj.age) return false;
+    if(this->salary != obj.salary) return false;
+
+    return true;
+}
+
+bool Actor::operator<(const Actor &obj) {
+    if(this->age >= obj.age) return false;
+    if(this->name >= obj.name) return false;
+    if(this->salary >= obj.salary) return false;
+    if(this->starsIn >= obj.starsIn) return false;
+
+    return true;
 }
 
 void Actor::formatMovies() {
@@ -2203,6 +2286,12 @@ int main() {
     A1.playsIn("sugus");
 
     Actor A2(A1);
+    cout<<(A1==A2)<<endl;
+    cout<<++A1<<endl;
+    cout<<(A1==A2)<<endl;
+    cout<<A2[0]<<endl;
+    string a = A2;
+    cout<<a<<endl;
     cout<<A2<<endl;
 
     Actor A3;
