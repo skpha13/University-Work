@@ -2173,7 +2173,8 @@ void SubMenu::submenuEngine(vector<Actor*> &actors) {
                     F.functionalitiesActor(*actors[index]);
                     if(F.getReturn() == false) return;
                     F.setReturn(false);
-                    this->showSubMenu();
+                    // prints 2 times the sub-menu
+//                    this->showSubMenu();
                 }
                 else cout<<"~ Index invalid\n";
                 this->showSubMenu();

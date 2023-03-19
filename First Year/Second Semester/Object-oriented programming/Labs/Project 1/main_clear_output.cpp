@@ -1701,6 +1701,7 @@ void SubMenu::submenuEngine(vector<Movie*> &movies) {
                 return;
             case 1:
             {
+                system("CLS");
                 // read obj and add to vector
                 Movie *mov = new Movie();
                 cin>>*mov;
@@ -1711,6 +1712,7 @@ void SubMenu::submenuEngine(vector<Movie*> &movies) {
             }
             case 2:
             {
+                system("CLS");
                 // delete object at given index from vector
                 int index;
                 for(int i=0;i<movies.size();i++)
@@ -1725,6 +1727,7 @@ void SubMenu::submenuEngine(vector<Movie*> &movies) {
             }
             case 3:
             {
+                system("CLS");
                 // update object at given index
                 int index;
                 char tempName[255];
@@ -1784,6 +1787,7 @@ void SubMenu::submenuEngine(vector<Movie*> &movies) {
             }
             case 4:
             {
+                system("CLS");
                 // print objects info on screen
                 for(int i=0;i<movies.size();i++)
                 {
@@ -1795,6 +1799,7 @@ void SubMenu::submenuEngine(vector<Movie*> &movies) {
             }
             case 5:
             {
+                system("CLS");
                 int index;
                 Functionalities F;
                 for(int i=0;i<movies.size();i++)
@@ -1835,6 +1840,7 @@ void SubMenu::submenuEngine(vector<Series*> &series) {
                 return;
             case 1:
             {
+                system("CLS");
                 // read obj and add to vector
                 // i add only addresses in vector
                 Series *ser = new Series();
@@ -1845,6 +1851,7 @@ void SubMenu::submenuEngine(vector<Series*> &series) {
             }
             case 2:
             {
+                system("CLS");
                 // delete object at given index from vector
                 int index;
 
@@ -1860,6 +1867,7 @@ void SubMenu::submenuEngine(vector<Series*> &series) {
             }
             case 3:
             {
+                system("CLS");
                 // update object at given index
                 int index;
                 char tempName[255];
@@ -1906,6 +1914,7 @@ void SubMenu::submenuEngine(vector<Series*> &series) {
             }
             case 4:
             {
+                system("CLS");
                 // print objects info on screen
                 for(int i=0;i<series.size();i++)
                 {
@@ -1917,6 +1926,7 @@ void SubMenu::submenuEngine(vector<Series*> &series) {
             }
             case 5:
             {
+                system("CLS");
                 int index;
                 Functionalities F;
 
@@ -1958,6 +1968,7 @@ void SubMenu::submenuEngine(vector<User*> &users) {
                 return;
             case 1:
             {
+                system("CLS");
                 // read obj and add to vector
                 // i add only addresses in vector
                 User *usr = new User();
@@ -1968,6 +1979,7 @@ void SubMenu::submenuEngine(vector<User*> &users) {
             }
             case 2:
             {
+                system("CLS");
                 // delete object at given index from vector
                 int index;
 
@@ -1983,6 +1995,7 @@ void SubMenu::submenuEngine(vector<User*> &users) {
             }
             case 3:
             {
+                system("CLS");
                 // update object at given index
                 int index;
                 char tempLName[255];
@@ -2028,6 +2041,7 @@ void SubMenu::submenuEngine(vector<User*> &users) {
             }
             case 4:
             {
+                system("CLS");
                 // print objects info on screen
                 for(int i=0;i<users.size();i++)
                 {
@@ -2039,6 +2053,7 @@ void SubMenu::submenuEngine(vector<User*> &users) {
             }
             case 5:
             {
+                system("CLS");
                 int index;
                 Functionalities F;
 
@@ -2080,6 +2095,7 @@ void SubMenu::submenuEngine(vector<Actor*> &actors) {
                 return;
             case 1:
             {
+                system("CLS");
                 // read obj and add to vector
                 // i add only addresses in vector
                 Actor *act = new Actor();
@@ -2090,6 +2106,7 @@ void SubMenu::submenuEngine(vector<Actor*> &actors) {
             }
             case 2:
             {
+                system("CLS");
                 // delete object at given index from vector
                 int index;
 
@@ -2105,6 +2122,7 @@ void SubMenu::submenuEngine(vector<Actor*> &actors) {
             }
             case 3:
             {
+                system("CLS");
                 // update object at given index
                 int index;
                 string tempName;
@@ -2165,6 +2183,7 @@ void SubMenu::submenuEngine(vector<Actor*> &actors) {
             }
             case 4:
             {
+                system("CLS");
                 // print objects info on screen
                 for(int i=0;i<actors.size();i++)
                 {
@@ -2176,6 +2195,7 @@ void SubMenu::submenuEngine(vector<Actor*> &actors) {
             }
             case 5:
             {
+                system("CLS");
                 int index;
                 Functionalities F;
 
@@ -2189,7 +2209,6 @@ void SubMenu::submenuEngine(vector<Actor*> &actors) {
                     F.functionalitiesActor(*actors[index]);
                     if(F.getReturn() == false) return;
                     F.setReturn(false);
-                    this->showSubMenu();
                 }
                 else cout<<"~ Index invalid\n";
                 this->showSubMenu();
