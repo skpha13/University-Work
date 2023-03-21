@@ -588,6 +588,7 @@ ostream& operator<<(ostream& out,const Series &obj) {
 }
 
 istream& operator>>(istream& in,Series &obj) {
+    // name should be only one word, otherwise it crashes because of the reading
     cout<<"Enter name: "<<endl;
     in>>obj.name;
     cout<<"Enter release year: "<<endl;
@@ -952,6 +953,7 @@ istream& operator>>(istream& in,User &obj) {
     int temp;
     string tempString;
 
+    // last name and first name should be only one word
     cout<<"Enter last name: "<<endl;
     in>>obj.lastName;
     cout<<"Enter first name: "<<endl;
@@ -1264,6 +1266,7 @@ ostream& operator<<(ostream& out,const Actor &obj) {
 istream& operator>>(istream& in,Actor &obj) {
     int temp;
     string tempString;
+    // here name cand be composed of 2 ore more words as it is read with getline
     cout<<"Enter name: "<<endl;
     getline(in,obj.name);
     cout<<"Enter age: "<<endl;
