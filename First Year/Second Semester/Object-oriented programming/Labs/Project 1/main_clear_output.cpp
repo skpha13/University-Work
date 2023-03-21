@@ -2029,7 +2029,7 @@ void SubMenu::submenuEngine(vector<User*> &users) {
                     {
                         cout<<"Enter new first name for user: \n";
                         cin.getline(tempFName,255);
-                        users[index]->setLastName(tempFName);
+                        users[index]->setFirstName(tempFName);
                         cout<<*users[index]<<endl;
                         cout<<"User was updated successfully\n";
                         update = false;
