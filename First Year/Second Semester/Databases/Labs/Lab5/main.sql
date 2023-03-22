@@ -44,3 +44,37 @@ values (252,'Mincu','Adrian','mail@gmail.com',SYSDATE,'test_job',6000,300);
 
 select * from emp_mal where employee_id = 252;
 
+commit;
+
+describe emp_mal;
+
+insert into emp_mal
+values(253,null,'Mincu','mail@gmail.com',null,sysdate,'test_job',null,null,null,300);
+
+select * from emp_mal where employee_id = 253;
+
+commit;
+
+create table emp1_mal as select * from employees where 1=0;
+
+insert into emp1_mal
+select * from employees where commission_pct > 0.25;
+
+select * from emp1_mal;
+
+rollback;
+
+drop table emp1_mal;
+
+update emp_mal
+set salary = nvl(salary *1.05,0);
+
+select * from emp_mal;
+
+rollback;
+
+update emp_mal
+set job_id = 'SA_REP'
+where department_id = 80 and commission_pct != 0;
+
+select * from emp_mal;
