@@ -2,11 +2,16 @@
 #include <string.h>
 #include <fstream>
 #include <vector>
+#include <set>
 
 using namespace std;
 
 //global variable for menu
 char NumeFisier[50];
+// array for bkt
+char x[25];
+// bool variable to see if word is accepted or not
+bool stareVerif = 0;
 
 struct Drum{
     int urmatorul;
@@ -17,6 +22,7 @@ class Graf{
 private:
     int NrNod,NrMuchii,NrStariFinale,StareInitiala;
     vector<int> StariFinale;
+    set<char> Litere;
     vector<vector<Drum>> Matrice;
 
 public:
@@ -34,6 +40,10 @@ public:
     //methods
     void afiseazaInfo() const;
     void verificaCuvantNFA(char cuvant[],vector<int> path,int i,int stare) const;
+    bool verif(char cuvant[],int stare) const;
+    void verifAcceptat(char cuvant[],int i,int stare,bool &stop) const;
+    bool valid(int k) const;
+    void bkt(int lungime,int k) const;
 };
 
 int Graf::getStareInitiala() const {
@@ -77,6 +87,7 @@ void Graf::setValues(char numeFisier[]) {
     for(int i=0;i<NrMuchii;i++)
     {
         f>>nod_curent>>nod_tranzitie>>valoare;
+        if(valoare != '^') Litere.insert(valoare);
         d.urmatorul = nod_tranzitie;
         d.litera = valoare;
         Matrice[nod_curent].push_back(d);
@@ -114,7 +125,71 @@ void Graf::afiseazaInfo() const {
     cout<<endl;
 }
 
-bool stareVerif = 0;
+bool Graf::verif(char cuvant[],int stare) const {
+    for(int i=0;i<strlen(cuvant);i++)
+    {
+        int ok = 0;
+        for(int j=0;j<Matrice[stare].size();j++)
+        {
+            if(Matrice[stare][j].litera == cuvant[i])
+            {
+                stare = Matrice[stare][j].urmatorul;
+                ok = 1;
+                break;
+            }
+            if(Matrice[stare][j].litera == '^')
+            {
+                j--;
+                ok = 1;
+                break;
+            }
+        }
+        if(ok == 0)
+            return false;
+    }
+    return true;
+}
+
+void Graf::verifAcceptat(char cuvant[],int i,int stare,bool &stop) const {
+    for(int j=0;j<Matrice[stare].size();j++)
+        if(Matrice[stare][j].litera == cuvant[i] && Matrice[stare][j].litera != '^')
+            verifAcceptat(cuvant,i+1,Matrice[stare][j].urmatorul,stop);
+        else if(Matrice[stare][j].litera == '^')
+            verifAcceptat(cuvant,i,Matrice[stare][j].urmatorul,stop);
+    if(i == strlen(cuvant))
+        for(int j=0;j<StariFinale.size();j++)
+            if(stare == StariFinale[j])
+                stop = true;
+}
+
+bool Graf::valid(int k) const {
+    if(verif(x,StareInitiala) == true)
+        return true;
+    return false;
+}
+
+void Graf::bkt(int lungime,int k) const {
+    for(auto index:Litere)
+    {
+        x[k] = index;
+        // verfica doar daca legaturile sunt corecte nu si daca e acceptat
+        if(valid(k))
+        {
+            bool stop = false;
+            verifAcceptat(x,0,StareInitiala,stop);
+            if(k<lungime)
+            {
+                // verifica daca cunvatul este acceptat
+                if(stop == true)
+                    cout<<"\t"<<x<<endl;
+                bkt(lungime,k+1);
+            }
+            else if (k == lungime && stop == true)
+                cout<<"\t"<<x<<endl;
+        }
+    }
+}
+
 void Graf::verificaCuvantNFA(char cuvant[],vector<int> path,int i,int stare) const {
     for(int j=0;j<Matrice[stare].size();j++)
     {
@@ -122,6 +197,12 @@ void Graf::verificaCuvantNFA(char cuvant[],vector<int> path,int i,int stare) con
         {
             path.push_back(stare);
             verificaCuvantNFA(cuvant,path,i+1,Matrice[stare][j].urmatorul);
+            path.pop_back();
+        }
+        else if(Matrice[stare][j].litera == '^')
+        {
+            path.push_back(stare);
+            verificaCuvantNFA(cuvant,path,i,Matrice[stare][j].urmatorul);
             path.pop_back();
         }
     }
@@ -132,7 +213,7 @@ void Graf::verificaCuvantNFA(char cuvant[],vector<int> path,int i,int stare) con
             {
                 path.push_back(stare);
                 cout<<"Accepta ";
-                stareVerif = 1;
+                stareVerif = true;
 
                 cout<<endl<<"Drum: ";
                 for(int k=0;k<path.size();k++)
@@ -182,7 +263,8 @@ void Meniu::afisareMeniu(int lungimeBreak) {
     cout<<"2. Selectare mod citire"<<endl;
     cout<<"3. Verifica cuvant"<<endl;
     cout<<"4. Apasati 4 pentru ajutor"<<endl;
-    cout<<"5. Iesiti din program"<<endl;
+    cout<<"5. Vezi toate cuvintele acceptate"<<endl;
+    cout<<"0. Iesiti din program"<<endl;
 
     // +7 pt lungimea cuvaantului meniu
     cout<<endl;
@@ -193,42 +275,67 @@ void Meniu::afisareMeniu(int lungimeBreak) {
 const void Meniu::prelucrareOptiune(const Graf &obj) {
     int nrCitit;
 
-    cout<<endl<<"Optiune:";
-    cin>>nrCitit;
-    cin.get();
+    while(true)
+    {
+        cout<<endl<<"Optiune:";
+        cin>>nrCitit;
+        cin.get();
 
-    switch (nrCitit) {
-        case 1:
-            obj.afiseazaInfo();
-            Meniu::afisareMeniu();
-            Meniu::prelucrareOptiune(obj);
-            break;
+        switch (nrCitit) {
+            case 0:
+                exit(0);
 
-        case 2:
-            Meniu::selectareModCitire(obj);
-            Meniu::afisareMeniu();
-            Meniu::prelucrareOptiune(obj);
-            break;
+            case 1:
+            {
+                system("CLS");
+                obj.afiseazaInfo();
+                Meniu::afisareMeniu();
+                break;
+            }
 
-        case 3:
-            Meniu::verificaCuvant(obj);
-            Meniu::afisareMeniu();
-            Meniu::prelucrareOptiune(obj);
-            break;
+            case 2:
+            {
+                system("CLS");
+                Meniu::selectareModCitire(obj);
+                Meniu::afisareMeniu();
+                break;
+            }
 
-        case 4:
-            cout<<endl<<"\t"<<"Tastati un numar(cu optiunea pe care o doriti) si apasati enter"<<endl;
-            Meniu::prelucrareOptiune(obj);
-            break;
+            case 3:
+            {
+                system("CLS");
+                Meniu::verificaCuvant(obj);
+                Meniu::afisareMeniu();
+                break;
+            }
 
-        case 5:
-            exit(0);
+            case 4:
+            {
+                cout<<endl<<"\t"<<"Tastati un numar(cu optiunea pe care o doriti) si apasati enter"<<endl;
+                break;
+            }
 
-        default:
-            cout<<endl<<"\t"<<"Selectati o optiune valida"<<endl;
-            Meniu::prelucrareOptiune(obj);
-            break;
+            case 5:
+            {
+                int nr = 0;
+                cout<<"\tIntrodu lungimea cuvantului: "<<endl;
+                cin>>nr;
+                cin.get();
+                cout<<"Cuvinte acceptate de lungime "<<nr<<" : "<<endl;
+                bool stop = false;
+                obj.verifAcceptat("",0,obj.getStareInitiala(),stop);
+                if(stop == true) cout<<"\t^\n";
+                obj.bkt(nr,0);
+                break;
+            }
+
+            default:
+            {
+                cout<<endl<<"\t"<<"Selectati o optiune valida"<<endl;
+            }
+        }
     }
+        
 }
 
 void Meniu::selectareModCitire(const Graf &obj,int tipCitire) {
@@ -251,6 +358,7 @@ void Meniu::selectareModCitire(const Graf &obj,int tipCitire) {
 
         while (a >> cuvant)
         {
+            a.get();
             cout<<endl;
             cout<<cuvant<<": ";
             obj.verificaCuvantNFA(cuvant,path,0,obj.getStareInitiala());
@@ -291,7 +399,6 @@ char* fisier()
 }
 
 int main() {
-    // 0 va fi by default stare initiala
     Graf g;
     g.setValues(fisier());
 
