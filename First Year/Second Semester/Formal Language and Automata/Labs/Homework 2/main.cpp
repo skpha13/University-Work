@@ -40,10 +40,11 @@ public:
     //methods
     void afiseazaInfo() const;
     void verificaCuvantNFA(char cuvant[],vector<int> path,int i,int stare) const;
-    bool verif(char cuvant[],int stare) const;
-    void verifAcceptat(char cuvant[],int i,int stare,bool &stop) const;
+    void verif(char cuvant[],int n,int i,int stare,bool &drum) const;
+    void verifAcceptat(char cuvant[],int n,int i,int stare,bool &stop) const;
     bool valid(int k) const;
     void bkt(int lungime,int k) const;
+    void afisareCuvant(int n) const;
 };
 
 int Graf::getStareInitiala() const {
@@ -125,47 +126,40 @@ void Graf::afiseazaInfo() const {
     cout<<endl;
 }
 
-bool Graf::verif(char cuvant[],int stare) const {
-    for(int i=0;i<strlen(cuvant);i++)
-    {
-        int ok = 0;
-        for(int j=0;j<Matrice[stare].size();j++)
-        {
-            if(Matrice[stare][j].litera == cuvant[i])
-            {
-                stare = Matrice[stare][j].urmatorul;
-                ok = 1;
-                break;
-            }
-            if(Matrice[stare][j].litera == '^')
-            {
-                j--;
-                ok = 1;
-                break;
-            }
-        }
-        if(ok == 0)
-            return false;
-    }
-    return true;
+void Graf::afisareCuvant(int n) const {
+    cout<<"\t";
+    for(int i=0;i<=n;i++)
+        cout<<x[i];
+    cout<<endl;
 }
 
-void Graf::verifAcceptat(char cuvant[],int i,int stare,bool &stop) const {
+void Graf::verifAcceptat(char cuvant[],int n,int i,int stare,bool &stop) const {
     for(int j=0;j<Matrice[stare].size();j++)
         if(Matrice[stare][j].litera == cuvant[i] && Matrice[stare][j].litera != '^')
-            verifAcceptat(cuvant,i+1,Matrice[stare][j].urmatorul,stop);
+            verifAcceptat(cuvant,n,i+1,Matrice[stare][j].urmatorul,stop);
         else if(Matrice[stare][j].litera == '^')
-            verifAcceptat(cuvant,i,Matrice[stare][j].urmatorul,stop);
-    if(i == strlen(cuvant))
+            verifAcceptat(cuvant,n,i,Matrice[stare][j].urmatorul,stop);
+    if(i == n + 1)
         for(int j=0;j<StariFinale.size();j++)
             if(stare == StariFinale[j])
                 stop = true;
 }
 
+void Graf::verif(char cuvant[],int n,int i,int stare,bool &drum) const {
+    if(i == n + 1)
+        drum = true;
+    else
+        for(int j=0;j<Matrice[stare].size();j++)
+            if(Matrice[stare][j].litera == cuvant[i] && Matrice[stare][j].litera != '^')
+                verif(cuvant,n,i+1,Matrice[stare][j].urmatorul,drum);
+            else if(Matrice[stare][j].litera == '^')
+                verif(cuvant,n,i,Matrice[stare][j].urmatorul,drum);
+}
+
 bool Graf::valid(int k) const {
-    if(verif(x,StareInitiala) == true)
-        return true;
-    return false;
+    bool drum = false;
+    verif(x,k,0,StareInitiala,drum);
+    return drum;
 }
 
 void Graf::bkt(int lungime,int k) const {
@@ -176,16 +170,16 @@ void Graf::bkt(int lungime,int k) const {
         if(valid(k))
         {
             bool stop = false;
-            verifAcceptat(x,0,StareInitiala,stop);
-            if(k<lungime)
+            verifAcceptat(x,k,0,StareInitiala,stop);
+            if(k+1 < lungime)
             {
                 // verifica daca cunvatul este acceptat
                 if(stop == true)
-                    cout<<"\t"<<x<<endl;
+                    afisareCuvant(k);
                 bkt(lungime,k+1);
             }
-            else if (k == lungime && stop == true)
-                cout<<"\t"<<x<<endl;
+            else if (k+1 == lungime && stop == true)
+                afisareCuvant(k);
         }
     }
 }
@@ -322,9 +316,6 @@ const void Meniu::prelucrareOptiune(const Graf &obj) {
                 cin>>nr;
                 cin.get();
                 cout<<"Cuvinte acceptate de lungime "<<nr<<" : "<<endl;
-                bool stop = false;
-                obj.verifAcceptat("",0,obj.getStareInitiala(),stop);
-                if(stop == true) cout<<"\t^\n";
                 obj.bkt(nr,0);
                 break;
             }
@@ -335,7 +326,7 @@ const void Meniu::prelucrareOptiune(const Graf &obj) {
             }
         }
     }
-        
+
 }
 
 void Meniu::selectareModCitire(const Graf &obj,int tipCitire) {
@@ -406,5 +397,10 @@ int main() {
     menu.afisareMeniu();
 
     menu.prelucrareOptiune(g);
+//    Graf g;
+//    g.setValues("graf1.in");
+//    bool temp = false;
+//    g.verifAcceptat("0101",3,0,g.getStareInitiala(),temp);
+//    cout<<temp<<endl;
     return 0;
 }
