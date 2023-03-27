@@ -12,6 +12,8 @@ char NumeFisier[50];
 char x[25];
 // bool variable to see if word is accepted or not
 bool stareVerif = 0;
+// to see number of results
+int contor = 0;
 
 struct Drum{
     int urmatorul;
@@ -77,7 +79,6 @@ void Graf::setValues(char numeFisier[]) {
     int nod_curent,nod_tranzitie,stare_finala;
     char valoare;
     Drum d;
-
     f>>NrNod>>NrMuchii>>NrStariFinale>>StareInitiala;
 
     for(int j=0;j<NrNod;j++)
@@ -176,11 +177,11 @@ void Graf::bkt(int lungime,int k) const {
             {
                 // verifica daca cunvatul este acceptat
                 if(stop == true)
-                    afisareCuvant(k);
+                    afisareCuvant(k),contor++;
                 bkt(lungime,k+1);
             }
             else if (k+1 == lungime && stop == true)
-                afisareCuvant(k);
+                afisareCuvant(k),contor++;
         }
     }
 }
@@ -325,6 +326,7 @@ const void Meniu::prelucrareOptiune(const Graf &obj) {
 
             case 5:
             {
+                system("CLS");
                 int nr = 0;
                 cout<<"\tIntrodu lungimea cuvantului: "<<endl;
                 cin>>nr;
@@ -333,7 +335,10 @@ const void Meniu::prelucrareOptiune(const Graf &obj) {
                 bool temp = false;
                 obj.verificaLambda("",0,obj.getStareInitiala(),temp);
                 if(temp) cout<<"\t^\n";
+                contor = 0;
                 obj.bkt(nr,0);
+                cout<<endl<<"In total "<<contor<<" cuvinte\n";
+                Meniu::afisareMeniu();
                 break;
             }
 
