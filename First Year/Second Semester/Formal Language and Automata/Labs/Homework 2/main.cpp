@@ -334,8 +334,8 @@ const void Meniu::prelucrareOptiune(const Graf &obj) {
                 cout<<"Cuvinte acceptate de lungime "<<nr<<" : "<<endl;
                 bool temp = false;
                 obj.verificaLambda("",0,obj.getStareInitiala(),temp);
-                if(temp) cout<<"\t^\n";
                 contor = 0;
+                if(temp) cout<<"\t^\n",contor++;
                 obj.bkt(nr,0);
                 cout<<endl<<"In total "<<contor<<" cuvinte\n";
                 Meniu::afisareMeniu();
