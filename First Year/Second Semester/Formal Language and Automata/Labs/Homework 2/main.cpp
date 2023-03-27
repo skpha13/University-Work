@@ -45,6 +45,7 @@ public:
     bool valid(int k) const;
     void bkt(int lungime,int k) const;
     void afisareCuvant(int n) const;
+    void verificaLambda(char cuvant[],int i,int stare,bool &ok) const;
 };
 
 int Graf::getStareInitiala() const {
@@ -217,6 +218,19 @@ void Graf::verificaCuvantNFA(char cuvant[],vector<int> path,int i,int stare) con
     }
 }
 
+void Graf::verificaLambda(char *cuvant, int i, int stare,bool &ok) const {
+        for(int j=0;j<Matrice[stare].size();j++)
+            if(Matrice[stare][j].litera == cuvant[i])
+                verificaLambda(cuvant,i+1,Matrice[stare][j].urmatorul,ok);
+            else if(Matrice[stare][j].litera == '^')
+                verificaLambda(cuvant,i,Matrice[stare][j].urmatorul,ok);
+        if(i == strlen(cuvant))
+            for(int j=0;j<StariFinale.size();j++)
+                if(stare == StariFinale[j])
+                    ok = true;
+}
+
+
 class Meniu{
 private:
     static bool TipCitire;
@@ -316,6 +330,9 @@ const void Meniu::prelucrareOptiune(const Graf &obj) {
                 cin>>nr;
                 cin.get();
                 cout<<"Cuvinte acceptate de lungime "<<nr<<" : "<<endl;
+                bool temp = false;
+                obj.verificaLambda("",0,obj.getStareInitiala(),temp);
+                if(temp) cout<<"\t^\n";
                 obj.bkt(nr,0);
                 break;
             }
