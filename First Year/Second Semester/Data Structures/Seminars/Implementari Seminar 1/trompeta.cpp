@@ -1,52 +1,54 @@
 #include <iostream>
 #include <fstream>
 #include <stack>
+#include <vector>
 
 using namespace std;
 
 ifstream f("trompeta.in");
 ofstream g("trompeta.out");
 
-int word[1000000];
-
 int main()
 {
-    int n,m,nr,count;
-    f>>n>>m>>nr;
+    int n,count;
+    string s;
+    long unsigned int m;
+    f>>n>>m>>s;
     count = n-m;
-    stack<int> st;
-    while(nr)
+    stack<char> temp;
+    vector<char> v;
+
+    temp.push(s[0]);
+
+    for(int i=1;i<s.size();i++)
     {
-        st.push(nr%10);
-        nr/=10;
-    }
-    stack<int> temp;
-    temp.push(st.top());
-    st.pop();
-    while(!st.empty())
-    {
-        if(!temp.empty() && temp.top() <= st.top() && count!=0)
+        if(!temp.empty() && temp.top() < s[i])
         {
-            while(!temp.empty() && temp.top() < st.top() && count!=0)
-            {
-                temp.pop();
-                count--;
-            }
-            temp.push(st.top());
+            while(!temp.empty() && temp.top() < s[i] && count != 0)
+                temp.pop(), count--;
+            temp.push(s[i]);
         }
-        else if(count == 0) temp.push(st.top());
-        st.pop();
+        else if(temp.size() < m) temp.push(s[i]);
     }
 
-    int k=0;
-    while(!temp.empty())
-    {
-        word[k++] = temp.top();
-        temp.pop();
-    }
-
-    for(int i=m-1;i>=0;i--)
-        g<<word[i];
+    while(!temp.empty()) v.push_back(temp.top()), temp.pop();
+    for(int i=v.size()-1;i>=0;i--)
+        g<<v[i];
     g.close();
     return 0;
 }
+
+// 20 10
+// 11999956498273841228
+
+// 5 4
+// 19990
+
+// 5 3
+// 54321
+
+// 5 3
+// 12345
+
+// 9 3
+// 987987987
