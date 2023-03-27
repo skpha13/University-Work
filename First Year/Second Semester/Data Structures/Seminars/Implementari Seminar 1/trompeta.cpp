@@ -23,33 +23,29 @@ int main()
     stack<int> temp;
     temp.push(st.top());
     st.pop();
-    while(!st.empty() && count!=0)
-    {
-        if(!temp.empty() && temp.top() <= st.top())
-        {
-            temp.pop();
-            temp.push(st.top());
-            st.pop();
-            count--;
-        }
-        else
-        {
-            temp.push(st.top());
-            st.pop();
-        }
-    }
     while(!st.empty())
     {
-        temp.push(st.top());
+        if(!temp.empty() && temp.top() <= st.top() && count!=0)
+        {
+            while(!temp.empty() && temp.top() < st.top() && count!=0)
+            {
+                temp.pop();
+                count--;
+            }
+            temp.push(st.top());
+        }
+        else if(count == 0) temp.push(st.top());
         st.pop();
     }
+
     int k=0;
     while(!temp.empty())
     {
         word[k++] = temp.top();
         temp.pop();
     }
-    for(int i=k-1;i>=0;i--)
+
+    for(int i=m-1;i>=0;i--)
         g<<word[i];
     g.close();
     return 0;
