@@ -18,7 +18,10 @@ int main()
     for(int i=1;i<=n;i++)
     {
         f>>c;
-        if(c=='(' || c=='[' || c=='{') st.push(c);
+        // while c= open parantheses push, and while c = closed parantheses check matching 
+        // after that empty stack
+        if(c=='(' || c=='[' || c=='{')
+                st.push(c);
         else if (c==')' || c==']' || c=='}')
             {
                 if(!st.empty() && ((c==')' && st.top() == '(') || (c==']' && st.top() == '[') || (c=='}' && st.top() == '{')))
@@ -37,3 +40,10 @@ int main()
     g<<mx;
     return 0;
 }
+
+// 16
+// ([{)]}[]{}()[{]}
+
+// 13
+// {)([({})]([{}
+
