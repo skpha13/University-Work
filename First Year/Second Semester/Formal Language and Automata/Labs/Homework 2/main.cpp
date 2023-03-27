@@ -414,10 +414,5 @@ int main() {
     menu.afisareMeniu();
 
     menu.prelucrareOptiune(g);
-//    Graf g;
-//    g.setValues("graf1.in");
-//    bool temp = false;
-//    g.verifAcceptat("0101",3,0,g.getStareInitiala(),temp);
-//    cout<<temp<<endl;
     return 0;
 }
