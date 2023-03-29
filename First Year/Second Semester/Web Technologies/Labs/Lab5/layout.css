@@ -1,0 +1,134 @@
+       table, th, td{
+            border:1px solid black;
+            border-collpase:collapse;
+            }
+       body{
+            background-color:lightblue;
+            margin:0;
+            }
+   
+       header
+           {height:80px; 
+            background:yellow;}
+       
+       h1{
+          font-size:20px;
+          float:left;
+          }
+       
+       header>img{
+          position:fixed;
+          top:0;
+          right:0;
+          height:3.5rem; 
+          animation: carte 10s 3s linear infinite;
+          }
+       
+       @keyframes carte{
+       0% {transform:rotate(0deg);}
+      
+       100%{transform:rotate(360deg);
+       
+       }
+       }
+       table{margin:auto;
+        width:90%;
+    }
+   
+       
+       footer{height:80px; background:white;}
+       
+  /* meniul*/
+       
+       nav {
+       width:100%;
+       height:3.5rem;
+       background-color:tomato;
+}
+
+       nav ul li a {
+  	text-decoration:none;
+  	color:black;
+   	font-size:1.2rem;
+   	display:block;
+        height:100%;
+        width:100%;
+   }
+      nav ul {
+  	list-style-type:none;
+  	margin:0;
+  	padding:0;
+ }
+
+  nav li {margin:0;
+         padding:0;}
+         
+ nav > ul.meniu{
+        display:flex;
+        justify-content:space-around;
+        text-align:center;
+}
+
+  nav > ul.meniu  li{
+        flex-grow:1;
+        border:1px solid white;
+        height:3.5rem;
+        width:100%;
+        line-height:3.5rem;
+	background-color:tomato;
+        position:relative;
+        z-index:10;
+                }
+
+  nav > ul.meniu > li > ul.submeniu {visibility:hidden;}
+  nav > ul.meniu > li:hover > ul.submeniu {visibility:visible; width:100%; background-color:tomato;}
+  nav > ul.meniu  a:hover  {transition: background-color 3s; background-color:lightpink;}
+       
+
+       
+       section{border:3px dotted black; padding:1%;background-color:white;}
+       
+       #container-pagina{
+       display:grid;
+       grid-column-gap:10px;
+       grid-row-gap:10px;
+       grid-template-areas: "home home home home home"
+                            "noutati noutati noutati noutati anunturi"
+                            "noutati noutati noutati noutati orar"
+                            "galerie galerie galerie galerie galerie";
+       }
+       #home{grid-area:home;}
+       #noutati{grid-area:noutati;}
+       #anunturi{grid-area:anunturi;}
+       #orar{grid-area:orar;}
+       #galerie{grid-area:galerie;}
+       
+       #noutati {display:flex;
+                 flex-direction:column;
+                 }       
+       #noutati > article:nth-of-type(1)>img{float:right;
+                                             margin-left:3%;
+       
+       }
+       #noutati > article:nth-of-type(2)>img{float:left;
+                                             margin-right:3%;
+                                            }
+                                            
+       #container-poze{
+                       
+                       display:flex;
+                       flex-direction:row;
+                       flex-flow:wrap;
+                       justify-content:center;
+                       align-items:center;
+                       border:1px solid red;
+                       }
+       figure{ width:33%; 
+               flex-grow:1; 
+               margin:0; 
+               text-align:center;
+               }
+    
+       
+    
+  

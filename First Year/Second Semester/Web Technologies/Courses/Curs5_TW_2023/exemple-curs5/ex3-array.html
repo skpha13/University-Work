@@ -1,0 +1,56 @@
+<!DOCTYPE html> 
+<html lang="ro"> 
+<head> 
+
+<script type="text/javascript" >
+ window.onload = myMain;
+ function myMain(){
+ document.getElementById("click").onclick = prelucreaza;
+}
+
+function prelucreaza(){
+ var clasa =[{nume:"Ion",nota:5},
+  {nume:"Petre",nota:6},{nume:"Paul",nota:3},{nume:"Ana",nota:8},{nume:"Maria",nota:6},{nume:"Simona",nota:4}];
+var copie=clasa.slice();
+var rez=clasa.filter((x) => (x.nota >= 5))
+          .map((x) => (x.nume+" are  nota "+x.nota))
+          .forEach((x)=>{alert(x)});
+
+/*
+function getRandomArbitrary(min, max) {
+  return Math.random() * (max - min) + min;
+}
+alert(getRandomArbitrary(2,7));
+
+ /*function getRandomInt(max) {  
+  // generarea random a unui întreg intre 0 și max-1
+  return Math.floor(Math.random() * max);
+  }
+
+var culori=["blue","green","yellow","black","red","orange","white","pink"];
+document.body.style.backgroundColor=culori[getRandomInt(culori.length)];*/
+}
+</script>
+<meta charset="utf-8">
+<title> JS </title>
+ </head>
+ 
+<body>
+  <section><h2> Grupa 1 </h2>
+  <table>
+  <tr><th> Nume</th> <th> Nota</th> </tr>
+   <tr><td>Ion</td> <td> 5 </td> </tr>
+   <tr><td>Petre</td> <td> 6 </td> </tr>
+   <tr><td>Paul</td> <td> 3</td> </tr>
+   <tr><td>Ana</td> <td> 8</td> </tr>
+   <tr><td>Maria</td> <td> 6 </td> </tr>
+   <tr><td>Simona</td> <td> 4 </td> </tr>
+  </table>
+  
+  <button id="click"> Promovati </button> 
+  </section>
+
+</body>
+</html>
+
+
