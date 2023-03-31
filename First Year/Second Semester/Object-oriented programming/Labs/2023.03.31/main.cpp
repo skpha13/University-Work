@@ -158,6 +158,8 @@ public:
     {
         if(this != &obj)
         {
+            // apelam noi separat operatorul egal pentru partea
+            // de Bautura din BauturiAlcoolice
             Bautura::operator=(obj);
             this->alcoolemie = obj.alcoolemie;
         }
@@ -165,6 +167,9 @@ public:
     }
     friend istream& operator>>(istream &in,BauturaAlcoolica &obj)
     {
+        // daca incercam (fara cast) se va duce in bautura
+        // va vedea ca nu e alcoolemie se va duce in BauturaAlcoolica
+        // si se va cicla asa infinit
         in>>(Bautura&)obj;
         cout<<"Alcoolemie: \n";
         in>>obj.alcoolemie;
@@ -172,6 +177,9 @@ public:
     }
     friend ostream& operator<<(ostream &out,const BauturaAlcoolica &obj)
     {
+        // daca incercam (fara cast) se va duce in bautura
+        // va vedea ca nu e alcoolemie se va duce in BauturaAlcoolica
+        // si se va cicla asa infinit
         out<<(Bautura&)obj;
         out<<"Alcoolemie: "<<obj.alcoolemie<<endl;
         return out;
