@@ -1,0 +1,10 @@
+"C:\Program Files\JetBrains\CLion 2022.3.2\bin\cmake\win\x64\bin\cmake.exe" -DCMAKE_BUILD_TYPE=Debug "-DCMAKE_MAKE_PROGRAM=C:/Program Files/JetBrains/CLion 2022.3.2/bin/ninja/win/x64/ninja.exe" -G Ninja -S "D:\UNI CODE\Univeristy-Work\First Year\Second Semester\Object-oriented programming\Labs\Project 2" -B "D:\UNI CODE\Univeristy-Work\First Year\Second Semester\Object-oriented programming\Labs\Project 2\cmake-build-debug"
+-- OpenCV ARCH: x64
+-- OpenCV RUNTIME: vc16
+-- OpenCV STATIC: OFF
+-- Found OpenCV: D:/opencv/build (found version "4.7.0") 
+-- Found OpenCV 4.7.0 in D:/opencv/build/x64/vc16/lib
+-- You might need to add D:\opencv\build\x64\vc16\bin to your PATH to be able to run your applications.
+-- Configuring done
+-- Generating done
+-- Build files have been written to: D:/UNI CODE/Univeristy-Work/First Year/Second Semester/Object-oriented programming/Labs/Project 2/cmake-build-debug
