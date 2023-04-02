@@ -13,7 +13,7 @@ using std::ostream;
 using std::endl;
 
 class Image {
-private:
+protected:
     string name,path,extension;
     double rezolutieX,rezolutieY;
 public:
@@ -81,6 +81,62 @@ ostream& operator<<(ostream& out, const Image& obj) {
     return out;
 }
 
+class Effect:public Image {
+private:
+    string name;
+    bool effect;
+public:
+    Effect(string nameImage = "Unnamed",string extension = "png",string path = "Root",double rezolutieX = 0,double rezolutieY = 0,string name = "",bool effect = 0);
+    Effect(const Effect& obj);
+    Effect& operator=(const Effect& obj);
+    friend istream& operator>>(istream& in, Effect& obj);
+    friend ostream& operator<<(ostream& out, const Effect& obj);
+};
+
+Effect::Effect(string nameImage, string extension, string path, double rezolutieX, double rezolutieY, string name, bool effect):
+    Image(nameImage,extension,path,rezolutieX,rezolutieY)
+{
+    this->name = name;
+    this->effect = effect;
+}
+
+Effect::Effect(const Effect &obj):Image(obj) {
+    this->name = obj.name;
+    this->effect = obj.effect;
+}
+
+Effect& Effect::operator=(const Effect &obj) {
+    if(this != &obj)
+    {
+        Image::operator=(obj);
+        this->name = obj.name;
+        this->effect = obj.effect;
+    }
+    return *this;
+}
+
+istream& operator>>(istream& in, Effect& obj) {
+    in>>(Image&)obj;
+    cout<<"Enter name for effect: \n";
+    in>>obj.name;
+    cout<<"Are there effects applied on the image? (yes:1 no:0) \n";
+    in>>obj.effect;
+
+    return in;
+}
+
+ostream& operator<<(ostream& out, const Effect& obj) {
+    out<<(Image&)obj;
+    out<<"Name of the effect: "<<obj.name<<endl;
+    out<<"Has effects applied: "<<obj.effect<<endl;
+
+    return out;
+}
+
+class Adjustment:public Image {
+
+};
+
 int main()
 {
 //    OPENCV TEST
@@ -110,6 +166,13 @@ int main()
     Image i3;
     i3 = i2;
     cout<<i3<<endl;*/
-    
+
+//    EFFECT TESTS
+    /*Effect e;
+    cout<<e<<endl;
+    cin>>e;
+    cout<<e<<endl;*/
+
+//  TODO method to find aspect ratio
     return 0;
 }
