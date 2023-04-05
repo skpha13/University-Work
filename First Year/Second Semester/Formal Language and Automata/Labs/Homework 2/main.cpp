@@ -29,7 +29,7 @@ private:
 
 public:
     //getters
-    int getNrNod();
+    int getNrNod() const;
     int getNrMuchii();
     int getNrStariFinale();
     int getStareInitiala() const;
@@ -42,12 +42,12 @@ public:
     //methods
     void afiseazaInfo() const;
     void verificaCuvantNFA(char cuvant[],vector<int> path,int i,int stare) const;
-    void verif(char cuvant[],int n,int i,int stare,bool &drum) const;
-    void verifAcceptat(char cuvant[],int n,int i,int stare,bool &stop) const;
+    void verif(char cuvant[],int n,int i,int stare,bool &drum,string vizitat[]) const;
+    void verifAcceptat(char cuvant[],int n,int i,int stare,bool &stop,string vizitat[]) const;
     bool valid(int k) const;
     void bkt(int lungime,int k) const;
     void afisareCuvant(int n) const;
-    void verificaLambda(char cuvant[],int i,int stare,bool &ok) const;
+    void verificaLambda(char cuvant[],int i,int stare,bool &ok,string vizitat[]) const;
 };
 
 int Graf::getStareInitiala() const {
@@ -58,7 +58,7 @@ int Graf::getNrMuchii() {
     return NrMuchii;
 }
 
-int Graf::getNrNod() {
+int Graf::getNrNod() const{
     return NrNod;
 }
 
@@ -135,32 +135,45 @@ void Graf::afisareCuvant(int n) const {
     cout<<endl;
 }
 
-void Graf::verifAcceptat(char cuvant[],int n,int i,int stare,bool &stop) const {
+void Graf::verifAcceptat(char cuvant[],int n,int i,int stare,bool &stop,string vizitat[]) const {
+//    cout<<vizitat[stare]<<" "<<cuvant + i<<endl;
+    if(vizitat[stare] == cuvant + i) {
+        stop = true;
+        return;
+    }
+    vizitat[stare] = cuvant + i;
     for(int j=0;j<Matrice[stare].size();j++)
         if(Matrice[stare][j].litera == cuvant[i] && Matrice[stare][j].litera != '^')
-            verifAcceptat(cuvant,n,i+1,Matrice[stare][j].urmatorul,stop);
+            verifAcceptat(cuvant,n,i+1,Matrice[stare][j].urmatorul,stop,vizitat);
         else if(Matrice[stare][j].litera == '^')
-            verifAcceptat(cuvant,n,i,Matrice[stare][j].urmatorul,stop);
+            verifAcceptat(cuvant,n,i,Matrice[stare][j].urmatorul,stop,vizitat);
     if(i == n + 1)
         for(int j=0;j<StariFinale.size();j++)
             if(stare == StariFinale[j])
                 stop = true;
 }
 
-void Graf::verif(char cuvant[],int n,int i,int stare,bool &drum) const {
+void Graf::verif(char cuvant[],int n,int i,int stare,bool &drum,string vizitat[]) const {
+//    cout<<stare<<" "<<vizitat[stare]<<" | "<<cuvant + i<<endl;
+    if(vizitat[stare] == cuvant + i) {
+        drum = true;
+        return;
+    }
+    vizitat[stare] = cuvant + i;
     if(i == n + 1)
         drum = true;
     else
         for(int j=0;j<Matrice[stare].size();j++)
             if(Matrice[stare][j].litera == cuvant[i] && Matrice[stare][j].litera != '^')
-                verif(cuvant,n,i+1,Matrice[stare][j].urmatorul,drum);
+                verif(cuvant,n,i+1,Matrice[stare][j].urmatorul,drum,vizitat);
             else if(Matrice[stare][j].litera == '^')
-                verif(cuvant,n,i,Matrice[stare][j].urmatorul,drum);
+                verif(cuvant,n,i,Matrice[stare][j].urmatorul,drum,vizitat);
 }
 
 bool Graf::valid(int k) const {
     bool drum = false;
-    verif(x,k,0,StareInitiala,drum);
+    string vizitat[this->NrNod];
+    verif(x,k,0,StareInitiala,drum,vizitat);
     return drum;
 }
 
@@ -172,7 +185,8 @@ void Graf::bkt(int lungime,int k) const {
         if(valid(k))
         {
             bool stop = false;
-            verifAcceptat(x,k,0,StareInitiala,stop);
+            string vizitat[this->NrNod];
+            verifAcceptat(x,k,0,StareInitiala,stop,vizitat);
             if(k+1 < lungime)
             {
                 // verifica daca cunvatul este acceptat
@@ -219,18 +233,23 @@ void Graf::verificaCuvantNFA(char cuvant[],vector<int> path,int i,int stare) con
     }
 }
 
-void Graf::verificaLambda(char *cuvant, int i, int stare,bool &ok) const {
-        for(int j=0;j<Matrice[stare].size();j++)
-            if(Matrice[stare][j].litera == cuvant[i])
-                verificaLambda(cuvant,i+1,Matrice[stare][j].urmatorul,ok);
-            else if(Matrice[stare][j].litera == '^')
-                verificaLambda(cuvant,i,Matrice[stare][j].urmatorul,ok);
-        if(i == strlen(cuvant))
-            for(int j=0;j<StariFinale.size();j++)
-                if(stare == StariFinale[j])
-                    ok = true;
+void Graf::verificaLambda(char *cuvant, int i, int stare,bool &ok,string vizitat[]) const {
+    if(vizitat[stare] == cuvant + i)
+    {
+        ok = true;
+        return;
+    }
+    vizitat[stare] = cuvant + i;
+    for(int j=0;j<Matrice[stare].size();j++)
+        if(Matrice[stare][j].litera == cuvant[i])
+            verificaLambda(cuvant,i+1,Matrice[stare][j].urmatorul,ok,vizitat);
+        else if(Matrice[stare][j].litera == '^')
+            verificaLambda(cuvant,i,Matrice[stare][j].urmatorul,ok,vizitat);
+    if(i == strlen(cuvant))
+        for(int j=0;j<StariFinale.size();j++)
+            if(stare == StariFinale[j])
+                ok = true;
 }
-
 
 class Meniu{
 private:
@@ -333,7 +352,8 @@ const void Meniu::prelucrareOptiune(const Graf &obj) {
                 cin.get();
                 cout<<"Cuvinte acceptate de lungime "<<nr<<" : "<<endl;
                 bool temp = false;
-                obj.verificaLambda("",0,obj.getStareInitiala(),temp);
+                string vizitat[obj.getNrNod()];
+                obj.verificaLambda("",0,obj.getStareInitiala(),temp,vizitat);
                 contor = 0;
                 if(temp) cout<<"\t^\n",contor++;
                 obj.bkt(nr,0);
