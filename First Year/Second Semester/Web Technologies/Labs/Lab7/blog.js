@@ -30,7 +30,7 @@ window.onload = () => {
 
         const container = document.getElementsByClassName("post");
         for(const article of container) {
-            article.addEventListener('click', () => {
+            article.addEventListener('dblclick', () => {
                 article.remove();
             });
         }
