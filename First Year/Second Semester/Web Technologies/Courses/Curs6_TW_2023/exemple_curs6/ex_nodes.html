@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<script>
+window.onload=function() {
+    var c = document.body.childNodes;
+    var txt = "";
+    var i;
+    for (i = 0; i < c.length; i++) {
+        txt = txt + c[i].nodeName + "<br>";
+    }
+    document.getElementById("demo").innerHTML += txt;
+    alert(document.getElementById("demo").childNodes[0].nodeName);
+}
+</script>
+</head>
+<body><!-- Comentariu -->
+<p>Un paragraf</p>
+<div>Un div</div>
+<p>O imagine</p><br>
+<img src="toamna.jpg" alt="fsf">
+<p id="demo"><strong>document.body.childNodes:</strong><br>
+</p> 
+</body>
+</html>
+
+
+
