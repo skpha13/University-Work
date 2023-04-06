@@ -1,0 +1,59 @@
+body {
+  background-color: blue;
+  color: white;
+  text-align: center;
+  margin: 0;
+}
+
+body, button {
+  font-family: Roboto, sans-serif;
+}
+
+h1 {
+  font-size: 5em;
+  text-shadow: black 2px 4px 12px;
+}
+
+
+ #game {
+  background-color: white;
+  color: black;
+}
+
+#game {
+  margin-left: 5em;
+  margin-right: 5em;
+}
+
+
+#game {
+  border-radius: 3em;
+}
+
+#game p {
+  padding-top: 8px;
+  font-size: 2em;
+  visibility:hidden;
+}
+
+#container {
+  display: flex;
+  justify-content: space-evenly;
+  flex-flow: row wrap;
+}
+
+
+#container img:nth-of-type(2n) {
+  width: 5em;
+  height: 5em;
+}
+
+#container img:nth-of-type(2n+1) {
+  width: 15em;
+  height: 15em;
+}
+
+#container img:nth-of-type(3n) {
+  width: 10em;
+  height: 10em;
+}

@@ -1,0 +1,89 @@
+
+
+*{margin:0;
+  padding:0;
+  }
+  
+ html{
+  font-size:20px;
+  box-sizing:border-box;
+  }
+  
+  body{
+  font-family:"Press Start 2P", sans-serif;
+  color:white;
+  background-color:#60b347;
+  }
+  
+  header{
+  padding-top:60px;
+  position:relative;
+  height:15vh;
+  border-bottom:7px solid white;
+  text-align:center;
+  }
+  
+ 
+  
+  main{
+  height:35vh;
+  color:white;
+  display:flex;
+  align-items:center;
+  justify-content:space-around;
+  border-bottom:7px solid white;
+  } 
+  
+  #guess, #check{
+         width:150px; 
+         height:50px;
+         font-size:1rem;
+         text-align:center;
+         }
+  
+  #guess{
+         width:200px; 
+         height:50px;
+         font-size:1rem;
+         font-size:2rem;
+         }
+  
+  .between{position:absolute;
+            top:10px; right:10px;}       
+            
+  .number{width:150px; height:100px;
+          background-color:white;
+          position:absolute;
+          bottom:-50px;left:50vw;
+          text-align:center;
+          color:black;
+          font-size:4rem;
+          
+          }          
+          
+   .left{display:flex;
+          flex-direction:column;
+          justify-content:space-around;
+          align-items:center;
+          height:20vh;
+          width:40vw;
+          }
+         
+   .right{display:flex;
+          flex-direction:column;
+          justify-content:space-around;
+          align-items:center;
+          height:20vh;
+          width:40vw;
+          }
+   .message{font-size:2rem;
+            margin-bottom:20px;
+            }          
+            
+    .label-score, .label-hightscore{font-size:1.5rem;
+                 }        
+                 
+       #jucatori{height:25vw;
+                 padding:20px;}
+                 
+        #jucatori>p{margin-top:5px; font-size:1em; color:gold;}         

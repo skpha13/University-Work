@@ -1,0 +1,40 @@
+body {
+  margin-left: 15%;
+  margin-right: 15%;
+}
+
+input {
+  width: 40%;
+  height: 35px;
+  border: 3px black solid;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+textarea {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  height: 100px;
+  border: 3px black solid;
+}
+
+#info {
+  display: flex;
+  flex-direction: column;
+}
+
+button {
+  float: left;
+  width: 100px;
+}
+
+#postari {
+  border: 3px black solid;
+  padding: 10px;
+  margin-top: 15px;
+}
+
+.post {
+  border: 1.5px blue solid;
+  margin-bottom: 8px;
+}

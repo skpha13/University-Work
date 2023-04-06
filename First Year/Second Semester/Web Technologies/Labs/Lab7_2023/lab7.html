@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8" />
+<title>LABORATORUL 7 | Tehnici Web</title>
+
+</head>
+<body>
+<h1>Laboratorul 7</h1>
+<h2> Tema 7.1 </h2>
+
+<p>Pentru tema 7.1 vom folosi fisierele <b>blog.html</b> si <b>blog.css</b>. Scrieti fisierul <b>blog.js</b> astfel incat sa adaugati urmatoarele functionalitati:</p>
+<ul>
+<li>La incarcarea paginii, dupa completarea campurilor "Titlu" si "Continut" si apasarea butonului "Adauga", se va crea un element de tip "article" care va fi adaugat containerului cu id-ul "postari". In interiorul articolului creat ar trebui să existe un titlu (element h3) reprezentand titlul postarii urmat de un paragraf ce contine textul postarii. In titlu, inserati si data trimiterii folosind un element span. Articolul ar trebui să aibă clasa "post" adaugata.
+Pentru a prelua textul dintr-un element de formular, folositi proprietatea 'value'.
+
+<li>La dublu clic pe oricare dintre postarile de blog, postarea pe care s-a facut clic ar trebui să fie eliminata din pagina.</li>
+</ul>
+
+
+
+<h2> Tema 7.2</h2>
+<p>Pentru tema 7.2 vom folosi fisierele <b>happy.html</b> si <b>happy.css</b>. Scrieti fisierul <b>happy.js</b> astfel incat sa adaugati urmatoarele functionalitati:</p>
+<ul>
+<li>La incarcarea paginii, se vor crea 20 de imagini cu sursa "sad.png" care vor fi adaugate divului cu id-ul "container". Tot la incarcarea paginii, paragraful
+din sectiunea cu id-ul "game" va deveni vizibil (acesta era setat invizibil prin css).
+<li>La click pe o imagine "sad" aceasta va fi inlocuita cu imaginea "happy" (happy.png) iar scorul se va incrementa cu 1. <b>Observatie:</b> scorul nu se va mari daca se va da click pe o imagine "happy".</li>
+<li>Dupa 20s de la aparitia imaginilor (dupa incarcarea paginii) jocul se va termina: textul din titlu se va inlocui cu "Jocul s-a terminat!" iar elementul div cu id-ul "container" va fi eliminat din pagina. </li>
+</ul>
+
+<h2> Tema 7.3</h2>
+<p>Pentru tema 7.3 vom folosi fisierele <b>guess.html</b> si <b>guess.css</b>. Scrieti fisierul <b>guess.js</b> astfel incat sa adaugati urmatoarele functionalitati:</p>
+<ul>
+<li>La incarcarea paginii, introduceti de la prompt un nume de persoana. Acest nume reprezinta numele jucatorului si va aparea in continuarea continutului paragrafului cu clasa "message" (de ex: Incepe jocul Ionut)</li>
+<li>Jocul incepe prin generarea unui numar intreg random intre 1 si 20 (numarul secret) pe care voi trebuie sa-l ghiciti. Din inputul de tip number se va alege un numar intreg intre 1 si 20. La apasarea butonului Verifica! se va prelua numarul din input (proprietatea "value") si se va testa daca acesta coincide cu numarul secret. Daca numarul din input nu coincide cu numarul secret, se va actualiza pagina astfel: daca numarul ales este mai mic (respectiv mai mare) decat numarul secret, continutul paragrafului cu clasa "message" va fi "Numarul este prea mic/mare, mai incercati!" iar scorul si numarul de incercari se vor actualiza (scorul va scadea cu 1 iar numarul de incercari se va mari cu 1). Jucatorul va continua jocul alegand un alt numar. Daca ati ghicit numarul, jocul se termina cu urmatoarele modificari: culoarea de background a body-ului va deveni rosie, continutul paragrafului va fi "Ai ghicit numarul!", numarul secret va fi afisat ca si continut al divului cu clasa "number" (in locul ?) iar in sectiunea cu id-ul "jucatori" se va adauga un paragraf nou cu textul "Jucatorul X a castigat jocul cu scorul ...".  
+</li>
+<li> Daca nu se ghiceste numarul din 19 incercari se va afisa mesajul  "Ai pierdut jocul!" iar butonul Verifica! se va dezactiva. 
+</li>
+
+</ul>
+
+</body>
+</html>
