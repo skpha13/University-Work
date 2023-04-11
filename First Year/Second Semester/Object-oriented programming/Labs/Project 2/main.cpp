@@ -1,4 +1,5 @@
 #include <opencv2/core.hpp>
+#include <opencv2/imgproc.hpp>
 #include <opencv2/imgcodecs.hpp>
 #include <opencv2/highgui.hpp>
 #include <iostream>
@@ -38,7 +39,8 @@ public:
     friend istream& operator>>(istream& in, Image& obj);
     friend ostream& operator<<(ostream& out, const Image& obj);
 
-    void showImg() const;
+    virtual Mat readImg() const;
+    virtual void showImg() const;
 };
 
 Image::Image(string name, string extension, string path, bool absolute) {
@@ -129,7 +131,7 @@ void reset_error_handler()
     cv::redirectError(nullptr);
 }
 
-void Image::showImg() const {
+Mat Image::readImg() const {
     string image_path;
     ::set_dummy_error_handler();
     try {
@@ -142,12 +144,15 @@ void Image::showImg() const {
         else image_path = findFile(path,true,true);
 
         Mat img = imread(image_path, IMREAD_COLOR);
-        if(img.empty())
-        {
-            cout << "Could not read the image: " << image_path << endl;
-            return ;
-        }
+        return img;
+    }
+    catch(...) {return cv::Mat::zeros(540,540,CV_8UC3);}
+    // CV_8UC3 = 8 bit unsigned integer with 3 channels (RGB)
+}
 
+void Image::showImg() const {
+    try {
+        Mat img = this->readImg();
         cv::namedWindow("Image",cv::WINDOW_NORMAL);
 //        using this function makes the window not have a title bar
 //        cv::setWindowProperty("Image",cv::WND_PROP_FULLSCREEN, cv::WINDOW_FULLSCREEN);
@@ -164,14 +169,15 @@ void Image::showImg() const {
             return ;
         }
     }
-    catch (...) {cout<<"~ INVALID PATH\n";}
+    catch (...) {cout<<"~ OUTPUT FAILED\n";}
 }
 
 class Effect:public virtual Image {
 protected:
+    int blurAmount;
     bool effect;
 public:
-    Effect(string name = "Unnamed",string extension = "png",string path = "Root",bool effect = 0);
+    Effect(string name = "Unnamed",string extension = "png",string path = "Root",bool effect = 0, int blurAmount = 0);
     Effect(const Effect& obj);
     Effect& operator=(const Effect& obj);
     // override specifier ensures that the function is virtual and is overriding a virtual function from a base class
@@ -179,16 +185,20 @@ public:
 
     friend istream& operator>>(istream& in, Effect& obj);
     friend ostream& operator<<(ostream& out, const Effect& obj);
+
+    virtual void blurImg() const;
 };
 
-Effect::Effect(string name, string extension, string path, bool effect):
+Effect::Effect(string name, string extension, string path, bool effect, int blurAmount):
     Image(name,extension,path)
 {
     this->effect = effect;
+    this->blurAmount = blurAmount;
 }
 
 Effect::Effect(const Effect &obj):Image(obj) {
     this->effect = obj.effect;
+    this->blurAmount = obj.blurAmount;
 }
 
 Effect& Effect::operator=(const Effect &obj) {
@@ -196,6 +206,7 @@ Effect& Effect::operator=(const Effect &obj) {
     {
         Image::operator=(obj);
         this->effect = obj.effect;
+        this->blurAmount = obj.blurAmount;
     }
     return *this;
 }
@@ -204,19 +215,73 @@ istream& operator>>(istream& in, Effect& obj) {
     in>>(Image&)obj;
     cout<<"Are there effects applied on the image? (yes:1 no:0) \n";
     in>>obj.effect;
-
+    cout<<"Do you want to blur the image? (yes:1 no:0)?\n";
+    int temp;
+    in>>temp;
+    in.get();
+    if(temp == 1)
+    {
+        cout<<"Enter blur amount: \n";
+        in>>obj.blurAmount;
+    }
     return in;
 }
 
 ostream& operator<<(ostream& out, const Effect& obj) {
     out<<(Image&)obj;
     out<<"Has effects applied: "<<obj.effect<<endl;
-
+    out<<"Blur amount: "<<obj.blurAmount<<endl;
     return out;
 }
 
 Effect::~Effect() {
     this->effect = false;
+    this->blurAmount = 0;
+}
+
+void Effect::blurImg() const {
+    try {
+        Mat img = this->readImg();
+        Mat blurredImage;
+
+        cv::GaussianBlur(img,blurredImage,cv::Size(this->blurAmount,this->blurAmount),0);
+        cout<<"Show image on screen (yes:1 no:0)?\n";
+        int temp;
+        cin>>temp;
+        cin.get();
+        if(temp == 1)
+        {
+            try {
+                cv::namedWindow("Image",cv::WINDOW_NORMAL);
+//        using this function makes the window not have a title bar
+//        cv::setWindowProperty("Image",cv::WND_PROP_FULLSCREEN, cv::WINDOW_FULLSCREEN);
+                double aspect_ratio = static_cast<double>(blurredImage.cols)/blurredImage.rows;
+                cv::resizeWindow("Image",static_cast<int>(540*aspect_ratio),540);
+                imshow("Image",blurredImage);
+
+//        Wait for a keystroke in the window
+                int k = waitKey(0);
+//        27 is ascii code for esc and waitKey returns an int
+                if(k == 27)
+                    cv::destroyAllWindows();
+            }
+            catch (...) {cout<<"~ OUTPUT FAILED\n";}
+        }
+        cout<<"Save image (yes:1 no:0)?\n";
+        cin>>temp;
+        cin.get();
+        if(temp == 1)
+        {
+            img = blurredImage.clone();
+            string name;
+            cout<<"Enter new name for image (with extension):\n";
+            // TODO method to get full path to image
+            getline(cin,name);
+            cv::imwrite(name,img);
+            this->showImg();
+        }
+    }
+    catch (...) {cout<<"~ APPLYING EFFECT FAILED\n";}
 }
 
 class Adjustment:public virtual Image {
@@ -340,13 +405,13 @@ int main()
     a2 = a;
     cout<<a2<<endl;*/
 
-    Image i;
-    i.showImg();
-    cin>>i;
-    i.showImg();
+    Effect e;
+    cin>>e;
+    e.blurImg();
 
 //    TODO method to find aspect ratio
 //    TODO entering wron image info then right doesnt work
 //    TODO virtual destructor for base to avoid memory leaks
+//    TODO rethink image reading and writing
     return 0;
 }
