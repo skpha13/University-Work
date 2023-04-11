@@ -136,7 +136,8 @@ void Image::showImg() const {
         if(this->absolute == false)
         {
             string full_name = this->name + "." + this->extension;
-            image_path = findFile(full_name);
+            // silent mode true to suppress errors
+            image_path = findFile(full_name,true,true);
         }
         else image_path = findFile(path,true,true);
 
@@ -147,11 +148,17 @@ void Image::showImg() const {
             return ;
         }
 
-//        cv::namedWindow("Display frame", cv::WINDOW_AUTOSIZE);
-        imshow("Display window", img);
+        cv::namedWindow("Image",cv::WINDOW_NORMAL);
+//        using this function makes the window not have a title bar
+//        cv::setWindowProperty("Image",cv::WND_PROP_FULLSCREEN, cv::WINDOW_FULLSCREEN);
+        double aspect_ratio = static_cast<double>(img.cols)/img.rows;
+        cv::resizeWindow("Image",static_cast<int>(540*aspect_ratio),540);
+        imshow("Image",img);
 
-        int k = waitKey(0); // Wait for a keystroke in the window
-        if(k == 's')
+//        Wait for a keystroke in the window
+        int k = waitKey(0);
+//        27 is ascii code for esc and waitKey returns an int
+        if(k == 27)
         {
             cv::destroyAllWindows();
             return ;
@@ -334,7 +341,6 @@ int main()
     cout<<a2<<endl;*/
 
     Image i;
-    cin>>i;
     i.showImg();
     cin>>i;
     i.showImg();
