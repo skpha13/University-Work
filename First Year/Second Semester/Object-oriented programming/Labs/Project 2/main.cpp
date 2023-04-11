@@ -4,7 +4,12 @@
 #include <iostream>
 #include <vector>
 
-using namespace cv;
+using cv::Mat;
+using cv::samples::findFile;
+using cv::IMREAD_COLOR;
+using cv::waitKey;
+
+
 using std::string;
 using std::cout;
 using std::cin;
@@ -12,32 +17,41 @@ using std::istream;
 using std::ostream;
 using std::endl;
 
-class Image {
-protected:
-    string name,path,extension;
-    double rezolutieX,rezolutieY;
+class IOInterface {
 public:
-    Image(string name = "Unnamed",string extension = "png",string path = "Root",double rezolutieX = 0,double rezolutieY = 0);
-    Image(const Image& obj);
-    Image& operator=(const Image& obj);
-    friend istream& operator>>(istream& in, Image& obj);
-    friend ostream& operator<<(ostream& out, const Image& obj);
+    virtual istream& read(istream&) = 0;
+    virtual ostream* print(ostream&) = 0;
 };
 
-Image::Image(string name, string extension, string path, double rezolutieX, double rezolutieY) {
+class Image {
+protected:
+    // boolean for image finding
+    bool absolute;
+    string name,path,extension;
+public:
+    Image(string name = "Unnamed",string extension = "png",string path = "Root", bool absolute = false);
+    Image(const Image& obj);
+    Image& operator=(const Image& obj);
+    // virtual to call derivative destructors
+    virtual ~Image();
+
+    friend istream& operator>>(istream& in, Image& obj);
+    friend ostream& operator<<(ostream& out, const Image& obj);
+
+    void showImg() const;
+};
+
+Image::Image(string name, string extension, string path, bool absolute) {
     this->name = name;
     this->extension = extension;
     this->path = path;
-    this->rezolutieX = rezolutieX;
-    this->rezolutieY = rezolutieY;
+    this->absolute = absolute;
 }
 
 Image::Image(const Image &obj) {
     this->name = obj.name;
     this->extension = obj.extension;
     this->path = obj.path;
-    this->rezolutieX = obj.rezolutieX;
-    this->rezolutieY = obj.rezolutieY;
 }
 
 Image& Image::operator=(const Image &obj) {
@@ -49,8 +63,6 @@ Image& Image::operator=(const Image &obj) {
         this->extension = obj.extension;
         if(!this->path.empty()) this->path.clear();
         this->path = obj.path;
-        this->rezolutieX = obj.rezolutieX;
-        this->rezolutieY = obj.rezolutieY;
     }
     return *this;
 }
@@ -62,12 +74,20 @@ istream& operator>>(istream& in, Image& obj) {
     in>>obj.name;
     cout<<"Specify file extension: \n";
     in>>obj.extension;
-    cout<<"Enter path to image: \n";
-    in>>obj.path;
-    cout<<"Enter width: \n";
-    in>>obj.rezolutieX;
-    cout<<"Enter height: \n";
-    in>>obj.rezolutieY;
+    cout<<"Do you want to use relative path? (1:yes 0:no)?\n";
+    int temp;
+    cin>>temp;
+    in.get();
+    if(temp == 0)
+    {
+        obj.absolute = true;
+        cout<<"Enter path to image: \n";
+        // to get \n from buffer
+
+        getline(in,obj.path);
+        // deleting "" from path
+        if(obj.path[0] == '"') obj.path.erase(0,1), obj.path.pop_back();
+    }
 
     return in;
 }
@@ -75,25 +95,87 @@ istream& operator>>(istream& in, Image& obj) {
 ostream& operator<<(ostream& out, const Image& obj) {
     out<<"Name: "<<obj.name<<"."<<obj.extension<<endl;
     out<<"Path to image: "<<obj.path<<endl;
-    out<<"Width: "<<obj.rezolutieX<<" pixels\n";
-    out<<"Height: "<<obj.rezolutieY<<" pixels\n";
 
     return out;
 }
 
-class Effect:public Image {
-private:
+Image::~Image() {
+    if(!this->name.empty()) this->name.clear();
+    if(!this->path.empty()) this->path.clear();
+    if(!this->extension.empty()) this->extension.clear();
+}
+
+// block of code to disable opencv warnings
+int dummy_error_handler(int status
+        , char const* func_name
+        , char const* err_msg
+        , char const* file_name
+        , int line
+        , void* userdata)
+{
+    //Do nothing -- will suppress console output
+    return 0;   //Return value is not used
+}
+
+// sets warning display off
+void set_dummy_error_handler()
+{
+    cv::redirectError(dummy_error_handler);
+}
+
+// sets warning display on
+void reset_error_handler()
+{
+    cv::redirectError(nullptr);
+}
+
+void Image::showImg() const {
+    string image_path;
+    ::set_dummy_error_handler();
+    try {
+        if(this->absolute == false)
+        {
+            string full_name = this->name + "." + this->extension;
+            image_path = findFile(full_name);
+        }
+        else image_path = findFile(path,true,true);
+
+        Mat img = imread(image_path, IMREAD_COLOR);
+        if(img.empty())
+        {
+            cout << "Could not read the image: " << image_path << endl;
+            return ;
+        }
+
+//        cv::namedWindow("Display frame", cv::WINDOW_AUTOSIZE);
+        imshow("Display window", img);
+
+        int k = waitKey(0); // Wait for a keystroke in the window
+        if(k == 's')
+        {
+            cv::destroyAllWindows();
+            return ;
+        }
+    }
+    catch (...) {cout<<"~ INVALID PATH\n";}
+}
+
+class Effect:public virtual Image {
+protected:
     bool effect;
 public:
-    Effect(string name = "Unnamed",string extension = "png",string path = "Root",double rezolutieX = 0,double rezolutieY = 0,bool effect = 0);
+    Effect(string name = "Unnamed",string extension = "png",string path = "Root",bool effect = 0);
     Effect(const Effect& obj);
     Effect& operator=(const Effect& obj);
+    // override specifier ensures that the function is virtual and is overriding a virtual function from a base class
+    ~Effect() override;
+
     friend istream& operator>>(istream& in, Effect& obj);
     friend ostream& operator<<(ostream& out, const Effect& obj);
 };
 
-Effect::Effect(string name, string extension, string path, double rezolutieX, double rezolutieY, bool effect):
-    Image(name,extension,path,rezolutieX,rezolutieY)
+Effect::Effect(string name, string extension, string path, bool effect):
+    Image(name,extension,path)
 {
     this->effect = effect;
 }
@@ -126,22 +208,29 @@ ostream& operator<<(ostream& out, const Effect& obj) {
     return out;
 }
 
-class Adjustment:public Image {
-private:
+Effect::~Effect() {
+    this->effect = false;
+}
+
+class Adjustment:public virtual Image {
+protected:
     double brightness, contrast, hue;
     bool adjustment;
 public:
-    Adjustment(string name = "Unnamed",string extension = "png",string path = "Root",double rezolutieX = 0,double rezolutieY = 0,
-               bool adjustment = false, double brightness = 0, double contrast = 0, double  hue = 0);
+    Adjustment(string name = "Unnamed",string extension = "png",string path = "Root", bool adjustment = false,
+               double brightness = 0, double contrast = 0, double  hue = 0);
     Adjustment(const Adjustment& obj);
     Adjustment& operator=(const Adjustment& obj);
+    // override specifier ensures that the function is virtual and is overriding a virtual function from a base class
+    ~Adjustment() override;
+
     friend istream& operator>>(istream& in, Adjustment& obj);
     friend ostream& operator<<(ostream& out, const Adjustment& obj);
 };
 
-Adjustment::Adjustment(string name, string extension, string path, double rezolutieX, double rezolutieY,
-                       bool adjustment, double brightness, double contrast, double hue):
-        Image(name,extension,path,rezolutieX,rezolutieY)
+Adjustment::Adjustment(string name, string extension, string path, bool adjustment,
+                       double brightness, double contrast, double hue):
+        Image(name,extension,path)
 {
     this->adjustment = adjustment;
     this->brightness = brightness;
@@ -192,6 +281,13 @@ ostream& operator<<(ostream& out, const Adjustment& obj) {
     return out;
 }
 
+Adjustment::~Adjustment() {
+    this->contrast = 0;
+    this->brightness = 0;
+    this->hue = 0;
+    this->adjustment = false;
+}
+
 int main()
 {
 //    OPENCV TEST
@@ -237,6 +333,14 @@ int main()
     a2 = a;
     cout<<a2<<endl;*/
 
-//  TODO method to find aspect ratio
+    Image i;
+    cin>>i;
+    i.showImg();
+    cin>>i;
+    i.showImg();
+
+//    TODO method to find aspect ratio
+//    TODO entering wron image info then right doesnt work
+//    TODO virtual destructor for base to avoid memory leaks
     return 0;
 }
