@@ -2,14 +2,13 @@
 #include <opencv2/imgproc.hpp>
 #include <opencv2/imgcodecs.hpp>
 #include <opencv2/highgui.hpp>
+#include <opencv2/core/utils/logger.hpp>
 #include <iostream>
-#include <vector>
 
 using cv::Mat;
 using cv::samples::findFile;
 using cv::IMREAD_COLOR;
 using cv::waitKey;
-
 
 using std::string;
 using std::cout;
@@ -17,95 +16,6 @@ using std::cin;
 using std::istream;
 using std::ostream;
 using std::endl;
-
-class IOInterface {
-public:
-    virtual istream& read(istream&) = 0;
-    virtual ostream* print(ostream&) = 0;
-};
-
-class Image {
-protected:
-    // boolean for image finding
-    bool absolute;
-    string name,path,extension;
-public:
-    Image(string name = "Unnamed",string extension = "png",string path = "Root", bool absolute = false);
-    Image(const Image& obj);
-    Image& operator=(const Image& obj);
-    // virtual to call derivative destructors
-    virtual ~Image();
-
-    friend istream& operator>>(istream& in, Image& obj);
-    friend ostream& operator<<(ostream& out, const Image& obj);
-
-    virtual Mat readImg() const;
-    virtual void showImg() const;
-};
-
-Image::Image(string name, string extension, string path, bool absolute) {
-    this->name = name;
-    this->extension = extension;
-    this->path = path;
-    this->absolute = absolute;
-}
-
-Image::Image(const Image &obj) {
-    this->name = obj.name;
-    this->extension = obj.extension;
-    this->path = obj.path;
-}
-
-Image& Image::operator=(const Image &obj) {
-    if (this != &obj)
-    {
-        if(!this->name.empty()) this->name.clear();
-        this->name = obj.name;
-        if(!this->extension.empty()) this->extension.clear();
-        this->extension = obj.extension;
-        if(!this->path.empty()) this->path.clear();
-        this->path = obj.path;
-    }
-    return *this;
-}
-
-istream& operator>>(istream& in, Image& obj) {
-    if(!obj.name.empty()) obj.name.clear();
-    if(!obj.path.empty()) obj.path.clear();
-    cout<<"Enter name: \n";
-    in>>obj.name;
-    cout<<"Specify file extension: \n";
-    in>>obj.extension;
-    cout<<"Do you want to use relative path? (1:yes 0:no)?\n";
-    int temp;
-    cin>>temp;
-    in.get();
-    if(temp == 0)
-    {
-        obj.absolute = true;
-        cout<<"Enter path to image: \n";
-        // to get \n from buffer
-
-        getline(in,obj.path);
-        // deleting "" from path
-        if(obj.path[0] == '"') obj.path.erase(0,1), obj.path.pop_back();
-    }
-
-    return in;
-}
-
-ostream& operator<<(ostream& out, const Image& obj) {
-    out<<"Name: "<<obj.name<<"."<<obj.extension<<endl;
-    out<<"Path to image: "<<obj.path<<endl;
-
-    return out;
-}
-
-Image::~Image() {
-    if(!this->name.empty()) this->name.clear();
-    if(!this->path.empty()) this->path.clear();
-    if(!this->extension.empty()) this->extension.clear();
-}
 
 // block of code to disable opencv warnings
 int dummy_error_handler(int status
@@ -131,22 +41,119 @@ void reset_error_handler()
     cv::redirectError(nullptr);
 }
 
+class IOInterface {
+public:
+    virtual istream& read(istream&) = 0;
+    virtual ostream* print(ostream&) = 0;
+};
+
+class Image {
+protected:
+    // boolean for image finding
+    bool absolute;
+    string name,path;
+public:
+    Image(string name = "362.png", string path = "../Images/", bool absolute = false);
+    Image(const Image& obj);
+    Image& operator=(const Image& obj);
+    // virtual to call derivative destructors
+    virtual ~Image();
+
+    friend istream& operator>>(istream& in, Image& obj);
+    friend ostream& operator<<(ostream& out, const Image& obj);
+
+    string extension(string word) const;
+    string withoutExtension(string word) const;
+    Mat readImg() const;
+    void showImg() const;
+    void showImg(const Mat& img) const;
+    virtual void writeImg() const;
+};
+
+Image::Image(string name,string path, bool absolute) {
+    this->name = name;
+    this->path = path;
+    this->absolute = absolute;
+}
+
+Image::Image(const Image &obj) {
+    this->name = obj.name;
+    this->path = obj.path;
+    this->absolute = obj.absolute;
+}
+
+Image& Image::operator=(const Image &obj) {
+    if (this != &obj)
+    {
+        if(!this->name.empty()) this->name.clear();
+        this->name = obj.name;
+        if(!this->path.empty()) this->path.clear();
+        this->path = obj.path;
+        this->absolute = obj.absolute;
+    }
+    return *this;
+}
+
+istream& operator>>(istream& in, Image& obj) {
+    if(!obj.name.empty()) obj.name.clear();
+    if(!obj.path.empty()) obj.path.clear();
+    cout<<"Enter name: \n";
+    in>>obj.name;
+    cout<<"Do you want to use relative path? (1:yes 0:no)?\n";
+    int temp;
+    cin>>temp;
+    in.get();
+    if(temp == 0)
+    {
+        obj.absolute = true;
+        cout<<"Enter path to image: \n";
+        // to get \n from buffer
+
+        getline(in,obj.path);
+        // deleting "" from path
+        if(obj.path[0] == '"') obj.path.erase(0,1), obj.path.pop_back();
+    }
+    else obj.path = "../Images/";
+
+    return in;
+}
+
+ostream& operator<<(ostream& out, const Image& obj) {
+    out<<"Name: "<<obj.name<<endl;
+    out<<"Path to image: "<<obj.path + obj.name<<endl;
+
+    return out;
+}
+
+Image::~Image() {
+    if(!this->name.empty()) this->name.clear();
+    if(!this->path.empty()) this->path.clear();
+    this->absolute = false;
+}
+
+string Image::extension(string word) const {
+    return word.substr(word.find("."),word.length());
+}
+
+string Image::withoutExtension(string word) const {
+    return word.substr(0,word.find("."));
+}
+
 Mat Image::readImg() const {
     string image_path;
-    ::set_dummy_error_handler();
     try {
         if(this->absolute == false)
         {
-            string full_name = this->name + "." + this->extension;
+            string full_name = this->path + this->name;
             // silent mode true to suppress errors
             image_path = findFile(full_name,true,true);
         }
-        else image_path = findFile(path,true,true);
+        else image_path = findFile(this->path,true,true);
 
         Mat img = imread(image_path, IMREAD_COLOR);
         return img;
     }
-    catch(...) {return cv::Mat::zeros(540,540,CV_8UC3);}
+    catch(...) {cout<<"~ INVALID PATH\n"; return Mat::zeros(540,540,CV_8UC3);}
     // CV_8UC3 = 8 bit unsigned integer with 3 channels (RGB)
 }
 
@@ -172,25 +179,63 @@ void Image::showImg() const {
     catch (...) {cout<<"~ OUTPUT FAILED\n";}
 }
 
+void Image::showImg(const Mat& img) const {
+    try {
+        cv::namedWindow("Image",cv::WINDOW_NORMAL);
+//        using this function makes the window not have a title bar
+//        cv::setWindowProperty("Image",cv::WND_PROP_FULLSCREEN, cv::WINDOW_FULLSCREEN);
+        double aspect_ratio = static_cast<double>(img.cols)/img.rows;
+        cv::resizeWindow("Image",static_cast<int>(540*aspect_ratio),540);
+        imshow("Image",img);
+
+//        Wait for a keystroke in the window
+        int k = waitKey(0);
+//        27 is ascii code for esc and waitKey returns an int
+        if(k == 27)
+        {
+            cv::destroyAllWindows();
+            return ;
+        }
+    }
+    catch (...) {cout<<"~ OUTPUT FAILED\n";}
+}
+
+void Image::writeImg() const {
+    try {
+        // basically does nothing because there is nothing applied to that image
+        Mat img = this->readImg();
+        string full_path = this->path + this->name;
+        cv::imwrite(full_path,img);
+    }
+    catch (...) {cout<<"~ WRITING IMAGE FAILED\n";}
+}
+
 class Effect:public virtual Image {
 protected:
     int blurAmount;
     bool effect;
 public:
-    Effect(string name = "Unnamed",string extension = "png",string path = "Root",bool effect = 0, int blurAmount = 0);
+    Effect(string name = "362.png",string path = "../Images/",bool absolute = false, bool effect = 0, int blurAmount = 0);
     Effect(const Effect& obj);
     Effect& operator=(const Effect& obj);
     // override specifier ensures that the function is virtual and is overriding a virtual function from a base class
-    ~Effect() override;
+    virtual ~Effect() override;
 
     friend istream& operator>>(istream& in, Effect& obj);
     friend ostream& operator<<(ostream& out, const Effect& obj);
 
-    virtual void blurImg() const;
+    void blurImg() const;
+    virtual void writeImg(const Mat& img) const;
 };
 
-Effect::Effect(string name, string extension, string path, bool effect, int blurAmount):
-    Image(name,extension,path)
+//    TODO 2 more effects to add
+//    TODO Edited class inheritance
+//    TODO Menu class
+//    TODO Adjustments methods
+//    TODO override writeImg() function
+
+Effect::Effect(string name, string path, bool absolute, bool effect, int blurAmount):
+    Image(name,path,absolute)
 {
     this->effect = effect;
     this->blurAmount = blurAmount;
@@ -239,6 +284,14 @@ Effect::~Effect() {
     this->blurAmount = 0;
 }
 
+void Effect::writeImg(const Mat &img) const {
+    try {
+        string full_path = "../Images with Effects/" + this->withoutExtension(this->name) + "_withEffects" + this->extension(this->name);
+        cv::imwrite(full_path,img);
+    }
+    catch (...) {cout<<"~ WRITING IMAGE FAILED\n";}
+}
+
 void Effect::blurImg() const {
     try {
         Mat img = this->readImg();
@@ -249,37 +302,12 @@ void Effect::blurImg() const {
         int temp;
         cin>>temp;
         cin.get();
-        if(temp == 1)
-        {
-            try {
-                cv::namedWindow("Image",cv::WINDOW_NORMAL);
-//        using this function makes the window not have a title bar
-//        cv::setWindowProperty("Image",cv::WND_PROP_FULLSCREEN, cv::WINDOW_FULLSCREEN);
-                double aspect_ratio = static_cast<double>(blurredImage.cols)/blurredImage.rows;
-                cv::resizeWindow("Image",static_cast<int>(540*aspect_ratio),540);
-                imshow("Image",blurredImage);
+        if(temp == 1) this->showImg(blurredImage);
 
-//        Wait for a keystroke in the window
-                int k = waitKey(0);
-//        27 is ascii code for esc and waitKey returns an int
-                if(k == 27)
-                    cv::destroyAllWindows();
-            }
-            catch (...) {cout<<"~ OUTPUT FAILED\n";}
-        }
         cout<<"Save image (yes:1 no:0)?\n";
         cin>>temp;
         cin.get();
-        if(temp == 1)
-        {
-            img = blurredImage.clone();
-            string name;
-            cout<<"Enter new name for image (with extension):\n";
-            // TODO method to get full path to image
-            getline(cin,name);
-            cv::imwrite(name,img);
-            this->showImg();
-        }
+        if(temp == 1) this->writeImg(blurredImage);
     }
     catch (...) {cout<<"~ APPLYING EFFECT FAILED\n";}
 }
@@ -289,20 +317,20 @@ protected:
     double brightness, contrast, hue;
     bool adjustment;
 public:
-    Adjustment(string name = "Unnamed",string extension = "png",string path = "Root", bool adjustment = false,
+    Adjustment(string name = "362.png",string path = "../Images/",bool absolute = false, bool adjustment = false,
                double brightness = 0, double contrast = 0, double  hue = 0);
     Adjustment(const Adjustment& obj);
     Adjustment& operator=(const Adjustment& obj);
     // override specifier ensures that the function is virtual and is overriding a virtual function from a base class
-    ~Adjustment() override;
+    virtual ~Adjustment() override;
 
     friend istream& operator>>(istream& in, Adjustment& obj);
     friend ostream& operator<<(ostream& out, const Adjustment& obj);
 };
 
-Adjustment::Adjustment(string name, string extension, string path, bool adjustment,
+Adjustment::Adjustment(string name, string path,bool absolute, bool adjustment,
                        double brightness, double contrast, double hue):
-        Image(name,extension,path)
+        Image(name,path,absolute)
 {
     this->adjustment = adjustment;
     this->brightness = brightness;
@@ -360,24 +388,16 @@ Adjustment::~Adjustment() {
     this->adjustment = false;
 }
 
+void initOpenCV() {
+    // for stopping logging info in console
+    cv::utils::logging::setLogLevel(cv::utils::logging::LogLevel::LOG_LEVEL_SILENT);
+    // for stopping warnings in console
+    set_dummy_error_handler();
+}
+
 int main()
 {
-//    OPENCV TEST
-    /*
-    std::string image_path = samples::findFile("starry_night.jpg");
-    Mat img = imread(image_path, IMREAD_COLOR);
-    if(img.empty())
-    {
-        std::cout << "Could not read the image: " << image_path << std::endl;
-        return 1;
-    }
-    imshow("Display window", img);
-    int k = waitKey(0); // Wait for a keystroke in the window
-    if(k == 's')
-    {
-        imwrite("starry_night.png", img);
-    }
-     */
+    initOpenCV();
 
 //    IMAGE TESTS
     /*Image i;
@@ -409,9 +429,14 @@ int main()
     cin>>e;
     e.blurImg();
 
-//    TODO method to find aspect ratio
-//    TODO entering wron image info then right doesnt work
-//    TODO virtual destructor for base to avoid memory leaks
-//    TODO rethink image reading and writing
     return 0;
 }
+
+/*
+- virtual la toti destructorii
+- la typeinfo si typeid nevoie de destructor virtual, ptc e nevoie de o metoda virtuala
+- la ultima clasa din mostenirea din diamant daca nu trecem toti constructorii: Baza, Stanga, Dreapta, si nu trecem Baza atunci se cheama cel default si numele va avea valoarea din constructorul de la baza default.
+- la downcasting, daca dynamic_cast intoarce NULL se poate apela o metoda care nu acceseaza atribute.
+
+- ORDINE: static_cast, mostenire virtuala, dynamic_cast
+ */
