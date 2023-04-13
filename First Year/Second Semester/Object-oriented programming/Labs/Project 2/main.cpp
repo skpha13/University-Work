@@ -4,7 +4,6 @@
 #include <opencv2/highgui.hpp>
 #include <opencv2/core/utils/logger.hpp>
 #include <iostream>
-#include <vector>
 
 using cv::Mat;
 using cv::samples::findFile;
@@ -219,8 +218,10 @@ protected:
     int blurAmount;
     bool effect;
     bool blackWhite;
+    bool cartoon;
 public:
-    Effect(string name = "362.png",string path = "../Images/",bool absolute = false, bool effect = false, int blurAmount = 0, bool blackWhite = false);
+    Effect(string name = "362.png",string path = "../Images/",bool absolute = false, bool effect = false,
+           int blurAmount = 0, bool blackWhite = false, bool cartoon = false);
     Effect(const Effect& obj);
     Effect& operator=(const Effect& obj);
     // override specifier ensures that the function is virtual and is overriding a virtual function from a base class
@@ -231,6 +232,7 @@ public:
 
     void blurImg();
     void bwImg();
+    void cartoonImg();
     void saveShow() const;
     virtual void writeImg() const;
     virtual void applyAll();
@@ -242,12 +244,13 @@ public:
 //    TODO Adjustments methods
 //    TODO override writeImg() function
 
-Effect::Effect(string name, string path, bool absolute, bool effect, int blurAmount, bool blackWhite):
+Effect::Effect(string name, string path, bool absolute, bool effect, int blurAmount, bool blackWhite, bool cartoon):
         Image(name,path,absolute)
 {
     this->effect = effect;
     this->blurAmount = blurAmount;
     this->blackWhite = blackWhite;
+    this->cartoon = cartoon;
     this->readImg();
 }
 
@@ -255,6 +258,7 @@ Effect::Effect(const Effect &obj):Image(obj) {
     this->effect = obj.effect;
     this->blurAmount = obj.blurAmount;
     this->blackWhite = obj.blackWhite;
+    this->cartoon = obj.cartoon;
     this->readImg();
 }
 
@@ -265,6 +269,7 @@ Effect& Effect::operator=(const Effect &obj) {
         this->effect = obj.effect;
         this->blurAmount = obj.blurAmount;
         this->blackWhite = obj.blackWhite;
+        this->cartoon = obj.cartoon;
         this->readImg();
     }
     return *this;
@@ -283,8 +288,10 @@ istream& operator>>(istream& in, Effect& obj) {
         cout<<"Enter blur amount: \n";
         in>>obj.blurAmount;
     }
-    cout<<"Do you want to make the image Black & White? (yes:1 no:0)?\n";
+    cout<<"Do you want to apply Black and White effect to the image? (yes:1 no:0)?\n";
     in>>obj.blackWhite;
+    cout<<"Do you want to apply Cartoon effect to the image? (yes:1 no:0)?\n";
+    in>>obj.cartoon;
     obj.readImg();
 
     return in;
@@ -324,27 +331,57 @@ void Effect::writeImg() const {
 }
 
 void Effect::blurImg() {
-    try {
-        Mat blurredImage;
-        // cv::GaussianBlur doesnt work with widths and heigths that are even, or 0,0
-        if(this->blurAmount % 2 == 0) this->blurAmount += 1;
+    if(this->blurAmount > 0)
+    {
+        try {
+            Mat blurredImage;
+            // cv::GaussianBlur doesnt work with widths and heigths that are even, or 0,0
+            if(this->blurAmount % 2 == 0) this->blurAmount += 1;
 
-        cv::GaussianBlur(this->img,this->img,cv::Size(this->blurAmount,this->blurAmount),0);
+            cv::GaussianBlur(this->img,this->img,cv::Size(this->blurAmount,this->blurAmount),0);
 //        blurredImage.copyTo(this->img);
+        }
+        catch (...) {cout<<"~ APPLYING EFFECT FAILED\n";}
     }
-    catch (...) {cout<<"~ APPLYING EFFECT FAILED\n";}
 }
 
 void Effect::bwImg() {
-    try {
-        cv::cvtColor(img,img,cv::COLOR_BGR2GRAY);
+    if(this->blackWhite == true)
+    {
+        try {
+            cv::cvtColor(img,img,cv::COLOR_BGR2GRAY);
+        }
+        catch (...) {cout<<"~ APPLYING EFFECT FAILED\n";}
     }
-    catch (...) {cout<<"~ APPLYING EFFECT FAILED\n";}
+}
+
+void Effect::cartoonImg() {
+    if(this->cartoon == true)
+    {
+//        try {
+            Mat gray,tresh,edges;
+            // to check if the image is already gray
+            if(img.channels() != 1) cv::cvtColor(img,gray,cv::COLOR_BGR2GRAY);
+
+            // blur image to get a better mask for outlines
+            cv::medianBlur(gray,gray,7);
+            // create outline using a treshold
+            cv::adaptiveThreshold(gray,tresh,255,cv::ADAPTIVE_THRESH_MEAN_C,cv::THRESH_BINARY,21,7);
+
+            // blur initial image with a safer method
+            cv::bilateralFilter(img,edges,21,250,250);
+
+            // combine initial blurred image with the outlines
+            cv::bitwise_and(edges,edges,img,tresh);
+//    }
+//    catch (...) {cout<<"~ APPLYING EFFECT FAILED\n";}
+    }
 }
 
 void Effect::applyAll() {
     this->blurImg();
     this->bwImg();
+    this->cartoonImg();
 }
 
 class Adjustment:public virtual Image {
