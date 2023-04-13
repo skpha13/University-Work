@@ -4,6 +4,7 @@
 #include <opencv2/highgui.hpp>
 #include <opencv2/core/utils/logger.hpp>
 #include <iostream>
+#include <vector>
 
 using cv::Mat;
 using cv::samples::findFile;
@@ -52,6 +53,7 @@ protected:
     // boolean for image finding
     bool absolute;
     string name,path;
+    Mat img;
 public:
     Image(string name = "362.png", string path = "../Images/", bool absolute = false);
     Image(const Image& obj);
@@ -64,7 +66,7 @@ public:
 
     string extension(string word) const;
     string withoutExtension(string word) const;
-    Mat readImg() const;
+    void readImg() const;
     void showImg() const;
     void showImg(const Mat& img) const;
     virtual void writeImg() const;
@@ -139,27 +141,33 @@ string Image::withoutExtension(string word) const {
     return word.substr(0,word.find("."));
 }
 
-Mat Image::readImg() const {
+void Image::readImg() const {
     string image_path;
-    try {
-        if(this->absolute == false)
-        {
-            string full_name = this->path + this->name;
-            // silent mode true to suppress errors
-            image_path = findFile(full_name,true,true);
-        }
-        else image_path = findFile(this->path,true,true);
-
-        Mat img = imread(image_path, IMREAD_COLOR);
-        return img;
+//    try {
+    if(this->absolute == false)
+    {
+        string full_name = this->path + this->name;
+        // silent mode true to suppress errors
+        image_path = findFile(full_name,true,true);
     }
-    catch(...) {cout<<"~ INVALID PATH\n"; return Mat::zeros(540,540,CV_8UC3);}
+    else image_path = findFile(this->path,true,true);
+
+    Mat temp = imread(image_path, IMREAD_COLOR);
+//        img.zeros(temp.size(),temp.type());
+//        img = Mat::zeros(temp.size(),temp.type());
+//        img.create(temp.size(),temp.type());
+    cv::resize(img,img,temp.size());
+//        cv::cvtColor(img,img,IMREAD_COLOR);
+    temp.copyTo(img);
+//        return img;
+//    }
+//    catch(...) {cout<<"~ INVALID PATH\n"; /*return Mat::zeros(540,540,CV_8UC3);*/}
     // CV_8UC3 = 8 bit unsigned integer with 3 channels (RGB)
 }
 
 void Image::showImg() const {
     try {
-        Mat img = this->readImg();
+//        Mat img = this->readImg();
         cv::namedWindow("Image",cv::WINDOW_NORMAL);
 //        using this function makes the window not have a title bar
 //        cv::setWindowProperty("Image",cv::WND_PROP_FULLSCREEN, cv::WINDOW_FULLSCREEN);
@@ -203,7 +211,7 @@ void Image::showImg(const Mat& img) const {
 void Image::writeImg() const {
     try {
         // basically does nothing because there is nothing applied to that image
-        Mat img = this->readImg();
+//        Mat img = this->readImg();
         string full_path = this->path + this->name;
         cv::imwrite(full_path,img);
     }
@@ -235,7 +243,7 @@ public:
 //    TODO override writeImg() function
 
 Effect::Effect(string name, string path, bool absolute, bool effect, int blurAmount):
-    Image(name,path,absolute)
+        Image(name,path,absolute)
 {
     this->effect = effect;
     this->blurAmount = blurAmount;
@@ -294,20 +302,21 @@ void Effect::writeImg(const Mat &img) const {
 
 void Effect::blurImg() const {
     try {
-        Mat img = this->readImg();
+//        Mat img = this->readImg();
         Mat blurredImage;
 
         cv::GaussianBlur(img,blurredImage,cv::Size(this->blurAmount,this->blurAmount),0);
+        blurredImage.copyTo(img);
         cout<<"Show image on screen (yes:1 no:0)?\n";
         int temp;
         cin>>temp;
         cin.get();
-        if(temp == 1) this->showImg(blurredImage);
+        if(temp == 1) this->showImg();
 
         cout<<"Save image (yes:1 no:0)?\n";
         cin>>temp;
         cin.get();
-        if(temp == 1) this->writeImg(blurredImage);
+        if(temp == 1) this->writeImg(img);
     }
     catch (...) {cout<<"~ APPLYING EFFECT FAILED\n";}
 }
@@ -424,6 +433,11 @@ int main()
     Adjustment a2;
     a2 = a;
     cout<<a2<<endl;*/
+
+    Image i;
+    cin>>i;
+    i.readImg();
+    i.showImg();
 
     Effect e;
     cin>>e;
