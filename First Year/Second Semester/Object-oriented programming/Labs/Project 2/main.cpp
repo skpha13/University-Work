@@ -66,7 +66,7 @@ public:
 
     string extension(string word) const;
     string withoutExtension(string word) const;
-    void readImg() const;
+    void readImg();
     void showImg() const;
     void showImg(const Mat& img) const;
     virtual void writeImg() const;
@@ -141,27 +141,23 @@ string Image::withoutExtension(string word) const {
     return word.substr(0,word.find("."));
 }
 
-void Image::readImg() const {
+void Image::readImg() {
     string image_path;
-//    try {
-    if(this->absolute == false)
-    {
-        string full_name = this->path + this->name;
-        // silent mode true to suppress errors
-        image_path = findFile(full_name,true,true);
-    }
-    else image_path = findFile(this->path,true,true);
+    try {
+        if(this->absolute == false)
+        {
+            string full_name = this->path + this->name;
+            // silent mode true to suppress errors
+            image_path = findFile(full_name,true,true);
+        }
+        else image_path = findFile(this->path,true,true);
 
-    Mat temp = imread(image_path, IMREAD_COLOR);
-//        img.zeros(temp.size(),temp.type());
-//        img = Mat::zeros(temp.size(),temp.type());
-//        img.create(temp.size(),temp.type());
-    cv::resize(img,img,temp.size());
-//        cv::cvtColor(img,img,IMREAD_COLOR);
-    temp.copyTo(img);
-//        return img;
-//    }
-//    catch(...) {cout<<"~ INVALID PATH\n"; /*return Mat::zeros(540,540,CV_8UC3);*/}
+        Mat temp = imread(image_path, IMREAD_COLOR);
+        img.create(temp.rows,temp.cols,temp.type());
+        cv::resize(img,img,temp.size());
+        temp.copyTo(img);
+    }
+    catch(...) {cout<<"~ INVALID PATH\n"; /*return Mat::zeros(540,540,CV_8UC3);*/}
     // CV_8UC3 = 8 bit unsigned integer with 3 channels (RGB)
 }
 
@@ -222,8 +218,9 @@ class Effect:public virtual Image {
 protected:
     int blurAmount;
     bool effect;
+    bool blackWhite;
 public:
-    Effect(string name = "362.png",string path = "../Images/",bool absolute = false, bool effect = 0, int blurAmount = 0);
+    Effect(string name = "362.png",string path = "../Images/",bool absolute = false, bool effect = false, int blurAmount = 0, bool blackWhite = false);
     Effect(const Effect& obj);
     Effect& operator=(const Effect& obj);
     // override specifier ensures that the function is virtual and is overriding a virtual function from a base class
@@ -232,8 +229,11 @@ public:
     friend istream& operator>>(istream& in, Effect& obj);
     friend ostream& operator<<(ostream& out, const Effect& obj);
 
-    void blurImg() const;
-    virtual void writeImg(const Mat& img) const;
+    void blurImg();
+    void bwImg();
+    void saveShow() const;
+    virtual void writeImg() const;
+    virtual void applyAll();
 };
 
 //    TODO 2 more effects to add
@@ -242,16 +242,20 @@ public:
 //    TODO Adjustments methods
 //    TODO override writeImg() function
 
-Effect::Effect(string name, string path, bool absolute, bool effect, int blurAmount):
+Effect::Effect(string name, string path, bool absolute, bool effect, int blurAmount, bool blackWhite):
         Image(name,path,absolute)
 {
     this->effect = effect;
     this->blurAmount = blurAmount;
+    this->blackWhite = blackWhite;
+    this->readImg();
 }
 
 Effect::Effect(const Effect &obj):Image(obj) {
     this->effect = obj.effect;
     this->blurAmount = obj.blurAmount;
+    this->blackWhite = obj.blackWhite;
+    this->readImg();
 }
 
 Effect& Effect::operator=(const Effect &obj) {
@@ -260,6 +264,8 @@ Effect& Effect::operator=(const Effect &obj) {
         Image::operator=(obj);
         this->effect = obj.effect;
         this->blurAmount = obj.blurAmount;
+        this->blackWhite = obj.blackWhite;
+        this->readImg();
     }
     return *this;
 }
@@ -277,6 +283,10 @@ istream& operator>>(istream& in, Effect& obj) {
         cout<<"Enter blur amount: \n";
         in>>obj.blurAmount;
     }
+    cout<<"Do you want to make the image Black & White? (yes:1 no:0)?\n";
+    in>>obj.blackWhite;
+    obj.readImg();
+
     return in;
 }
 
@@ -292,33 +302,49 @@ Effect::~Effect() {
     this->blurAmount = 0;
 }
 
-void Effect::writeImg(const Mat &img) const {
+void Effect::saveShow() const {
+    cout<<"Show image on screen (yes:1 no:0)?\n";
+    int temp;
+    cin>>temp;
+    cin.get();
+    if(temp == 1) this->showImg();
+
+    cout<<"Save image (yes:1 no:0)?\n";
+    cin>>temp;
+    cin.get();
+    if(temp == 1) this->writeImg();
+}
+
+void Effect::writeImg() const {
     try {
         string full_path = "../Images with Effects/" + this->withoutExtension(this->name) + "_withEffects" + this->extension(this->name);
-        cv::imwrite(full_path,img);
+        cv::imwrite(full_path,this->img);
     }
     catch (...) {cout<<"~ WRITING IMAGE FAILED\n";}
 }
 
-void Effect::blurImg() const {
+void Effect::blurImg() {
     try {
-//        Mat img = this->readImg();
         Mat blurredImage;
+        // cv::GaussianBlur doesnt work with widths and heigths that are even, or 0,0
+        if(this->blurAmount % 2 == 0) this->blurAmount += 1;
 
-        cv::GaussianBlur(img,blurredImage,cv::Size(this->blurAmount,this->blurAmount),0);
-        blurredImage.copyTo(img);
-        cout<<"Show image on screen (yes:1 no:0)?\n";
-        int temp;
-        cin>>temp;
-        cin.get();
-        if(temp == 1) this->showImg();
-
-        cout<<"Save image (yes:1 no:0)?\n";
-        cin>>temp;
-        cin.get();
-        if(temp == 1) this->writeImg(img);
+        cv::GaussianBlur(this->img,this->img,cv::Size(this->blurAmount,this->blurAmount),0);
+//        blurredImage.copyTo(this->img);
     }
     catch (...) {cout<<"~ APPLYING EFFECT FAILED\n";}
+}
+
+void Effect::bwImg() {
+    try {
+        cv::cvtColor(img,img,cv::COLOR_BGR2GRAY);
+    }
+    catch (...) {cout<<"~ APPLYING EFFECT FAILED\n";}
+}
+
+void Effect::applyAll() {
+    this->blurImg();
+    this->bwImg();
 }
 
 class Adjustment:public virtual Image {
@@ -434,14 +460,12 @@ int main()
     a2 = a;
     cout<<a2<<endl;*/
 
-    Image i;
-    cin>>i;
-    i.readImg();
-    i.showImg();
-
     Effect e;
     cin>>e;
-    e.blurImg();
+    e.applyAll();
+    e.saveShow();
+//    e.blurImg();
+//    e.bwImg();
 
     return 0;
 }
@@ -453,4 +477,11 @@ int main()
 - la downcasting, daca dynamic_cast intoarce NULL se poate apela o metoda care nu acceseaza atribute.
 
 - ORDINE: static_cast, mostenire virtuala, dynamic_cast
+ */
+
+// TODO remember: readImg keeps effects stacked if you want to reset readImg again | add reset option
+/* TODO questions:
+    - what happens with static attributes when inherited
+    - public virtual vs virtual public
+
  */
