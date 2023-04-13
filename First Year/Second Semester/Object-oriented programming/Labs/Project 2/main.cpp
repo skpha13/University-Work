@@ -43,18 +43,18 @@ void reset_error_handler()
 
 class IOInterface {
 public:
-    virtual istream& read(istream&) = 0;
-    virtual ostream* print(ostream&) = 0;
+    virtual void applyAll() = 0;
+    virtual void writeImg() const = 0;
 };
 
-class Image {
+class Image: public IOInterface {
 protected:
     // boolean for image finding
     bool absolute;
     string name,path;
     Mat img;
 public:
-    Image(string name = "362.png", string path = "../Images/", bool absolute = false);
+    Image(string name = "cat.png", string path = "../Images/", bool absolute = false);
     Image(const Image& obj);
     Image& operator=(const Image& obj);
     // virtual to call derivative destructors
@@ -68,7 +68,9 @@ public:
     void readImg();
     void showImg() const;
     void showImg(const Mat& img) const;
-    virtual void writeImg() const;
+    void writeImg() const;
+    void saveShow() const;
+    void applyAll();
 };
 
 Image::Image(string name,string path, bool absolute) {
@@ -161,7 +163,7 @@ void Image::readImg() {
 }
 
 void Image::showImg() const {
-    try {
+//    try {
 //        Mat img = this->readImg();
         cv::namedWindow("Image",cv::WINDOW_NORMAL);
 //        using this function makes the window not have a title bar
@@ -178,8 +180,8 @@ void Image::showImg() const {
             cv::destroyAllWindows();
             return ;
         }
-    }
-    catch (...) {cout<<"~ OUTPUT FAILED\n";}
+//    }
+//    catch (...) {cout<<"~ OUTPUT FAILED\n";}
 }
 
 void Image::showImg(const Mat& img) const {
@@ -213,14 +215,29 @@ void Image::writeImg() const {
     catch (...) {cout<<"~ WRITING IMAGE FAILED\n";}
 }
 
+void Image::saveShow() const {
+    cout<<"Show image on screen (yes:1 no:0)?\n";
+    int temp;
+    cin>>temp;
+    cin.get();
+    if(temp == 1) this->showImg();
+
+    cout<<"Save image (yes:1 no:0)?\n";
+    cin>>temp;
+    cin.get();
+    if(temp == 1) this->writeImg();
+}
+
+void Image::applyAll() {
+    cout<<"~ NOTHING TO APPLY\n";
+}
+
 class Effect:public virtual Image {
 protected:
     int blurAmount;
-    bool effect;
-    bool blackWhite;
-    bool cartoon;
+    bool effect, blackWhite, cartoon;
 public:
-    Effect(string name = "362.png",string path = "../Images/",bool absolute = false, bool effect = false,
+    Effect(string name = "cat.png",string path = "../Images/",bool absolute = false, bool effect = false,
            int blurAmount = 0, bool blackWhite = false, bool cartoon = false);
     Effect(const Effect& obj);
     Effect& operator=(const Effect& obj);
@@ -233,15 +250,12 @@ public:
     void blurImg();
     void bwImg();
     void cartoonImg();
-    void saveShow() const;
-    virtual void writeImg() const;
-    virtual void applyAll();
+    void writeImg() const;
+    void applyAll();
 };
 
-//    TODO 2 more effects to add
 //    TODO Edited class inheritance
 //    TODO Menu class
-//    TODO Adjustments methods
 //    TODO override writeImg() function
 
 Effect::Effect(string name, string path, bool absolute, bool effect, int blurAmount, bool blackWhite, bool cartoon):
@@ -309,19 +323,6 @@ Effect::~Effect() {
     this->blurAmount = 0;
 }
 
-void Effect::saveShow() const {
-    cout<<"Show image on screen (yes:1 no:0)?\n";
-    int temp;
-    cin>>temp;
-    cin.get();
-    if(temp == 1) this->showImg();
-
-    cout<<"Save image (yes:1 no:0)?\n";
-    cin>>temp;
-    cin.get();
-    if(temp == 1) this->writeImg();
-}
-
 void Effect::writeImg() const {
     try {
         string full_path = "../Images with Effects/" + this->withoutExtension(this->name) + "_withEffects" + this->extension(this->name);
@@ -340,6 +341,7 @@ void Effect::blurImg() {
 
             cv::GaussianBlur(this->img,this->img,cv::Size(this->blurAmount,this->blurAmount),0);
 //        blurredImage.copyTo(this->img);
+            this->effect = true;
         }
         catch (...) {cout<<"~ APPLYING EFFECT FAILED\n";}
     }
@@ -350,6 +352,7 @@ void Effect::bwImg() {
     {
         try {
             cv::cvtColor(img,img,cv::COLOR_BGR2GRAY);
+            this->effect = true;
         }
         catch (...) {cout<<"~ APPLYING EFFECT FAILED\n";}
     }
@@ -358,10 +361,11 @@ void Effect::bwImg() {
 void Effect::cartoonImg() {
     if(this->cartoon == true)
     {
-//        try {
+        try {
             Mat gray,tresh,edges;
             // to check if the image is already gray
             if(img.channels() != 1) cv::cvtColor(img,gray,cv::COLOR_BGR2GRAY);
+            else img.copyTo(gray);
 
             // blur image to get a better mask for outlines
             cv::medianBlur(gray,gray,7);
@@ -373,8 +377,9 @@ void Effect::cartoonImg() {
 
             // combine initial blurred image with the outlines
             cv::bitwise_and(edges,edges,img,tresh);
-//    }
-//    catch (...) {cout<<"~ APPLYING EFFECT FAILED\n";}
+            this->effect = true;
+    }
+    catch (...) {cout<<"~ APPLYING EFFECT FAILED\n";}
     }
 }
 
@@ -386,11 +391,12 @@ void Effect::applyAll() {
 
 class Adjustment:public virtual Image {
 protected:
-    double brightness, contrast, hue;
+    double brightness, contrast;
+    int hue;
     bool adjustment;
 public:
-    Adjustment(string name = "362.png",string path = "../Images/",bool absolute = false, bool adjustment = false,
-               double brightness = 0, double contrast = 0, double  hue = 0);
+    Adjustment(string name = "cat.png",string path = "../Images/",bool absolute = false, bool adjustment = false,
+               double brightness = 0, double contrast = 1, int  hue = 0);
     Adjustment(const Adjustment& obj);
     Adjustment& operator=(const Adjustment& obj);
     // override specifier ensures that the function is virtual and is overriding a virtual function from a base class
@@ -398,16 +404,23 @@ public:
 
     friend istream& operator>>(istream& in, Adjustment& obj);
     friend ostream& operator<<(ostream& out, const Adjustment& obj);
+
+    void brightnessImg();
+    void contrastImg();
+    void hueImg();
+    void writeImg() const;
+    void applyAll();
 };
 
 Adjustment::Adjustment(string name, string path,bool absolute, bool adjustment,
-                       double brightness, double contrast, double hue):
+                       double brightness, double contrast, int hue):
         Image(name,path,absolute)
 {
     this->adjustment = adjustment;
     this->brightness = brightness;
     this->contrast = contrast;
     this->hue = hue;
+    this->readImg();
 }
 
 Adjustment::Adjustment(const Adjustment &obj): Image(obj) {
@@ -415,6 +428,7 @@ Adjustment::Adjustment(const Adjustment &obj): Image(obj) {
     this->brightness = obj.brightness;
     this->contrast = obj.contrast;
     this->hue = obj.hue;
+    this->readImg();
 }
 
 Adjustment& Adjustment::operator=(const Adjustment &obj) {
@@ -425,6 +439,7 @@ Adjustment& Adjustment::operator=(const Adjustment &obj) {
         this->brightness = obj.brightness;
         this->contrast = obj.contrast;
         this->hue = obj.hue;
+        this->readImg();
     }
     return *this;
 }
@@ -433,12 +448,17 @@ istream& operator>>(istream& in, Adjustment& obj) {
     in>>(Image&)obj;
     cout<<"Is the image adjusted? (yes:1 no:0)\n";
     in>>obj.adjustment;
+    in.get();
     cout<<"Enter brightness [-100,100]: \n";
     in>>obj.brightness;
-    cout<<"Enter contrast [-100,100]: \n";
+    in.get();
+    cout<<"Enter contrast [0,10]: \n\t1 = nothing changes\n\t[0,1) = lower contrast\n\t(1,10] = higher contrast\n";
     in>>obj.contrast;
-    cout<<"Enter hue [0,255]: \n";
+    in.get();
+    cout<<"Enter hue [0,180]: \n";
     in>>obj.hue;
+    in.get();
+    obj.readImg();
 
     return in;
 }
@@ -458,6 +478,72 @@ Adjustment::~Adjustment() {
     this->brightness = 0;
     this->hue = 0;
     this->adjustment = false;
+}
+
+void Adjustment::writeImg() const {
+    try {
+        string full_path = "../Images with Adjustments/" + this->withoutExtension(this->name) + "_withAdjustments" + this->extension(this->name);
+        cv::imwrite(full_path,this->img);
+    }
+    catch (...) {cout<<"~ WRITING IMAGE FAILED\n";}
+}
+
+void Adjustment::brightnessImg() {
+    if(this->brightness != 0 && this->brightness >= -100 && this->brightness <= 100)
+    {
+        try {
+            // rtype == -1 means same type as source image
+            // alpha = contrast, beta = brightness
+            img.convertTo(img,-1,1,this->brightness);
+            this->adjustment = true;
+        }
+        catch (...) {cout<<"~ APPLYING ADJUSTMENT FAILED\n";}
+    }
+}
+
+void Adjustment::contrastImg() {
+    if(this->contrast >= 0 && this->contrast <= 10)
+    {
+        try {
+            // rtype == -1 means same type as source image
+            // alpha = contrast, beta = brightness
+            img.convertTo(img,-1,this->contrast,0);
+            this->adjustment = true;
+        }
+        catch (...) {cout<<"~ APPLYING ADJUSTMENT FAILED\n";}
+    }
+}
+
+void Adjustment::hueImg() {
+    if(this->hue != 0 && this->hue >= -100 && this->hue <= 100)
+    {
+        try {
+            Mat hsv_img;
+            // changing color space to HSV (HUE, SATURATION, VALUE)
+            cv::cvtColor(img,hsv_img,cv::COLOR_BGR2HSV);
+
+            for(int i=0;i<hsv_img.rows;i++)
+                for(int j=0;j<hsv_img.cols;j++)
+                {
+                    // to extract hue of the current pixel
+                    int h = hsv_img.at<cv::Vec3b>(i,j)[0];
+                    // adding value of this->hue to h
+                    h = (h + this->hue) % 180;
+                    // changing pixel hue
+                    hsv_img.at<cv::Vec3b>(i,j)[0] = h;
+                }
+            // converting back to original color space
+            cv::cvtColor(hsv_img,img,cv::COLOR_HSV2BGR);
+            this->adjustment = true;
+        }
+        catch (...) {cout<<"~ APPLYING ADJUSTMENT FAILED\n";}
+    }
+}
+
+void Adjustment::applyAll() {
+    this->brightnessImg();
+    this->contrastImg();
+    this->hueImg();
 }
 
 void initOpenCV() {
@@ -483,10 +569,19 @@ int main()
     cout<<i3<<endl;*/
 
 //    EFFECT TESTS
-    /*Effect e;
+    /*
+    Effect e;
     cout<<e<<endl;
     cin>>e;
-    cout<<e<<endl;*/
+    cout<<e<<endl;
+
+    Effect e;
+    cin>>e;
+    e.applyAll();
+    e.saveShow();
+    e.blurImg();
+    e.bwImg();
+     */
 
 //    ADJUSTMENT TESTS
     /*Adjustment a;
@@ -495,14 +590,20 @@ int main()
     cout<<a<<endl;
     Adjustment a2;
     a2 = a;
-    cout<<a2<<endl;*/
+    cout<<a2<<endl;
 
-    Effect e;
-    cin>>e;
-    e.applyAll();
-    e.saveShow();
-//    e.blurImg();
-//    e.bwImg();
+    Adjustment a;
+    cin>>a;
+    a.brightnessImg();
+    a.showImg();
+    a.readImg();
+
+    a.contrastImg();
+    a.showImg();
+    a.readImg();
+
+    a.hueImg();
+    a.showImg();*/
 
     return 0;
 }
