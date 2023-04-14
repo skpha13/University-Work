@@ -41,13 +41,15 @@ void reset_error_handler()
     cv::redirectError(nullptr);
 }
 
-class IOInterface {
+class Interface {
 public:
     virtual void applyAll() = 0;
     virtual void writeImg() const = 0;
+    virtual istream& read(istream& in) = 0;
+    virtual ostream& print(ostream& out) const = 0;
 };
 
-class Image: public IOInterface {
+class Image: public Interface {
 protected:
     // boolean for image finding
     bool absolute;
@@ -59,6 +61,9 @@ public:
     Image& operator=(const Image& obj);
     // virtual to call derivative destructors
     virtual ~Image();
+
+    istream& read(istream& in);
+    ostream& print(ostream& out) const;
 
     friend istream& operator>>(istream& in, Image& obj);
     friend ostream& operator<<(ostream& out, const Image& obj);
@@ -97,35 +102,44 @@ Image& Image::operator=(const Image &obj) {
     return *this;
 }
 
-istream& operator>>(istream& in, Image& obj) {
-    if(!obj.name.empty()) obj.name.clear();
-    if(!obj.path.empty()) obj.path.clear();
+istream& Image::read(istream &in) {
+    if(!this->name.empty()) this->name.clear();
+    if(!this->path.empty()) this->path.clear();
     cout<<"Enter name: \n";
-    in>>obj.name;
+    in>>this->name;
     cout<<"Do you want to use relative path? (1:yes 0:no)?\n";
     int temp;
     cin>>temp;
     in.get();
     if(temp == 0)
     {
-        obj.absolute = true;
+        this->absolute = true;
         cout<<"Enter path to image: \n";
         // to get \n from buffer
 
-        getline(in,obj.path);
+        getline(in,this->path);
         // deleting "" from path
-        if(obj.path[0] == '"') obj.path.erase(0,1), obj.path.pop_back();
+        if(this->path[0] == '"') this->path.erase(0,1), this->path.pop_back();
     }
-    else obj.path = "../Images/";
+    else this->path = "../Images/";
 
     return in;
 }
 
-ostream& operator<<(ostream& out, const Image& obj) {
-    out<<"Name: "<<obj.name<<endl;
-    out<<"Path to image: "<<obj.path + obj.name<<endl;
+ostream& Image::print(ostream &out) const {
+    out<<"Name: "<<this->name<<endl;
+    if(this->absolute == false) out<<"Path to image: "<<this->path + this->name<<endl;
+    else out<<"Path to image: "<<this->path<<endl;
 
     return out;
+}
+
+istream& operator>>(istream& in, Image& obj) {
+    return obj.read(in);
+}
+
+ostream& operator<<(ostream& out, const Image& obj) {
+    return obj.print(out);
 }
 
 Image::~Image() {
@@ -135,11 +149,11 @@ Image::~Image() {
 }
 
 string Image::extension(string word) const {
-    return word.substr(word.find("."),word.length());
+    return word.substr(word.find('.'),word.length());
 }
 
 string Image::withoutExtension(string word) const {
-    return word.substr(0,word.find("."));
+    return word.substr(0,word.find('.'));
 }
 
 void Image::readImg() {
@@ -163,7 +177,7 @@ void Image::readImg() {
 }
 
 void Image::showImg() const {
-//    try {
+    try {
 //        Mat img = this->readImg();
         cv::namedWindow("Image",cv::WINDOW_NORMAL);
 //        using this function makes the window not have a title bar
@@ -180,18 +194,18 @@ void Image::showImg() const {
             cv::destroyAllWindows();
             return ;
         }
-//    }
-//    catch (...) {cout<<"~ OUTPUT FAILED\n";}
+    }
+    catch (...) {cout<<"~ OUTPUT FAILED\n";}
 }
 
-void Image::showImg(const Mat& img) const {
+void Image::showImg(const Mat& image) const {
     try {
         cv::namedWindow("Image",cv::WINDOW_NORMAL);
 //        using this function makes the window not have a title bar
 //        cv::setWindowProperty("Image",cv::WND_PROP_FULLSCREEN, cv::WINDOW_FULLSCREEN);
-        double aspect_ratio = static_cast<double>(img.cols)/img.rows;
+        double aspect_ratio = static_cast<double>(image.cols)/image.rows;
         cv::resizeWindow("Image",static_cast<int>(540*aspect_ratio),540);
-        imshow("Image",img);
+        imshow("Image",image);
 
 //        Wait for a keystroke in the window
         int k = waitKey(0);
@@ -232,7 +246,7 @@ void Image::applyAll() {
     cout<<"~ NOTHING TO APPLY\n";
 }
 
-class Effect:public virtual Image {
+class Effect: virtual public Image {
 protected:
     int blurAmount;
     bool effect, blackWhite, cartoon;
@@ -244,8 +258,8 @@ public:
     // override specifier ensures that the function is virtual and is overriding a virtual function from a base class
     virtual ~Effect() override;
 
-    friend istream& operator>>(istream& in, Effect& obj);
-    friend ostream& operator<<(ostream& out, const Effect& obj);
+    istream& read(istream& in);
+    ostream& print(ostream& out) const;
 
     void blurImg();
     void bwImg();
@@ -256,7 +270,7 @@ public:
 
 //    TODO Edited class inheritance
 //    TODO Menu class
-//    TODO override writeImg() function
+//    TODO override writeImg() and applyAll() function
 
 Effect::Effect(string name, string path, bool absolute, bool effect, int blurAmount, bool blackWhite, bool cartoon):
         Image(name,path,absolute)
@@ -289,10 +303,10 @@ Effect& Effect::operator=(const Effect &obj) {
     return *this;
 }
 
-istream& operator>>(istream& in, Effect& obj) {
-    in>>(Image&)obj;
+istream& Effect::read(istream &in) {
+    this->Image::read(in);
     cout<<"Are there effects applied on the image? (yes:1 no:0) \n";
-    in>>obj.effect;
+    in>>this->effect;
     cout<<"Do you want to blur the image? (yes:1 no:0)?\n";
     int temp;
     in>>temp;
@@ -300,21 +314,27 @@ istream& operator>>(istream& in, Effect& obj) {
     if(temp == 1)
     {
         cout<<"Enter blur amount: \n";
-        in>>obj.blurAmount;
+        in>>this->blurAmount;
     }
     cout<<"Do you want to apply Black and White effect to the image? (yes:1 no:0)?\n";
-    in>>obj.blackWhite;
+    in>>this->blackWhite;
     cout<<"Do you want to apply Cartoon effect to the image? (yes:1 no:0)?\n";
-    in>>obj.cartoon;
-    obj.readImg();
+    in>>this->cartoon;
+    this->readImg();
 
     return in;
 }
 
-ostream& operator<<(ostream& out, const Effect& obj) {
-    out<<(Image&)obj;
-    out<<"Has effects applied: "<<obj.effect<<endl;
-    out<<"Blur amount: "<<obj.blurAmount<<endl;
+ostream& Effect::print(ostream &out) const {
+    this->Image::print(out);
+    if(this->effect == true) out<<"Has effects applied\n";
+    else out<<"Doesn't have effects applied\n";
+    out<<"Blur amount: "<<this->blurAmount<<endl;
+    if(this->blackWhite == true) out<<"Has Black and White effect applied\n";
+    else out<<"Doesn't have Black and White effect applied\n";
+    if(this->cartoon) out<<"Has Cartoon effect applied\n";
+    else out<<"Doesn't have Cartoon effect applied\n";
+
     return out;
 }
 
@@ -378,8 +398,8 @@ void Effect::cartoonImg() {
             // combine initial blurred image with the outlines
             cv::bitwise_and(edges,edges,img,tresh);
             this->effect = true;
-    }
-    catch (...) {cout<<"~ APPLYING EFFECT FAILED\n";}
+        }
+        catch (...) {cout<<"~ APPLYING EFFECT FAILED\n";}
     }
 }
 
@@ -389,7 +409,7 @@ void Effect::applyAll() {
     this->cartoonImg();
 }
 
-class Adjustment:public virtual Image {
+class Adjustment: virtual public Image {
 protected:
     double brightness, contrast;
     int hue;
@@ -402,8 +422,8 @@ public:
     // override specifier ensures that the function is virtual and is overriding a virtual function from a base class
     virtual ~Adjustment() override;
 
-    friend istream& operator>>(istream& in, Adjustment& obj);
-    friend ostream& operator<<(ostream& out, const Adjustment& obj);
+    istream& read(istream& in);
+    ostream& print(ostream& out) const;
 
     void brightnessImg();
     void contrastImg();
@@ -444,31 +464,32 @@ Adjustment& Adjustment::operator=(const Adjustment &obj) {
     return *this;
 }
 
-istream& operator>>(istream& in, Adjustment& obj) {
-    in>>(Image&)obj;
+istream& Adjustment::read(istream &in) {
+    this->Image::read(in);
     cout<<"Is the image adjusted? (yes:1 no:0)\n";
-    in>>obj.adjustment;
+    in>>this->adjustment;
     in.get();
     cout<<"Enter brightness [-100,100]: \n";
-    in>>obj.brightness;
+    in>>this->brightness;
     in.get();
     cout<<"Enter contrast [0,10]: \n\t1 = nothing changes\n\t[0,1) = lower contrast\n\t(1,10] = higher contrast\n";
-    in>>obj.contrast;
+    in>>this->contrast;
     in.get();
     cout<<"Enter hue [0,180]: \n";
-    in>>obj.hue;
+    in>>this->hue;
     in.get();
-    obj.readImg();
+    this->readImg();
 
     return in;
 }
 
-ostream& operator<<(ostream& out, const Adjustment& obj) {
-    out<<(Image&)obj;
-    out<<"Has adjustments applied: "<<obj.adjustment<<endl;
-    out<<"Brightness value: "<<obj.brightness<<endl;
-    out<<"Contrast value: "<<obj.contrast<<endl;
-    out<<"Hue value: "<<obj.hue<<endl;
+ostream& Adjustment::print(ostream &out) const {
+    this->Image::print(out);
+    if(this->adjustment == true) out<<"Has adjustments applied\n";
+    else out<<"Doesn't have adjustments applied\n";
+    out<<"Brightness value: "<<this->brightness<<endl;
+    out<<"Contrast value: "<<this->contrast<<endl;
+    out<<"Hue value: "<<this->hue<<endl;
 
     return out;
 }
@@ -546,6 +567,118 @@ void Adjustment::applyAll() {
     this->hueImg();
 }
 
+class Edited: public Effect, public Adjustment {
+private:
+    bool edited;
+    string date;
+public:
+    Edited(string name = "cat.png", string path = "../Images/",bool absolute = false,bool effect = false, int blurAmount = 0, bool blackWhite = false, bool cartoon = false,
+           bool adjustment = false,double brightness = 0, double contrast = 1, int hue = 0, bool edited = false, string date = "13/06/1826");
+
+    Edited(const Edited& obj);
+    Edited &operator=(const Edited& obj);
+    ~Edited();
+
+    istream& read(istream& in);
+    ostream& print(ostream& out) const;
+
+    void writeImg() const;
+    void applyAll();
+};
+
+Edited::Edited(string name, string path, bool absolute, bool effect, int blurAmount, bool blackWhite, bool cartoon,
+               bool adjustment, double brightness, double contrast, int hue, bool edited, string date): Image(name,path,absolute),
+                                                                                                       Effect(name,path,absolute,effect,blurAmount,blackWhite,cartoon),
+                                                                                                       Adjustment(name,path,absolute,adjustment,brightness,contrast,hue) {
+    this->edited = edited;
+    this->date = date;
+    this->readImg();
+}
+
+Edited::Edited(const Edited &obj): Image(obj), Effect(obj), Adjustment(obj) {
+    this->edited = obj.edited;
+    this->date = obj.date;
+    this->readImg();
+}
+
+Edited& Edited::operator=(const Edited &obj) {
+    if(this != &obj)
+    {
+        Effect::operator=(obj);
+        Adjustment::operator=(obj);
+        this->edited = obj.edited;
+        this->date = obj.date;
+        this->readImg();
+    }
+    return *this;
+}
+
+Edited::~Edited() {
+    this->edited = false;
+    if(!this->date.empty()) this->date.clear();
+}
+
+istream& Edited::read(istream &in) {
+    this->Effect::read(in);
+
+    cout<<"Is the image adjusted? (yes:1 no:0)\n";
+    in>>this->adjustment;
+    in.get();
+    cout<<"Enter brightness [-100,100]: \n";
+    in>>this->brightness;
+    in.get();
+    cout<<"Enter contrast [0,10]: \n\t1 = nothing changes\n\t[0,1) = lower contrast\n\t(1,10] = higher contrast\n";
+    in>>this->contrast;
+    in.get();
+    cout<<"Enter hue [0,180]: \n";
+    in>>this->hue;
+    in.get();
+
+    cout<<"Is the image edited (yes:1 no:0)?\n";
+    in>>this->edited;
+    in.get();
+    cout<<"Enter date of edited image: \n";
+    std::getline(in,this->date);
+
+    this->readImg();
+    return in;
+}
+
+ostream& Edited::print(ostream &out) const {
+    this->Effect::print(out);
+
+    if(this->adjustment == true) out<<"Has adjustments applied\n";
+    else out<<"Doesn't have adjustments applied\n";
+    out<<"Brightness value: "<<this->brightness<<endl;
+    out<<"Contrast value: "<<this->contrast<<endl;
+    out<<"Hue value: "<<this->hue<<endl;
+
+    if(this->edited == true) out<<"Is edited\n";
+    else out<<"Is not edited\n";
+
+    out<<"Date of completion: "<<this->date<<endl;
+
+    return out;
+}
+
+void Edited::writeImg() const {
+    try {
+        string full_path = "../Edited Images/" + this->withoutExtension(this->name) + "_Edited" + this->extension(this->name);
+        cv::imwrite(full_path,this->img);
+    }
+    catch (...) {cout<<"~ WRITING IMAGE FAILED\n";}
+}
+
+void Edited::applyAll() {
+    this->brightnessImg();
+    this->contrastImg();
+    this->hueImg();
+
+    this->blurImg();
+    this->bwImg();
+    this->cartoonImg();
+}
+
 void initOpenCV() {
     // for stopping logging info in console
     cv::utils::logging::setLogLevel(cv::utils::logging::LogLevel::LOG_LEVEL_SILENT);
@@ -618,8 +751,3 @@ int main()
  */
 
 // TODO remember: readImg keeps effects stacked if you want to reset readImg again | add reset option
-/* TODO questions:
-    - what happens with static attributes when inherited
-    - public virtual vs virtual public
-
- */

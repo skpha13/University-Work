@@ -1,0 +1,11 @@
+	QUESTIONS:
+- what happens with static attributes when inherited
+- public virtual vs virtual public
+
+	NOTES:
+- la copil exista constructor default din baza
+- constructorii nu se mostenesc la nivel de mostenire
+- ca sa poti sa mostenesti constructorii trebuie sa faci upcasting explicit
+- daca nu specificam la mostenire constructorul apelat la lista de initializare atunci se de call la constructorul default de la baza
+- Baza : void f(), void f(int a)
+  Copil: void f(string a) 		=> suprascrie (overwriting) functia si nu se mai poate apela functia din baza, doar cea din copil
