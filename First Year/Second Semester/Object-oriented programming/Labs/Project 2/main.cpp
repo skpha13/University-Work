@@ -4,6 +4,7 @@
 #include <opencv2/highgui.hpp>
 #include <opencv2/core/utils/logger.hpp>
 #include <iostream>
+#include <vector>
 
 using cv::Mat;
 using cv::samples::findFile;
@@ -41,6 +42,13 @@ void reset_error_handler()
     cv::redirectError(nullptr);
 }
 
+void initOpenCV() {
+    // for stopping logging info in console
+    cv::utils::logging::setLogLevel(cv::utils::logging::LogLevel::LOG_LEVEL_SILENT);
+    // for stopping warnings in console
+    set_dummy_error_handler();
+}
+
 class Interface {
 public:
     virtual void applyAll() = 0;
@@ -76,6 +84,9 @@ public:
     void writeImg() const;
     void saveShow() const;
     void applyAll();
+
+    string getName() const;
+    string getPath() const;
 };
 
 Image::Image(string name,string path, bool absolute) {
@@ -246,6 +257,14 @@ void Image::applyAll() {
     cout<<"~ NOTHING TO APPLY\n";
 }
 
+string Image::getName() const {
+    return name;
+}
+
+string Image::getPath() const {
+    return path;
+}
+
 class Effect: virtual public Image {
 protected:
     int blurAmount;
@@ -266,9 +285,11 @@ public:
     void cartoonImg();
     void writeImg() const;
     void applyAll();
-};
 
-//    TODO Menu class
+    void setBlurAmount(int blurAmount);
+    void setBlackWhite(bool blackWhite);
+    void setCartoon(bool cartoon);
+};
 
 Effect::Effect(string name, string path, bool absolute, bool effect, int blurAmount, bool blackWhite, bool cartoon):
         Image(name,path,absolute)
@@ -407,6 +428,18 @@ void Effect::applyAll() {
     this->cartoonImg();
 }
 
+void Effect::setBlurAmount(int blurAmount) {
+    this->blurAmount = blurAmount;
+}
+
+void Effect::setBlackWhite(bool blackWhite) {
+    this->blackWhite = blackWhite;
+}
+
+void Effect::setCartoon(bool cartoon) {
+    this->cartoon = cartoon;
+}
+
 class Adjustment: virtual public Image {
 protected:
     double brightness, contrast;
@@ -428,6 +461,10 @@ public:
     void hueImg();
     void writeImg() const;
     void applyAll();
+
+    void setBrightness(double brightness);
+    void setContrast(double contrast);
+    void setHue(int hue);
 };
 
 Adjustment::Adjustment(string name, string path,bool absolute, bool adjustment,
@@ -565,6 +602,19 @@ void Adjustment::applyAll() {
     this->hueImg();
 }
 
+void Adjustment::setBrightness(double brightness) {
+    this->brightness = brightness;
+}
+
+void Adjustment::setContrast(double contrast) {
+    this->contrast = contrast;
+}
+
+void Adjustment::setHue(int hue) {
+    this->hue = hue;
+}
+// TODO set bool effect and adjustment when changing one of them
+
 class Edited: public Effect, public Adjustment {
 private:
     bool edited;
@@ -683,12 +733,19 @@ private:
     bool favorite, goBack;
 
 public:
+    Image* getImage() {return this->image;}
+
     friend istream& operator>>(istream& in, Software& obj);
     friend ostream& operator<<(ostream& out, const Software& obj);
 };
 
 istream& operator>>(istream& in, Software& obj) {
     obj.goBack = false;
+
+    for(int i=0;i<10;i++) cout<<"-";
+    cout<<" CREATE ";
+    for(int i=0;i<10;i++) cout<<"-";
+    cout<<endl;
 
     cout<<"1. Effects\n";
     cout<<"2. Adjustments\n";
@@ -745,10 +802,304 @@ ostream& operator<<(ostream& out, const Software& obj) {
 
 class Menu {
 private:
-
+    std::vector<Software*> files;
 public:
     void showMenu() const;
+    void showEffects() const;
+    void showAdjustments() const;
+    void engine();
+    void effectEngine(int index);
+    void adjustmentEngine(int index);
+    bool verifyIndex(int index) const;
+    void displayEngine(int index);
+    void displayOptions();
+    void displayEdit();
+    void editEngine(int index);
 };
+
+bool Menu::verifyIndex(int index) const {
+    if(index < 0 || index >= files.size())
+        return false;
+    return true;
+}
+
+void Menu::displayEdit() {
+    for(int i=0;i<10;i++) cout<<"-";
+    cout<<" CHOOSE OPTION ";
+    for(int i=0;i<10;i++) cout<<"-";
+    cout<<endl;
+
+    cout<<"1. Effects\n";
+    cout<<"2. Adjustments\n";
+    cout<<"3. Apply all changes\n";
+    cout<<"4. Reset image\n";
+    cout<<"0. Go back\n";
+}
+
+void Menu::editEngine(int index) {
+    system("CLS");
+    this->displayEdit();
+
+    while(true)
+    {
+        int option;
+        cout<<"Enter option: \n";
+        cin>>option;
+        cin.get();
+        switch (option) {
+            case 1:
+            {
+                system("CLS");
+                this->effectEngine(index);
+                this->displayEdit();
+                break;
+            }
+            case 2:
+            {
+                system("CLS");
+                this->adjustmentEngine(index);
+                this->displayEdit();
+                break;
+            }
+            case 3:
+            {
+                system("CLS");
+                this->files[index]->getImage()->applyAll();
+                cout<<"~ CHANGES APPLIED SUCCESSFULLY\n";
+                this->displayEdit();
+                break;
+            }
+            case 4:
+            {
+                system("CLS");
+                this->files[index]->getImage()->readImg();
+                cout<<"~ IMAGE RESET SUCCESSFULLY\n";
+                this->displayEdit();
+                break;
+            }
+            case 0:
+            {
+                return;
+            }
+            default:
+                cout<<"~ INVALID OPTION\n";
+        }
+    }
+}
+
+void Menu::showEffects() const {
+    for(int i=0;i<10;i++) cout<<"-";
+    cout<<" CHOOSE EFFECT ";
+    for(int i=0;i<10;i++) cout<<"-";
+    cout<<endl;
+
+    cout<<"1. Blur\n";
+    cout<<"2. Black and White\n";
+    cout<<"3. Cartoon\n";
+    cout<<"0. Go back\n";
+}
+
+void Menu::showAdjustments() const {
+    for(int i=0;i<10;i++) cout<<"-";
+    cout<<" CHOOSE ADJUSTMENT ";
+    for(int i=0;i<10;i++) cout<<"-";
+    cout<<endl;
+
+    cout<<"1. Brightness\n";
+    cout<<"2. Contrast\n";
+    cout<<"3. Hue\n";
+    cout<<"0. Go back\n";
+}
+
+void Menu::effectEngine(int index) {
+    system("CLS");
+    this->showEffects();
+
+    while(true)
+    {
+        int option;
+        cout<<"Enter option: \n";
+        cin>>option;
+        cin.get();
+        switch (option) {
+            case 1:
+            {
+                system("CLS");
+                int temp;
+                cout<<"Enter blur amount: \n";
+                cin>>temp;
+                cin.get();
+                if(dynamic_cast<Effect*>(files[index]->getImage()) != NULL)
+                {
+                    dynamic_cast<Effect*>(files[index]->getImage())->setBlurAmount(temp);
+                    cout<<"~ EFFECT WAS APPLIED SUCCESSFULLY\n";
+                }
+                else cout<<"~ OBJECT IS NOT OF TYPE EFFECT OR EDITING\n";
+                this->showEffects();
+                break;
+            }
+            case 2:
+            {
+                system("CLS");
+                bool temp;
+                cout<<"Do you want to apply Black and White effect to the image (yes:1 no:0)?\n";
+                cin>>temp;
+                cin.get();
+                if(dynamic_cast<Effect*>(files[index]->getImage()) != NULL)
+                {
+                    dynamic_cast<Effect*>(files[index]->getImage())->setBlackWhite(temp);
+                    cout<<"~ EFFECT WAS APPLIED SUCCESSFULLY\n";
+                }
+                else cout<<"~ OBJECT IS NOT OF TYPE EFFECT OR EDITING\n";
+                this->showEffects();
+                break;
+            }
+            case 3:
+            {
+                system("CLS");
+                bool temp;
+                cout<<"Do you want to apply Cartoon effect to the image (yes:1 no:0)?\n";
+                cin>>temp;
+                cin.get();
+                if(dynamic_cast<Effect*>(files[index]->getImage()) != NULL)
+                {
+                    dynamic_cast<Effect*>(files[index]->getImage())->setBlackWhite(temp);
+                    cout<<"~ EFFECT WAS APPLIED SUCCESSFULLY\n";
+                }
+                else cout<<"~ OBJECT IS NOT OF TYPE EFFECT OR EDITING\n";
+                this->showEffects();
+                break;
+            }
+            case 0:
+            {
+                return;
+            }
+            default:
+                cout<<"~ INVALID OPTION\n";
+        }
+    }
+}
+
+void Menu::adjustmentEngine(int index) {
+    system("CLS");
+    this->showAdjustments();
+
+    while(true)
+    {
+        int option;
+        cout<<"Enter option: \n";
+        cin>>option;
+        cin.get();
+        switch (option) {
+            case 1:
+            {
+                system("CLS");
+                double temp;
+                cout<<"Enter Brightness [-100,100]: \n";
+                cin>>temp;
+                cin.get();
+                if(dynamic_cast<Adjustment*>(files[index]->getImage()) != NULL)
+                {
+                    dynamic_cast<Adjustment*>(files[index]->getImage())->setBrightness(temp);
+                    cout<<"~ ADJUSTMENT WAS APPLIED SUCCESSFULLY\n";
+                }
+                else cout<<"~ OBJECT IS NOT OF TYPE EFFECT OR EDITING\n";
+                this->showAdjustments();
+                break;
+            }
+            case 2:
+            {
+                system("CLS");
+                double temp;
+                cout<<"Enter contrast [0,10]: \n\t1 = nothing changes\n\t[0,1) = lower contrast\n\t(1,10] = higher contrast\n";
+                cin>>temp;
+                cin.get();
+                if(dynamic_cast<Adjustment*>(files[index]->getImage()) != NULL)
+                {
+                    dynamic_cast<Adjustment*>(files[index]->getImage())->setContrast(temp);
+                    cout<<"~ ADJUSTMENT WAS APPLIED SUCCESSFULLY\n";
+                }
+                else cout<<"~ OBJECT IS NOT OF TYPE ADJUSTMENT OR EDITING\n";
+                this->showAdjustments();
+                break;
+            }
+            case 3:
+            {
+                system("CLS");
+                int temp;
+                cout<<"Enter hue [0,180]: \n";
+                cin>>temp;
+                cin.get();
+                if(dynamic_cast<Adjustment*>(files[index]->getImage()) != NULL)
+                {
+                    dynamic_cast<Adjustment*>(files[index]->getImage())->setHue(temp);
+                    cout<<"~ ADJUSTMENT WAS APPLIED SUCCESSFULLY\n";
+                }
+                else cout<<"~ OBJECT IS NOT OF TYPE ADJUSTMENT OR EDITING\n";
+                this->showAdjustments();
+                break;
+            }
+            case 0:
+            {
+                return;
+            }
+            default:
+                cout<<"~ INVALID OPTION\n";
+        }
+    }
+}
+
+void Menu::displayOptions() {
+    for(int i=0;i<10;i++) cout<<"-";
+    cout<<" CHOOSE OPTION ";
+    for(int i=0;i<10;i++) cout<<"-";
+    cout<<endl;
+
+    cout<<"1. INFO\n";
+    cout<<"2. SHOW\n";
+    cout<<"3. SAVE\n";
+    cout<<"0. Go back\n";
+}
+
+void Menu::displayEngine(int index) {
+    system("CLS");
+    this->displayOptions();
+
+    while(true)
+    {
+        int option;
+        cout<<"Enter option: \n";
+        cin>>option;
+        cin.get();
+        switch (option) {
+            case 1:
+            {
+                cout<<*this->files[index]->getImage()<<endl;
+                this->displayOptions();
+                break;
+            }
+            case 2:
+            {
+                this->files[index]->getImage()->showImg();
+                this->displayOptions();
+                break;
+            }
+            case 3:
+            {
+                this->files[index]->getImage()->writeImg();
+                cout<<"~ IMAGE WAS SAVED SUCCESSFULLY\n";
+                this->displayOptions();
+                break;
+            }
+            case 0:
+            {
+                return;
+            }
+            default:
+                cout<<"~ INVALID OPTION\n";
+        }
+    }
+}
 
 void Menu::showMenu() const {
     for(int i=0;i<10;i++) cout<<"-";
@@ -756,18 +1107,98 @@ void Menu::showMenu() const {
     for(int i=0;i<10;i++) cout<<"-";
     cout<<endl;
 
-    cout<<"1. Edit new image\n";
-    cout<<"2. Delete image\n";
-    cout<<"3. Edit image\n";
-    cout<<"4. Print image\n";
-    cout<<"0. Go back\n";
+    cout<<"1. Create new image\n"; // create a new object with effects adjs or all
+    cout<<"2. Edit image\n"; // Edit an effect/ Adjustment/ or all
+    cout<<"3. Delete image\n";
+    cout<<"4. Display image\n"; // Info/Image on screen/save to location
+    cout<<"0. Exit\n";
 }
 
-void initOpenCV() {
-    // for stopping logging info in console
-    cv::utils::logging::setLogLevel(cv::utils::logging::LogLevel::LOG_LEVEL_SILENT);
-    // for stopping warnings in console
-    set_dummy_error_handler();
+void Menu::engine() {
+    initOpenCV();
+    this->showMenu();
+
+    while(true)
+    {
+        int option;
+        cout<<"Enter option: \n";
+        cin>>option;
+        cin.get();
+        switch (option) {
+            case 0:
+            {
+                return;
+            }
+            case 1:
+            {
+                system("CLS");
+                Software* s = new Software();
+                cin>>*s;
+                this->files.push_back(s);
+                system("CLS");
+                this->showMenu();
+                break;
+            }
+            case 2:
+            {
+                system("CLS");
+                int index;
+                for(int i=0;i<files.size();i++)
+                    cout<<"Image: "<<i<<"\n\tName: "<<files[i]->getImage()->getName()<<"\n\tPath: "<<files[i]->getImage()->getPath()<<endl;
+                cout<<"Give index: \n";
+                cin>>index;
+                cin.get();
+                if(this->verifyIndex(index))
+                {
+                    this->editEngine(index);
+                }
+                else cout<<"~ INVALID INDEX\n";
+                system("CLS");
+                this->showMenu();
+                break;
+            }
+            case 3:
+            {
+                system("CLS");
+                int index;
+                for(int i=0;i<files.size();i++)
+                    cout<<"Image: "<<i<<"\n\tName: "<<files[i]->getImage()->getName()<<"\n\tPath: "<<files[i]->getImage()->getPath()<<endl;
+                cout<<"Give index: \n";
+                cin>>index;
+                cin.get();
+                if(this->verifyIndex(index))
+                {
+                    this->files.erase(this->files.begin() + index);
+                    cout<<"~ IMAGE DELETED SUCCESSFULLY\n";
+                }
+                else cout<<"~ INVALID INDEX\n";
+                this->showMenu();
+                break;
+            }
+            case 4:
+            {
+                system("CLS");
+                int index;
+                for(int i=0;i<files.size();i++)
+                    cout<<"Image: "<<i<<"\n\tName: "<<files[i]->getImage()->getName()<<"\n\tPath: "<<files[i]->getImage()->getPath()<<endl;
+                cout<<"Give index: \n";
+                cin>>index;
+                cin.get();
+                if(this->verifyIndex(index))
+                {
+                    this->displayEngine(index);
+                }
+                else cout<<"~ INVALID INDEX\n";
+                system("CLS");
+                this->showMenu();
+                break;
+            }
+            default:
+            {
+                cout<<"~ INVALID OPTION\n";
+            }
+        }
+    }
 }
 
 int main()
@@ -822,9 +1253,8 @@ int main()
     a.hueImg();
     a.showImg();*/
 
-    Image* i = new Edited();
-    i->writeImg();
-
+    Menu m;
+    m.engine();
 
     return 0;
 }
@@ -838,4 +1268,4 @@ int main()
 - ORDINE: static_cast, mostenire virtuala, dynamic_cast
  */
 
-// TODO remember: readImg keeps effects stacked if you want to reset readImg again | add reset option
+// TODO see system("CLS") - how to improve, because it doesnt always clear screen when switching menus
