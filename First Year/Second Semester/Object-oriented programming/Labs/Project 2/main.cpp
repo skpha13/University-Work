@@ -268,9 +268,7 @@ public:
     void applyAll();
 };
 
-//    TODO Edited class inheritance
 //    TODO Menu class
-//    TODO override writeImg() and applyAll() function
 
 Effect::Effect(string name, string path, bool absolute, bool effect, int blurAmount, bool blackWhite, bool cartoon):
         Image(name,path,absolute)
@@ -679,6 +677,92 @@ void Edited::applyAll() {
     this->cartoonImg();
 }
 
+class Software {
+private:
+    Image* image;
+    bool favorite, goBack;
+
+public:
+    friend istream& operator>>(istream& in, Software& obj);
+    friend ostream& operator<<(ostream& out, const Software& obj);
+};
+
+istream& operator>>(istream& in, Software& obj) {
+    obj.goBack = false;
+
+    cout<<"1. Effects\n";
+    cout<<"2. Adjustments\n";
+    cout<<"3. Editing\n";
+    cout<<"0. Go back\n";
+
+    int temp;
+    cin>>temp;
+    cin.get();
+
+    switch (temp) {
+        case 0:
+        {
+            obj.goBack = true;
+            break;
+        }
+        case 1:
+        {
+            obj.image = new Effect();
+            break;
+        }
+        case 2:
+        {
+            obj.image = new Adjustment();
+            break;
+        }
+        case 3:
+        {
+            obj.image = new Edited();
+            break;
+        }
+        default:
+            cout<<"~ INVALID OPTION\n";
+    }
+
+    if(obj.goBack == false)
+    {
+        in>>*obj.image;
+        cout<<"Is this a favorite image (yes:1 no:0)?\n";
+        in>>obj.favorite;
+    }
+
+    return in;
+}
+
+ostream& operator<<(ostream& out, const Software& obj) {
+    out<<*obj.image<<endl;
+
+    if(obj.favorite == true) out<<"Is a favorite image\n";
+    else out<<"Is not a favorite image\n";
+
+    return out;
+}
+
+class Menu {
+private:
+
+public:
+    void showMenu() const;
+};
+
+void Menu::showMenu() const {
+    for(int i=0;i<10;i++) cout<<"-";
+    cout<<" MENU ";
+    for(int i=0;i<10;i++) cout<<"-";
+    cout<<endl;
+
+    cout<<"1. Edit new image\n";
+    cout<<"2. Delete image\n";
+    cout<<"3. Edit image\n";
+    cout<<"4. Print image\n";
+    cout<<"0. Go back\n";
+}
+
 void initOpenCV() {
     // for stopping logging info in console
     cv::utils::logging::setLogLevel(cv::utils::logging::LogLevel::LOG_LEVEL_SILENT);
@@ -737,6 +821,10 @@ int main()
 
     a.hueImg();
     a.showImg();*/
+
+    Image* i = new Edited();
+    i->writeImg();
+
 
     return 0;
 }
