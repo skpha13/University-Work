@@ -737,6 +737,8 @@ public:
 
     friend istream& operator>>(istream& in, Software& obj);
     friend ostream& operator<<(ostream& out, const Software& obj);
+
+    bool isGoBack() const;
 };
 
 istream& operator>>(istream& in, Software& obj) {
@@ -798,6 +800,10 @@ ostream& operator<<(ostream& out, const Software& obj) {
     else out<<"Is not a favorite image\n";
 
     return out;
+}
+
+bool Software::isGoBack() const {
+    return this->goBack;
 }
 
 class Menu {
@@ -879,6 +885,7 @@ void Menu::editEngine(int index) {
             }
             case 0:
             {
+                system("CLS");
                 return;
             }
             default:
@@ -972,6 +979,7 @@ void Menu::effectEngine(int index) {
             }
             case 0:
             {
+                system("CLS");
                 return;
             }
             default:
@@ -1074,18 +1082,21 @@ void Menu::displayEngine(int index) {
         switch (option) {
             case 1:
             {
+                system("CLS");
                 cout<<*this->files[index]->getImage()<<endl;
                 this->displayOptions();
                 break;
             }
             case 2:
             {
+                system("CLS");
                 this->files[index]->getImage()->showImg();
                 this->displayOptions();
                 break;
             }
             case 3:
             {
+                system("CLS");
                 this->files[index]->getImage()->writeImg();
                 cout<<"~ IMAGE WAS SAVED SUCCESSFULLY\n";
                 this->displayOptions();
@@ -1093,6 +1104,7 @@ void Menu::displayEngine(int index) {
             }
             case 0:
             {
+                system("CLS");
                 return;
             }
             default:
@@ -1120,6 +1132,7 @@ void Menu::engine() {
 
     while(true)
     {
+//        system("CLS");
         int option;
         cout<<"Enter option: \n";
         cin>>option;
@@ -1134,8 +1147,9 @@ void Menu::engine() {
                 system("CLS");
                 Software* s = new Software();
                 cin>>*s;
-                this->files.push_back(s);
-                system("CLS");
+                if(s->isGoBack() == false) this->files.push_back(s);
+                else delete s;
+//                system("CLS");
                 this->showMenu();
                 break;
             }
@@ -1143,17 +1157,21 @@ void Menu::engine() {
             {
                 system("CLS");
                 int index;
-                for(int i=0;i<files.size();i++)
-                    cout<<"Image: "<<i<<"\n\tName: "<<files[i]->getImage()->getName()<<"\n\tPath: "<<files[i]->getImage()->getPath()<<endl;
-                cout<<"Give index: \n";
-                cin>>index;
-                cin.get();
-                if(this->verifyIndex(index))
+                if(!files.empty())
                 {
-                    this->editEngine(index);
+                    for(int i=0;i<files.size();i++)
+                        cout<<"Image: "<<i<<"\n\tName: "<<files[i]->getImage()->getName()<<"\n\tPath: "<<files[i]->getImage()->getPath()<<endl;
+                    cout<<"Give index: \n";
+                    cin>>index;
+                    cin.get();
+                    if(this->verifyIndex(index))
+                    {
+                        this->editEngine(index);
+                    }
+                    else cout<<"~ INVALID INDEX\n";
                 }
-                else cout<<"~ INVALID INDEX\n";
-                system("CLS");
+                else cout<<"~ NO IMAGES\n";
+//                system("CLS");
                 this->showMenu();
                 break;
             }
@@ -1161,17 +1179,21 @@ void Menu::engine() {
             {
                 system("CLS");
                 int index;
-                for(int i=0;i<files.size();i++)
-                    cout<<"Image: "<<i<<"\n\tName: "<<files[i]->getImage()->getName()<<"\n\tPath: "<<files[i]->getImage()->getPath()<<endl;
-                cout<<"Give index: \n";
-                cin>>index;
-                cin.get();
-                if(this->verifyIndex(index))
+                if(!files.empty())
                 {
-                    this->files.erase(this->files.begin() + index);
-                    cout<<"~ IMAGE DELETED SUCCESSFULLY\n";
+                    for(int i=0;i<files.size();i++)
+                        cout<<"Image: "<<i<<"\n\tName: "<<files[i]->getImage()->getName()<<"\n\tPath: "<<files[i]->getImage()->getPath()<<endl;
+                    cout<<"Give index: \n";
+                    cin>>index;
+                    cin.get();
+                    if(this->verifyIndex(index))
+                    {
+                        this->files.erase(this->files.begin() + index);
+                        cout<<"~ IMAGE DELETED SUCCESSFULLY\n";
+                    }
+                    else cout<<"~ INVALID INDEX\n";
                 }
-                else cout<<"~ INVALID INDEX\n";
+                else cout<<"~ NO IMAGES\n";
                 this->showMenu();
                 break;
             }
@@ -1179,17 +1201,21 @@ void Menu::engine() {
             {
                 system("CLS");
                 int index;
-                for(int i=0;i<files.size();i++)
-                    cout<<"Image: "<<i<<"\n\tName: "<<files[i]->getImage()->getName()<<"\n\tPath: "<<files[i]->getImage()->getPath()<<endl;
-                cout<<"Give index: \n";
-                cin>>index;
-                cin.get();
-                if(this->verifyIndex(index))
+                if(!files.empty())
                 {
-                    this->displayEngine(index);
+                    for(int i=0;i<files.size();i++)
+                        cout<<"Image: "<<i<<"\n\tName: "<<files[i]->getImage()->getName()<<"\n\tPath: "<<files[i]->getImage()->getPath()<<endl;
+                    cout<<"Give index: \n";
+                    cin>>index;
+                    cin.get();
+                    if(this->verifyIndex(index))
+                    {
+                        this->displayEngine(index);
+                    }
+                    else cout<<"~ INVALID INDEX\n";
                 }
-                else cout<<"~ INVALID INDEX\n";
-                system("CLS");
+                else cout<<"~ NO IMAGES\n";
+//                system("CLS");
                 this->showMenu();
                 break;
             }
