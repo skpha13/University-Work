@@ -810,6 +810,8 @@ class Menu {
 private:
     std::vector<Software*> files;
 public:
+    Menu(){initOpenCV(); this->engine();}
+
     void showMenu() const;
     void showEffects() const;
     void showAdjustments() const;
@@ -1127,7 +1129,6 @@ void Menu::showMenu() const {
 }
 
 void Menu::engine() {
-    initOpenCV();
     this->showMenu();
 
     while(true)
@@ -1280,7 +1281,6 @@ int main()
     a.showImg();*/
 
     Menu m;
-    m.engine();
 
     return 0;
 }
