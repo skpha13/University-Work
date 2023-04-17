@@ -1,0 +1,69 @@
+<html>
+<head>
+<meta charset="utf-8">
+
+<style>
+div{ width:100px;
+     height:100px;	
+     background-color:pink;		
+     position: relative; 
+     left:500px; 
+     top: 300px;}
+</style>
+
+<script>
+window.onload= misca;
+
+function misca()
+ {  var x=document.getElementById("dv");
+    x.addEventListener("click",deplasare);
+ }
+
+function deplasare()
+{ 
+
+ window.onkeydown=function(event)
+                {
+                var a = event.key;  
+	 	var v=document.getElementById("dv");
+               
+                if(a == 'ArrowUp') 
+                 
+                
+               {
+                   v.style.top = (parseInt(window.getComputedStyle(v).top) - 10) + 'px';
+               }
+                     
+               if(a == 'ArrowLeft') 
+                 
+                
+               {
+                   v.style.left = (parseInt(window.getComputedStyle(v).left) - 10) + 'px';
+               }
+                if(a == 'ArrowRight') 
+                 
+                
+               {
+                   v.style.left = (parseInt(window.getComputedStyle(v).left) + 10) + 'px';
+               }
+                if(a == 'ArrowDown') 
+                 
+                
+               {
+                   v.style.top = (parseInt(window.getComputedStyle(v).top) + 10) + 'px';
+               }
+                
+ }
+
+                		    
+  
+}
+</script>
+</head>
+<body>
+
+<div id="dv">Click si apoi tastele sageti</div>
+
+</body>
+</html>
+

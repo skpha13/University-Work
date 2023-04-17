@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+
+<style type="text/css">
+#container{border: 1px solid black;
+           width: 500px;height:500px;
+           background-color:cyan;}
+
+.copil{ border: 2px solid red;
+	display:inline-block;
+        background-color:blue;}
+
+.initial{ width: 100px;
+          height: 100px;}
+
+.mica{ width: 50px;
+       height: 50px;}
+
+
+.mare{width: 400px;
+      height: 400px;}
+
+</style>
+
+
+<script>
+
+window.onload=function()
+{
+var parinte = document.getElementById("container");
+var copii=document.querySelectorAll(".copil");
+for(var i=0;i<copii.length;i++) copii[i].classList.add("initial");
+
+parinte.addEventListener("click",function(){
+for(var i=0;i<copii.length;i++) {
+copii[i].classList.remove("initial","mare"); copii[i].classList.add("mica");
+}},true);
+
+
+for(let i=0;i<copii.length;i++) 
+{	
+copii[i].addEventListener("click",function(){
+	copii[i].classList.remove("initial");
+	copii[i].classList.add("mare");});
+
+}}
+</script>
+
+</head>
+<body>
+<div id="container">
+ <div class="copil">Div1</div>
+ <div class="copil">Div2</div>
+ </div>
+</body>
+</html>
+

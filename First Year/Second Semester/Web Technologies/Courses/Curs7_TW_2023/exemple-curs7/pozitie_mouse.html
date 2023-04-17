@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+ <script>
+
+function numarRandom(min, max) {
+  return Math.floor(Math.random() * (max - min + 1) ) + min;
+}
+
+function culoareRandom(){
+ return "rgb(" + numarRandom(0, 255) + ", " + numarRandom(0, 255) + ", " + numarRandom(0, 255) + ")";
+}
+
+window.onload=function(){
+ 	var nrclick=0;
+	window.onclick=function(event){
+
+		var cx=event.clientX; //pozitia mouse-ului
+		var cy=event.clientY;
+
+		var but=document.createElement("button"); //creare buton
+		document.body.appendChild(but);
+				
+		but.innerHTML=++nrclick;   //stilizare si pozitionare
+		but.style.backgroundColor=culoareRandom();
+		but.style.position="absolute";
+		but.style.left=cx + "px";
+		but.style.top=cy + "px";
+
+		setTimeout(function(){document.body.removeChild(but);},4000); // stergere dupa 4s
+					
+					}
+
+			}
+
+
+
+</script>
+</head>
+<body >
+</body>
+</html>
+

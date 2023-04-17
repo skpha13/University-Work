@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+ <script>
+
+function numarRandom(min, max) {
+  return Math.floor(Math.random() * (max - min + 1) ) + min;
+}
+
+function culoareRandom(){
+ return "rgb(" + numarRandom(0, 255) + ", " + numarRandom(0, 255) + ", " + numarRandom(0, 255) + ")";
+}
+
+window.onload=function(){
+ 	var width=window.innerWidth;
+        var height=window.innerHeight;
+        for(var i=0;i<5;i++) {
+
+		var cx=numarRandom(0,width-50); //pozitie random
+		var cy=numarRandom(0,height-50);
+
+		var div=document.createElement("div"); //creare div
+		document.body.appendChild(div);
+				
+		div.innerHTML=i;   //stilizare si pozitionare
+		div.style.backgroundColor=culoareRandom();
+		div.style.position="absolute";
+                div.style.width="50px";
+                div.style.textAlign="center";
+                div.style.lineHeight="50px";
+                div.style.height="50px";
+		div.style.left=cx + "px";
+		div.style.top=cy + "px";
+
+
+					
+				}
+
+			}
+
+
+
+
+</script>
+</head>
+<body >
+</body>
+</html>
+

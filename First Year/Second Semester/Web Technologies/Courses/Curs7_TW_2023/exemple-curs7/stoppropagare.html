@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+
+<style type="text/css">
+#container{border: 1px solid black;}
+</style>
+<script>
+window.onload=function()
+{
+
+var imagini=document.getElementsByTagName("img");
+var container= document.getElementById("container");
+
+for(var i=0;i<imagini.length;i++)
+	imagini[i].onclick=function(event){
+		event.stopPropagation();
+		alert(event.target.src);
+}
+
+container.onclick=function(){
+	alert( container.getElementsByTagName("img").length);
+}
+
+
+
+}
+</script>
+
+</head>
+<body>
+
+<div id="container">
+ <p> Un paragraf</p>
+<img src="img1.jpg" alt="poza1">
+<img src="img2.jpg" alt="poza2">
+<img src="img3.jpg" alt="poza3">
+</div>
+</div>
+</section>
+</body>
+</html>
+

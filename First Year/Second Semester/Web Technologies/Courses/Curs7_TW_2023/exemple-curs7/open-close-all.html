@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script>
+var myWindow=[]; // globala pt a fi vazuta si la apelul close()
+
+function openWin() 
+{
+ myWindow.push(window.open("https://w3schools.com"));
+ // window.focus();
+}
+
+function closeWin() 
+{ 
+ let w=myWindow.pop();
+  w.close();
+
+}
+</script>
+</head>
+<body>
+<button onclick="openWin()">Open "myWindow"</button>
+<button onclick="closeWin()">Close "myWindow"</button>
+</body>
+</html>

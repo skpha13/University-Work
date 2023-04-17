@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+
+<style type="text/css">
+#container{border: 1px solid black;
+           width: 300px;height:300px;
+           background-color:cyan;}
+
+</style>
+
+
+<script>
+
+window.onload=function()
+{
+
+var container=document.getElementById("container");
+function schimba(elem,culoare1,culoare2)
+{
+
+if(elem.style.backgroundColor==culoare1) 
+	elem.style.backgroundColor=culoare2;
+		 else
+	elem.style.backgroundColor = culoare1;
+}
+var t= setInterval(schimba,2000,container,"pink","yellow");
+
+container.onclick=function(){clearInterval(t);}
+}
+
+</script>
+
+</head>
+<body>
+<div id="container">
+ </div>
+</body>
+</html>
+

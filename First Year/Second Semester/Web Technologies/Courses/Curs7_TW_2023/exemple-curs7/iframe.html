@@ -1,0 +1,31 @@
+<!DOCTYPE html> 
+<html lang="ro"> 
+<head>  
+<meta charset="utf-8">
+<title>Iframe </title>
+<script type="text/javascript" >
+
+window.onload = function (){
+ 
+	var buton = document.getElementById("bt");
+	buton.onclick=function(){
+//	alert("copil");
+	parent.document.body.style.backgroundColor = "red";
+
+}
+
+}
+
+</script>
+ </head>
+<body> 
+<h1>Fereastra copil</h1>
+<p>La click pe butonul "Schimba parinte" se va schimba stilul ferestrei parinte</p>
+<button id="bt">Schimba parinte</button>
+
+
+</body>
+</html>
+
+
+
