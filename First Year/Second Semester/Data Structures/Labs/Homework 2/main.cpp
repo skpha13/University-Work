@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include <cstring>
 #include <vector>
 #include <cmath>
@@ -6,7 +7,7 @@
 struct Node {
 //    value of the node
 //    nrDuplicates stores the frequency of a number
-    int value,nrDuplicates;
+    int value;
 //    for every level we will have a pointer to another node
     std::vector<Node*> next;
 
@@ -22,7 +23,7 @@ Node::Node(int value, int level) {
 class SkipList {
 private:
     Node* begin;
-    int maxLevel,n,level;
+    int maxLevel,n;
 
 public:
     // constructors & destructors
@@ -37,6 +38,8 @@ public:
     int randomLevel() const;
     Node* newNode(int value,int level);
     void insert(int value);
+    void remove(int value);
+    bool search(int value);
 };
 
 SkipList::SkipList() {
@@ -61,22 +64,47 @@ void SkipList::insert(int value) {
         updateNext[i] = iterator;
     }
 
-    if(iterator->value == value) {
-        iterator->nrDuplicates += 1;
-        return;
+    iterator = iterator->next[0];
+
+    int newLevel = this->randomLevel();
+    Node* temp = this->newNode(value,newLevel);
+
+    for(int i=newLevel;i>=0;i--) {
+        temp->next[i] = updateNext[i]->next[i];
+        updateNext[i]->next[i] = temp;
     }
-    else
-    {
+}
+
+void SkipList::remove(int value) {
+    Node* iterator = begin;
+    std::vector<Node*> updateNext(this->maxLevel+1,NULL);
+
+    for(int i=this->maxLevel;i>=0;i--) {
+        while(iterator->next[i] != NULL && iterator->next[i]->value < value)
+            iterator = iterator->next[i];
+        updateNext[i] = iterator;
+    }
+
+//    additional check because there can be only elements smaller than the one we want to delete,
+//    reaching the end
+    if(iterator->next[0] != NULL && iterator->next[0]->value == value) {
         iterator = iterator->next[0];
-
-        int newLevel = this->randomLevel();
-        Node* temp = this->newNode(value,newLevel);
-
-        for(int i=newLevel;i>=0;i--) {
-            temp->next[i] = updateNext[i]->next[i];
-            updateNext[i]->next[i] = temp;
-        }
+        for(int i=iterator->next.size();i>=0;i--)
+            updateNext[i]->next[i] = iterator->next[i];
+        delete iterator;
     }
+}
+
+bool SkipList::search(int value) {
+    Node* iterator = begin;
+
+    for(int i=this->maxLevel;i>=0;i--) {
+        while(iterator->next[i] != NULL && iterator->next[i]->value < value)
+            iterator = iterator->next[i];
+    }
+    iterator = iterator->next[0];
+    if(iterator != NULL && iterator->value == value) return true;
+    return false;
 }
 
 std::istream& operator>>(std::istream& in, SkipList& obj) {
@@ -125,7 +153,47 @@ int SkipList::randomLevel() const {
 
 int main() {
     SkipList s(5);
-    std::cin>>s;
-    std::cout<<s;
+
+    std::ifstream f("../abce.in");
+    std::ofstream g("../abce.out");
+
+    int n,query;
+    f>>n;
+    for(int i=0;i<n;i++)
+    {
+        f>>query;
+        switch (query) {
+            case 1: {
+                int temp;
+                f>>temp;
+                s.insert(temp);
+                break;
+            }
+            case 2: {
+                int temp;
+                f>>temp;
+                s.remove(temp);
+                break;
+            }
+            case 3: {
+                int temp;
+                f>>temp;
+                g<<s.search(temp)<<std::endl;
+                break;
+            }
+            case 4: {
+
+                break;
+            }
+            case 5: {
+
+                break;
+            }
+            case 6: {
+
+                break;
+            }
+        }
+    }
     return 0;
 }
