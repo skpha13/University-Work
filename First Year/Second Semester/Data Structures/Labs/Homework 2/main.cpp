@@ -4,6 +4,9 @@
 #include <vector>
 #include <cmath>
 
+std::ifstream f("../grader_test16.in");
+std::ofstream g("../abce.out");
+
 struct Node {
 //    value of the node
 //    nrDuplicates stores the frequency of a number
@@ -40,6 +43,9 @@ public:
     void insert(int value);
     void remove(int value);
     bool search(int value);
+    int biggestNumber(int value);
+    int smallestNumber(int value);
+    void printBetween(int x,int y);
 };
 
 SkipList::SkipList() {
@@ -51,6 +57,19 @@ SkipList::SkipList() {
 SkipList::SkipList(int maxLevel) {
     this->maxLevel = maxLevel;
     this->begin = new Node(-1,this->maxLevel);
+}
+
+Node* SkipList::newNode(int value, int level) {
+    Node* temp = new Node(value,level);
+    return temp;
+}
+
+int SkipList::randomLevel() const {
+//    temp will be the level we're at
+    int temp = 1;
+    while (random()<0.5 && temp<this->maxLevel)
+        temp += 1;
+    return temp;
 }
 
 void SkipList::insert(int value) {
@@ -107,6 +126,41 @@ bool SkipList::search(int value) {
     return false;
 }
 
+int SkipList::biggestNumber(int value) {
+    Node* iterator = begin;
+
+    for(int i=this->maxLevel;i>=0;i--) {
+        while(iterator->next[i] != NULL && iterator->next[i]->value <= value)
+            iterator = iterator->next[i];
+    }
+
+    return iterator->value;
+}
+
+int SkipList::smallestNumber(int value) {
+    Node* iterator = begin;
+
+    for(int i=this->maxLevel;i>=0;i--) {
+        while(iterator->next[i] != NULL && iterator->next[i]->value < value)
+            iterator = iterator->next[i];
+    }
+
+    iterator = iterator->next[0];
+    return iterator->value;
+}
+
+void SkipList::printBetween(int x, int y) {
+    Node* iterator = begin;
+
+    for(int i=this->maxLevel;i>=0;i--) {
+        while(iterator->next[i] != NULL && iterator->next[i]->value <= y)
+        {
+            if(iterator->next[i]->value >= x) g<<iterator->next[i]->value<<" ";
+            iterator = iterator->next[i];
+        }
+    }
+}
+
 std::istream& operator>>(std::istream& in, SkipList& obj) {
     std::cout<<"Number of elements: \n";
     in>>obj.n;
@@ -138,24 +192,9 @@ std::ostream& operator<<(std::ostream& out,const SkipList& obj) {
     return out;
 }
 
-Node* SkipList::newNode(int value, int level) {
-    Node* temp = new Node(value,level);
-    return temp;
-}
-
-int SkipList::randomLevel() const {
-//    temp will be the level we're at
-    int temp = 1;
-    while (random()<0.5 && temp<this->maxLevel)
-        temp += 1;
-    return temp;
-}
-
 int main() {
-    SkipList s(5);
-
-    std::ifstream f("../abce.in");
-    std::ofstream g("../abce.out");
+    // log2(100 000) = 16,6
+    SkipList s(16);
 
     int n,query;
     f>>n;
@@ -182,15 +221,22 @@ int main() {
                 break;
             }
             case 4: {
-
+                int temp;
+                f>>temp;
+                g<<s.biggestNumber(temp)<<std::endl;
                 break;
             }
             case 5: {
-
+                int temp;
+                f>>temp;
+                g<<s.smallestNumber(temp)<<std::endl;
                 break;
             }
             case 6: {
-
+                int x,y;
+                f>>x>>y;
+                s.printBetween(x,y);
+                g<<std::endl;
                 break;
             }
         }
