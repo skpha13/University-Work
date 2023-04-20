@@ -4,7 +4,7 @@
 #include <vector>
 #include <cmath>
 
-std::ifstream f("../grader_test16.in");
+std::ifstream f("../abce.in");
 std::ofstream g("../abce.out");
 
 struct Node {
@@ -67,7 +67,7 @@ Node* SkipList::newNode(int value, int level) {
 int SkipList::randomLevel() const {
 //    temp will be the level we're at
     int temp = 1;
-    while (random()<0.5 && temp<this->maxLevel)
+    while (std::rand()/(double)RAND_MAX<0.5 && temp<this->maxLevel)
         temp += 1;
     return temp;
 }
@@ -108,7 +108,7 @@ void SkipList::remove(int value) {
 //    reaching the end
     if(iterator->next[0] != NULL && iterator->next[0]->value == value) {
         iterator = iterator->next[0];
-        for(int i=iterator->next.size();i>=0;i--)
+        for(int i=iterator->next.size()-1;i>=0;i--)
             updateNext[i]->next[i] = iterator->next[i];
         delete iterator;
     }
@@ -243,3 +243,7 @@ int main() {
     }
     return 0;
 }
+
+// TODO see time improvements
+// TODO 1,2,3 operations faster, maybe use array instead of vector
+// TODO op 6 can be made faster
