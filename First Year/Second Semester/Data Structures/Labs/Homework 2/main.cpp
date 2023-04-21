@@ -4,7 +4,7 @@
 #include <vector>
 #include <cmath>
 
-std::ifstream f("../grader_test16.in");
+std::ifstream f("../abce.in");
 std::ofstream g("../abce.out");
 
 struct Node {
@@ -153,11 +153,13 @@ void SkipList::printBetween(int x, int y) {
     Node* iterator = begin;
 
     for(int i=this->maxLevel;i>=0;i--) {
-        while(iterator->next[i] != NULL && iterator->next[i]->value <= y)
-        {
-            if(iterator->next[i]->value >= x) g<<iterator->next[i]->value<<" ";
+        while(iterator->next[i] != NULL && iterator->next[i]->value < x)
             iterator = iterator->next[i];
-        }
+    }
+
+    while (iterator->next[0] != NULL && iterator->next[0]->value <= y) {
+        iterator = iterator->next[0];
+        g<<iterator->value<<" ";
     }
 }
 
