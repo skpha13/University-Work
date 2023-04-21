@@ -4,7 +4,7 @@
 #include <vector>
 #include <cmath>
 
-std::ifstream f("../abce.in");
+std::ifstream f("../grader_test16.in");
 std::ofstream g("../abce.out");
 
 struct Node {
