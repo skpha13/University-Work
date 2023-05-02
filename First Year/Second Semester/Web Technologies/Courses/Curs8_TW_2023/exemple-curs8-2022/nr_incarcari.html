@@ -1,0 +1,40 @@
+<!DOCTYPE html> 
+<html lang="ro"> 
+<head> 
+<title> localStorage</title>
+<script>
+
+window.onload = myMain;
+
+function myMain(){ 
+       // localStorage.clear();
+        creste();
+	scrie(); 
+        }
+
+function creste(){
+    var x = Number(localStorage.getItem('hits1'));
+    if (x){
+       localStorage.setItem('hits1', x +1);
+    }else{
+       localStorage.setItem('hits1', 1);
+    }}
+	
+function scrie(){
+	document.getElementById("scrie").value = localStorage.getItem('hits1');
+	}
+	
+
+</script>
+ </head>
+<body>
+<body>
+  <p> Numar de incarcari <input type="text" id="scrie"> </p> 
+  <p>Incarca pagina.</p>
+  <p>Inchide fereastra si incarca din nou pagina.</p>
+
+</body>
+</body>
+</html>
+
+

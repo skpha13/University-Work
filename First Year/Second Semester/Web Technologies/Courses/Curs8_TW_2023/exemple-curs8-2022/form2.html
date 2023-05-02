@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Submiterea formularului</title>
+</head>
+<body>
+
+<form action="http://localhost:8080/" method="GET" target="numeiframe">
+  <label>Nume:</label>
+  <input type="text" name="name">
+<br>
+ <label> Varsta:</label>
+ <input type="text" name="age">
+<br>
+  <label>Localitate:</label> 
+ <select name="city">
+    <option value="Bucuresti" selected>Bucuresti</option>
+    <option value="Timisoara">Timisoara</option>  
+ </select>
+<br>
+<button type="submit" id="buton"> Trimite </button>
+</form>
+<br>
+<iframe name="numeiframe">  <iframe>
+
+</body>
+</html>

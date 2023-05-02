@@ -1230,7 +1230,7 @@ void Menu::engine() {
 
 int main()
 {
-    initOpenCV();
+//    initOpenCV();
 
 //    IMAGE TESTS
     /*Image i;

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Formular</title>
+</head>
+<body>
+<!--<form action="http://localhost:7000/" method="GET">-->
+<form action="http://localhost:8030/salveaza" method="POST">
+  <label>Nume student:</label>
+  <input type="text" name="nume">
+<br><br>
+  <label>Grupa:</label> 
+ <select name="grupa">
+    <option value="1" selected>1</option>
+    <option value="2">2</option>  
+    <option value="3">3</option>  
+ </select>
+<br><br>
+<label> Nota:</label>
+ <input type="range" name="nota" min=1 max=10>
+<button type="submit" id="buton"> Trimite </button>
+</form>
+</body>
+</html>

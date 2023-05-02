@@ -1,0 +1,29 @@
+			<!DOCTYPE html>
+<html>
+<head>
+
+<script>
+
+window.onload = function(){
+       //localStorage.clear();
+	var buton=document.getElementById("bt");
+	buton.onclick= function(){
+
+		var x = parseInt(localStorage.getItem("nr1"));
+		if (x){
+			localStorage.setItem("nr1", x + 1 );
+		      }
+		else{
+			localStorage.setItem("nr1", "1");
+		    }
+		document.getElementById("scrie").value = localStorage.getItem("nr1");
+	}
+	document.getElementById("scrie").value = localStorage.getItem("nr1");
+}
+</script>
+<body>
+<p> Numar de clickuri pe button <input type="text" id="scrie" value="0"> </p>
+<button id="bt"> Click</button>
+</body>
+</html>
+

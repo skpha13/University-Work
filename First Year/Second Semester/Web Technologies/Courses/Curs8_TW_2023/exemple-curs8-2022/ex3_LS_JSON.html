@@ -1,0 +1,32 @@
+<!DOCTYPE html> 
+<html lang="ro"> 
+<head> 
+<meta charset="utf-8">
+<title> localStorage</title>
+<script type="text/javascript" >
+
+ window.onload = myMain;
+ function myMain() {document.getElementById('abuton').onclick= addob;  
+                    document.getElementById('sbuton').onclick= showob;};
+
+	function addob(){var x= parseInt(prompt("x")); var y= parseInt(prompt("y")); 
+	                 var ob = {px:x, py:[x,y]}; 
+					 var stob=JSON.stringify(ob);
+					 localStorage.setItem('obiect', stob);};
+					
+	function showob() { var obst=JSON.parse(localStorage.getItem('obiect'));
+	                    alert(obst.py); alert(typeof(obst.py[0]))}
+	</script>				
+
+ </head>
+<body>
+
+
+ <button type="button" id="abuton"> Add </button>
+ <button type="button" id="sbuton"> Show </button>
+
+
+</body>
+</html>
+
+

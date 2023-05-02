@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+body{height:500px;}
+
+</style>
+<script>
+
+function colorare()
+{
+
+document.body.style.backgroundColor = `rgb(${Math.floor(Math.random()*256)},${Math.floor(Math.random()*256)},${Math.floor(Math.random()*256)})`;
+document.querySelector("h2").innerHTML="Culoarea: " + document.body.style.backgroundColor;
+}
+
+window.onload=function()
+{
+  
+  if(localStorage.getItem("culoare")!=null)
+    {
+       document.body.style.backgroundColor=localStorage.getItem("culoare");
+       document.querySelector("h2").innerHTML="Culoare: " + document.body.style.backgroundColor;
+    }
+
+   var t=setInterval(colorare,3000);
+
+   document.body.onclick=function(){
+   clearInterval(t);
+   localStorage.setItem("culoare", document.body.style.backgroundColor);
+   //console.log("Local storage: " + localStorage.getItem("culoare"));
+}
+}
+</script>
+</head>
+<body>
+<h2></h2>
+</body>
+</html>
+
+
+

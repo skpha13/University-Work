@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Obiecte</title>
+<script>
+
+function Interval(x, y) {
+       this.mx= x;
+       this.my= y; }  // clasa
+
+ Interval.prototype.apartine = function(z){
+             return  (z <=  this.my) &&  (z >= this.mx);} 
+
+
+ //Interval.prototype.valid  = function(){return (this.my  >=  this.mx);};
+
+function IntervalD(x,y) {Interval.call(this,x,y);  } //this este obiectul care se creaza
+IntervalD.prototype = Object.create(Interval.prototype); //am schimbat prototipul
+
+var obd=new IntervalD(5,6);
+//console.log(IntervalD.prototype);
+//IntervalD.prototype = Object.create(Interval.prototype); //am schimbat prototipul
+alert(obd.apartine(3));  
+//IntervalD.prototype.constructor = IntervalD; //restaurez proprietatea constructor
+//console.log(IntervalD.prototype);
+console.log(obd.constructor);
+
+</script>
+</head>
+<body>
+</body>
+</html>

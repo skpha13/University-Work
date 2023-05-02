@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Formular</title>
+</head>
+<body>
+<form action="http://localhost:8080/cale" method="GET">
+<!--<form action="http://localhost:8030/post" method="POST">-->
+  <label>Nume:</label>
+  <input type="text" name="name">
+<br>
+ <label> Varsta:</label>
+ <input type="text" name="age">
+<br>
+  <label>Localitate:</label> 
+ <select name="city">
+    <option value="Bucuresti" selected>Bucuresti</option>
+    <option value="Cluj">Cluj</option>  
+    <option value="Brasov">Brasov</option>  
+  
+</select>
+<br>
+<button type="submit" id="buton"> Trimite </button>
+</form>
+</body>
+</html>

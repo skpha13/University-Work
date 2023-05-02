@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+	<meta charset="UTF-8"/>
+	<title>LocalStorage</title>
+<script>
+
+window.addEventListener("load",function(){
+
+        var p=document.createElement("p");
+        document.body.appendChild(p);
+
+	setInterval(
+		function(){
+			p.appendChild(document.createTextNode(Math.floor(Math.random()*1000)+" "));
+			
+		},2000
+	);
+
+	p.innerHTML=localStorage.getItem("numere")?localStorage.getItem("numere"):"";
+	
+        document.getElementById("salveaza").onclick=function(){
+		localStorage.setItem("numere", document.body.lastElementChild.innerHTML);
+	}
+	
+        document.getElementById("sterge").onclick=function(){
+		localStorage.clear();
+		document.body.removeChild(document.body.lastElementChild);
+	}
+});
+
+
+</script>
+</head>
+<body>
+
+		
+<button id="salveaza">Salveaza</button>
+<button id="sterge">Sterge tot</button>
+
+</body>
+</html>
+

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Submiterea formularului</title>
+<script>
+
+window.onload=function(){
+ 
+ var input=document.querySelector("input");
+ input.onchange=function(){
+ alert(input.value);
+ }
+
+
+ var obsel=document.querySelector("select");
+ obsel.onchange=function(){
+ alert(obsel.value);
+ alert(obsel.options[obsel.selectedIndex].value);
+}
+}
+
+</script>
+</head>
+<body>
+<input type="password">
+ <label>Localitate:</label> 
+ <select name="city">
+    <option>Bucuresti</option>
+    <option>Timisoara</option>  
+     <option selected>Cluj</option>
+      <option>Iasi</option>
+ </select>
+<AZ
+</body>
+</html>
