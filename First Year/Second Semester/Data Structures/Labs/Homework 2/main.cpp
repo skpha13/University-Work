@@ -9,7 +9,6 @@ std::ofstream g("../abce.out");
 
 struct Node {
 //    value of the node
-//    nrDuplicates stores the frequency of a number
     int value;
 //    for every level we will have a pointer to another node
     std::vector<Node*> next;
@@ -245,7 +244,3 @@ int main() {
     }
     return 0;
 }
-
-// TODO see time improvements
-// TODO 1,2,3 operations faster, maybe use array instead of vector
-// TODO op 6 can be made faster

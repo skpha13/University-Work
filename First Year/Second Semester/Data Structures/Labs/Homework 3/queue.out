@@ -1,0 +1,5 @@
+1: read(3) push(1,3)
+2: read(5) push(1,5)
+3: pop(1) push(2,5) pop(1) write(3)
+4: pop(2) write(5)
+5: read(2) push(1,2)
