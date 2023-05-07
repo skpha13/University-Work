@@ -9,7 +9,7 @@ ifstream f("deque.in");
 ofstream g("deque.out");
 
 struct Node {
-    long long val;
+    int val;
     Node* next;
     Node* prev;
 
@@ -46,10 +46,10 @@ private:
 public:
     Deque();
     bool empty();
-    void push_back(long long val);
-    void push_front(long long val);
-    long long back();
-    long long front();
+    void push_back(int val);
+    void push_front(int val);
+    int back();
+    int front();
     void pop_back();
     void pop_front();
     ~Deque();
@@ -67,7 +67,7 @@ bool Deque::empty() {
     return false;
 }
 
-void Deque::push_front(long long val) {
+void Deque::push_front(int val) {
     Node* temp = new Node(val);
     if(size == 0) {
         temp->prev = up;
@@ -85,7 +85,7 @@ void Deque::push_front(long long val) {
     size++;
 }
 
-void Deque::push_back(long long val) {
+void Deque::push_back(int val) {
     Node* temp;
     temp = new Node(val);
     if(size == 0) {
@@ -103,13 +103,13 @@ void Deque::push_back(long long val) {
     size++;
 }
 
-long long Deque::back() {
+int Deque::back() {
     Node* it = down;
     it = it->prev;
     return it->val;
 }
 
-long long Deque::front() {
+int Deque::front() {
     Node* it = up;
     it = it->next;
     return it->val;

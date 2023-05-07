@@ -1,0 +1,8 @@
+- static cast forteaza downcast ul
+	schimba instanta indiferent de obiect (nu stie sa faca verificari)
+ 
+- dynamic cast si typeid merg daca au macar o metoda virtuala, altfel nu
+
+- dynamic cast intoarce null daca nu merge
+	daca vrei sa faci la un obiect si nu pointer atunci iti arunca exceptie, 	std::bad_cast_alloc()
+	! la al doilea proiect puteam sa facem dynamic cast ca sa nu mai virtualizam 	 	 		citirea/afisarea
