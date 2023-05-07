@@ -142,6 +142,7 @@ Deque::~Deque() {
     }
     delete up;
     delete down;
+    size = 0;
 }
 
 int main()
