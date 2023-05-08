@@ -51,7 +51,6 @@ bool Grammar::accept(char symbol,std::string cuvant) {
     if(cuvant.size() == 1) {
         for(auto it:map)
             for(int i=0;i<it.second.size();i++) {
-                std::cout<<cuvant<<" "<<it.second[i]<<std::endl;
                 if(it.second[i][0] == cuvant[0] && terminalLambda) return true;
                 if(it.second[i] == cuvant) return true;
             }
