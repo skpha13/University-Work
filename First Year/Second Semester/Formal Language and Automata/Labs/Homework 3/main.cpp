@@ -10,7 +10,7 @@ private:
 public:
     Grammar();
     void print();
-    bool accept(char symbol,std::string cuvant);
+    bool accept(char symbol,std::string cuvant,int index);
 };
 
 Grammar::Grammar() {
@@ -45,21 +45,21 @@ void Grammar::print() {
     }
 }
 
-bool Grammar::accept(char symbol,std::string cuvant) {
-    if(cuvant.size() == 0 && terminalLambda) return true;
+bool Grammar::accept(char symbol,std::string cuvant,int index) {
+    for(int i=0;i<map[symbol].size();i++)
+        if(map[symbol][i][0] == cuvant[index] && map[symbol][i].length() > 1 && accept(map[symbol][i][1],cuvant,index+1))
+            return true;
+        else if(map[symbol][i][0] == cuvant[index] && map[symbol][i].length() == 1 && index == cuvant.length()-1)
+            return true;
 
-    if(cuvant.size() == 1) {
-        for(auto it:map)
-            for(int i=0;i<it.second.size();i++) {
-                if(it.second[i][0] == cuvant[0] && terminalLambda) return true;
-                if(it.second[i] == cuvant) return true;
-            }
-        return false;
+    if(index == cuvant.length())
+    {
+        for(int i=0;i<map[symbol].size();i++) {
+            if(map[symbol][i] == "^")
+                return true;
+        }
     }
 
-    for(int i=0;i<map[symbol].size();i++)
-        if(map[symbol][i][0] == cuvant[0] && accept(map[symbol][i][1],cuvant.erase(0,1)))
-            return true;
     return false;
 }
 
@@ -100,7 +100,7 @@ void Menu::engine() {
                 std::string temp;
                 std::cout<<"Cuvant: \n";
                 std::getline(std::cin,temp);
-                if(G.accept('S',temp)) std::cout<<"~ ACCEPTAT\n";
+                if(G.accept('S',temp,0)) std::cout<<"~ ACCEPTAT\n";
                 else std::cout<<"~ NEACCEPTAT\n";
                 this->print();
                 break;
@@ -115,7 +115,7 @@ void Menu::engine() {
                 std::string cuv;
                 while(in>>cuv) {
                     std::cout<<cuv<<": ";
-                    if(G.accept('S',cuv)) std::cout<<"ACCEPTAT\n";
+                    if(G.accept('S',cuv,0)) std::cout<<"ACCEPTAT\n";
                     else std::cout<<"NEACCEPTAT\n";
                 }
                 this->print();
