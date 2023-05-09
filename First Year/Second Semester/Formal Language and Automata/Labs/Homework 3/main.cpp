@@ -2,6 +2,7 @@
 #include <fstream>
 #include <string>
 #include <unordered_map>
+#include <windows.h>
 
 class Grammar {
 private:
@@ -88,6 +89,7 @@ void Menu::print() {
 void Menu::engine() {
     this->print();
     int option;
+    HANDLE hconsole = GetStdHandle(STD_OUTPUT_HANDLE);
     while(true) {
         std::cout<<"Introdu optiune: \n";
         std::cin>>option;
@@ -98,10 +100,12 @@ void Menu::engine() {
             case 1: {
                 system("CLS");
                 std::string temp;
+                SetConsoleTextAttribute(hconsole,15);
                 std::cout<<"Cuvant: \n";
                 std::getline(std::cin,temp);
-                if(G.accept('S',temp,0)) std::cout<<"~ ACCEPTAT\n";
-                else std::cout<<"~ NEACCEPTAT\n";
+                if(G.accept('S',temp,0)) SetConsoleTextAttribute(hconsole,11),std::cout<<"~ ACCEPTAT\n";
+                else SetConsoleTextAttribute(hconsole,12),std::cout<<"~ NEACCEPTAT\n";
+                SetConsoleTextAttribute(hconsole,15);
                 this->print();
                 break;
             }
@@ -114,10 +118,12 @@ void Menu::engine() {
                 std::ifstream in(inputName);
                 std::string cuv;
                 while(in>>cuv) {
+                    SetConsoleTextAttribute(hconsole,15);
                     std::cout<<cuv<<": ";
-                    if(G.accept('S',cuv,0)) std::cout<<"ACCEPTAT\n";
-                    else std::cout<<"NEACCEPTAT\n";
+                    if(G.accept('S',cuv,0)) SetConsoleTextAttribute(hconsole,11), std::cout<<"ACCEPTAT\n";
+                    else SetConsoleTextAttribute(hconsole,12), std::cout<<"NEACCEPTAT\n";
                 }
+                SetConsoleTextAttribute(hconsole,15);
                 this->print();
                 break;
             }
