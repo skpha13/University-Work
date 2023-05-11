@@ -79,7 +79,7 @@ create table ROL (
     rol_id number(6) constraint pk_rol primary key ,
     nume_caracter varchar2(50) constraint caracter_null not null ,
     descriere varchar2(255) ,
-    importanta number(2,2) constraint imp_check check ( importanta >= 1 and importanta <= 10 )
+    importanta number(4,2) constraint imp_check check ( importanta >= 1 and importanta <= 10 )
 );
 
 create table ACTOR (
@@ -109,6 +109,22 @@ create table ROL_JUCAT (
     constraint fk_rol foreign key (rol_id) references ROL(rol_id)
 );
 
+commit;
+
+drop table ROL purge;
+
+drop table ROL_JUCAT purge;
+
+insert into ROL (ROL_ID, NUME_CARACTER, DESCRIERE, IMPORTANTA)
+values (45,'mario','cuvant',5.00);
+
+delete from rol where rol_id = 45;
+
+rollback;
+
+select * from ROL;
+
+-- TODO pentru note precizie 4,2
 /*
 select constraint_name, constraint_type, TABLE_NAME
 from SYS.USER_CONSTRAINTS
