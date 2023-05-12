@@ -11,7 +11,7 @@ create table SUBSCRIPTIE (
     subscriptie_id number(6) constraint pk_subscritpie primary key ,
     data_exp date not null ,
     tip varchar2(20) check ( lower(tip) in ('standard', 'normal', 'premium') ),
-    cost number(3) check ( cost >= 100 and cost <= 999 )
+    cost number(2)
 );
 
 create table UTILIZATOR (
@@ -29,7 +29,7 @@ create table UTILIZATOR (
 create table SERIAL (
     serial_id number(6) constraint pk_serial primary key ,
     denumire varchar2(50) constraint denumire_null not null ,
-    nota number(2,2) constraint nota_check check ( nota >= 1 and nota <= 10 ),
+    nota number(4,2) constraint nota_check check ( nota >= 1 and nota <= 10 ),
     data_aparitie date
 );
 
@@ -43,9 +43,9 @@ create table EPISOD (
 );
 
 create table  SUBSCRIPTIE_SERIAL (
+    subscriptie_serial_id number(6) constraint pk_sub_ser primary key ,
     serial_id number(6) not null ,
     subscriptie_id number(6) not null ,
-    primary key (serial_id, subscriptie_id) ,
     constraint fk_subscriptie_asoc foreign key (subscriptie_id) references SUBSCRIPTIE(subscriptie_id) ,
     constraint fk_serial_asoc foreign key (serial_id) references SERIAL(serial_id)
 );
@@ -55,22 +55,22 @@ create table DIRECTOR (
     nume varchar2(50) constraint nume_dir_null not null ,
     prenume varchar2(50) ,
     data_nastere date ,
-    nota number(2,2) constraint nota_director_check check ( nota >= 1 and nota <= 10 )
+    nota number(4,2) constraint nota_director_check check ( nota >= 1 and nota <= 10 )
 );
 
 create table FILM (
     film_id number(6) constraint pk_film primary key ,
     director_id number(6) not null ,
     denumire varchar2(50) constraint denumire_film_null not null ,
-    nota number(2,2) constraint nota_film_check check ( nota >= 1 and nota <= 10 ) ,
+    nota number(4,2) constraint nota_film_check check ( nota >= 1 and nota <= 10 ) ,
     data_aparitie date ,
     constraint fk_director foreign key (director_id) references DIRECTOR(director_id)
 );
 
 create table  SUBSCRIPTIE_FILM (
+    subscriptie_film_id number(6) constraint pk_sub_film primary key ,
     film_id number(6) not null ,
     subscriptie_id number(6) not null ,
-    primary key (film_id, subscriptie_id) ,
     constraint fk_subscriptie_asocf foreign key (subscriptie_id) references SUBSCRIPTIE(subscriptie_id) ,
     constraint fk_serial_asocf foreign key (film_id) references FILM(film_id)
 );
@@ -93,14 +93,15 @@ create table ACTOR (
 );
 
 create table SERIAL_ACTOR (
+    serial_actor_id number(6) constraint pk_ser_act primary key ,
     serial_id number(6) not null ,
     actor_id number(6) not null ,
-    primary key (serial_id, actor_id) ,
     constraint fk_actor_asocA foreign key (actor_id) references ACTOR(actor_id) ,
     constraint fk_serial_asocA foreign key (serial_id) references SERIAL(serial_id)
 );
 
 create table ROL_JUCAT (
+    film_rol_actor_id number(6) constraint pk_rol_jucat primary key ,
     film_id number(6) not null ,
     actor_id number(6) not null ,
     rol_id number(6) not null ,
@@ -109,22 +110,41 @@ create table ROL_JUCAT (
     constraint fk_rol foreign key (rol_id) references ROL(rol_id)
 );
 
+create sequence incrementare_serial
+start with 1
+increment by 1
+minvalue 0
+maxvalue 10000
+nocycle;
+
+
+create sequence incrementare_film
+start with 1
+increment by 1
+minvalue 0
+maxvalue 10000
+nocycle;
+
+
+create sequence incrementare_actor
+start with 1
+increment by 1
+minvalue 0
+maxvalue 10000
+nocycle;
+
+
+create sequence incrementare_rol_jucat
+start with 1
+increment by 1
+minvalue 0
+maxvalue 10000
+nocycle;
+
 commit;
-
-drop table ROL purge;
-
-drop table ROL_JUCAT purge;
-
-insert into ROL (ROL_ID, NUME_CARACTER, DESCRIERE, IMPORTANTA)
-values (45,'mario','cuvant',5.00);
-
-delete from rol where rol_id = 45;
 
 rollback;
 
-select * from ROL;
-
--- TODO pentru note precizie 4,2
 /*
 select constraint_name, constraint_type, TABLE_NAME
 from SYS.USER_CONSTRAINTS
