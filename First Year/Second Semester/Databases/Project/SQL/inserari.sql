@@ -47,5 +47,3 @@ insert all
     into ROL(rol_id, nume, descriere, importanta) VALUES (115,'Fundal','Doar va aparea pe fundalul filmului pentru a popula scena cu oameni',4.5)
 select 'worked' from dual;
 
-select * from ROL;
-

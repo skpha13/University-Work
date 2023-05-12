@@ -87,9 +87,7 @@ create table ACTOR (
     nume varchar2(50) constraint nume_act_null not null ,
     prenume varchar2(50) constraint prenume_act_null not null ,
     data_nastere  date ,
-    biografie varchar2(200) ,
-    salariu number(7) default 3000 ,
-    timp_ecran number(3)
+    salariu number(7) default 3000
 );
 
 create table SERIAL_ACTOR (
@@ -105,6 +103,7 @@ create table ROL_JUCAT (
     film_id number(6) not null ,
     actor_id number(6) not null ,
     rol_id number(6) not null ,
+    timp_ecran number(3) ,
     constraint fk_film_asocRJ foreign key (film_id) references FILM(film_id) ,
     constraint fk_actor_asocRJ foreign key (actor_id) references ACTOR(actor_id) ,
     constraint fk_rol foreign key (rol_id) references ROL(rol_id)
