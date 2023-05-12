@@ -9,8 +9,7 @@ create table PLATA (
 
 create table SUBSCRIPTIE (
     subscriptie_id number(6) constraint pk_subscritpie primary key ,
-    data_exp date not null ,
-    tip varchar2(20) check ( lower(tip) in ('standard', 'normal', 'premium') ),
+    tip varchar2(20) default 'basic' check ( lower(tip) in ('basic','standard', 'normal', 'premium','ultimate') ) ,
     cost number(2)
 );
 
@@ -21,7 +20,8 @@ create table UTILIZATOR (
     porecla varchar2(50) constraint porecla_null not null ,
     mail varchar2(255) constraint mail_null not null ,
     parola varchar2(255) constraint parola_null not null,
-    data_creare date default current_date,
+    data_creare date default current_date ,
+    data_exp_sub date not null ,
     constraint fk_subscriptie foreign key (subscriptie_id) references SUBSCRIPTIE(subscriptie_id),
     constraint fk_plata foreign key (plata_id) references PLATA(plata_id)
 );
