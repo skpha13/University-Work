@@ -77,7 +77,7 @@ create table  SUBSCRIPTIE_FILM (
 
 create table ROL (
     rol_id number(6) constraint pk_rol primary key ,
-    nume_caracter varchar2(50) constraint caracter_null not null ,
+    nume varchar2(50) constraint caracter_null not null ,
     descriere varchar2(255) ,
     importanta number(4,2) constraint imp_check check ( importanta >= 1 and importanta <= 10 )
 );

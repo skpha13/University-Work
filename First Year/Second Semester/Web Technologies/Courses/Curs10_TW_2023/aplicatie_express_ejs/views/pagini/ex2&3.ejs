@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="us">
+<head>
+	<meta charset="utf-8">
+	<title>Exemplu cu EJS</title>
+		
+</head>
+<body>
+
+<p>
+<% var x=Math.random();
+   	 if (x<0.5)     {%>
+   		 <%= (x+"e mai mic decat 0.5") %>
+   	 <% } else {%>
+   		 <%= (x+"e mai mare decat 0.5") %>
+   	 <% } %>
+</p>
+<p>
+<%     culori=["red","green","blue"]
+    var ind = Math.trunc(Math.random()*culori.length); %>
+    Culoarea este: <span style='color:<%= culori[ind] %>'>
+    <%    switch (ind){
+   	 case 0: %>    rosie
+   	 <% break;
+   	 case 1:%>    verde
+   	 <% break;
+   	 case 2:%>   albastra
+    <% } %>
+   	 </span>
+</p>
+
+</body>
+</html>

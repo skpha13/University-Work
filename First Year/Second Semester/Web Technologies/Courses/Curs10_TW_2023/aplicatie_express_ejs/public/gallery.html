@@ -1,0 +1,71 @@
+
+<!DOCTYPE html> 
+
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+
+	<title>Gallery 1 - Picture 1</title>
+	<link rel="stylesheet" href="gallery.css" type="text/css"   charset="utf-8" >
+<script type="text/javascript">
+  window.onload=function (){
+  var data ; 
+  var  httpObj = new XMLHttpRequest();
+        httpObj.open('GET', "http://localhost:8020/pictures.json", true);   
+        httpObj.send(null);
+	 
+       httpObj.onreadystatechange = function() {
+        if (httpObj.readyState == 4) { // when request is complete
+          if (httpObj.status == 200) {data=JSON.parse(httpObj.responseText); gallery(data);}
+          else {alert("eroare");}
+        }
+    };
+   
+	 
+  }	
+  
+function gallery(data){
+ var menu_links = document.querySelectorAll("#menu button");
+ var img_gal =document.getElementById("gal");
+ var img_cap =document.getElementById("caption");
+  for (var i=0; i< menu_links.length; i++) 
+{ 
+let j=i; 
+                                             
+menu_links[j].onclick = function () {      
+                                                                                         
+img_gal.src=data[j].picture.source;
+											 
+img_cap.textContent=data[j].picture.caption;
+											 
+				     }
+
+}
+}
+	
+</script>
+</head>
+
+<body>
+<h1>Gallery 1</h1>
+<div id="container">
+	<p>
+	   <img src="images/flower1-300.jpg" alt="Picture 1" id="gal">
+	</p>
+	<p id="caption">
+		Picture 1
+	</p>
+</div>
+<p id="menu">
+	<button type="button">Picture 1</button>  
+	<button type="button">Picture 2</button>  
+	
+	<button type="button">Picture 3</button>  
+	
+	<button type="button">Picture 4</button>  
+	
+	<button type="button">Picture 5</button>  
+	
+</p>
+</body>
+</html>

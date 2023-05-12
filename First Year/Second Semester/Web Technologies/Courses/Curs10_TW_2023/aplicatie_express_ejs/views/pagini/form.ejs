@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="us">
+<body>
+
+limba selectata: <%= selectedLang %>
+
+<!--<% var langs = ['romana', 'franceza', 'greaca', 'spaniola']; %> -->
+<form action="formpost" method="post">
+	<select name="limba">
+<% langs.forEach(function(lang) {%>
+		<option <%= lang == selectedLang ? 'selected' : '' %>><%= lang %></option>
+<% }); %>
+	</select>
+	<button type="submit">save</button>
+</form>
+</body>
+</html>

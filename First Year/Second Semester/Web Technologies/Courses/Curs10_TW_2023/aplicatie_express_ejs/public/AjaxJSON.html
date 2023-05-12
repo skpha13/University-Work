@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<body>
+<script>
+window.onload=function()
+{
+var xhttpR = new XMLHttpRequest()
+    xhttpR.open('GET', 'test.json');
+    xhttpR.onreadystatechange = function(){if (xhttpR.readyState == 4 && xhttpR.status == 200) 
+                                {var obJS = JSON.pase(xhttpR.responseText);
+                                  alert("nr articole: "+obJS.length)
+                                 }
+								}
+    xhttpR.send();
+}
+
+</script>
+</body>
+</html>

@@ -1,0 +1,261 @@
+#include <iostream>
+#include <string.h>
+
+using namespace std;
+
+class Persoana
+{
+private:
+    char* nume;  //pointeri  char nume[100]
+    int varsta;
+    const int iDPersoana; // nu exista setter
+    bool angajat;
+
+    float* cheltuieliInUltimeleNLuni; // la fel si pentru int*, long* etc Persoane*
+    int luni;
+
+    string* cumparaturiInUltimaLuna;
+    int nrArticoleCumparate;
+
+    char initialaTata;
+protected:
+    string prenume;
+public:
+
+    float* getCheltuieliInUltimeleNLuni()
+    {
+        return this->cheltuieliInUltimeleNLuni;
+
+    }
+    void setCheltuieliInUltimeleNLuni( float* chel, int n)
+    {
+        this->luni=n;
+        if(this->cheltuieliInUltimeleNLuni!=NULL)
+            delete[] cheltuieliInUltimeleNLuni;
+        this->cheltuieliInUltimeleNLuni=new float[n];
+        for(int i=0; i<n; i++)
+            this->cheltuieliInUltimeleNLuni[i]=chel[i];
+
+    }
+    int getLuni()
+    {
+        return luni;
+
+    }
+
+    char* getNume()
+    {
+
+        return this->nume;
+
+    }
+
+    void setNume(char* nume)
+    {
+
+        if(this->nume!=NULL)
+            delete[] this->nume;
+        this->nume=new char[strlen(nume)+1];
+        strcpy(this->nume,nume);
+
+    }
+    static int contorId;
+
+    Persoana& operator=(const Persoana& per)
+    {
+
+
+        if(this!=&per)
+        {
+
+            if(this->nume!=NULL)
+                delete[] this->nume;
+
+            if(this->cheltuieliInUltimeleNLuni!=NULL)
+                delete[] this->cheltuieliInUltimeleNLuni;
+
+            if(this->cumparaturiInUltimaLuna!=NULL)
+                delete[] this->cumparaturiInUltimaLuna;
+
+            this->nume=new char[strlen(per.nume)+1];
+
+            strcpy( this->nume, per.nume);
+
+            this->varsta=per.varsta;
+            this->angajat=per.angajat;
+            this->prenume=per.prenume;
+            this->initialaTata=per.initialaTata;
+            this->luni=per.luni;
+            this->nrArticoleCumparate=per.nrArticoleCumparate;
+
+            this->cheltuieliInUltimeleNLuni=new float[per.luni];
+            for(int i=0; i<per.luni; i++)
+                this->cheltuieliInUltimeleNLuni[i]=per.cheltuieliInUltimeleNLuni[i];
+
+            this->cumparaturiInUltimaLuna=new string[per.nrArticoleCumparate];
+            for(int i=0; i<per.nrArticoleCumparate; i++)
+                this->cumparaturiInUltimaLuna[i]=per.cumparaturiInUltimaLuna[i];
+
+
+        }
+
+        return *this;
+
+    }
+
+
+    Persoana(const Persoana& per):iDPersoana(per.iDPersoana)
+    {
+
+        this->nume=new char[strlen(per.nume)+1];
+        strcpy( this->nume, per.nume);
+
+
+        this->varsta=per.varsta;
+        this->angajat=per.angajat;
+        this->prenume=per.prenume;
+        this->initialaTata=per.initialaTata;
+        this->luni=per.luni;
+        this->nrArticoleCumparate=per.nrArticoleCumparate;
+
+        this->cheltuieliInUltimeleNLuni=new float[per.luni];
+        for(int i=0; i<per.luni; i++)
+            this->cheltuieliInUltimeleNLuni[i]=per.cheltuieliInUltimeleNLuni[i];
+
+        this->cumparaturiInUltimaLuna=new string[per.nrArticoleCumparate];
+        for(int i=0; i<per.nrArticoleCumparate; i++)
+            this->cumparaturiInUltimaLuna[i]=per.cumparaturiInUltimaLuna[i];
+
+
+
+    }
+
+    Persoana(char* nume, string prenume, int varsta, bool angajat, float* cheltuieliInUltimeleNLuni, int luni, int nrArticoleCumparate, string* cumparaturiInUltimaLuna,char initialaTata):iDPersoana(contorId++)
+    {
+
+        this->nume=new char[strlen(nume)+1];
+        strcpy( this->nume, nume);
+
+        this->varsta=varsta;
+        this->angajat=angajat;
+        this->prenume=prenume;
+        this->initialaTata=initialaTata;
+        this->luni=luni;
+        this->nrArticoleCumparate=nrArticoleCumparate;
+
+        this->cheltuieliInUltimeleNLuni=new float[luni];
+        for(int i=0; i<luni; i++)
+            this->cheltuieliInUltimeleNLuni[i]=cheltuieliInUltimeleNLuni[i];
+
+        this->cumparaturiInUltimaLuna=new string[nrArticoleCumparate];
+        for(int i=0; i<nrArticoleCumparate; i++)
+            this->cumparaturiInUltimaLuna[i]=cumparaturiInUltimaLuna[i];
+
+    }
+
+    /*Persoana(int luni){
+    this->luni=lun;
+
+    }
+    Persoana(int nrPr){
+
+    this->nrArticoleCumparate=nrPr;
+
+    } Asa nu, sunt doi la fel*/
+
+    Persoana(char* nume):iDPersoana(contorId++)
+    {
+
+        this->nume=new char[strlen(nume)+1];
+        strcpy( this->nume, nume);
+    }
+
+    Persoana(char* nume, string prenume):iDPersoana(contorId++)
+    {
+
+        this->nume=new char[strlen(nume)+1];
+        strcpy( this->nume, nume);
+        this->prenume=prenume;
+
+
+    }
+
+
+    Persoana():iDPersoana(contorId++)
+    {
+
+        nume=new char[strlen("Anonim")+1];
+        strcpy( this->nume,"Anonim");
+
+        this->varsta=0;
+        this->angajat=false;
+        this->cheltuieliInUltimeleNLuni=NULL;// nullptr
+        this->luni=0;
+        this->cumparaturiInUltimaLuna=NULL;
+        this->nrArticoleCumparate=0;
+        this->initialaTata='q';
+        this->prenume="Anonim";
+    }
+
+
+    ~Persoana()
+    {
+
+        if(this->nume!=NULL)
+            delete[] this->nume;
+
+        if(this->cheltuieliInUltimeleNLuni!=NULL)
+            delete[] this->cheltuieliInUltimeleNLuni;
+
+        if(this->cumparaturiInUltimaLuna!=NULL)
+            delete[] this->cumparaturiInUltimaLuna;
+
+    }
+
+
+
+
+
+};
+
+int Persoana::contorId=1000;
+
+int main()
+
+
+{
+// cosntructor fara param
+    Persoana p;
+// constructorul cu toti parm;
+    char c[]= {"Szmeteanca"};
+    char c2[]= {"Szmeteanca2"};
+    float chel[]= {3.4,5.6,8.9};
+    float chel2[]= {100,3.4,5.6,8.9};
+    string prod[]= {"Mere", "Pere", "Banane"};
+
+    Persoana p2(c,"Eduard",23,true,chel,3,3,prod,'B');
+
+// cc
+
+    Persoana p3(p2), p4=p2;
+
+// operator =
+    Persoana p5;
+    p5=p4;
+// set get
+    cout<<p2.getNume();
+    p2.setNume(c2);
+    cout<<"\n"<<p2.getNume();
+
+
+
+    cout<<*chel2<<"\n";
+    for(int i=0; i<p2.getLuni(); i++)
+        cout<<*(p2.getCheltuieliInUltimeleNLuni()+i)<<"\n";
+
+    p2.setCheltuieliInUltimeleNLuni(chel2,4);
+    for(int i=0; i<p2.getLuni(); i++)
+        cout<<*(p2.getCheltuieliInUltimeleNLuni()+i)<<"\n";
+
+    return 0;
+}

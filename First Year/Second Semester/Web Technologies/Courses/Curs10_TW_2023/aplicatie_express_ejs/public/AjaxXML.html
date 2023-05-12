@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<body>
+<script>
+/*window.onload=function()
+{
+var xhttpR = new XMLHttpRequest()
+    xhttpR.open('GET', 'test.xml');
+    xhttpR.onreadystatechange = function(){if (xhttpR.readyState == 4 && xhttpR.status == 200) 
+                                {var xmlDoc = xhttpR.responseXML;
+                                  alert("nr articole: "+xmlDoc.childNodes[0].childNodes.length)
+                                 }
+								}
+    xhttpR.send();
+}
+*/
+window.onload=function()
+{
+var xhttpR = new XMLHttpRequest()
+    xhttpR.open('GET', 'test.xml');
+    xhttpR.onreadystatechange = function(){if (xhttpR.readyState == 4 && xhttpR.status == 200) 
+                                {var xml = xhttpR.responseText;
+                                 parser = new DOMParser(); //se creaza un analizor XML DOM
+                                 var xmlDoc = parser.parseFromString(xml,"text/xml"); //se creaza un obiect XML
+                                  alert("Persoane: "+xmlDoc.getElementsByTagName("pers")[0].getAttribute("nume")+ ' , ' + xmlDoc.getElementsByTagName("pers")[1].getAttribute("nume"))
+                                 }
+								}
+    xhttpR.send();
+}
+</script>
+</body>
+</html>

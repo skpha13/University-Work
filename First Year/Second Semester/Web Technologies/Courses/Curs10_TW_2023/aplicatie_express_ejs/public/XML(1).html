@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<body>
+<script>
+var text = "<bookstore><book>Cartea1</book><book>Cartea2</book></bookstore>";
+
+var parser = new DOMParser();
+
+var xmlDoc = parser.parseFromString(text,"text/xml");//similar document
+//alert(xmlDoc.nodeName)
+//alert("rad=xmlDoc.documentElement: "+xmlDoc.documentElement.nodeName);
+//alert("rad=xmlDoc.childNodes[0]: "+xmlDoc.childNodes[0].nodeName);
+var rad=xmlDoc.documentElement;// =tagul container pebtru documentul XML (similar body )
+
+var copii=rad.childNodes;
+
+//for (let x of copii) alert("nodCopil  "+x.nodeName+" "+ x.childNodes[0].nodeValue);
+//var colectieBook=xmlDoc.getElementsByTagName("book");
+//for(let i=0; i<colectieBook.length;i++) alert("cartea "+(i+1)+" "+ colectieBook[i].childNodes[0].nodeValue);
+var nodN=xmlDoc.createElement("notebook");
+rad.appendChild(nodN);
+alert(rad.childNodes[2].nodeName);
+</script>
+</body>
+</html>
+

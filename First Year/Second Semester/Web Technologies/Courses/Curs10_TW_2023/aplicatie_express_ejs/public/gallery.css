@@ -1,0 +1,50 @@
+body {
+	background:#eee;
+	font-family: Arial, "MS Trebuchet", sans-serif;
+}
+h1 {
+	text-align:center;
+}
+#container, #menu, #comments, #error, #loading {
+	width:600px;
+	margin:auto;
+	background:#fff;
+	padding:10px;
+	margin-top:10px;
+	text-align:center;
+	border:1px solid #777;
+}
+#error, #loading {
+	display:none;
+}
+#error {
+	background:#a33;
+	color:#fff;
+}
+.caption {
+	font-weight:bold;
+	font-style:italic;
+}
+a {
+	color:#00f;
+}
+a:hover {
+	color:#f00;
+}
+
+.comment, form {	
+	padding:5px;
+	width: 580px;
+	margin:auto;
+	border-bottom:1px solid #aaa;
+}
+#comments p {
+	margin-top:5px;
+	text-align:left;
+}
+p.comment_title {
+	padding:0px;
+}
+#text, #username {
+	width:580px;
+}

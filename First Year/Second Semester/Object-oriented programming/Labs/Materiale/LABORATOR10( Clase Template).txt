@@ -1,0 +1,160 @@
+#include <iostream>
+#include <string.h>
+using namespace std;
+
+template <class Ttype>
+Ttype suma(Ttype a, Ttype b){
+
+return a+b;
+
+}
+
+
+template<>
+char* suma(char* a, char*b){
+
+    char* aux=new char[strlen(a)+strlen(b)+1];
+    memset(aux,0,strlen(a)+strlen(b));
+    return strcat(strcat(aux,a),b);
+
+}
+template<>
+const char* suma(const char* a, const char*b){
+
+    char* aux=new char[strlen(a)+strlen(b)+1];
+    memset(aux,0,strlen(a)+strlen(b));
+    return strcat(strcat(aux,a),b);
+
+}
+/*
+int suma(int a, const char* b){
+
+    int c=strlen(b);
+    return a+c;
+
+}
+*/
+
+
+template<class T1, class T2>
+T1 suma(T1 a, T2 b){
+
+    return a+b;
+
+}
+template<>
+int suma(int a, const char* b){
+
+    int c=strlen(b);
+    return a+c;
+
+}
+
+
+int main() {
+
+string a="ana";
+string b="mere";
+cout<<a+b<<endl;
+char s[100]="ana";
+char s2[100]="mere";
+
+
+
+    return 0;
+}
+
+
+/*
+
+#include <iostream>
+
+using namespace std;
+
+template < int lungime=5,class T=int>
+class Vector{
+
+    T* vetcorulMeu;
+
+public:
+    Vector (T vectorMeu[]){
+
+        this->vetcorulMeu=new T[lungime];
+
+        for(int i=0; i<lungime;i++)
+            this->vetcorulMeu[i]=vectorMeu[i];
+
+
+    }
+    void afisare(){
+        for(int i=0; i<lungime;i++)
+            cout<< this->vetcorulMeu[i]<<" ";
+        cout<<endl;
+
+
+    }
+
+
+};
+int main()
+{
+     int arr[5]={1,2,3,4,5};
+     Vector <5,int> a(arr);
+     a.afisare();
+
+
+    return 0;
+}
+  */
+
+*/#include <iostream>
+
+using namespace std;
+
+template <class T=int,class t2>
+class Vector{
+
+    T* vetcorulMeu;
+    int l;
+
+public:
+    Vector (std::initializer_list<T> vetcorulMeu){
+
+        this->vetcorulMeu=new T[vetcorulMeu.size()];
+        l=vetcorulMeu.size();
+
+        for(int i=0; i<vetcorulMeu.size();i++)
+            this->vetcorulMeu[i]=*(vetcorulMeu.begin()+i);
+
+
+    }
+    Vector (T vectorMeu[],int lungime){
+
+        this->vetcorulMeu=new T[lungime];
+        l=lungime;
+        for(int i=0; i<lungime;i++)
+            this->vetcorulMeu[i]=vectorMeu[i];
+
+
+    }
+    void afisare(){
+
+        for(int i=0; i<l;i++)
+            cout<< this->vetcorulMeu[i]<<" ";
+        cout<<endl;
+
+
+    }
+
+
+};
+int main()
+{
+     int arr[5]={1,2,3,4,5};
+     Vector <> a(arr,5);
+     a.afisare();
+
+
+    return 0;
+}
+*/

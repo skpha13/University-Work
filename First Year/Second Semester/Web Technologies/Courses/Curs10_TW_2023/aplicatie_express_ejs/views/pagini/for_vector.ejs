@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="us">
+<head>
+	<meta charset="utf-8">
+	<title>EJS exemple</title>
+<style>
+		#flori td, #flori th{
+			border:1px solid black;
+			padding:0.5em;
+		}
+		
+		#flori{
+			border-collapse:collapse;
+		}
+		
+		table img{
+			width:200px;
+			height:auto;
+		}
+	</style>
+	
+		
+</head>
+<body>
+<h2>Lista creata cu EJS</h2>
+<ol>
+   	 <% for (var i = 0; i < vector_simplu.length; i++) { %>
+   		 <li><%= vector_simplu[i] %></li>
+   	 <% } %>      
+</ol>
+<h2>Tabel creat cu EJS</h2>
+
+<table id="flori">
+   	 <thead><tr><th>Nr</th><th>Nume</th><th>Culoare</th><th>Fire in buchet</th><th>Imagine</th></tr></thead>
+   	 <tbody>
+   		 <% for (var i = 0; i < vector_obiecte.length; i++) { %>
+   			 <tr>   <td><%= i+1 %></td>
+   			   <td><%= vector_obiecte[i].nume %></td>
+   			   <td><%= vector_obiecte[i].culoare %></td>   			   
+   			   <td><%= vector_obiecte[i].nr_fire_buchet %></td>
+   			   <td><img src="<%= vector_obiecte[i].imagine %>" alt="nu are poza"/></td>  </tr>
+   		 <% } %>
+   	 </tbody></table>
+
+</body>
+</html>

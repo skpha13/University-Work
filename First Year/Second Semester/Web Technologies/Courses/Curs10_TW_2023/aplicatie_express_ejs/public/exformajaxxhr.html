@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="us">
+<head>
+	<meta charset="utf-8">
+	<title>Forms, ajax, jQuery</title>
+	
+	
+	
+   <script  type="text/javascript">
+
+ window.onload=function () { 
+ 
+ var forma=document.getElementById("testform");
+ 
+ forma.onsubmit= function (event){
+
+ event.preventDefault();  
+ 
+var data = new FormData(forma);//datele din forma 
+ var params = new URLSearchParams(data);
+//alert(params);
+alert(data);
+var xhr = new XMLHttpRequest(); 
+xhr.open('POST', forma.action, true);
+
+xhr.onreadystatechange = function(){
+if (xhr.readyState == 4){
+if (xhr.status == 200) 
+                   {document.getElementById("info").innerHTML=xhr.responseText;}
+                   else alert("error");
+                         }
+}
+xhr.send(params);
+ 
+}
+
+}
+
+</script>
+</head>
+<body>
+
+
+<form id="testform" method="post" action="http://localhost:8020/post">
+ 
+<p> <label>Nume:</label> <input type="text" name="name"> </p>
+<p> <label> Varsta:</label><input type="text" name="age"></p>
+<p> <label>Localitate:</label> <select name="city"></p>
+   <option value="Bucuresti" >Bucuresti</option>
+   <option value="Timisoara" selected>Timisoara</option>
+   </select>
+
+<p><button type="submit" id="buton"> Trimite </button> </p>
+</form>
+
+<article id="info">
+
+
+</article>
+
+</body>
+</html>

@@ -1,0 +1,35 @@
+[
+	{       
+		"nume":"Georgescu",
+		"prenume":"Ion"
+	},
+	{
+		"nume":"Alexandrescu",
+		"prenume":"Gogu"
+	},	
+	{
+		"nume":"Andreescu",
+		"prenume":"Andreea"
+	},
+	{
+		"nume":"Georgescu",
+		"prenume":"Monica"
+	},
+	{
+		"nume":"Andreescu",
+		"prenume":"Costel"
+	},
+	{
+		"nume":"Costache",
+		"prenume":"Costel"
+	},
+	{
+		"nume":"Alexandrescu",
+		"prenume":"Monica"
+	},
+	{
+		"nume":"Georgescu",
+		"prenume":"Costel"
+	}
+	
+]

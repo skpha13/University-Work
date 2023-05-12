@@ -1,0 +1,42 @@
+<head>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script> 
+<script>
+$(document).ready(function(){
+   
+$("#testform").submit(function (event){
+
+var dataform = $("#testform").serialize();
+
+$.ajax({
+   type: "POST",
+   url:"http://localhost:8080/action",
+   data: dataform,
+   success: function (data, textStatus){ 
+   			  $("#info").html(data);},
+   error:  function (data, statusCode){
+                                     alert( statusCode);}
+  }); 
+  event.preventDefault(); 	
+ });
+ }); 
+</script>
+</head>
+<body>
+
+<form id="testform" action="http://localhost:8080/action" method="post">
+  
+<label>Nume:</label>
+  <input type="text" name="name"><br>
+ <label> Varsta:</label>
+ <input type="text" name="age"><br>
+  <label>Localitate:</label> 
+ <select name="city">
+    <option value="Bucuresti" selected>Bucuresti</option>
+    <option value="Timisoara" selected>Timisoara</option>  
+ </select><br>
+
+<button type="submit" id="buton"> Trimite </button>
+</form>
+<p id="info"></p>
+</body>
+</html>

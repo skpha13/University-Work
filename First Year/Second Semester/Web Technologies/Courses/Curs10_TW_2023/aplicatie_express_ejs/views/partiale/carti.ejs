@@ -1,0 +1,14 @@
+
+<article id="info">
+<h1>Cartile mele</h1>
+<% for(i=0;i<carti.length ;i++) {%>
+<div>
+<h2>Titlul: <%= carti[i].titlu %></h2>
+<p>Autorul: <%= carti[i].autor %></p>
+<p>Descriere: <%= carti[i].descriere %></p>
+<p>Pret: <%= carti[i].pret %></p>
+<img src="<%= carti[i].poza %>" alt="o poza">
+</div>
+<% } %>
+</article>
+
