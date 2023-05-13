@@ -47,3 +47,72 @@ insert all
     into ROL(rol_id, nume, descriere, importanta) VALUES (115,'Fundal','Doar va aparea pe fundalul filmului pentru a popula scena cu oameni',4.5)
 select 'worked' from dual;
 
+insert all
+    into ACTOR(actor_id, nume, prenume, data_nastere, salariu) VALUES (10, 'Smith', 'John', '13/05/1980', 5000)
+    into ACTOR(actor_id, nume, prenume, data_nastere, salariu) VALUES (11, 'Doe', 'Jane', '20/08/1990', 6000)
+    into ACTOR(actor_id, nume, prenume, data_nastere, salariu) VALUES (12, 'Garcia', 'Maria', '15/04/1985', 4500)
+    into ACTOR(actor_id, nume, prenume, data_nastere, salariu) VALUES (13, 'Kim', 'Soo', '01/10/1995', 5500)
+    into ACTOR(actor_id, nume, prenume, data_nastere, salariu) VALUES (14, 'Wang', 'Lei', '22/07/1988', 7000)
+    into ACTOR(actor_id, nume, prenume, data_nastere, salariu) VALUES (15, 'Singh', 'Rajesh', '10/12/1992', 4800)
+    into ACTOR(actor_id, nume, prenume, data_nastere, salariu) VALUES (16, 'Lee', 'Ji-hye', '28/02/1987', 6500)
+    into ACTOR(actor_id, nume, prenume, data_nastere, salariu) VALUES (17, 'Baker', 'William', '18/09/1983', 5200)
+    into ACTOR(actor_id, nume, prenume, data_nastere, salariu) VALUES (18, 'Khan', 'Aamir', '14/03/1965', 9000)
+    into ACTOR(actor_id, nume, prenume, data_nastere, salariu) VALUES (19, 'Santos', 'Pedro', '05/01/1998', 4000)
+select 'worked' from dual;
+
+insert all
+    into FILM(film_id, director_id, denumire, nota, data_aparitie) VALUES (1, 100001, 'The Shawshank Redemption', 9.3, '14/09/1994')
+    into FILM(film_id, director_id, denumire, nota, data_aparitie) VALUES (2, 100002, 'The Godfather', 9.2, '24/03/1972')
+    into FILM(film_id, director_id, denumire, nota, data_aparitie) VALUES (3, 100003, 'The Dark Knight', 9.0, '14/07/2008')
+    into FILM(film_id, director_id, denumire, nota, data_aparitie) VALUES (4, 100003, 'Schindler''s List', 8.9, '30/11/1993') -- 2 '' pentru a avea doar unul
+    into FILM(film_id, director_id, denumire, nota, data_aparitie) VALUES (5, 100003, 'The Lord of the Rings: The Return of the King', 8.9, '17/12/2003')
+    into FILM(film_id, director_id, denumire, nota, data_aparitie) VALUES (6, 100001, 'Pulp Fiction', 8.9, '21/05/1994')
+    into FILM(film_id, director_id, denumire, nota, data_aparitie) VALUES (7, 100004, 'The Good, the Bad and the Ugly', 8.8, '23/12/1966')
+    into FILM(film_id, director_id, denumire, nota, data_aparitie) VALUES (8, 100005, 'Fight Club', 8.8, '15/10/1999')
+    into FILM(film_id, director_id, denumire, nota, data_aparitie) VALUES (9, 100004, 'Forrest Gump', 8.8, '06/07/1994')
+    into FILM(film_id, director_id, denumire, nota, data_aparitie) VALUES (10, 100002, 'Inception', 8.7, '13/07/2010')
+select 'worked' from dual;
+
+insert all
+    into SERIAL(serial_id, denumire, nota, data_aparitie) VALUES (1, 'Breaking Bad', 9.5, '20/01/2008')
+    into SERIAL(serial_id, denumire, nota, data_aparitie) VALUES (2, 'Game of Thrones', 9.3, '17/04/2011')
+    into SERIAL(serial_id, denumire, nota, data_aparitie) VALUES (3, 'The Office', 8.9, '24/03/2005')
+    into SERIAL(serial_id, denumire, nota, data_aparitie) VALUES (4, 'Stranger Things', 8.8, '15/07/2016')
+    into SERIAL(serial_id, denumire, nota, data_aparitie) VALUES (5, 'Narcos', 8.6, '28/08/2015')
+select 'worked' from dual;
+
+insert all
+    into EPISOD(episod_id, serial_id, denumire, numar, durata) VALUES (1,1,'Pilot',1,58)
+    into EPISOD(episod_id, serial_id, denumire, numar, durata) VALUES (2,1,'Cat''s in the bag...',2,48)
+    into EPISOD(episod_id, serial_id, denumire, numar, durata) VALUES (3,1,'...And the Bag''s in the river',3,47)
+    into EPISOD(episod_id, serial_id, denumire, numar, durata) VALUES (4,2,'Winter Is Coming',1,60)
+    into EPISOD(episod_id, serial_id, denumire, numar, durata) VALUES (5,2,'The Kingsroad',2,56)
+    into EPISOD(episod_id, serial_id, denumire, numar, durata) VALUES (6,2,'Lord Snow',3,58)
+    into EPISOD(episod_id, serial_id, denumire, numar, durata) VALUES (7,2,'Cripples, Bastards, and Broken Things',4,54)
+    into EPISOD(episod_id, serial_id, denumire, numar, durata) VALUES (8,2,'The Wolf and the Lion',5,55)
+    into EPISOD(episod_id, serial_id, denumire, numar, durata) VALUES (9,3,'Pilot',1,22)
+    into EPISOD(episod_id, serial_id, denumire, numar, durata) VALUES (10,3,'Diversity Day',2,23)
+    into EPISOD(episod_id, serial_id, denumire, numar, durata) VALUES (11,4,'Chapter One: The Vanishing of Will Byers',1,48)
+    into EPISOD(episod_id, serial_id, denumire, numar, durata) VALUES (12,4,'Chapter Two: The Weirdo on Maple Street',2,55)
+    into EPISOD(episod_id, serial_id, denumire, numar, durata) VALUES (13,4,'Chapter Three: Holly, Jolly',3,51)
+    into EPISOD(episod_id, serial_id, denumire, numar, durata) VALUES (14,4,'Chapter Four: The Body',4,58)
+    into EPISOD(episod_id, serial_id, denumire, numar, durata) VALUES (15,5,'Descenso',1,57)
+    into EPISOD(episod_id, serial_id, denumire, numar, durata) VALUES (16,5,'The Sword of Simón Bolivar',2,50)
+    into EPISOD(episod_id, serial_id, denumire, numar, durata) VALUES (17,5,'The Men of Always',3,46)
+select 'worked' from dual;
+
+-- secventa nu merge cu insert all, da aceeasi valoare
+insert into SUBSCRIPTIE_SERIAL(subscriptie_serial_id, serial_id, subscriptie_id) VALUES (INCREMENTARE_SERIAL.nextval,1,78477);
+insert into SUBSCRIPTIE_SERIAL(subscriptie_serial_id, serial_id, subscriptie_id) VALUES (INCREMENTARE_SERIAL.nextval,2,67933);
+insert into SUBSCRIPTIE_SERIAL(subscriptie_serial_id, serial_id, subscriptie_id) VALUES (INCREMENTARE_SERIAL.nextval,2,78477);
+insert into SUBSCRIPTIE_SERIAL(subscriptie_serial_id, serial_id, subscriptie_id) VALUES (INCREMENTARE_SERIAL.nextval,3,55245);
+insert into SUBSCRIPTIE_SERIAL(subscriptie_serial_id, serial_id, subscriptie_id) VALUES (INCREMENTARE_SERIAL.nextval,3,39959);
+insert into SUBSCRIPTIE_SERIAL(subscriptie_serial_id, serial_id, subscriptie_id) VALUES (INCREMENTARE_SERIAL.nextval,3,94030);
+insert into SUBSCRIPTIE_SERIAL(subscriptie_serial_id, serial_id, subscriptie_id) VALUES (INCREMENTARE_SERIAL.nextval,3,67933);
+insert into SUBSCRIPTIE_SERIAL(subscriptie_serial_id, serial_id, subscriptie_id) VALUES (INCREMENTARE_SERIAL.nextval,3,78477);
+insert into SUBSCRIPTIE_SERIAL(subscriptie_serial_id, serial_id, subscriptie_id) VALUES (INCREMENTARE_SERIAL.nextval,4,67933);
+insert into SUBSCRIPTIE_SERIAL(subscriptie_serial_id, serial_id, subscriptie_id) VALUES (INCREMENTARE_SERIAL.nextval,4,78477);
+insert into SUBSCRIPTIE_SERIAL(subscriptie_serial_id, serial_id, subscriptie_id) VALUES (INCREMENTARE_SERIAL.nextval,5,94030);
+insert into SUBSCRIPTIE_SERIAL(subscriptie_serial_id, serial_id, subscriptie_id) VALUES (INCREMENTARE_SERIAL.nextval,5,67933);
+insert into SUBSCRIPTIE_SERIAL(subscriptie_serial_id, serial_id, subscriptie_id) VALUES (INCREMENTARE_SERIAL.nextval,5,78477);
+
