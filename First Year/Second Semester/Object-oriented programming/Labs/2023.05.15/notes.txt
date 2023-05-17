@@ -1,0 +1,8 @@
+- friend (trebuie) la operator binar
+- citirea merge si cu downcasting, ca sa nu mai faci interfata
+- Bar b3(*b2), creeza alta adresa pentru meniul singleton, ceea ce nu e bine
+	- Bar(const Bar&) = delete, pentru a opri asta
+	- if(b2!= NULL) delete b nu e bine ca dupa nu mai poate apela nicio instanta 
+		deci facem contor pentru a vedea de cate ori s a apelat instanta
+
+! intrebare: template cu clase meniu
