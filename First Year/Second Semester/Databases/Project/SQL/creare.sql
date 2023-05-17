@@ -140,20 +140,27 @@ minvalue 0
 maxvalue 10000
 nocycle;
 
+/*drop table ACTOR;
+drop table DIRECTOR;
+drop table EPISOD;
+drop table FILM;
+drop table PLATA;
+drop table ROL;
+drop table ROL_JUCAT;
+drop table SERIAL;
+drop table SERIAL_ACTOR;
+drop table SUBSCRIPTIE;
+drop table SUBSCRIPTIE_FILM;
+drop table SUBSCRIPTIE_SERIAL;
+drop table UTILIZATOR;
+
+drop sequence incrementare_rol_jucat;
+drop sequence INCREMENTARE_ACTOR;
+drop sequence INCREMENTARE_FILM;
+drop sequence incrementare_serial;*/
+
+
 commit;
-
-select datediff(month,getdate(), DATA_EXP )
-from PLATA
-where PLATA_ID in (
-    select PLATA_ID
-    from UTILIZATOR
-    where SUBSCRIPTIE_ID = (
-            select SUBSCRIPTIE_ID
-            from SUBSCRIPTIE
-            where TIP = lower('standard')
-        )
-    );
-
 rollback;
 
 /*

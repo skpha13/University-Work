@@ -183,3 +183,7 @@ insert into ROL_JUCAT(film_rol_actor_id, film_id, rol_id, actor_id, timp_ecran) 
 insert into ROL_JUCAT(film_rol_actor_id, film_id, rol_id, actor_id, timp_ecran) VALUES (INCREMENTARE_ROL_JUCAT.nextval,9,115,17,23);
 insert into ROL_JUCAT(film_rol_actor_id, film_id, rol_id, actor_id, timp_ecran) VALUES (INCREMENTARE_ROL_JUCAT.nextval,9,115,13,44);
 insert into ROL_JUCAT(film_rol_actor_id, film_id, rol_id, actor_id, timp_ecran) VALUES (INCREMENTARE_ROL_JUCAT.nextval,10,111,19,123);
+
+insert into FILM(film_id, director_id, denumire, nota, data_aparitie) VALUES (11, 100002, 'Top Gun: Maverick', NULL, '23/11/2021');
+insert into FILM(film_id, director_id, denumire, nota, data_aparitie) VALUES (12, 100003, 'Avengers: Endgame', NULL, '23/11/2021');
+commit;

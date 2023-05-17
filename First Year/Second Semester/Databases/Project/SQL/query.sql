@@ -15,6 +15,7 @@ where DATA_EXP in ( select min(plt.DATA_EXP)
 
 -- numele celui care plateste, utilizatorii care au cea mai ieftina subsciptie, si caruia ii
 -- expira cardul cat mai curand
+-- subcerere nesincronizata in clauza from, bloc de cerere with
 select NUME || ' ' || PRENUME Nume
 from PLATA
 where DATA_EXP in ( select min(plt.DATA_EXP)
@@ -29,9 +30,9 @@ where DATA_EXP in ( select min(plt.DATA_EXP)
                                             join UTILIZATOR u on p.PLATA_ID = u.PLATA_ID
                                             join sub on u.SUBSCRIPTIE_ID = sub.SUBSCRIPTIE_ID));
 
--- cine plateste subscriptie ultimate (subcereri nesincronizate in care intervin cel putin 3 tabele)
--- si in cat timp ii expira cardul
-select datediff(month,getdate(), DATA_EXP )
+-- Numele intreg al persoanelor care platesc subscriptie Ultimate si au numele inceapd cu Ho si se termina in d
+-- (subcereri sincronizate in care intervin cel putin 3 tabele, 2 functii pe string uri una pe date)
+select concat(concat(nume,' '),prenume) , round((data_exp - sysdate)) as days
 from PLATA
 where PLATA_ID in (
     select PLATA_ID
@@ -41,9 +42,10 @@ where PLATA_ID in (
             from SUBSCRIPTIE
             where TIP = lower('standard')
         )
-    );
+    ) and NUME like 'Ho%d';
 
 -- directorul cu cea mai mare medie a notelor filmelor
+-- ma gandesc daca sa o pastrez
 select NUME
 from DIRECTOR
 where DIRECTOR_ID in (with average as (
@@ -68,7 +70,9 @@ join FILM F on SF.FILM_ID = F.FILM_ID
 group by SF.SUBSCRIPTIE_ID
 having count(*) >= 4;*/
 
---pretul si numele subscriptiilor care au cel putin 4 filme
+-- pretul si numele subscriptiilor care au cel putin 4 filme
+-- grupari de date cu subcereri nesincronizate in care intervin cel putin 3 tabele, functii grup, filtrare
+-- la nivel de grupuri (in cadrul aceleiasi cereri)
 select TIP, COST
 from SUBSCRIPTIE
 where SUBSCRIPTIE_ID in (select SF.SUBSCRIPTIE_ID
@@ -78,3 +82,13 @@ where SUBSCRIPTIE_ID in (select SF.SUBSCRIPTIE_ID
                         group by SF.SUBSCRIPTIE_ID
                         having count(*) >= 4);
 
+-- sa se afiseze numele, nota, daca a aparut in 1944 si daca este recomandat pentru fiecare film (recomandat <=> nota > 5)
+-- nvl, decode, case
+select denumire, nvl(nota,1) as nota, decode(to_char(DATA_APARITIE,'YYYY'),'1994','A aparut in 1944','Nu a aparut in 1944'),
+case
+    when nvl(nota,1) > 5 then 'Recomandat'
+    else 'Nerecomandat'
+end as Recomandat
+from FILM;
+
+-- 13 suprimare si updatare
