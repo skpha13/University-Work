@@ -92,3 +92,36 @@ end as Recomandat
 from FILM;
 
 -- 13 suprimare si updatare
+select *
+from FILM;
+-- schimbare filmelor cu nota null in nota 10
+update FILM
+set NOTA = 10
+where denumire in (select DENUMIRE
+                   from FILM
+                    where nota is null);
+
+select * from DIRECTOR;
+-- stergerea directorului cu cea mai mica nota
+delete from DIRECTOR
+where NOTA in (select min(nota)
+               from DIRECTOR);
+
+/*select max(NUMAR)
+from EPISOD
+group by SERIAL_ID
+having sum(DURATA) = (select max(sum(DURATA))
+                    from EPISOD
+                    group by SERIAL_ID);*/
+
+-- stergearea ultimului episod care apartine serialului cu cea mai mare durata,
+delete from EPISOD
+where NUMAR in (select max(NUMAR)
+                from EPISOD
+                group by SERIAL_ID
+                having sum(DURATA) = (select max(sum(DURATA))
+                                    from EPISOD
+                                    group by SERIAL_ID));
+
+select *
+from EPISOD;

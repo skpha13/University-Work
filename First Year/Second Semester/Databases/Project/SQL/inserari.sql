@@ -186,4 +186,6 @@ insert into ROL_JUCAT(film_rol_actor_id, film_id, rol_id, actor_id, timp_ecran) 
 
 insert into FILM(film_id, director_id, denumire, nota, data_aparitie) VALUES (11, 100002, 'Top Gun: Maverick', NULL, '23/11/2021');
 insert into FILM(film_id, director_id, denumire, nota, data_aparitie) VALUES (12, 100003, 'Avengers: Endgame', NULL, '23/11/2021');
+
+insert into DIRECTOR(director_id, nume, prenume, data_nastere, nota) VALUES (100006,'William','Anderson','10/05/1990',5);
 commit;
