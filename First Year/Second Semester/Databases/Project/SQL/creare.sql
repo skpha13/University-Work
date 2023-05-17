@@ -142,6 +142,18 @@ nocycle;
 
 commit;
 
+select datediff(month,getdate(), DATA_EXP )
+from PLATA
+where PLATA_ID in (
+    select PLATA_ID
+    from UTILIZATOR
+    where SUBSCRIPTIE_ID = (
+            select SUBSCRIPTIE_ID
+            from SUBSCRIPTIE
+            where TIP = lower('standard')
+        )
+    );
+
 rollback;
 
 /*

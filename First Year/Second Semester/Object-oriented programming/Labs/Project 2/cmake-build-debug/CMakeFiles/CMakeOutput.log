@@ -1,16 +1,16 @@
 The system is: Windows - 10.0.22621 - AMD64
 Compiling the C compiler identification source file "CMakeCCompilerId.c" succeeded.
-Compiler: C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.34.31933/bin/Hostx64/x64/cl.exe 
+Compiler: C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.36.32532/bin/Hostx64/x64/cl.exe 
 Build flags: 
 Id flags:  
 
 The output was:
 0
-Microsoft (R) C/C++ Optimizing Compiler Version 19.34.31937 for x64
+Microsoft (R) C/C++ Optimizing Compiler Version 19.36.32532 for x64
 Copyright (C) Microsoft Corporation.  All rights reserved.
 
 CMakeCCompilerId.c
-Microsoft (R) Incremental Linker Version 14.34.31937.0
+Microsoft (R) Incremental Linker Version 14.36.32532.0
 Copyright (C) Microsoft Corporation.  All rights reserved.
 
 /out:CMakeCCompilerId.exe 
@@ -24,17 +24,17 @@ Compilation of the C compiler identification source "CMakeCCompilerId.c" produce
 The C compiler identification is MSVC, found in "D:/UNI CODE/Univeristy-Work/First Year/Second Semester/Object-oriented programming/Labs/Project 2/cmake-build-debug/CMakeFiles/3.24.2/CompilerIdC/CMakeCCompilerId.exe"
 
 Compiling the CXX compiler identification source file "CMakeCXXCompilerId.cpp" succeeded.
-Compiler: C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.34.31933/bin/Hostx64/x64/cl.exe 
+Compiler: C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.36.32532/bin/Hostx64/x64/cl.exe 
 Build flags: 
 Id flags:  
 
 The output was:
 0
-Microsoft (R) C/C++ Optimizing Compiler Version 19.34.31937 for x64
+Microsoft (R) C/C++ Optimizing Compiler Version 19.36.32532 for x64
 Copyright (C) Microsoft Corporation.  All rights reserved.
 
 CMakeCXXCompilerId.cpp
-Microsoft (R) Incremental Linker Version 14.34.31937.0
+Microsoft (R) Incremental Linker Version 14.36.32532.0
 Copyright (C) Microsoft Corporation.  All rights reserved.
 
 /out:CMakeCXXCompilerId.exe 
@@ -50,16 +50,16 @@ The CXX compiler identification is MSVC, found in "D:/UNI CODE/Univeristy-Work/F
 Detecting C compiler ABI info compiled with the following output:
 Change Dir: D:/UNI CODE/Univeristy-Work/First Year/Second Semester/Object-oriented programming/Labs/Project 2/cmake-build-debug/CMakeFiles/CMakeTmp
 
-Run Build Command(s):C:/Program Files/JetBrains/CLion 2022.3.2/bin/ninja/win/x64/ninja.exe cmTC_411b3 && [1/2] Building C object CMakeFiles\cmTC_411b3.dir\CMakeCCompilerABI.c.obj
-[2/2] Linking C executable cmTC_411b3.exe
+Run Build Command(s):C:/Program Files/JetBrains/CLion 2022.3.2/bin/ninja/win/x64/ninja.exe cmTC_e54fc && [1/2] Building C object CMakeFiles\cmTC_e54fc.dir\CMakeCCompilerABI.c.obj
+[2/2] Linking C executable cmTC_e54fc.exe
 
 
 
 Detecting CXX compiler ABI info compiled with the following output:
 Change Dir: D:/UNI CODE/Univeristy-Work/First Year/Second Semester/Object-oriented programming/Labs/Project 2/cmake-build-debug/CMakeFiles/CMakeTmp
 
-Run Build Command(s):C:/Program Files/JetBrains/CLion 2022.3.2/bin/ninja/win/x64/ninja.exe cmTC_9a591 && [1/2] Building CXX object CMakeFiles\cmTC_9a591.dir\CMakeCXXCompilerABI.cpp.obj
-[2/2] Linking CXX executable cmTC_9a591.exe
+Run Build Command(s):C:/Program Files/JetBrains/CLion 2022.3.2/bin/ninja/win/x64/ninja.exe cmTC_ce066 && [1/2] Building CXX object CMakeFiles\cmTC_ce066.dir\CMakeCXXCompilerABI.cpp.obj
+[2/2] Linking CXX executable cmTC_ce066.exe
 
 
 
