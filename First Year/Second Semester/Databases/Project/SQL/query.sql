@@ -123,5 +123,4 @@ where NUMAR in (select max(NUMAR)
                                     from EPISOD
                                     group by SERIAL_ID));
 
-select *
-from EPISOD;
+-- creare vizualizare complexa

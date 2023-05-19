@@ -50,16 +50,16 @@ The CXX compiler identification is MSVC, found in "D:/UNI CODE/Univeristy-Work/F
 Detecting C compiler ABI info compiled with the following output:
 Change Dir: D:/UNI CODE/Univeristy-Work/First Year/Second Semester/Object-oriented programming/Labs/Project 2/cmake-build-debug/CMakeFiles/CMakeTmp
 
-Run Build Command(s):C:/Program Files/JetBrains/CLion 2022.3.2/bin/ninja/win/x64/ninja.exe cmTC_e54fc && [1/2] Building C object CMakeFiles\cmTC_e54fc.dir\CMakeCCompilerABI.c.obj
-[2/2] Linking C executable cmTC_e54fc.exe
+Run Build Command(s):C:/Program Files/JetBrains/CLion 2022.3.2/bin/ninja/win/x64/ninja.exe cmTC_88257 && [1/2] Building C object CMakeFiles\cmTC_88257.dir\CMakeCCompilerABI.c.obj
+[2/2] Linking C executable cmTC_88257.exe
 
 
 
 Detecting CXX compiler ABI info compiled with the following output:
 Change Dir: D:/UNI CODE/Univeristy-Work/First Year/Second Semester/Object-oriented programming/Labs/Project 2/cmake-build-debug/CMakeFiles/CMakeTmp
 
-Run Build Command(s):C:/Program Files/JetBrains/CLion 2022.3.2/bin/ninja/win/x64/ninja.exe cmTC_ce066 && [1/2] Building CXX object CMakeFiles\cmTC_ce066.dir\CMakeCXXCompilerABI.cpp.obj
-[2/2] Linking CXX executable cmTC_ce066.exe
+Run Build Command(s):C:/Program Files/JetBrains/CLion 2022.3.2/bin/ninja/win/x64/ninja.exe cmTC_e1a59 && [1/2] Building CXX object CMakeFiles\cmTC_e1a59.dir\CMakeCXXCompilerABI.cpp.obj
+[2/2] Linking CXX executable cmTC_e1a59.exe
 
 
 
