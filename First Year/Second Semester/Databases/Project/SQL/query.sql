@@ -1,74 +1,18 @@
-/*
+-- numele celui care plateste, utilizatorii care au cea mai ieftina subsciptie, si caruia ii
+-- expira cardul cat mai curand
+-- bloc de cerere with
 select NUME || ' ' || PRENUME Nume
 from PLATA
 where DATA_EXP in ( select min(plt.DATA_EXP)
                     from PLATA plt
                     where plt.PLATA_ID in (with sub as (select s.SUBSCRIPTIE_ID
-                                                        from SUBSCRIPTIE s
-                                                        where s.COST = (select min(cost)
-                                                                        from SUBSCRIPTIE))
-                                            select p.PLATA_ID
-                                            from PLATA p
-                                            join UTILIZATOR u on p.PLATA_ID = u.PLATA_ID
-                                            join sub on u.SUBSCRIPTIE_ID = sub.SUBSCRIPTIE_ID));
-*/
-
--- numele celui care plateste, utilizatorii care au cea mai ieftina subsciptie, si caruia ii
--- expira cardul cat mai curand
--- subcerere nesincronizata in clauza from, bloc de cerere with
-select NUME || ' ' || PRENUME Nume
-from PLATA
-where DATA_EXP in ( select min(plt.DATA_EXP)
-                    from PLATA plt
-                    where plt.PLATA_ID in (with sub as (select SUBSCRIPTIE_ID
-                                                        from (select s.SUBSCRIPTIE_ID
                                                               from SUBSCRIPTIE s
                                                               where s.COST in (select min(cost)
-                                                                               from SUBSCRIPTIE)))
+                                                                               from SUBSCRIPTIE))
                                             select p.PLATA_ID
                                             from PLATA p
                                             join UTILIZATOR u on p.PLATA_ID = u.PLATA_ID
                                             join sub on u.SUBSCRIPTIE_ID = sub.SUBSCRIPTIE_ID));
-
--- Numele intreg al persoanelor care platesc subscriptie Ultimate si au numele inceapd cu Ho si se termina in d
--- (subcereri sincronizate in care intervin cel putin 3 tabele, 2 functii pe string uri una pe date)
-select concat(concat(nume,' '),prenume) , round((data_exp - sysdate)) as days
-from PLATA
-where PLATA_ID in (
-    select PLATA_ID
-    from UTILIZATOR
-    where SUBSCRIPTIE_ID = (
-            select SUBSCRIPTIE_ID
-            from SUBSCRIPTIE
-            where TIP = lower('standard')
-        )
-    ) and NUME like 'Ho%d';
-
--- directorul cu cea mai mare medie a notelor filmelor
--- ma gandesc daca sa o pastrez
-select NUME
-from DIRECTOR
-where DIRECTOR_ID in (with average as (
-                        select avg(nota) n, DIRECTOR_ID id
-                        from FILM
-                        group by DIRECTOR_ID)
-                    select id
-                    from average
-                    where average.n = (select max(n)
-                                        from (select avg(nota) n
-                                              from FILM
-                                              group by DIRECTOR_ID)));
-
-/*select *
-from SUBSCRIPTIE_FILM
-order by SUBSCRIPTIE_ID;
-
-select SF.SUBSCRIPTIE_ID
-from SUBSCRIPTIE
-join SUBSCRIPTIE_FILM SF on SUBSCRIPTIE.SUBSCRIPTIE_ID = SF.SUBSCRIPTIE_ID
-join FILM F on SF.FILM_ID = F.FILM_ID
-group by SF.SUBSCRIPTIE_ID
-having count(*) >= 4;*/
 
 -- pretul si numele subscriptiilor care au cel putin 4 filme
 -- grupari de date cu subcereri nesincronizate in care intervin cel putin 3 tabele, functii grup, filtrare
@@ -82,6 +26,21 @@ where SUBSCRIPTIE_ID in (select SF.SUBSCRIPTIE_ID
                         group by SF.SUBSCRIPTIE_ID
                         having count(*) >= 4);
 
+-- numele celor care fac plata utilizatorilor care sunt abonati la o subscriptie
+-- si cate zile mai sunt pana cand le expira cardul si cate zile sunt pana le expira abonamentul
+-- subcereri sincronizate cu 3 tabele, subcere nesincronizata in clauza from
+-- 2 functii pe string uri, 2 pe date
+select concat(concat(initcap(p.nume),' '),initcap(p.prenume)) "NUME", round((data_exp-sysdate)) as Days, Zile.exp
+from plata p, ( select P1.PLATA_ID cod, U2.DATA_EXP_SUB exp
+                from UTILIZATOR U2, PLATA P1
+                where P1.PLATA_ID = U2.PLATA_ID) Zile
+where plata_id in ( select plata_id
+                    from utilizator u
+                    where p.plata_id = u.plata_id and exists ( select 1
+                                                               from subscriptie s
+                                                               where u.subscriptie_id = s.subscriptie_id))
+and Zile.cod = p.PLATA_ID;
+
 -- sa se afiseze numele, nota, daca a aparut in 1944 si daca este recomandat pentru fiecare film (recomandat <=> nota > 5)
 -- nvl, decode, case
 select denumire, nvl(nota,1) as nota, decode(to_char(DATA_APARITIE,'YYYY'),'1994','A aparut in 1944','Nu a aparut in 1944'),
@@ -90,6 +49,21 @@ case
     else 'Nerecomandat'
 end as Recomandat
 from FILM;
+
+-- pentru fiecare subscriptie sa se afiseze ce serial are si cat dureaza
+-- ordonate dupa durata si numele subscriptiei descrescator
+with durataEpisod as (
+    select S2.SERIAL_ID, S2.DENUMIRE nume, sum(DURATA) suma
+    from EPISOD
+    join SERIAL S2 on S2.SERIAL_ID = EPISOD.SERIAL_ID
+    group by S2.SERIAL_ID, S2.DENUMIRE
+)
+select sub.tip, de.nume ,de.suma
+from SUBSCRIPTIE sub
+join SUBSCRIPTIE_SERIAL ss on ss.SUBSCRIPTIE_ID = sub.SUBSCRIPTIE_ID
+join durataEpisod de on de.SERIAL_ID = ss.SERIAL_ID
+order by sub.tip desc, de.suma desc;
+
 
 -- 13 suprimare si updatare
 select *
@@ -123,4 +97,3 @@ where NUMAR in (select max(NUMAR)
                                     from EPISOD
                                     group by SERIAL_ID));
 
--- creare vizualizare complexa
