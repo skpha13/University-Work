@@ -188,4 +188,7 @@ insert into FILM(film_id, director_id, denumire, nota, data_aparitie) VALUES (11
 insert into FILM(film_id, director_id, denumire, nota, data_aparitie) VALUES (12, 100003, 'Avengers: Endgame', NULL, '23/11/2021');
 
 insert into DIRECTOR(director_id, nume, prenume, data_nastere, nota) VALUES (100006,'William','Anderson','10/05/1990',5);
+
+insert into SUBSCRIPTIE_film(subscriptie_film_id, film_id, subscriptie_id) VALUES (INCREMENTARE_film.nextval,11,78477);
+insert into SUBSCRIPTIE_film(subscriptie_film_id, film_id, subscriptie_id) VALUES (INCREMENTARE_film.nextval,12,78477);
 commit;

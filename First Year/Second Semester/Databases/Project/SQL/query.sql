@@ -89,3 +89,32 @@ where NUMAR in (select max(NUMAR)
                                     from EPISOD
                                     group by SERIAL_ID));
 
+-- primele 3 subscriptii care contin filmele cu cei mai buni directori(nota medie a directorilor)
+-- analiza top n
+with tabela as (
+    select SUBSCRIPTIE.tip nume, sum(DIRECTOR.nota)/count(*) val
+    from SUBSCRIPTIE_FILM
+    join FILM on SUBSCRIPTIE_FILM.FILM_ID = FILM.FILM_ID
+    join DIRECTOR on FILM.DIRECTOR_ID = DIRECTOR.DIRECTOR_ID
+    join SUBSCRIPTIE on SUBSCRIPTIE_FILM.SUBSCRIPTIE_ID = SUBSCRIPTIE.SUBSCRIPTIE_ID
+    group by SUBSCRIPTIE.tip
+    order by 2 desc
+)
+select nume
+from tabela
+where ROWNUM <= 3;
+
+-- aflati poreclele utilizatorilor care se pot uita la toate filmele care au nota 10
+-- division
+select PORECLA
+from UTILIZATOR
+where SUBSCRIPTIE_ID in (select DISTINCT SUBSCRIPTIE_ID
+                        from SUBSCRIPTIE_FILM s1
+                        where not exists((select FILM_ID
+                                          from FILM
+                                          where NOTA = 10)
+                                    MINUS
+                                        (select f.FILM_ID
+                                         from SUBSCRIPTIE_FILM s2, film f
+                                         where f.FILM_ID = s2.FILM_ID
+                                         and s2.SUBSCRIPTIE_ID = s1.SUBSCRIPTIE_ID)));
