@@ -66,8 +66,7 @@ order by sub.tip desc, de.suma desc;
 
 
 -- 13 suprimare si updatare
-select *
-from FILM;
+
 -- schimbare filmelor cu nota null in nota 10
 update FILM
 set NOTA = 10
@@ -80,13 +79,6 @@ select * from DIRECTOR;
 delete from DIRECTOR
 where NOTA in (select min(nota)
                from DIRECTOR);
-
-/*select max(NUMAR)
-from EPISOD
-group by SERIAL_ID
-having sum(DURATA) = (select max(sum(DURATA))
-                    from EPISOD
-                    group by SERIAL_ID);*/
 
 -- stergearea ultimului episod care apartine serialului cu cea mai mare durata,
 delete from EPISOD
