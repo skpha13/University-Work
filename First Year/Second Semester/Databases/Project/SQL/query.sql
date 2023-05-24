@@ -6,9 +6,9 @@ from PLATA
 where DATA_EXP in ( select min(plt.DATA_EXP)
                     from PLATA plt
                     where plt.PLATA_ID in (with sub as (select s.SUBSCRIPTIE_ID
-                                                              from SUBSCRIPTIE s
-                                                              where s.COST in (select min(cost)
-                                                                               from SUBSCRIPTIE))
+                                                        from SUBSCRIPTIE s
+                                                        where s.COST in (select min(cost)
+                                                                         from SUBSCRIPTIE))
                                             select p.PLATA_ID
                                             from PLATA p
                                             join UTILIZATOR u on p.PLATA_ID = u.PLATA_ID
@@ -80,7 +80,7 @@ delete from DIRECTOR
 where NOTA in (select min(nota)
                from DIRECTOR);
 
--- stergearea ultimului episod care apartine serialului cu cea mai mare durata,
+-- stergearea ultimului episod care apartine serialului cu cea mai mare durata
 delete from EPISOD
 where NUMAR in (select max(NUMAR)
                 from EPISOD
@@ -92,7 +92,7 @@ where NUMAR in (select max(NUMAR)
 -- primele 3 subscriptii care contin filmele cu cei mai buni directori(nota medie a directorilor)
 -- analiza top n
 with tabela as (
-    select SUBSCRIPTIE.tip nume, sum(DIRECTOR.nota)/count(*) val
+    select SUBSCRIPTIE.tip nume, avg(DIRECTOR.nota) val
     from SUBSCRIPTIE_FILM
     join FILM on SUBSCRIPTIE_FILM.FILM_ID = FILM.FILM_ID
     join DIRECTOR on FILM.DIRECTOR_ID = DIRECTOR.DIRECTOR_ID
@@ -118,3 +118,6 @@ where SUBSCRIPTIE_ID in (select DISTINCT SUBSCRIPTIE_ID
                                          from SUBSCRIPTIE_FILM s2, film f
                                          where f.FILM_ID = s2.FILM_ID
                                          and s2.SUBSCRIPTIE_ID = s1.SUBSCRIPTIE_ID)));
+
+-- se cer actorii, numele serialelor asociate si subsciptiile acestor seriale, inclusiv actorii care nu joaca in niciun serial
+-- outer join pe 4 tabele

@@ -191,4 +191,3 @@ insert into DIRECTOR(director_id, nume, prenume, data_nastere, nota) VALUES (100
 
 insert into SUBSCRIPTIE_film(subscriptie_film_id, film_id, subscriptie_id) VALUES (INCREMENTARE_film.nextval,11,78477);
 insert into SUBSCRIPTIE_film(subscriptie_film_id, film_id, subscriptie_id) VALUES (INCREMENTARE_film.nextval,12,78477);
-commit;
