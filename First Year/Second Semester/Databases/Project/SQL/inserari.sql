@@ -191,3 +191,7 @@ insert into DIRECTOR(director_id, nume, prenume, data_nastere, nota) VALUES (100
 
 insert into SUBSCRIPTIE_film(subscriptie_film_id, film_id, subscriptie_id) VALUES (INCREMENTARE_film.nextval,11,78477);
 insert into SUBSCRIPTIE_film(subscriptie_film_id, film_id, subscriptie_id) VALUES (INCREMENTARE_film.nextval,12,78477);
+
+insert into ACTOR(actor_id, nume, prenume, data_nastere, salariu) VALUES (20, 'James', 'Bond', '13/02/2000', 7500);
+
+insert into SERIAL(serial_id, denumire, nota, data_aparitie) VALUES (6, 'Rick and Morty', 7.4, '12/11/2016');

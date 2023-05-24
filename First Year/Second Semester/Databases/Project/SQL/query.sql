@@ -119,5 +119,12 @@ where SUBSCRIPTIE_ID in (select DISTINCT SUBSCRIPTIE_ID
                                          where f.FILM_ID = s2.FILM_ID
                                          and s2.SUBSCRIPTIE_ID = s1.SUBSCRIPTIE_ID)));
 
--- se cer actorii, numele serialelor asociate si subsciptiile acestor seriale, inclusiv actorii care nu joaca in niciun serial
+-- se cer actorii, numele serialelor asociate si subsciptiile acestor seriale, incluzand chiar si actorii care nu joaca in niciun serial
 -- outer join pe 4 tabele
+select NUME, DENUMIRE, (select TIP
+                        from SUBSCRIPTIE s3
+                        where s3.SUBSCRIPTIE_ID = SS.SUBSCRIPTIE_ID) as "Nume Subscriptie"
+from ACTOR
+left outer join SERIAL_ACTOR on ACTOR.ACTOR_ID = SERIAL_ACTOR.ACTOR_ID
+left outer join SERIAL S2 on SERIAL_ACTOR.SERIAL_ID = S2.SERIAL_ID
+left outer join SUBSCRIPTIE_SERIAL SS on S2.SERIAL_ID = SS.SERIAL_ID;
