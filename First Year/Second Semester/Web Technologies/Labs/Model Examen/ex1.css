@@ -1,0 +1,70 @@
+body {
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    height: 50vh;
+    width: 250px;
+    border-style: dotted;
+    border-color: blue;
+    display: grid;
+    grid-template-rows: repeat(9,1fr);
+    grid-template-columns: repeat(9,1fr);
+}
+
+.container div {
+    border: black double 8px;
+    font-size: 15px;
+}
+
+#div1 {
+    grid-row-start: 4;
+    grid-row-end: 7;
+    grid-column-start: 1;
+    grid-column-end: 4;
+}
+
+#div2 {
+    grid-row-start: 1;
+    grid-row-end: 4;
+    grid-column-start: 4;
+    grid-column-end: 7;
+}
+
+#div3 {
+    grid-row-start: 4;
+    grid-row-end: 7;
+    grid-column-start: 4;
+    grid-column-end: 7;
+}
+
+#div4 {
+    grid-row-start: 7;
+    grid-row-end: 10;
+    grid-column-start: 4;
+    grid-column-end: 7;
+}
+
+#div5 {
+    grid-row-start: 1;
+    grid-row-end: 10;
+    grid-column-start: 7;
+    grid-column-end: 10;
+}
+
+@media (max-width: 600px) and (max-height: 500px) {
+    .container {
+        display: initial;
+    }
+
+    .container div:hover {
+        animation-name: anim;
+        animation-duration: 3s;
+    }
+
+    @keyframes anim {
+        0% {font-size: 15px;}
+        100% {font-size: 30px;}
+    }
+}

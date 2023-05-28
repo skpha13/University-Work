@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta charset="Unicode">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    
+    <style>
+        .c1 {
+            color: red;
+        }
+        .c2 {
+            color: purple;
+        }
+        .c3 {
+            color: green;
+        }
+        .c4 {
+            color: yellow;
+        }
+        .c5 {
+            color: blue;
+        }
+    </style>
+
+    <script>
+        window.onload = () => {
+            const date = new Date();
+            let min = date.getMinutes();
+            
+            var n = Math.max(10,min);
+
+            let arr = ["c1","c2","c3","c4","c5"];
+            for(let i=0;i<10;i++) {
+                const p = document.createElement('p');
+                p.innerText = "Adrian-Lucian";
+                p.classList = arr[Math.floor(Math.random() * arr.length)];
+                document.getElementsByTagName('body')[0].appendChild(p);
+            }
+
+            const para = document.getElementsByTagName('p');
+            for(let i=0;i<para.length;i++) {
+                para[i].addEventListener('click', (event) => {
+                    event.stopPropagation();
+                    const clasa = para[i].classList[0];
+                    var para2 = document.querySelectorAll('.'+clasa);
+                    for(let j=para2.length-1;j>=0;j--) {
+                        para2[j].remove();
+                    }
+                });
+            }
+
+            document.getElementsByTagName('html')[0].addEventListener('click', (event) => {
+                alert(`Coordonata: ${event.clientY}`);
+            });
+        }
+    </script>
+
+    <body>
+
+    </body>
+</html>

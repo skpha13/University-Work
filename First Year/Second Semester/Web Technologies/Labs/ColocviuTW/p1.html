@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta charset="Unicode">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+
+    <style>
+        .box {
+            height: 200px;
+            /* 2/3 = 0,66 */
+            width: 66vw;
+            border: solid black 5px;
+            display: grid;
+            grid-template-rows: repeat(9,1fr);
+            grid-template-columns: repeat(10,1fr);
+        }
+        .box div {
+            border: green double 6px
+        }
+        #div1 {
+            grid-row-start: 1;
+            grid-row-end: 4;
+            grid-column-start: 1;
+            grid-column-end: 11;
+        }
+        #div2 {
+            grid-row-start: 4;
+            grid-row-end: 7;
+            grid-column-start: 1;
+            grid-column-end: 6;
+        }
+        #div3 {
+            grid-row-start: 4;
+            grid-row-end: 7;
+            grid-column-start: 6;
+            grid-column-end: 11;
+
+            animation: schimbare 3s infinite;
+        }
+        @keyframes schimbare {
+            0% {border-color: green;}
+            50% {border-color: red;}
+            100% {border-color: green;}
+        }
+        #div4 {
+            grid-row-start: 7;
+            grid-row-end: 10;
+            grid-column-start: 3;
+            grid-column-end: 9;
+        }
+
+        @media (max-width: 700px) and (min-width: 250px) {
+            #div3,#div4 {
+                visibility: hidden;
+            }
+            #div1 {
+                grid-row-start: 1;
+                grid-row-end: 10;
+                grid-column-start: 1;
+                grid-column-end: 6;
+            }
+            #div2 {
+                grid-row-start: 1;
+                grid-row-end: 10;
+                grid-column-start: 6;
+                grid-column-end: 11;
+            }
+        }
+    </style>
+
+    <body>
+        <div class="box">
+            <div id="div1">div1</div>            
+            <div id="div2">div2</div>            
+            <div id="div3">div3</div>            
+            <div id="div4">div4</div>            
+        </div>
+    </body>
+</html>

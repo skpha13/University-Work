@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta charset="Unicode">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+
+    <script>
+        window.onload = () => {
+            if(document.getElementsByTagName('input')[0].checked == true) {
+                document.getElementsByTagName('input')[0].checked = false;
+            }
+            const color = document.body.style.backgroundColor;
+            var ok = false;
+            document.addEventListener('keydown', (event) => {
+                if(ok == false) {
+                    ok = true;
+                    let timeInterval = setInterval(() => {
+                        
+                        const randomColor = Math.floor(Math.random()*16777215).toString(16);
+                        document.body.style.backgroundColor = "#" + randomColor;
+                    }, 3000);
+                    document.getElementsByTagName('input')[0].addEventListener('click', (event) => {
+                        if(document.getElementsByTagName('input')[0].checked == true) {
+                            document.body.style.backgroundColor = color;
+                            clearInterval(timeInterval);
+                        }
+                    });
+                }
+            });
+            
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: aqua;
+        }
+    </style>
+
+    <body>
+        <label><input type="checkbox">stil</label>
+    </body>
+</html>

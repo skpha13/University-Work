@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta charset="Unicode">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+
+    <style>
+        @media (min-width: 800px) {
+            #container {
+                margin: auto;
+                width: 500px;
+                height: 500px;
+                background-color: green;
+                border: solid black 1px;
+                display: flex;
+                flex-direction: row;
+            }
+            .patrat {
+                height: auto;
+                width: 20%;
+            }
+            .patrat:nth-child(even) {
+                border: solid red 5px;
+            }
+            .patrat:nth-child(odd) {
+                border: solid blue 5px;
+            }
+        }
+
+        @media (max-width: 800px) {
+            #container {
+                width: 50vw;
+                width: 500px;
+                height: 500px;
+                display: flex;
+                flex-direction: column;
+            }
+            .patrat {
+                width: 100%;
+                height: 20%;
+            }
+
+            body {
+                background-color: white;
+                animation: bg 2s infinite;
+            }
+            @keyframes bg {
+                0% {background-color: white;}
+                50% {background-color: yellow;}
+                100% {background-color: white;}
+            }
+        }
+    </style>
+
+    <body>
+        <div id="container">
+            <div class="patrat"></div>
+            <div class="patrat"></div>
+            <div class="patrat"></div>
+            <div class="patrat"></div>
+            <div class="patrat"></div>
+        </div>
+    </body>
+</html>

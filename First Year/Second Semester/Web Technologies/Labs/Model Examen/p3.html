@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Model subiect</title>
+<script>
+window.onload=function(){
+
+  var input=document.getElementById("numar");
+
+  if(localStorage.getItem("nr")){
+    input.value=localStorage.getItem("nr");
+  }
+
+  //var input=document.getElementById("numar");
+  var par=document.getElementsByTagName("p");
+  var nr=par.length;
+  var v=[];
+  window.onkeydown=function(event){
+    if(event.key =="s"){
+      	window.onkeydown=null;
+       var c=setInterval(function(){
+          var x;
+          for(let p of par){
+            if (p.innerHTML.split(" ").length > parseInt(input.value)){
+              x=p;
+              break;
+            }
+          }
+          if(x){
+            document.body.removeChild(x);   //parinte.removeChild(copil)
+          }
+          else {
+            clearInterval(c);
+       //     alert(nr-par.length);
+            localStorage.setItem("nr",nr-par.length);
+          }
+        },2000);
+      }   
+     }
+    }
+
+  
+</script>
+</head>
+<body>
+
+<input id="numar" type="text">
+
+<p>Azi este o zi cu soare</p>
+<p>Azi este o zi calduroasa</p>
+<p>Azi este marti</p>
+<p>Azi este o zi cu soare</p>
+<p>Azi este o zi foarte calda</p>
+<p>Azi este o zi cu soare</p>
+<p>Azi este o zi</p>
+<p>Azi</p>
+<p>O zi cu soare</p>
+<p>Azi este o zi cu soare</p>
+
+</body>
+</html>

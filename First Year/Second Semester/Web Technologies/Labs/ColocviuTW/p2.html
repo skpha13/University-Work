@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta charset="Unicode">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+
+    <script>
+        window.onload = () => {
+            var n = Math.floor(Math.random() * (17-12 + 1)) + 12;
+            var contor = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+
+            var l = document.createElement('ul');
+            for(let i=1;i<=n;i++) {
+                const item = document.createElement('li');
+                item.innerText = "Item " + i;
+
+                l.appendChild(item);
+            }
+
+            var it = l.childNodes;
+            for(let i=0;i<it.length;i++) {
+                it[i].addEventListener('click', (event) => {
+                    if(contor[i] == 0) {
+                        contor[i]++;
+                        var s = document.createElement('span');
+                        s.innerText = " " + contor[i];
+                        s.style.color = 'purple';
+                        it[i].innerText = "Item " + (i+1);
+                        it[i].appendChild(s);
+                    }
+                    else {
+                        contor[i]++;
+                        var sp = it[i].childNodes[1];
+                        sp.innerText = " " + contor[i];
+                    }
+                    event.stopPropagation();
+                });
+            }
+
+            document.getElementsByTagName('body')[0].appendChild(l);
+
+            var stergere =  document.getElementsByTagName('ul')[0];
+            stergere.addEventListener('click', (event) => {
+                var itm = stergere.childNodes;
+                for(let i=itm.length-1;i>=0;i--) {
+                    if(contor[i] != 0 )
+                        itm[i].remove();
+                }
+            });
+        }
+    </script>
+
+    <body>
+        
+    </body>
+</html>

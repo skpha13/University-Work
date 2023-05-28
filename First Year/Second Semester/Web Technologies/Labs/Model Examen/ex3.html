@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+
+<html lang="ro">
+    <head>
+        <meta charset="Unicode">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Prob3</title>
+    </head>
+
+    <script>
+        window.onload = () => {
+            if(localStorage.getItem('number')) document.getElementById('numar').value = localStorage.getItem('number');
+            var number = 0;
+            document.addEventListener('keydown', (event) => {
+                var val = 0;
+                if(event.key === 's') {
+                    val = document.getElementById('numar').value;
+
+                    setInterval(() => {
+                        const p = document.getElementsByTagName('p');
+                        for(let i=0;i<p.length;i++) {
+                            const arr = p[i].innerText.split(" ");
+                            if(arr.length > val) {
+                                p[i].parentNode.removeChild(p[i]);
+                                number++;
+                                localStorage.setItem('number',number);
+                                console.log(localStorage.getItem('number'));
+                                break;
+                            }
+                        }
+                    }, 1000);
+                }
+
+            });
+        }
+    </script>
+
+    <body>
+        <input id="numar" type="text">
+
+        <p>Azi este o zi cu soare</p>
+        <p>Azi este o zi calduroasa</p>
+        <p>Azi este marti</p>
+        <p>Azi este o zi cu soare</p>
+        <p>Azi este o zi foarte calda</p>
+        <p>Azi este o zi cu soare</p>
+        <p>Azi este o zi</p>
+        <p>Azi</p>
+        <p>O zi cu soare</p>
+        <p>Azi este o zi cu soare</p>
+    </body>
+
+    
+</html>
