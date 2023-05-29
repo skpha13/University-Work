@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
+#include <typeinfo>
 
 using namespace std;
 
@@ -12,7 +13,8 @@ public:
 
 class Produs:public Interfata {
 protected:
-    int pret,cantitate,ID;
+    int pret,cantitate;
+    const int ID;
     static int contorID;
 public:
     Produs();
@@ -41,6 +43,7 @@ istream& Produs::read(istream &in) {
 }
 
 ostream& Produs::print(std::ostream &out) const {
+    out<<"ID: "<<ID<<endl;
     out<<"Pret: "<<pret;
     out<<"\nCantitate: "<<cantitate;
     out<<"\n";
