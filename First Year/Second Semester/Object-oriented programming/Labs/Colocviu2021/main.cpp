@@ -17,11 +17,8 @@ protected:
     int dimensiune;
 public:
     Jucarie();
-    Jucarie(string,int);
-    Jucarie(const Jucarie& obj);
     virtual ~Jucarie();
 
-    Jucarie& operator=(const Jucarie& obj);
     friend istream& operator>>(istream& in, Jucarie& obj);
     friend ostream& operator<<(ostream& out,const Jucarie& obj);
     istream& citire(istream& in);
@@ -61,34 +58,13 @@ Jucarie::~Jucarie() {
     dimensiune = 0;
 }
 
-Jucarie::Jucarie(std::string denumire, int dimensiune) {
-    this->denumire = denumire;
-    this->dimensiune = dimensiune;
-}
-
-Jucarie::Jucarie(const Jucarie &obj) {
-    this->denumire = obj.denumire;
-    this->dimensiune = obj.dimensiune;
-}
-
-Jucarie &Jucarie::operator=(const Jucarie &obj) {
-    if(this != & obj){
-        this->denumire = obj.denumire;
-        this->dimensiune = obj.dimensiune;
-    }
-    return *this;
-}
-
 class Clasice:public Jucarie {
 protected:
     string material, culoare;
 public:
     Clasice();
-    Clasice(string,int ,string,string);
-    Clasice(const Clasice& obj);
-    virtual ~Clasice();
+    ~Clasice();
 
-    Clasice& operator=(const Clasice& obj);
     istream& citire(istream& in);
     ostream& afisare(ostream& out) const;
 };
@@ -101,25 +77,6 @@ Clasice::Clasice():Jucarie() {
 Clasice::~Clasice() {
     material = "";
     culoare = "";
-}
-
-Clasice::Clasice(string denumire, int dimensiune, std::string material, string culoare):Jucarie(denumire, dimensiune) {
-    this->material = material;
-    this->culoare = culoare;
-}
-
-Clasice::Clasice(const Clasice &obj):Jucarie(obj) {
-    this->material = obj.material;
-    this->culoare = obj.culoare;
-}
-
-Clasice &Clasice::operator=(const Clasice &obj) {
-    if(this != & obj){
-        Jucarie::operator=(obj);
-        this->material = obj.material;
-        this->culoare = obj.culoare;
-    }
-    return *this;
 }
 
 istream& Clasice::citire(std::istream &in) {
@@ -143,11 +100,8 @@ protected:
     string abilitate;
 public:
     Educative();
-    Educative(string, int, string);
-    Educative(const Educative& obj);
-    virtual ~Educative();
+    ~Educative();
 
-    Educative& operator=(const Educative& obj);
     istream& citire(istream& in);
     ostream& afisare(ostream& out) const;
 };
@@ -158,22 +112,6 @@ Educative::Educative():Jucarie() {
 
 Educative::~Educative() {
     abilitate = "";
-}
-
-Educative::Educative(string denumire, int dimensiune, std::string abilitate):Jucarie(denumire, dimensiune) {
-    this->abilitate = abilitate;
-}
-
-Educative::Educative(const Educative &obj):Jucarie(obj) {
-    this->abilitate = obj.abilitate;
-}
-
-Educative &Educative::operator=(const Educative &obj) {
-    if(this != & obj){
-        Jucarie::operator=(obj);
-        this->abilitate = obj.abilitate;
-    }
-    return *this;
 }
 
 istream& Educative::citire(istream &in) {
@@ -194,11 +132,8 @@ protected:
     int nrBat;
 public:
     Electronice();
-    Electronice(string, int, int);
-    Electronice(const Electronice& obj);
-    virtual ~Electronice();
+    ~Electronice();
 
-    Electronice& operator=(const Electronice& obj);
     istream& citire(istream& in);
     ostream& afisare(ostream& out) const;
 };
@@ -209,22 +144,6 @@ Electronice::Electronice():Jucarie() {
 
 Electronice::~Electronice() {
     nrBat = 0;
-}
-
-Electronice::Electronice(string denumire, int dimensiune, int nrBat):Jucarie(denumire,dimensiune) {
-    this->nrBat = nrBat;
-}
-
-Electronice::Electronice(const Electronice &obj):Jucarie(obj) {
-    this->nrBat = obj.nrBat;
-}
-
-Electronice &Electronice::operator=(const Electronice &obj) {
-    if(this != & obj){
-        Jucarie::operator=(obj);
-        this->nrBat = obj.nrBat;
-    }
-    return *this;
 }
 
 istream& Electronice::citire(std::istream &in) {
@@ -245,11 +164,8 @@ private:
     string brand, model;
 public:
     Moderne();
-    Moderne(string,int,string,string);
-    Moderne(const Moderne& obj);
-    virtual ~Moderne();
+    ~Moderne();
 
-    Moderne& operator=(const Moderne& obj);
     istream& citire(istream& in);
     ostream& afisare(ostream& out) const;
 };
@@ -264,29 +180,6 @@ Moderne::Moderne():Jucarie(),Educative(),Electronice() {
 Moderne::~Moderne() {
     brand = "";
     model = "";
-}
-
-Moderne::Moderne(string denumire, int dimensiune, string brand, string model):Jucarie(denumire, dimensiune),
-                                                                                Educative(denumire,dimensiune,"generala"),
-                                                                                Electronice(denumire,dimensiune,1)
-{
-    this->brand = brand;
-    this->model = model;
-}
-
-Moderne::Moderne(const Moderne &obj):Jucarie(obj),Educative(obj),Electronice(obj) {
-    this->brand = obj.brand;
-    this->model = obj.model;
-}
-
-Moderne &Moderne::operator=(const Moderne &obj) {
-    if(this != & obj){
-        Educative::operator=(obj);
-        Electronice::operator=(obj);
-        this->brand = obj.brand;
-        this->model = obj.model;
-    }
-    return *this;
 }
 
 istream& Moderne::citire(std::istream &in) {
@@ -315,15 +208,16 @@ protected:
     vector<Jucarie*> jucarii;
 public:
     Copil();
-    Copil(string,string,string,int,int,vector<Jucarie*>);
-    Copil(const Copil& obj);
     virtual ~Copil();
-
+    Copil(const Copil& obj);
     Copil& operator=(const Copil& obj);
+
     istream& citire(istream& in);
     ostream& afisare(ostream& out) const;
     friend istream& operator>>(istream& in, Copil& obj);
     friend ostream & operator<<(ostream & out,const Copil& obj);
+
+    Copil operator+(int nr);
 
     const string& getNume() const {return this->nume;}
     const int getVarsta() const {return this->varsta;}
@@ -333,6 +227,52 @@ public:
 };
 
 int Copil::contorID = 0;
+
+Copil::Copil(const Copil& obj):ID(contorID++) {
+    this->nume = obj.nume;
+    this->prenume = obj.prenume;
+    this->adresa = obj.adresa;
+    this->varsta = obj.varsta;
+    this->nrFapteBune = obj.nrFapteBune;
+    this->jucarii = obj.jucarii;
+}
+
+Copil& Copil::operator=(const Copil &obj) {
+    if(this != &obj) {
+        this->nume = obj.nume;
+        this->prenume = obj.prenume;
+        this->adresa = obj.adresa;
+        this->varsta = obj.varsta;
+        this->nrFapteBune = obj.nrFapteBune;
+        if (!this->jucarii.empty()) this->jucarii.clear();
+        this->jucarii = obj.jucarii;
+    }
+    return *this;
+}
+
+Copil Copil::operator+(int nr) {
+    this->nrFapteBune += nr;
+    for(int i=0;i<nr;i++) {
+        cout<<"1. Clasica\n";
+        cout<<"2. Educativa\n";
+        cout<<"3. Electronica\n";
+        cout<<"4. Moderna\n";
+
+        Jucarie* j;
+        int temp;
+        cout<<"Introdu optiune\n";
+        cin>>temp;
+        cin.get();
+        if(temp == 1) j = new Clasice();
+        if(temp == 2) j = new Educative();
+        if(temp == 3) j = new Electronice();
+        if(temp == 4) j = new Moderne();
+
+        cin>>*j;
+        jucarii.push_back(j);
+    }
+    return *this;
+}
 
 Copil::Copil():ID(contorID++) {
     nume = "";
@@ -349,40 +289,11 @@ Copil::~Copil() {
     adresa = "";
     varsta = 0;
     nrFapteBune = 0;
-    if(!jucarii.empty()) jucarii.clear();
-}
-
-Copil::Copil(std::string nume, std::string prenume, std::string adresa, int varsta, int nrFapteBune, vector<Jucarie*> jucarii):ID(contorID++) {
-    this->nume = nume;
-    this->prenume = prenume;
-    this->adresa = adresa;
-    this->varsta = varsta;
-    this->nrFapteBune = nrFapteBune;
-    if(!jucarii.empty()) jucarii.clear();
-    this->jucarii = jucarii;
-}
-
-Copil::Copil(const Copil &obj):ID(contorID++) {
-    this->nume = obj.nume;
-    this->prenume = obj.prenume;
-    this->adresa = obj.adresa;
-    this->varsta = obj.varsta;
-    this->nrFapteBune = obj.nrFapteBune;
-    if(!this->jucarii.empty()) this->jucarii.clear();
-    this->jucarii = obj.jucarii;
-}
-
-Copil& Copil::operator=(const Copil &obj) {
-    if(this != &obj) {
-        this->nume = obj.nume;
-        this->prenume = obj.prenume;
-        this->adresa = obj.adresa;
-        this->varsta = obj.varsta;
-        this->nrFapteBune = obj.nrFapteBune;
-        if(!this->jucarii.empty()) this->jucarii.clear();
-        this->jucarii = obj.jucarii;
+    if(!jucarii.empty()) {
+        for(int i=0;i<jucarii.size();i++)
+            if(jucarii[i]) delete jucarii[i];
+        jucarii.clear();
     }
-    return *this;
 }
 
 istream& operator>>(istream& in, Copil& obj) {
@@ -449,11 +360,8 @@ private:
     int nrDulciuri;
 public:
     Cuminte();
-    Cuminte(string,string,string,int,vector<Jucarie*>,int);
-    Cuminte(const Cuminte& obj);
-    virtual ~Cuminte();
+    ~Cuminte();
 
-    Cuminte& operator=(const Cuminte& obj);
     istream& citire(istream& in);
     ostream& afisare(ostream& out) const;
 };
@@ -464,22 +372,6 @@ Cuminte::Cuminte():Copil() {
 
 Cuminte::~Cuminte() {
     nrDulciuri = 0;
-}
-
-Cuminte::Cuminte(std::string nume, std::string prenume, std::string adresa, int varsta, vector<Jucarie*> jucarii, int nrDulciuri):Copil(nume,prenume,adresa,varsta,10,jucarii) {
-    this->nrDulciuri = nrDulciuri;
-}
-
-Cuminte::Cuminte(const Cuminte &obj):Copil(obj) {
-    this->nrDulciuri = nrDulciuri;
-}
-
-Cuminte& Cuminte::operator=(const Cuminte &obj) {
-    if(this != &obj) {
-        Copil::operator=(obj);
-        this->nrDulciuri = nrDulciuri;
-    }
-    return *this;
 }
 
 istream& Cuminte::citire(std::istream &in) {
@@ -534,11 +426,8 @@ private:
     int nrCarbuni;
 public:
     Neastamparat();
-    Neastamparat(string,string,string,int,int,vector<Jucarie*>,int);
-    Neastamparat(const Neastamparat& obj);
-    virtual ~Neastamparat();
+    ~Neastamparat();
 
-    Neastamparat& operator=(const Neastamparat& obj);
     istream& citire(istream& in);
     ostream& afisare(ostream& out) const;
 };
@@ -549,22 +438,6 @@ Neastamparat::Neastamparat():Copil() {
 
 Neastamparat::~Neastamparat() {
     nrCarbuni = 0;
-}
-
-Neastamparat::Neastamparat(std::string nume, std::string prenume, std::string adresa, int varsta, int nrFapteBune,vector<Jucarie*> jucarii, int nrCarbuni):Copil(nume,prenume,adresa,varsta,nrFapteBune,jucarii) {
-    this->nrCarbuni = nrCarbuni;
-}
-
-Neastamparat::Neastamparat(const Neastamparat &obj):Copil(obj) {
-    this->nrCarbuni = nrCarbuni;
-}
-
-Neastamparat& Neastamparat::operator=(const Neastamparat &obj) {
-    if(this != &obj) {
-        Copil::operator=(obj);
-        this->nrCarbuni = nrCarbuni;
-    }
-    return *this;
 }
 
 istream& Neastamparat::citire(std::istream &in) {
@@ -675,6 +548,19 @@ void Menu::engine() {
                 break;
             }
             case 5: {
+                for(int i=0;i<copii.size();i++)
+                    cout<<"Copil: "<<i<<"\n"<<*copii[i]<<endl;
+
+                int index;
+                cout<<"Index: \n";
+                cin>>index;
+                if(index >= 0 && index < copii.size()) {
+                    int nr;
+                    cout<<"Nr fapte bune: \n";
+                    cin>>nr;
+                    *copii[index] = *copii[index] + nr;
+                }
+                this->display();
                 break;
             }
             case 6: {
@@ -695,7 +581,7 @@ void Menu::engine() {
                 cout<<ed<<" educative\n";
                 cout<<el<<" electronice\n";
                 cout<<m<<" moderne\n";
-
+                break;
             }
             default: cout<<"Nu e valida optinea\n";
         }
