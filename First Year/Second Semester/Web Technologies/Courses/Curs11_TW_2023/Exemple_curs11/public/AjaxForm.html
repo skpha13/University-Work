@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script>
+window.onload=function () {
+var forma=document.querySelector("form");
+	forma.onsubmit= function (event){
+						event.preventDefault();
+						var data = new FormData(forma); //clasa FormDaata preia datele din forma
+						var xhr = new XMLHttpRequest();
+						xhr.open('POST', forma.action, true);
+						xhr.onreadystatechange = function(){
+								if (xhr.readyState == 4 && xhr.status == 200)   
+                                                             //alert(xhr.responseText);
+                                                            document.body.innerHTML+=xhr.responseText;
+                                                                 
+                                                               
+                                                               };
+
+						xhr.send(data);
+							
+					};
+}
+</script>
+</head>
+
+<body>
+<form method="post" action="http://localhost:8080/ajax" >
+ Nume:  <input type="text" name="name">
+ Media: <input type="text" name="media">
+ <button type="submit" > Trimite </button> 
+</form>
+</body>
+</html>

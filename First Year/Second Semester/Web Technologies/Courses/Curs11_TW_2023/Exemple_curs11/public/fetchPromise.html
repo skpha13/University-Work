@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+
+ <style>
+ .imagine{
+   margin:5px;
+   width:200px;
+   border:2px solid red;
+ }
+ </style>
+
+    <script>
+
+window.onload = function(){
+
+var btn = document.querySelector("input");
+
+  btn.onclick = function(){
+
+     var nr=Math.floor(Math.random()*5+1);
+
+     var promisiune = fetch("http://localhost:3000/images/flower"+nr+"-300.jpg");
+
+      promisiune.then(
+      function(res){return res.blob();}
+      ,
+      function(eroare){alert("Eroare " + eroare)}
+    )
+.then(function(blob){
+  console.log(blob);
+  let img = document.createElement('img');
+  img.className = 'imagine';
+  document.querySelector("div").append(img);
+  img.src = URL.createObjectURL(blob);
+  img.alt="eroare";
+ })
+
+}
+}
+</script>
+  </head>
+  <body>
+      <input type="button" value="Fetch">
+      <div>
+      </div>
+
+  </body>
+</html>

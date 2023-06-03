@@ -1,0 +1,7 @@
+[	
+	{"picture": {"caption":"Picture 1", "source":"images/flower1-300.jpg"} },
+	{"picture": {"caption":"Picture 2", "source":"images/flower2-300.jpg"} }, 
+	{"picture": {"caption":"Picture 3", "source":"images/flower3-300.jpg"} }, 
+	{"picture": {"caption":"Picture 4", "source":"images/flower4-300.jpg"} }, 
+	{"picture": {"caption":"Picture 5", "source":"images/flower5-300.jpg"} }
+] 

@@ -1,0 +1,45 @@
+
+<!DOCTYPE html> 
+
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+
+	<title>Asinc vs sync</title>
+
+
+<script>
+window.onload=function() {
+  var httpRequest;
+  document.getElementById("ajaxButton").addEventListener('click', makeRequest);
+
+  function makeRequest() {
+    httpRequest = new XMLHttpRequest(); //creaza un obiect XMLHttpRequest
+
+    if (!httpRequest) {
+      alert('Giving up :( Cannot create an XMLHTTP instance');
+      return false;
+                               }
+    httpRequest.onreadystatechange = alertContents;
+    httpRequest.open('GET', 'http://localhost:3000/test.html');
+    httpRequest.send();
+    //alert("ceva");
+  }
+
+  function alertContents() {
+    if (httpRequest.readyState === 4) {
+      if (httpRequest.status === 200) {
+        alert(httpRequest.responseText); //continutul fis. test.html
+      } else {
+        alert('There was a problem with the request.');
+      }
+    }
+  }
+}
+</script>
+</head>
+<body>
+<button id="ajaxButton" type="button">Make a request</button>
+
+</body>
+</html>

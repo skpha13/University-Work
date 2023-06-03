@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="us">
+<head>
+	<meta charset="utf-8">
+	<title>Forms, ajax, jQuery</title>
+
+
+
+<script  type="text/javascript">
+
+ window.onload=function() {
+
+ var forma=document.getElementById("testform");
+
+ forma.onsubmit= function (event){
+
+ var dateleDinFormular = {nume:document.getElementById("nume").value, age:document.getElementById("varsta").value,city:document.getElementById("loc").value};
+ event.preventDefault();
+ var xhr = new XMLHttpRequest();
+ xhr.open('POST', forma.action, true);
+
+ xhr.onreadystatechange = function(){
+ if (xhr.readyState == 4){
+ if (xhr.status == 200)
+                   {document.getElementById("info").innerHTML=xhr.responseText;}
+                   else alert("error");
+                         }
+}
+xhr.setRequestHeader("Content-Type", "application/json")
+xhr.send(JSON.stringify(dateleDinFormular));
+
+}
+
+}
+
+</script>
+</head>
+<body>
+
+
+<form id="testform" method="post" action="http://localhost:3000/post">
+<p> <label>Nume:</label> <input id="nume" type="text" name="nume"> </p>
+<p> <label> Varsta:</label><input id="varsta" type="text" name="age"></p>
+<p> <label>Localitate:</label> <select id="loc" name="city"></p>
+   <option value="Bucuresti" >Bucuresti</option>
+   <option value="Timisoara" selected>Timisoara</option>
+   </select>
+
+<p><button type="submit" id="buton"> Trimite </button> </p>
+</form>
+
+<article id="info">
+
+
+</article>
+
+</body>
+</html>

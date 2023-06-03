@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<body>
+<script>
+window.onload=function()
+{
+var xhttpR = new XMLHttpRequest()
+    xhttpR.open('GET', 'test.xml', false);
+    xhttpR.onreadystatechange = function(){
+                               if (xhttpR.readyState == 4 && xhttpR.status == 200) 
+                                { 
+                                  var xmlDoc = xhttpR.responseXML;
+                                  alert("nr articole: "+xmlDoc.childNodes[0].childNodes.length);
+                                 }
+                                } 
+								
+    xhttpR.send();
+
+}
+
+</script>
+</body>
+</html>

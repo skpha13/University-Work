@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ro">
+	<head>
+		<meta charset="UTF-8"/>
+		<title>Model subiecte examen</title>
+		
+	
+	</head>
+	<body>
+	<h2>Model subiect</h2>
+	<article>
+	<h3>Exercitiul 1 (HTML+CSS: creare elemente, stilizare de baza, layout, tranzitie, animatie, media query)</h3>
+	<p>Scrieti un document HTML care  sa contina un element div cu id-ul "parinte"  si care sa aiba in interiorul sau (copii directi) alte 4 divuri. Scrieti cod CSS care sa rezolve cerintele:</p>
+<ul>
+<li> divul cu id-ul "parinte" sa aiba latimea de 3/4 din latimea paginii si inaltimea de jumatate din inaltimea ferestrei, border negru de 3px iar divurile din interiorul sau sa fie pozitionate pe 4 coloane, fiecare div avand latimea de 1/4 din latimea divului parinte, inaltimea egala cu jumatate din inaltimea divului parinte si border ales de voi. Divurile de pe pozitii pare sa aiba backgroundul portocaliu iar cele de pe pozitii impare background galben (se considera primul div ca fiind impar).
+</li>
+<li> cand aducem cursorul pe un div copil acesta sa isi schimbe backgroundul in rosu, treptat, in 2 secunde.</li>
+
+<li> pentru latimea ferestrei intre 400px si 700px divurile din interiorul divului parinte sa se afiseze cate 2 pe linie si sa nu mai aiba border.</li>
+</ul>
+
+</article>
+
+
+<article>
+<h3>Exercitiul 2 (JS: creare colectie dinamica, eveniment pe elementele colectiei, stopPropagare, adaugare/stergere/modificare clase, numar/culoare random)</h3>
+<p> Se considera un document HTML fara continut (nu contine alte elemente in interiorul body-ului). Scrieti cod JavaScript pentru a rezolva urmatoarele:</p>
+<ul>
+<li> la incarcarea paginii, se vor crea dinamic N elemente div care primesc stilizarea unei clase "patrat" (o definiti in CSS) unde N este un numar natural ales aleator intre 5 si 10. Clasa "patrat" atribuie un border, dimensiuni patratice divurilor generate si o culoare de background verde. 
+</li>
+<li> la fiecare click pe orice div cu clasa "patrat", acesta se va deplasa spre dreapta cu 10px. Daca se da click in fereastra (in afara divurilor), un div selectat random din cele N divuri create se va muta la pozitia click-ului.
+Click-ul pe un div nu trebuie sa declanseze actiunea click-ului din afara divurilor.
+</li>
+</ul>
+</article>
+
+<article>
+<h3>Exercitiul 3 (JS: inputuri, localStorage, setTimeout/setInterval, eveniment tastatura)</h3>
+<p> Scrieti un document HTML care sa contina un element input de tip text cu id-ul "culoare" si 10 butoane (element buton) cu textul "i" unde i=0,9. 
+Scrieti cod JavaScript pentru a rezolva:</p>
+<ul>
+<li>la incarcarea paginii, dupa introducerea in input a unui nume de culoare (presupuneti ca e valida), la prima apasare a unei taste cifra (0-9), la fiecare 3s cate un buton de pe o pozitie cu aceeasi paritate cu tasta apasata se va colora (backgroundul) in culoarea selectata; primul buton se considera par. La urmatoarea apasare a unei taste cifra se vor sterge toate butoanele care nu si-au schimbat culoarea.</li> 
+
+<li> la reincarcarea paginii, body-ul se va colora (backgroundul) in culoarea introdusa in input inainte de refresh.</li>.
+</ul>
+</article>
+
+<article>
+<h3>Exercitiul 4 (Node/Express) </h3>
+<p>Scrieti un document HTML care sa contina un formular cu un input de tip range (min=0, max=5) si un buton-submit. Se considera pe server vectorul de obiecte,
+<br>
+obiecte = [{nume:"agenda", greutate:"0.5"}, {nume:"telefon", greutate:"1"}, {nume:"rucsac", greutate:"2.3"}, {nume:"caiet", greutate:"0.8"},{nume:"carte", greutate:"1"}, {nume:"tobe", greutate:"4"}].
+</p>
+Scrieti aplicatia server <b>app.js</b> astfel incat la click pe butonul de submit, numarul selectat din inputul range se va trimite catre server si in pagina se va afisa lista obiectelor din vectorul de pe server care contin litera "t" si care au greutatea mai mica sau egala decat valoarea din range. 
+</article>
+
+
+	</body>
+</html>

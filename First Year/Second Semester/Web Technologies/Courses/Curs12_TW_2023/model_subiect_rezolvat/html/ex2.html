@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	<meta charset="UTF-8"/>
+	<title>Exercitiul 3</title>
+	<style>
+	
+	
+	.patrat{
+		 border:3px solid black;
+		 width:100px;
+		 height:100px;
+		 background-color:green;
+		 }
+		 
+        .stil{color:blue;}		 
+
+	</style>
+
+	<script>
+
+    function rndminmax(min, max) {
+     return Math.floor(Math.random() * (max - min)) + min; //nr random intre min si max
+}
+
+    window.onload = function(){
+
+    var n=rndminmax(5,10);
+    
+    for(var i=0;i<n;i++){
+    
+     let div=document.createElement("div");
+     document.body.appendChild(div);
+     
+     div.className="patrat"; //div.classList.add("patrat")
+     div.innerHTML="Div"+(i+1);
+     
+     div.style.position="relative";
+     div.style.marginBottom="3px";
+     div.style.left="0px";
+
+     div.onclick = function(event){
+	div.style.left= parseInt(div.style.left) + 10 + "px";
+	   	event.stopPropagation();														
+                            }
+
+     }
+   document.body.onclick=function(event){
+   	var p=rndminmax(0,n-1);
+   	var divuri=document.getElementsByClassName("patrat");
+   	divuri[p].style.position="absolute";
+   	divuri[p].style.left=event.clientX + "px";
+   	divuri[p].style.top=event.clientY + "px";
+  }
+}
+    </script>
+
+	</head>
+	<body>
+
+
+	</body>
+</html>

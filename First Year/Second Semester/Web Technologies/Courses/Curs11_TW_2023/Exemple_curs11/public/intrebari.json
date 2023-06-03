@@ -1,0 +1,104 @@
+{
+    "test": [
+      {
+       "question": "What's a cat?",
+       "answer": "An animal!",
+       "difficulty": 3
+      },
+      {
+        "question": "What's a dog?",
+        "answer": "An even better animal!",
+        "difficulty": 1
+      },
+      {
+        "question": "Which fish is the fastest fish?",
+        "answer": "Sailfish",
+        "difficulty": 3
+      },
+      {
+        "question": "Where was the Antikythera mechanism found?",
+        "answer": "Off the coast of Antikythera",
+        "difficulty": 3
+      },
+      {
+         "question": "Who first circumnavigated the earth?",
+         "answer": "Magellan",
+         "difficulty": 1
+      },
+      {
+        "question": "What does the acronym DNA stand for?",
+        "answer": "Deoxyribonucleic acid",
+        "difficulty": 2
+      },
+      {
+        "question": "Is Sweden a country?",
+        "answer": "Yes",
+        "difficulty": 1
+      },
+			{
+        "question": "What is Melissa’s favorite baby animal?",
+        "answer": "Cuttlefish",
+        "difficulty": 3
+      },
+      {
+        "question": "Is Australia a country or continent?",
+        "answer": "Both",
+        "difficulty": 1
+      },
+      {
+        "question": "Is 812393014421 divisible by 3?",
+        "answer": "Yes",
+        "difficulty": 2
+      },
+      {
+        "question": "What status code represents 'Page Not Found'?",
+        "answer": "404",
+        "difficulty": 1
+      },
+      {
+        "question": "Is a tomato a fruit or vegetable?",
+        "answer": "Fruit",
+        "difficulty": 1
+      },
+      {
+        "question": "How many nodes are in a complete binary tree of height N?",
+        "answer" : "(2^N)-1",
+        "difficulty": 3
+      },
+      {
+        "question": "In the description of biological cells, 'eukaryotes' are contrasted with these, which exist without a nucleus.",
+        "answer" : "Prokaryotes",
+        "difficulty": 2
+      },
+      {
+        "question": "In biology, what is considered the 'powerhouse' of the cell?",
+        "answer" : "Mitochondria",
+        "difficulty": 2
+      },
+      {
+        "question": "What does HTML stand for?",
+        "answer" : "Hyper-text Markup Language",
+        "difficulty": 1
+      },
+      {
+        "question": "Which WikiLeaks-aided former NSA contractor famously released classified military documents over the internet?",
+        "answer" : "Edward Snowden",
+        "difficulty": 3
+      },
+      {
+        "question": "In what year did Apple release the iPad?",
+        "answer" : "2010",
+        "difficulty": 2
+      },
+      {
+        "question": "What is the full name of the small furry mammal known more commonly as 'coati'?",
+        "answer" : "Coatimundi",
+        "difficulty": 2
+      },
+      {
+        "question": "What trivia gameshow famously answers questions in the form 'What is a ____'?",
+        "answer" : "Jeopardy",
+        "difficulty": 2
+      }
+    ]
+  }

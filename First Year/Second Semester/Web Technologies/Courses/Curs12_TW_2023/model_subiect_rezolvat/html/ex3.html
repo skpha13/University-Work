@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Carti</title>
+
+<style>
+
+button{background-color:grey;}
+
+</style>
+
+
+<script>
+
+window.onload = function()
+{
+
+   document.getElementById("culoare").onchange=function(){
+   localStorage.setItem("culoare",document.getElementById("culoare").value);
+  }
+  if(localStorage.getItem("culoare")){
+    document.body.style.backgroundColor=localStorage.getItem("culoare");
+  }
+
+  var nr=0;
+  var t;
+  
+  window.onkeydown = function(event) {
+    
+    var butoane = document.querySelectorAll("button");
+     if(event.key>="0" && event.key<="9"){ //Number.isInteger(parseInt(event.key))
+      nr++;
+      if(nr==1){
+        var start = parseInt(event.key) % 2;
+    //    var butoane = document.querySelectorAll("button");
+        t = setInterval(function() {
+          butoane[start].style.backgroundColor = document.getElementById("culoare").value;
+          start+=2;
+        }, 1000);
+
+      }
+      else{
+        //console.log(t);
+        clearInterval(t);
+        for(b of butoane) {
+        // alert(b.style.backgroundColor);
+         if(!b.style.backgroundColor){
+          document.body.removeChild(b);
+            }
+         }
+      }
+    }
+  }
+}
+
+
+</script>
+
+  </head>
+  <body>
+    <input type="text" id="culoare"/><br>
+    <button>0</button>
+    <button>1</button>
+    <button>2</button>
+    <button>3</button>
+    <button>4</button>
+    <button>5</button>
+    <button>6</button>
+    <button>7</button>
+    <button>8</button>
+    <button>9</button>
+
+  </body>
+</html>

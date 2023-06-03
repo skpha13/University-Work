@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+    <script>
+        window.onload=function(){
+
+                let p= new Promise(function(resolve, reject) {
+                        setTimeout(function(){
+                        var nota=Math.floor((Math.random()*10)+1);
+                        if(nota>=5)
+                        resolve("Bravo, ai promovat cu nota " + nota+ "!");//apelam functia de succes
+                        else
+                        reject(nota);//apelam functia de esec
+
+                    },2000);});
+                    console.log("Astept raspunsul");
+                    p.then(succes, esec).catch(function(err){console.log(err)});//daca primim o eroare o afisam
+            };
+
+
+        function succes(rez){//functia de succes
+            console.log(rez);
+        }
+        function esec(err){//functia de esec
+
+             throw new Error("Ai picat cu nota " + err + "!"); //aruncam o eroare care va fi prinsa de catch-ul promisiuniii
+
+            }
+
+
+
+
+
+    </script>
+</head>
+<body>
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Model subiect</title>
+
+</head>
+<body>
+<h2>Model examen</h2>
+<article>
+<h3> P1. (HTML/CSS: stilizare, layout, media query)</h3>
+<ul>
+<li> Creati un div cu clasa "container" (scrieti o regula css pentru aceasta clasa, astfel incat inaltimea sa fie jumatate din inaltimea ecranului, latimea de 250px si border albastru punctat) in care se vor gasi alte 5 divuri. </li>
+<li>Realizati folosind tehnica grid din CSS urmatorul mod de afisare al divurilor. Scrieti o regula css astfel incat divurile din interiorul unui element cu clasa "container" sa aiba border negru, dublu, de 8px si dimensiunea fontului de 15px.<br>
+<img src="layout.png" alt="layout">
+</li>
+<li>
+Scrieti un media query pentru latimea ferestrei sub 600px si inaltimea sub 500 px cu efectele:
+<ol> <li> divurile sa nu se mai afiseze in grid, ci in formatul default, unul sub altul, intinse pe toata latimea containerului </li>
+<li> cand aducem cursorul pe oricare din ele sa creasca treptat dimensiunea fontului (timp de 3 secunde)  la 30px.</li>
+</li>
+</ul>
+ </article>
+
+<article>
+ <h3>P2. (JS: creare colectie dinamica, eveniment pe elementele colectiei, stopPropagare, adaugare/stergere/modificare clase, numar/culoare random)</h3>
+
+La incarcarea paginii, se creeaza 10 divuri care primesc stilizarea unei clase CSS "dreptunghi". Clasa "dreptunghi" atribuie un border, o latime si inaltime divurilor generate, o culoare de background si face ca divurile sa fie pozitionate pe acelasi rand cu o distanta de 10px intre ele.
+La fiecare click pe orice div cu clasa “dreptunghi”, acesta va creste in inaltime (in jos) cu 10px. Daca se da click in fereastra, in afara divurilor, toate divurile revin la dimensiunea initiala.
+Click-ul pe un div nu trebuie sa declanseze actiunea click-ului din afara divurilor.
+</article>
+
+<article>
+ <h3>P3. (JS: inputuri, localStorage, setTimeout/setInterval, eveniment tastatura)</h3>
+
+ Presupunem ca in documentul HTML exista un input de tip text cu id-ul "numar" si 10 paragrafe ale caror continuturi sunt cuvinte separate prin spatii (ex: &lt;p &gt;examen la tehnici web &lt;/p &gt;). In inputul de  tip text se va scrie un numar intreg (fara validare, presupuneti ca e corect). La prima apasare a tastei "s" se preia numarul din inputul de tip text si se sterge din secunda in secunda cate un  paragraf care contine un numar de cuvinte mai mare strict decat numarul din input.
+ Dupa ce s-a terminat stergerea tuturor paragrafelor care indeplinesc conditia, numarul paragrafelor sterse va fi salvat in localStorage iar la urmatoarea reincarcare a paginii, ea va fi valoarea implicita a elementului input de tip text.
+</article>
+
+<article>
+<h3> P4. (Node/Express)</h3>
+
+Scrieti un document HTML care sa contina un formular cu un element select avand optiunile "mic", "mare", un grup de doua butoane radio avand etichetele "e capitala", "nu e capitala"  si un buton-submit. La server se va defini si vectorul de obiecte,
+<p>
+orase=[
+	{
+		nume:"Aa",
+		populatie:14000,
+		capitala:true
+	},
+	{
+		nume:"Bb",
+		populatie:7000,
+		capitala:false
+	},
+	{
+		nume:"Cc",
+		populatie:19000,
+		capitala:false
+	},
+	{
+		nume:"Dd",
+		populatie:5000,
+		capitala:false
+	},
+	{
+		nume:"Ee",
+		populatie:8000,
+		capitala:true
+	},
+	{
+		nume:"Ff",
+		populatie:12000,
+		capitala:false
+	},
+	{
+		nume:"Gg",
+		populatie:20000,
+		capitala:true
+	}
+]</p>
+Scrieti aplicatia server app.js astfel incat, la submit pe formularul dat, sa se afiseze lista de orase cu tipul selectat ("mic" insemnand sub 10000 locuitori, si "mare" peste 10000) si care sunt (sau nu) capitale in functie de butonul radio bifat. Informatiile vor fi preluate din vectorul de orase aflat in app.js. Afisarea poate fi in interiorul paginii sau in locul paginii cu formularul.
+</article>
+
+
+</body>
+</html>
