@@ -1,0 +1,40 @@
+- Spatii vectoriale, Baze
+	Subspatii vectoriale
+	Subspatii afine
+	Descriere prin ecuatii si sisteme de ecuatii
+
+- Aplicatii liniare
+	Endomorfisme
+	Reprezentari vectoriale
+	Reprezentari in coordonate
+	Reprezentari matriciale
+	Schimbarea reprezentarii la schimbarea bazei
+
+- Geometrie Euclidiana plana. Axiomele
+
+- Geometrie Euclidiana tridimensionala. Axiomele
+
+- Grupuri
+	(O(2),x)
+	(SO(2),x)
+	Interpretari geometrice
+
+- Grupuri
+	(O(3),x), (SO(3),x) 
+	Interpretari geometrice
+
+- Conice
+	Tabel 
+	Denumire
+	Invariatii 
+	Desen
+	
+- Cuadrice
+	Tabel 
+	Denumire
+	Invariatii 
+	Desen
+
+- Produs vectorial si produs mixt in 
+	(E^3, B0 = (e1,e2,e3))
+	spatiul vectorial euclidian orientat
