@@ -1,0 +1,146 @@
+		Curs 1:
+
+- supraincararea functiilor:
+	*p <=> p[]
+	int x <=> int& x
+	
+	float f(float x)
+	double f(double x) 
+		sunt amibuu pentru 10, dar pentru 10.1 apeleaza double
+		trebuie scris f dupa numar daca vrem float 10.1f
+
+	int f(int x);
+	int f(int x, int y = 1);
+		sunt ambiguu pentru f(10)
+
+- referinte:
+	int i;
+	int &pi = i; pi este alt nume pt variabila i
+	
+	o referinta trebuie initializata cand e definita
+	referinte nule = interzie
+	nu se poate obtine adresa unei referinte
+
+	
+
+		Curs 2:
+
+- aritmetica pointeri:
+	++,--,+k,-k,p1-p2,<,>,==,etc
+
+- const
+	const int* u -> u e pointer catre un int constant (nu schimba valoarea)
+	int* const u -> u e un pointer constant catre un int (nu schimba adresa)
+
+	se poate face atribuire de adresa pentru obiect non-const catre pointer const
+	nu se poate face atribuire pe adresa de obiect const catre pointer non-const	
+	char s[80] = "Hello World";
+	char& replace(int i) {
+		return s[i];
+	}
+
+	replace(5) = 'x'
+
+	=> s = HelloxWorld
+
+
+
+		Curs 3:
+
+- friend:
+	// pentru mai multe clase
+	class C1 {
+		int x;
+	public:
+		friend void f(C1,C2);	
+	};
+
+	class C2 {
+		int y;
+	public:
+		friend void f(C1,C2);
+	};
+
+	void f(C1 ob1, C2 ob2) {cout<<ob1.x<<" "<<ob2.y<<endl;}
+
+	
+	clase friend: Y clasa friend a lui X => toate functiile membre ale clase Y au acces la membrii privati ai clasei X
+
+- constructori
+	orice clasa are by default 
+		constructorul de initializere
+		constructorul de copiere
+		destructorul
+		operator de atribuire
+
+	la constructorii cu un singur parametru se creeaza conversie explicita de date
+		class x {
+		public:
+			X(int j) {a = j;}
+		};
+		int main() {
+			X ob = 99;
+			return 0;
+		}
+
+	copyconstructor copieaza la:
+		- initializare explicita: Clasa B = A; Clasa B(A)
+		- apel de functie cu obiect ca parametru: void f(Clasa X){}
+		- apel de functie cu obiect ca variabila de intoarece:
+			Clasa f() {Clasa ob; return ob;}
+			Clasa x = f();
+
+
+
+		Curs 4 & 5:
+
+- static:
+	functiile statice nu au "this", se pot referi doar la membrii statici
+	
+- op rezolutie de scop:
+	::i se ve referi la i ul global
+
+- daca avem clasa in functie nu avem voie cu variabile statice in clasa
+
+- nu putem face overload pe: . :: .* ?
+
+- functii friend:
+
+	nu au pointerul "this", deci toti operanzii vor fi parametri
+	 primul parametru e operandul din stanga, al doilea din dreapta
+
+	nu se poate supraincarca = () [] -> cu friend
+
+	!!! daca vrem sa avem spre exemplu 100 + ob, trebuie sa folosim friend neaparat
+	    pentru ca operatorul + trebuie definit in clasa operandului stang, ceea
+	    ce nu se poate in cazul de fata
+
+- overloading []:
+	int operator[](int i) {return a[i];}
+	cout << ob[1];
+
+	int &operator[](int i) {return a[i];}
+	ob[1] = 25;
+
+
+
+		Curs 7:
+
+
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
