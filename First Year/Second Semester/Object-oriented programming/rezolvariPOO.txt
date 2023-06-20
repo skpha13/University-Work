@@ -1,0 +1,112 @@
+1 - f e ambiguu
+2 - nu s-a declarat valoarea lui x, care e static
+3 - 6 21 3
+4 - nu merge mister2 prin adresa
+5 - 7 7 7 
+6 - 6
+7 - private inheritance ?
+8 - nu putem face ob.x
+9 - 1131
+10 - 0 ?
+11 - no match for 'operator<<'
+12 - no matching consructor, cls(int i) -> cls(int i=0)
+13 - Numarul -2 e bun/Numarul 2 nu e bun
+14 - no matching constructor
+15 - 5 6 7 ... 18 19
+16 - -12
+17 - -11
+18 - 0x2738e9918f4
+19 - -17
+20 - liniile 31-33 trebuie sterse
+21 - -15
+22 - i is private member of B
+23 - no member named 'f1' in 'B', facem functia f1 in B virtuala, sau dynamic_cast
+24 - f este ambiguu
+25 - undefined reference to x, adaugam int A::x = 0 => 0
+26 - -12
+27 - o iese din scope
+28 - void mister2(problema& o) -> void mister2(problema o)
+29 - 7 7 7 
+30 - 6
+31 - upcast nu merge cu private inheritance
+32 - trebuie getter pt x la linia 17
+33 - 1131
+34 - 0
+35 - no match for 'operator<<'
+36 - cls(int i) -> cls(int i=0)
+37 - 7
+38 - nu poti aduna 2 pointeri, punem *x la functia template
+39 - test(a,b) este ambiguu, daca eliminam test(int &c,int &d), va afisa   test 2 test 3
+40 - 5
+41 - 
+42 - 
+43 - 
+44 - 
+45 - 
+46 - 
+47 - 
+48 - 
+49 - 
+50 - 
+51 - 
+52 - 
+53 - 
+54 - 
+55 - 
+56 - 
+57 - 
+58 - 
+59 - 
+60 - 
+61 - 
+62 - 
+63 - 
+64 - 
+65 - 
+66 - 
+67 - 
+68 - 
+69 - 
+70 - 
+71 - 
+72 - 
+73 - 
+74 - 
+75 - 
+76 - 
+77 - 
+78 - 
+79 - 
+80 - 
+81 - 
+82 - 
+83 - 
+84 - 
+85 - 
+86 - 
+87 - 
+88 - 
+89 - 
+90 - 
+91 - 
+92 - 
+93 - 
+94 - 
+95 - 
+96 - 
+97 - 
+98 - 
+99 - 
+100 - 
+101 - 
+102 - 
+103 - 
+104 - 
+105 - 
+106 - 
+107 - 
+108 - 
+109 - 
+110 - 
+111 - 
+112 - 
