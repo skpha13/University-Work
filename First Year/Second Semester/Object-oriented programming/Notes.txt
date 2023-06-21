@@ -96,6 +96,8 @@
 
 - static:
 	functiile statice nu au "this", se pot referi doar la membrii statici
+	!!! nu putem aveam functii si virtuale si statice
+	nu putem apela o metoda non-statica intr-o metoda statica
 	
 - op rezolutie de scop:
 	::i se ve referi la i ul global
@@ -143,4 +145,6 @@
 
 
 
-
+! DE NOTAT: intr o clasa locala functiile nu pot fi definite outside class
+! DE NOTAT: const int& rx = *x -> val lui x nu poate fi schimbata prin rx dar tot se poate schimba prin x
+! DE NOTAT: operatorul de conversie nu poate fi folosit pentru un obiect constant
