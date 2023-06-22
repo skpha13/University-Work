@@ -72,35 +72,34 @@
 77 - 1
 79 - linia 29 -> int& operator[](int i) const { return y[i]; } -> 11111
 80 - il facem pe x protected -> -5
-81 - 
-82 - 
-83 - 
-84 - 
-85 - 
-86 - 
-87 - 
-88 - 
-89 - 
-90 - 
-91 - 
-92 - 
-93 - 
-94 - 
-95 - 
-96 - 
-97 - 
-98 - 
-99 - 
-100 - 
-101 - 
-102 - 
-103 - 
-104 - 
-105 - 
-106 - 
-107 - 
-108 - 
-109 - 
-110 - 
-111 - 
-112 - 
+81 - 41
+82 - 15145176 0 0 0 -15 0 0 0 0 0 primul e garbage ca nu il initializeaza cu 0
+83 - stergem ++ de la a.f() -> 14
+84 - il facem pe x protected -> 221
+85 - 11
+86 - multe de schimbat
+87 - y = x, vor avea v catre aceeasi zona de memorie, la operator+ se copiaza prin valoarea y-ul deci cand se iese din functie va fi sters si y si x.
+88 - nu face nimic
+89 - constructor i=0 si p[i].get_x()
+90 - -3
+91 - const int& -> 5
+92 - A nu are constructor default, deci cand se apeleaza copy constructorul pt B nu va merge, trebuie sa facem A(int i=0), dar nu va afisa nimic ca o sa aiba x = 0 si nu intra pe for 
+93 - nu intra pe if pentru ca baza nu e polymorphica si o sa tea typdeid uri diferite pentru p si B*
+94 - -16
+96 - il facem pe x public -> -12
+97 - a = a+b sau comentam -> -21
+98 - B(const B& b) -> 11
+99 - 4
+100 - A(int i,int j):x(i),y(j) -> A(int i,int j):x(i) {y=j;} -> 2
+101 - 11315
+102 - 3
+103 - B* p = new B -> 80 si garbage
+104 - cb  cd1  cd2  cb  cd1  cb  cd1 6 dd1  db  dd1  db  dd2  dd1  db  dd1  db  dd2  dd1  db, pentru ca copyconstructorul nu afiseaza nimic
+105 - 20 22
+106 - 7 7 7 7 14
+107 - class B: public A -> 25
+108 - 22345
+109 - facem functia f1 const -> 23
+110 - int A::x; si int set_x(int i)
+111 - schimbam instanta in B*, transformam B f in int f
+112 - int operator*(cls b) {return (x * b.x);}

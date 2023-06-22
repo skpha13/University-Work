@@ -128,23 +128,82 @@
 
 		Curs 7:
 
+- constructorul de copiere:
+	B si D nu au cc -> se copiaza membru cu membru, bit cu bit
+	B are dar D nu -> compilatorul creeaza un constructor implicit care apeleaza constructorul de copiere al clasei de baza
+	B nu are D are -> ii revine in totalitate sarcina cc din D
+
+- redefinire functii membre
+	la redefinirea unei functii din clasa de baza, toate celelalte versiuni sunt automat ascunse
+
+- functii care nu se mostenesc automat: operator=
+
+- functii virtuale:
+	nu e posibil overload prin schimbarea tipului parametrului de intoarcere
+		(e posibil pentru ne-virtuale)
+
+- destructori virtuali puri:
+	trebuiesc definiti in clasa (chiar daca e abstracta)
+	
+	la mostenire nu mai trebuiesc redefiniti (se construieste un destructor din oficiu)
+
+- functie virtuala in destructor -> se apeleaza local, ca altfel se poate baza pe portiuni deja distruse din obiect
 
 	
 	
+		Curs 8:
+
+ - const_cast
+	const int* val;
+	int* p;
+	// cast away const-ness
+	p = const_cast<int*>(val);
+
+	sau:
+	const int& val;
+	// cast away const on val
+	const_cast<int&>(val) = val*val;
+
+- reinterpret_cast:
+	converteste un tip intr-un alt tip fundamental diferit
+
+	int* p = new int(65);
+	char* ch = reinterpret_cast<char*>(p);
+
+- exceptii:
+	un catch pentru tipul de baza va fi executat pentru un obiect aruncat de tipul derivat
+	D derived;
+	try {
+		throw derived;
+	}
+	catch(B d) {cout<<"B";} -> intra pe asta
+	catch(D d) {cout<<"D";}
+
+class MyE: public exception {
+public:
+	const char* what() const throw() {return "Particularizat\n";}
+};
+
+try {
+	throw MyE();
+} catch(const MyE& e) {cout<<e.what()<<"\n";}
+
+- functia terminate: 
+void my_terminate() {
+	cout<<"Terminate";
+	abort();
+}
+
+void(*old_terminate) () = set_terminate(my_terminate);
 
 
 
-
-
-
-
-
-
-
-
+		Curs 9:
 
 
 
 ! DE NOTAT: intr o clasa locala functiile nu pot fi definite outside class
 ! DE NOTAT: const int& rx = *x -> val lui x nu poate fi schimbata prin rx dar tot se poate schimba prin x
 ! DE NOTAT: operatorul de conversie nu poate fi folosit pentru un obiect constant
+! DE NOTAT: daca am o Baza si Derivata si Baza e non-polymorphic (nu are functie virtuala) -> typeid ul o sa dea diferit, dar daca e polymorphic typeid pentru Baza = typeid pentru Derivata, totodata daca am baza A si derivata B polymorphice, typeid(*p) == typeid(B) dar typeid(p) != typeid(B*)
+! DE NOTAT: variabilele statice nu pot lua valori in lista de initializare, dar pot lua valori in {} de la constructor 
