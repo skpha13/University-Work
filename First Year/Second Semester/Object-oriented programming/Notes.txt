@@ -200,10 +200,57 @@ void(*old_terminate) () = set_terminate(my_terminate);
 
 		Curs 9:
 
+- RTTI
+	run-time type identification
+
+	clase polimorfice = clasa cu cel putin o functie virtuala, RTTI nu se gaseste in clase nepolimorfice
+
+- Templates:
+	ordine:
+		pas1 : potrivire fara conversie
+		prioritate varianta non-template
+		apoi template fara parametri
+		apoitemplate cu 1 parametru
+		apoi template cu mai multi parametri
+
+		pas2 : daca nu exista potrivire exacta
+		conversie DOAR la varianta non-template
+
+		
+	
+		Curs 10 & 11:
+
+- const:
+	se poate face atribuire de adresa pnetru obiect non-const catre un pointer const
+	
+	nu se poate face atribuire pe adresa de obiect const catre pointer non-const
+
+	ex: const int e = 2; int* v = &e; // Illegal
+	
+	class X{};
+	X f() {return X();}
+	void g1(X&);
+	void g2(const X&);
+	g1(f()) -> nu e ok
+	g2(f()) -> e ok
+
+	const int& rx = *x -> val lui x nu poate fi schimbata prin rx dar tot se poate schimba prin x
+
+	operatorul de conversie nu poate fi folosit pentru un obiect constant
+
+- functii membru const:
+	nu se pot apela functii non-const
+
+	mutable int j -> j se poate modifica intr-o functie const
+
+- static: 
+	clasa locala = clasa intr-o functie
+
+	clasele locale nu pot avea date statice 
+
+	intr o clasa locala functiile nu pot fi definite outside class
+
+	variabilele statice nu pot lua valori in lista de initializare, dar pot lua valori in {} de la constructor 
 
 
-! DE NOTAT: intr o clasa locala functiile nu pot fi definite outside class
-! DE NOTAT: const int& rx = *x -> val lui x nu poate fi schimbata prin rx dar tot se poate schimba prin x
-! DE NOTAT: operatorul de conversie nu poate fi folosit pentru un obiect constant
 ! DE NOTAT: daca am o Baza si Derivata si Baza e non-polymorphic (nu are functie virtuala) -> typeid ul o sa dea diferit, dar daca e polymorphic typeid pentru Baza = typeid pentru Derivata, totodata daca am baza A si derivata B polymorphice, typeid(*p) == typeid(B) dar typeid(p) != typeid(B*)
-! DE NOTAT: variabilele statice nu pot lua valori in lista de initializare, dar pot lua valori in {} de la constructor 
