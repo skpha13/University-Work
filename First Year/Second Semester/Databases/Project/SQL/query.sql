@@ -135,3 +135,30 @@ select d.DIRECTOR_ID, count(*)
 from DIRECTOR d, FILM f
 where d.DIRECTOR_ID = f.DIRECTOR_ID
 group by d.DIRECTOR_ID;
+
+-- 16
+-- numele directorilor care au filme cu nota peste 9 si au aparut dupa anul 2000
+select distinct d.NUME
+from DIRECTOR D, FILM F
+where f.FILM_ID in (
+        select FILM_ID
+        from FILM
+        where NOTA >= 9 and f.DATA_APARITIE >= '01/01/2000'
+    ) and d.DIRECTOR_ID = f.DIRECTOR_ID;
+
+-- R1 = PRODUCT(DIRECTOR, FILM)
+-- R2 = SELECT(R1, f.nota >= 9 and data_aparitie >= 01/01/2000 and d.director_id = f.director_id)
+-- REZULTAT = R3 = PROJECT(R3, nume)
+
+with film2 as (
+    select DIRECTOR_ID
+    from FILM
+    where NOTA >= 9 and DATA_APARITIE >= '01/01/2000'
+)
+select distinct d.nume
+from DIRECTOR d
+join film2 f on d.DIRECTOR_ID = f.DIRECTOR_ID;
+
+-- R1 = SELECT(FILM, nota >= 9 and data_aparitie >= 01/01/2000)
+-- R2 = PROJECT(DIRECTOR, nume)
+-- REZULTAT = R3 = JOIN(R1,R2)
