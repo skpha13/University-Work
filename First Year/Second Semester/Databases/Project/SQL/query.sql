@@ -131,11 +131,6 @@ left outer join SERIAL_ACTOR on ACTOR.ACTOR_ID = SERIAL_ACTOR.ACTOR_ID
 left outer join SERIAL S2 on SERIAL_ACTOR.SERIAL_ID = S2.SERIAL_ID
 left outer join SUBSCRIPTIE_SERIAL SS on S2.SERIAL_ID = SS.SERIAL_ID;
 
-select d.DIRECTOR_ID, count(*)
-from DIRECTOR d, FILM f
-where d.DIRECTOR_ID = f.DIRECTOR_ID
-group by d.DIRECTOR_ID;
-
 -- 16
 -- numele directorilor care au filme cu nota peste 9 si au aparut dupa anul 2000
 select distinct d.NUME
