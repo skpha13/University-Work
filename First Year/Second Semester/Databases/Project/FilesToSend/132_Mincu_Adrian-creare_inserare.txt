@@ -51,6 +51,9 @@ create table  SUBSCRIPTIE_SERIAL (
     constraint fk_serial_asoc foreign key (serial_id) references SERIAL(serial_id)
 );
 
+ALTER TABLE SUBSCRIPTIE_SERIAL
+ADD CONSTRAINT uk_serial_subscriptie UNIQUE (serial_id, subscriptie_id);
+
 create table DIRECTOR (
     director_id number(6) constraint pk_director primary key ,
     nume varchar2(50) constraint nume_dir_null not null ,
@@ -76,6 +79,9 @@ create table  SUBSCRIPTIE_FILM (
     constraint fk_serial_asocf foreign key (film_id) references FILM(film_id)
 );
 
+ALTER TABLE SUBSCRIPTIE_FILM
+ADD CONSTRAINT uk_film_subscriptie UNIQUE (film_id, subscriptie_id);
+
 create table ROL (
     rol_id number(6) constraint pk_rol primary key ,
     nume varchar2(50) constraint caracter_null not null ,
@@ -99,6 +105,9 @@ create table SERIAL_ACTOR (
     constraint fk_serial_asocA foreign key (serial_id) references SERIAL(serial_id)
 );
 
+ALTER TABLE SERIAL_ACTOR
+ADD CONSTRAINT uk_serial_actor UNIQUE (SERIAL_ID, actor_id);
+
 create table ROL_JUCAT (
     film_rol_actor_id number(6) constraint pk_rol_jucat primary key ,
     film_id number(6) not null ,
@@ -109,6 +118,9 @@ create table ROL_JUCAT (
     constraint fk_actor_asocRJ foreign key (actor_id) references ACTOR(actor_id) ,
     constraint fk_rol foreign key (rol_id) references ROL(rol_id)
 );
+
+ALTER TABLE ROL_JUCAT
+ADD CONSTRAINT uk_filmn_actor_rol UNIQUE (film_id, actor_id, rol_id);
 
 create sequence incrementare_serial
 start with 1
