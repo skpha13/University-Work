@@ -3,6 +3,11 @@ const bodyParser = require('body-parser');
 const app = express();
 
 app.use(bodyParser.json());
+app.use(express.static(__dirname));
+
+app.get('/', (req, res) => {
+    res.sendFile(__dirname + '/p4.html');
+});
 
 let persoane = [
     { nume: "Ion", sex: "m", varsta: 3 },
@@ -25,7 +30,7 @@ app.post('/verifica', (req, res) => {
     let sex = persoana.sex === 'm' ? 'băiat' : 'fată';
     let minor = persoana.varsta < 18 ? 'este minor' : 'nu este minor';
 
-    return res.json({ "rezultat":`${sex},${minor}`});
+    return res.json({ "rezultat": `${sex},${minor}` });
 });
 
 app.listen(3000, () => console.log('Serverul rulează pe portul 3000'));
