@@ -1,24 +1,26 @@
 [
   {
     "produs": [
-      "miere3"
+      "test1"
     ],
     "pret": [
-      "100"
+      "10"
     ],
     "cantitate": [
-      "5"
-    ]
+      "1"
+    ],
+    "poza": "\\poze\\death-&-love-wallpaper.png"
   },
   {
     "produs": [
-      "miere4"
+      "miere"
     ],
     "pret": [
-      "5000"
+      "5"
     ],
     "cantitate": [
-      "4"
-    ]
+      "2"
+    ],
+    "poza": "\\poze\\death-&-love-wallpaper-phone.png"
   }
 ]

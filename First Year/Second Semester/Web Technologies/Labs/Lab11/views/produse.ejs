@@ -16,8 +16,14 @@ h2{width:40%; color: blue;}
 <article id="info">
 <h1>Produsele mele</h1>
 
-<!--aici se va adauga codul ejs -->
- 
+	<% products.forEach(function(product) { %>
+		<div>
+			<img src="<%= product.poza%>" alt="<%=product.produs%>"/>
+			<h2>Produs: <%= product.produs %></h2>
+			<p>Pret: <%= product.pret %></p>
+			<p>Cantitate: <%= product.cantitate %></p>
+		</div>
+	<% }); %>
 </article>
 
 </body>

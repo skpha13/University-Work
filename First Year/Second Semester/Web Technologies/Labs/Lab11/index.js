@@ -10,8 +10,13 @@ app.get('/', (req, res) => {
     res.sendFile(__dirname + '/html/comanda.html');
 });
 
-app.get('/comenzi', (req, res) => {
+app.set('view engine', 'ejs');
 
+app.get('/comenzi', (req, res) => {
+    let raw = fs.readFileSync('produse.json');
+    const products = JSON.parse(raw);
+
+    res.render('produse.ejs', { products: products });
 })
 
 const data = [];
@@ -29,7 +34,7 @@ app.post('/', (req, res) => {
             produs: fields.nume,
             pret: fields.pret,
             cantitate: fields.cantitate,
-            poza: files.poza.name
+            poza: path.join('/poze', files.poza[0].originalFilename),
         };
 
         data.push(product);
@@ -49,6 +54,7 @@ app.post('/', (req, res) => {
                         if (err) console.log(err);
                     });
                     console.log("File copied");
+                    res.sendFile(__dirname + '/html/comanda.html');
                 }
             });
         });
