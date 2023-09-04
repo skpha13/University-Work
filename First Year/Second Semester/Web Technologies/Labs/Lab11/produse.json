@@ -1,0 +1,24 @@
+[
+  {
+    "produs": [
+      "miere3"
+    ],
+    "pret": [
+      "100"
+    ],
+    "cantitate": [
+      "5"
+    ]
+  },
+  {
+    "produs": [
+      "miere4"
+    ],
+    "pret": [
+      "5000"
+    ],
+    "cantitate": [
+      "4"
+    ]
+  }
+]
