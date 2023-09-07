@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta charset="Unicode">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+
+    <script>
+        window.onload = () => {
+            const ul = document.createElement('ul');
+            for(let i=0;i<10;i++) {
+                let temp = document.createElement('li');
+                temp.innerText = 'element' + (i+1);
+                ul.appendChild(temp); 
+            }
+
+            document.body.appendChild(ul);
+
+            if(document.getElementsByTagName('input')[0].checked) {
+                document.getElementsByTagName('input')[0].checked = false;
+            }
+
+            setInterval(() => {
+                if(document.getElementsByTagName('input')[0].checked === false) {
+                    const firstElement = ul.firstElementChild;
+                    ul.removeChild(firstElement);
+                    ul.appendChild(firstElement);
+                }
+            }, 3000);
+        }
+    </script>
+
+    <style>
+    </style>
+
+    <body>
+        <label><input type="checkbox"/>Stop</label>
+    </body>
+</html>

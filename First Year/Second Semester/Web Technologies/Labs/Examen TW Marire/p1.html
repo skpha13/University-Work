@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+
+<html>
+    <header>
+        <meta charset="Unicode">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </header>
+
+    <style>
+        .container {
+            height: 600px;
+            width: 80vw;
+            border: 2px dotted black;
+            display: grid;
+            grid-template-areas: "a b"
+                                 "c d";
+            transition: border 1.5s linear;
+        }
+
+        .container div {
+            border: red solid 4px;
+        }
+
+        .container div:nth-child(1) {
+            grid-area: a;
+        }
+        
+        .container div:nth-child(2) {
+            grid-area: b;
+        }
+        
+        .container div:nth-child(3) {
+            grid-area: c;
+        }
+        
+        .container div:nth-child(4) {
+            grid-area: d;
+        }
+
+        .container:hover {
+            border: 2px solid purple;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                width: 100%;
+                display: flex;
+                flex-direction: column;
+            }
+        }
+    </style>
+
+    <body>
+        <div class="container">
+            <div>1</div>
+            <div>2</div>
+            <div>3</div>
+            <div>4</div>
+        </div>        
+    </body>
+</html>

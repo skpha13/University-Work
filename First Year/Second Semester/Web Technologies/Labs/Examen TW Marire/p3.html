@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+
+<html>
+    <header>
+        <meta charset="Unicode">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </header>
+
+    <style>
+        .a {
+            color: red;
+            accent-color: red;
+        }
+
+        .b {
+            color: black;
+            accent-color: black;
+        }
+
+        .c {
+            color: blue;
+            accent-color: blue;
+        }
+
+        .d {
+            color: green;
+            accent-color: green;
+        }
+
+        .e {
+            color: purple;
+            accent-color: purple;
+        }
+    </style>
+
+    <body>
+        <p id="paragraf"></p>
+        <input type="radio" class="a" name="button">
+        <input type="radio" class="b" name="button">
+        <input type="radio" class="c" name="button">
+        <input type="radio" class="d" name="button">
+        <input type="radio" class="e" name="button">
+    </body>
+
+    <script>
+        window.onload = () => {
+            const date = new Date();
+            var para = document.getElementById('paragraf'); 
+            para.innerText = 'Mincu ' + date;
+
+            const buttons = document.getElementsByTagName('input');
+            var index = 0;
+            if(localStorage.getItem('index')) index = localStorage.getItem('index');
+            para.className = buttons[index].className;
+            buttons[index].checked = true;
+            const interval = setInterval(() => {
+                buttons[index].checked = false;
+                index++;
+                if(index == buttons.length) index = 0;
+                buttons[index].checked = true;
+                para.className = buttons[index].className;
+            }, 3000);
+
+            document.addEventListener('keypress', (event) => {
+                if(event.keyCode >= 48  && event.keyCode <= 57) {
+                    clearInterval(interval);
+                    for(let i=0;i<buttons.length;i++) {
+                        if(buttons[i].checked) localStorage.setItem('index',i);
+                    }
+                }
+            })
+        }
+    </script>
+</html>

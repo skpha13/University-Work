@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+
+<html>
+    <header>
+        <meta charset="Unicode">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </header>
+
+    <style>
+        .patrat {
+            width: 10px;
+            height: 10px;
+            border: solid black 2px;
+            position: relative;
+            display: inline-block;
+            margin-right: 20px;
+        }
+
+    </style>
+
+    <body>
+             
+    </body>
+
+    <script>
+        window.onload = () => {
+            const date = new Date();
+            const n = date.getHours();
+
+            const culori = ["#56e6b9","#8ca91e","#cc171e","#e543c6","#997491"];
+            
+            for(let i=0;i<n;i++) {
+                let temp = document.createElement('div');
+                temp.className = 'patrat';
+                temp.style.backgroundColor = culori[Math.floor(Math.random() * culori.length)];
+                temp.style.top = 0;
+                temp.addEventListener('click', (event) => {
+                    event.stopPropagation();
+                    
+                    const nr = parseInt(getComputedStyle(temp).getPropertyValue('top'));
+                    temp.style.top = (nr + 5) + 'px'; 
+                });
+                document.body.append(temp);
+            }
+
+            document.addEventListener('click' , (event) => {
+                const divs = document.getElementsByTagName('div');
+                for(let i=0;i<divs.length;i++) {
+                    divs[i].style.top = '0px';
+                }
+            });
+        }
+    </script>
+</html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta charset="Unicode">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+
+    <style>
+        #container {
+            display: grid;
+            grid-template-rows: repeat(3,1fr);
+            grid-template-columns: repeat(6,1fr);
+            height: 50vh;
+            width: 33vw;
+            border: solid 2px black;
+            text-align: center;
+        }
+
+        #container div {
+            border: solid 3px blue;
+            font-size: 10px;
+        }
+
+        #div1 {
+            grid-row-start: 1;
+            grid-row-end: 2;
+            grid-column-start: 1;
+            grid-column-end: 5;
+        }
+
+        #div2 {
+            grid-row-start: 1;
+            grid-row-end: 3;
+            grid-column-start: 5;
+            grid-column-end: 7;
+        }
+
+        #div3 {
+            grid-row-start: 2;
+            grid-row-end: 3;
+            grid-column-start: 1;
+            grid-column-end: 3;
+        }
+
+        #div4 {
+            grid-row-start: 2;
+            grid-row-end: 3;
+            grid-column-start: 3;
+            grid-column-end: 5;
+        }
+
+        #div5 {
+            grid-row-start: 3;
+            grid-row-end: 4;
+            grid-column-start: 1;
+            grid-column-end: 7;
+        }
+
+        @media (max-width: 600px) and (min-width: 500px) {
+            #container {
+                display: flex;
+                flex-direction: column-reverse;
+            }
+
+            #container div:nth-child(odd):hover {
+                animation: schimbare 3s linear;
+            }
+
+            @keyframes schimbare {
+                0% {border-color: blue; font-weight: normal;}
+                100% {border-color: red; font-weight: 900;} 
+            }
+        }
+    </style>
+
+    <div id="container">
+        <div id="div1">div1</div>
+        <div id="div2">div2</div>
+        <div id="div3">div3</div>
+        <div id="div4">div4</div>
+        <div id="div5">div5</div>
+    </div>
+</html>

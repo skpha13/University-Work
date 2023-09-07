@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta charset="Unicode">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+
+    <script>
+        const arr = ['#3c8c6c','#bd3f1b','#b69011','#9d64ca','#dd7437'];
+
+        window.onload = () => {
+            const divsByInnerText = {};
+
+            document.addEventListener('click', (event) => {
+                const clickElement = event.target;
+
+                if(clickElement.tagName !== 'DIV') {
+                    const allDivs = document.querySelectorAll('div.click');
+                    allDivs.forEach((div) => {
+                        div.remove();
+                    });
+                }
+            });
+
+            document.addEventListener('keypress', (event) => {
+                if(parseInt(event.key) >= 0 && parseInt(event.key) <=9) {
+                    let temp = document.createElement('div');
+                    temp.style.width = '50px';
+                    temp.style.height = '50px';
+                    temp.style.backgroundColor = arr[Math.floor(Math.random()*arr.length)];
+                    temp.innerText = "tasta " + event.key;
+
+                    temp.addEventListener('click', (event) => {
+                        event.stopPropagation();
+                        const innerText = temp.innerText;
+                        const divsWithSameText = divsByInnerText[innerText] || [];
+                        
+                        divsWithSameText.forEach((div) => {
+                            div.classList.add('click');
+                        });
+                    });
+
+                    document.body.appendChild(temp);
+
+                    const innerText = temp.innerText;
+                    if (!divsByInnerText[innerText]) {
+                        divsByInnerText[innerText] = [];
+                    }
+                    divsByInnerText[innerText].push(temp);
+                }
+            });
+
+            
+        }
+    </script>
+
+    <style>
+        .click {
+            border: 2px green;
+            border-style: double;
+        }
+    </style>
+
+    <body>
+
+    </body>
+</html>
