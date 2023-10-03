@@ -1,0 +1,30 @@
+-- COMENZI
+
+:l main.js -> loads file
+:r -> reloads current file/project
+:t permutations -> zice type ul functiei
+:i $ -> arata operatori
+
+    signatura functie 
+f :: Int -> Int -> Int
+f a b = a + b
+- functiile pot fi parametri si de intrare si de iesire
+
+    liste
+[1..] lista infinita
+[1..10] de la 1 la 10
+[1,3,..10] impare de la 1 la 10
+
+    string uri
+"" -> sir
+'' -> caracter
+head "abc" -> 'a'
+tail "abc" -> "bc"
+
+f1(h:t) -> desparte lista automat in head si tail
+
+    la recursivitate:
+5 * f x e mai bine decat f x * 5
+ocupa mai putin loc pe stiva
+pentru ca la prima inmulteste mai intai toate numerele de 5
+si la a doua nu poate
