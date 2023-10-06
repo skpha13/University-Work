@@ -587,3 +587,17 @@ First Year/Second Semester/Object-oriented programming/Labs/ColocviuPOO/cmake-bu
 First Year/Second Semester/Object-oriented programming/Labs/ColocviuPOO/cmake-build-debug/CMakeFiles/TargetDirectories.txt
 First Year/Second Semester/Object-oriented programming/Labs/ColocviuPOO/cmake-build-debug/Testing/Temporary/LastTest.log
 First Year/Second Semester/Object-oriented programming/Labs/ColocviuPOO/CMakeLists.txt
+*.v2
+*.vsidx
+*.bin
+*.dll
+*.pdb
+Second Year/First Semester/ASP.NET (online)/Labs/L01/lab01/lab01/bin/Debug/net7.0/lab01.deps.json
+Second Year/First Semester/ASP.NET (online)/Labs/L01/lab01/lab01/bin/Debug/net7.0/lab01.runtimeconfig.json
+Second Year/First Semester/ASP.NET (online)/Labs/L01/lab01/.vs/lab01/v17/.suo
+Second Year/First Semester/ASP.NET (online)/Labs/L01/lab01/lab01/obj/Debug/net7.0/.NETCoreApp,Version=v7.0.AssemblyAttributes.cs
+*.cache
+*.BuildWithSkipAnalyzers
+Second Year/First Semester/ASP.NET (online)/Labs/lab01/lab01/obj/
+Second Year/First Semester/ASP.NET (online)/Labs/lab01/lab01/bin/
+Second Year/First Semester/ASP.NET (online)/Labs/lab01/.vs/lab01/v17/.suo
