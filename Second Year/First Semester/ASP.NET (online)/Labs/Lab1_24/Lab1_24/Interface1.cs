@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace lab01
+namespace Lab1_24
 {
-	public class Class1: Interface1
-	{
-
-	}
+    internal interface Interface1
+    {
+    }
 }
