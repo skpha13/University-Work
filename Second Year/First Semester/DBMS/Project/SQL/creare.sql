@@ -179,3 +179,11 @@ rollback;
 select constraint_name, constraint_type, TABLE_NAME
 from SYS.USER_CONSTRAINTS
 where lower(table_name) = 'utilizator';*/
+
+select *
+from user_tables;
+
+spool D:\"UNI CODE"\Univeristy-Work\"Second Year"\"First Semester"\DBMS\Project\SpoolOutput\insert.sql
+select 'DROP TABLE ' || table_name || ';'
+from user_tables;
+spool off;
