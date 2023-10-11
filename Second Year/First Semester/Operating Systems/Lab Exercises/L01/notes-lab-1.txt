@@ -1,0 +1,5 @@
+cs.unibuc.ro/~pirofti/so.html
+
+prezenta obligatorie la primele 7 lab + colocviu
+
+strace = ktrace + kdump
