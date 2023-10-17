@@ -83,17 +83,19 @@ produs (h:t) = h * produs t
 multiDigitsComp :: [Char] -> Int
 multiDigitsComp l = produs [digitToInt x | x <- l, isDigit x]
 
-takeFinal :: [a] -> Int -> [a]
-takeFinal xs n = drop (length xs - fromInteger n) xs
+asezareElPoz :: a -> [a] -> Int -> [a]
+asezareElPoz x [] _ = [x]
+asezareElPoz x l poz = take poz l ++ [x] ++ drop poz l
 
-permPoz :: [a] -> Int -> a -> [a]
-permPoz [] _ = _
-permPoz l x = (take (x-1) l ++ l !! x) ++ (drop (length l - fromInteger x) l) 
+permCuOLista :: a -> [a] -> [[a]]
+permCuOLista h t = [asezareElPoz h t c | c <- [0..length t]]
 
--- pemrutariHelper :: a -> [a] -> [[a]]
--- pemrutariHelper x [] = [x]
--- pemrutariHelper x l = 
+permListeDeListe :: a -> [[a]] -> [[a]]
+permListeDeListe _ [] = []
+permListeDeListe x (h:t) = permCuOLista x h ++ permListeDeListe x t
 
--- permutari :: [a] -> [a]
--- permutari [] = []
--- permutari l =
+permutari :: [a] -> [[a]]
+permutari [] = [[]]
+permutari (h:t) 
+    | length t == 1 = permCuOLista h t
+    | otherwise = permListeDeListe h (permutari t)
