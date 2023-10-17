@@ -1,0 +1,6 @@
+elem -> returneaza bool daca x apartine sir
+reverse -> face reverse pe un sir
+isDigit -> returneaza bool daca x e digit
+digitToInt -> ia un char si returneaza int 
+zip [1,2,3] "abc" -> [(1,a),(2,b),(3,c)] 
+mod pt el neg face urat -> rem, functioneaza la fel
