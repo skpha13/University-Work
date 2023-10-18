@@ -1,7 +1,168 @@
 #include <iostream>
+#include <vector>
+#include <queue>
 
 using namespace std;
 
+class Graph {
+public:
+    bool possibleBipartition(int n, vector<vector<int>>& dislikes);
+    int shortestBridge(vector<vector<int>>& grid);
+    void DFSforShortestBridge(int i, int j,  vector<vector<int>>& grid, vector<vector<bool>>& vizited, queue<pair<int,int>>& waterNodes);
+};
+
+bool Graph::possibleBipartition(int n, vector<vector<int>>& dislikes) {
+    vector<vector<int>> connections(n+1);
+    for(int i=0;i<dislikes.size();i++) {
+        connections[dislikes[i][0]].push_back(dislikes[i][1]);
+        connections[dislikes[i][1]].push_back(dislikes[i][0]);
+    }
+
+    vector<int> team(n+1,0);
+    vector<bool> vizited(n+1,false);
+    queue<int> nodeQueue;
+
+    for(int k=1;k<=n;k++) {
+        if (!vizited[k]) {
+            int node = k;
+            vizited[node] = true;
+            team[node] = 1;
+            nodeQueue.push(node);
+
+            while(!nodeQueue.empty()) {
+                int temp = nodeQueue.front();
+                nodeQueue.pop();
+
+                for (int i = 0; i < connections[temp].size(); i++) {
+                    if (!vizited[connections[temp][i]]) {
+                        vizited[connections[temp][i]] = true;
+
+                        if (team[temp] == team[connections[temp][i]]) return false;
+
+                        if (team[temp] == 1) team[connections[temp][i]] = 2;
+                        else team[connections[temp][i]] = 1;
+
+                        nodeQueue.push(connections[temp][i]);
+                    } else if (team[temp] == team[connections[temp][i]]) return false;
+                }
+            }
+        }
+    }
+    return true;
+}
+
+void Graph::DFSforShortestBridge(int i, int j, vector<vector<int>>& grid, vector<vector<bool>>& vizited, queue<pair<int,int>>& waterNodes) {
+    vizited[i][j] = true;
+
+    if(i > 0 && grid[i-1][j] == 0) waterNodes.push(make_pair(i-1,j));
+    if(i < grid.size()-1 && grid[i+1][j] == 0) waterNodes.push(make_pair(i+1,j));
+    if(j > 0 && grid[i][j-1] == 0) waterNodes.push(make_pair(i,j-1));
+    if(j < grid.size()-1 && grid[i][j+1] == 0) waterNodes.push(make_pair(i,j+1));
+
+    if(i > 0 && grid[i-1][j] == 1 && !vizited[i-1][j]) DFSforShortestBridge(i-1,j,grid,vizited,waterNodes);
+    if(i < grid.size()-1 && grid[i+1][j] == 1 && !vizited[i+1][j]) DFSforShortestBridge(i+1,j,grid,vizited,waterNodes);
+    if(j > 0 && grid[i][j-1] == 1 && !vizited[i][j-1]) DFSforShortestBridge(i,j-1,grid,vizited,waterNodes);
+    if(j < grid.size()-1 && grid[i][j+1] == 1 && !vizited[i][j+1]) DFSforShortestBridge(i,j+1,grid,vizited,waterNodes);
+}
+
+int Graph::shortestBridge(vector<vector<int>> &grid) {
+    queue<pair<int,int>> waterNodes;
+    vector<vector<bool>> vizited(grid.size(),vector<bool>(grid[0].size(),false));
+    bool breakFor = false;
+
+    for(int i=0;i<grid.size();i++) {
+        if(breakFor) break;
+        for (int j = 0; j < grid[i].size(); j++)
+            if (grid[i][j] == 1) {
+                DFSforShortestBridge(i, j, grid, vizited, waterNodes);
+                breakFor = true;
+                break;
+            }
+    }
+
+    // there are 100 nodes in the grid so max size for counter = 100 * 100
+    int minCounter = 1001;
+    while(!waterNodes.empty()) {
+        int i = waterNodes.front().first;
+        int j = waterNodes.front().second;
+        queue<pair<int,int>> bfsQ;
+        vector<vector<int>> depth(grid.size(),vector<int>(grid.size(),0));
+        waterNodes.pop();
+        vector<vector<bool>> vizitedCopy = vizited;
+        if(!vizitedCopy[i][j]) {
+            vizitedCopy[i][j] = true;
+            bfsQ.push(make_pair(i,j));
+
+            while(!bfsQ.empty()) {
+                pair<int,int> temp = bfsQ.front();
+                bfsQ.pop();
+
+                if(temp.first > 0 && grid[temp.first-1][temp.second] == 1 && !vizitedCopy[temp.first-1][temp.second]) {
+                    if(minCounter > depth[temp.first][temp.second]) minCounter = depth[temp.first][temp.second];
+                    break;
+                }
+                if(temp.first < grid.size()-1 && grid[temp.first+1][temp.second] == 1 && !vizitedCopy[temp.first+1][temp.second]) {
+                    if(minCounter > depth[temp.first][temp.second]) minCounter = depth[temp.first][temp.second];
+                    break;
+                }
+                if(temp.second > 0 && grid[temp.first][temp.second-1] == 1 && !vizitedCopy[temp.first][temp.second-1]) {
+                    if(minCounter > depth[temp.first][temp.second]) minCounter = depth[temp.first][temp.second];
+                    break;
+                }
+                if(temp.second < grid.size()-1 && grid[temp.first][temp.second+1] == 1 && !vizitedCopy[temp.first][temp.second+1]) {
+                    if(minCounter > depth[temp.first][temp.second]) minCounter = depth[temp.first][temp.second];
+                    break;
+                }
+
+                if(temp.first > 0 && grid[temp.first-1][temp.second] == 0 && !vizitedCopy[temp.first-1][temp.second]) {
+                    vizitedCopy[temp.first-1][temp.second] = true;
+                    depth[temp.first-1][temp.second] = depth[temp.first][temp.second] + 1;
+                    bfsQ.push(make_pair(temp.first-1,temp.second));
+                }
+                if(temp.first < grid.size()-1 && grid[temp.first+1][temp.second] == 0 && !vizitedCopy[temp.first+1][temp.second]) {
+                    vizitedCopy[temp.first+1][temp.second] = true;
+                    depth[temp.first+1][temp.second] = depth[temp.first][temp.second] + 1;
+                    bfsQ.push(make_pair(temp.first+1,temp.second));
+                }
+                if(temp.second > 0 && grid[temp.first][temp.second-1] == 0 && !vizitedCopy[temp.first][temp.second-1]) {
+                    vizitedCopy[temp.first][temp.second-1] = true;
+                    depth[temp.first][temp.second-1] = depth[temp.first][temp.second] + 1;
+                    bfsQ.push(make_pair(temp.first,temp.second-1));
+                }
+                if(temp.second < grid.size()-1 && grid[temp.first][temp.second+1] == 0 && !vizitedCopy[temp.first][temp.second+1]) {
+                    vizitedCopy[temp.first][temp.second+1] = true;
+                    depth[temp.first][temp.second+1] = depth[temp.first][temp.second] + 1;
+                    bfsQ.push(make_pair(temp.first,temp.second+1));
+                }
+            }
+        }
+    }
+
+    return minCounter+1;
+}
+
 int main() {
+    // Possible Bipartition Tests
+    /*vector<vector<int>> d = {{1,2},{3,4},{5,6},
+                            {6,7},{8,9},{7,8}};
+
+    vector<vector<int>> d2 = {{1,2},{1,3},{2,4}};
+    vector<vector<int>> d3 = {{1,2},{1,3},{2,3}};
+    vector<vector<int>> d4 = {{1,2},{3,4},{4,5},{3,5}};
+    vector<vector<int>> d5 = {{39,46},{4,41},{3,35},{8,44},{22,44},{7,49},{28,41},{7,25},{6,35},{2,22},{34,35},{3,7},{1,11},{11,48},{8,24},{6,7},{38,40},{37,48},{3,45},{44,45},{4,46},{23,35},{28,46},{7,28},{35,36},{18,20},{8,15},{17,41},{13,35},{6,22},{22,48},{22,39},{4,35},{8,38},{23,41},{10,41},{6,41},{18,48},{16,41},{37,44},{8,12},{18,36},{16,18},{7,44},{3,18},{10,46},{20,37},{2,37},{11,49},{30,45},{28,37},{23,37},{22,23},{5,37},{29,40},{16,35},{22,26},{46,49},{18,26},{8,9},{24,46},{8,28},{11,29},{22,24},{7,15},{4,37},{9,40},{8,32},{23,40},{40,42},{33,40},{17,45},{40,48},{12,41},{43,45},{38,41},{45,47},{12,18},{7,31},{34,37},{8,48},{4,11},{46,48},{2,7},{17,40},{12,46},{22,49},{46,50},{37,50},{22,36},{22,43},{41,44},{13,22},{11,16},{7,47},{14,37},{37,43},{13,37},{26,40},{19,41},{46,47},{16,22},{19,22},{22,33},{11,19},{35,44},{7,33},{41,49},{38,45},{25,35},{3,37},{15,22},{6,18},{11,30},{5,41},{8,33},{1,46},{31,46},{41,42},{18,28},{15,41},{35,49},{25,41},{20,45},{26,46},{8,43},{5,45},{28,40},{1,18},{23,46},{13,18},{35,38},{8,49},{11,44},{18,33},{4,7},{5,7},{10,11},{37,49},{9,22},{4,45},{32,45},{32,37},{29,35},{26,35},{7,29},{1,37},{8,14},{5,11},{18,29},{18,49},{21,41},{17,35},{7,10},{22,38},{40,43},{5,35},{33,35},{6,40},{34,40},{22,34},{16,40},{19,46},{18,39},{24,35},{19,35},{18,50},{8,17},{11,12},{27,35},{8,47},{7,9},{7,36},{8,34},{7,26},{31,41},{29,41},{10,45},{9,35},{33,46},{11,32},{34,45},{42,46},{15,40},{40,50},{30,40},{25,40},{15,37}};
+
+    Graph g;
+    cout << g.possibleBipartition(5,d4);*/
+
+    // Shortest Bridge Tests
+    /*vector<vector<int>> t1 = {{0,1},{1,0}};
+    vector<vector<int>> t2 = {{0,1,0},{0,0,0},{0,0,1}};
+    vector<vector<int>> t3 = {{1,1,1,1,1},{1,0,0,0,1},{1,0,1,0,1},{1,0,0,0,1},{1,1,1,1,1}};
+    vector<vector<int>> t4 = {{1,1,0,0,0},{1,0,0,0,0},{1,0,0,0,0},{0,0,0,1,1},{0,0,0,1,1}};
+
+    Graph g;
+    cout << g.shortestBridge(t4);*/
+
+    
     return 0;
 }
