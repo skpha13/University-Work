@@ -14,6 +14,8 @@ public:
     vector<int> findOrder(int numCourses, vector<vector<int>>& prerequisites);
     bool equationsPossible(vector<string>& equations);
     vector<int> eventualSafeNodes(vector<vector<int>>& graph);
+    vector<vector<int>> criticalConnections(int n, vector<vector<int>>& connections);
+    void DFSforCriticalConnections(int node,vector<vector<int>>& adjacencyList, vector<bool>& vizited, vector<int>& level, vector<int>& low, vector<vector<int>>& result);
 };
 
 bool Graph::possibleBipartition(int n, vector<vector<int>>& dislikes) {
@@ -293,6 +295,45 @@ vector<int> Graph::eventualSafeNodes(vector<vector<int>> &graph) {
     return sortedVector;
 }
 
+void Graph::DFSforCriticalConnections(int node, vector<vector<int>>& adjacencyList, vector<bool> &vizited, vector<int> &level, vector<int> &low, vector<vector<int>>& result) {
+    vizited[node] = true;
+    for(int i=0;i<adjacencyList[node].size();i++) {
+        if(!vizited[adjacencyList[node][i]]) {
+            level[adjacencyList[node][i]] = level[node] + 1;
+            low[adjacencyList[node][i]] = level[node] + 1;
+
+            DFSforCriticalConnections(adjacencyList[node][i],adjacencyList,vizited,level,low,result);
+
+            if(low[node] >= low[adjacencyList[node][i]])
+                low[node] = low[adjacencyList[node][i]];
+
+            if(low[adjacencyList[node][i]] > level[node])
+                result.push_back({node,adjacencyList[node][i]});
+
+        }
+        else {
+            if(level[node]-1 > level[adjacencyList[node][i]] && low[node] >= level[adjacencyList[node][i]])
+                low[node] = level[adjacencyList[node][i]];
+        }
+    }
+}
+
+vector<vector<int>> Graph::criticalConnections(int n, vector<vector<int>>& connections) {
+    vector<int> level(n,0),low(n,0);
+    vector<bool> vizited(n,false);
+    vector<vector<int>> adjacencyList(n);
+    vector<vector<int>> result;
+
+    for(auto it:connections) {
+        adjacencyList[it[0]].push_back(it[1]);
+        adjacencyList[it[1]].push_back(it[0]);
+    }
+
+    DFSforCriticalConnections(0,adjacencyList,vizited,level,low,result);
+
+    return result;
+}
+
 int main() {
     // Possible Bipartition Tests
     /*vector<vector<int>> d = {{1,2},{3,4},{5,6},
@@ -344,6 +385,10 @@ int main() {
     for(auto it:result) cout<<it<<" ";
     cout<<endl;*/
 
-    
+    vector<vector<int>> connections1 = {{0,1},{1,2},{2,0},{1,3}};
+    vector<vector<int>> connections2 = {{0,1}};
+    Graph g;
+    for(auto it:g.criticalConnections(4,connections1))
+        cout<<"("<<it[0]<<", "<<it[1]<<") ";
     return 0;
 }
