@@ -1,6 +1,8 @@
 #include <iostream>
 #include <vector>
 #include <queue>
+#include <string>
+#include <algorithm>
 
 using namespace std;
 
@@ -9,6 +11,9 @@ public:
     bool possibleBipartition(int n, vector<vector<int>>& dislikes);
     int shortestBridge(vector<vector<int>>& grid);
     void DFSforShortestBridge(int i, int j,  vector<vector<int>>& grid, vector<vector<bool>>& vizited, queue<pair<int,int>>& waterNodes);
+    vector<int> findOrder(int numCourses, vector<vector<int>>& prerequisites);
+    bool equationsPossible(vector<string>& equations);
+    vector<int> eventualSafeNodes(vector<vector<int>>& graph);
 };
 
 bool Graph::possibleBipartition(int n, vector<vector<int>>& dislikes) {
@@ -48,6 +53,7 @@ bool Graph::possibleBipartition(int n, vector<vector<int>>& dislikes) {
             }
         }
     }
+
     return true;
 }
 
@@ -141,6 +147,152 @@ int Graph::shortestBridge(vector<vector<int>> &grid) {
     return minCounter+1;
 }
 
+vector<int> Graph::findOrder(int numCourses, vector<vector<int>> &prerequisites) {
+    vector<int> sortedVector;
+    vector<int> precedence(numCourses, 0);
+    queue<int> nodes;
+    vector<vector<int>> connections(numCourses);
+
+    if(prerequisites.empty()) {
+        vector<int> allCourses;
+        for(int i=0;i<numCourses;i++)
+            allCourses.push_back(i);
+    }
+
+    for(int i=0;i<prerequisites.size();i++) {
+        precedence[prerequisites[i][0]]++;
+        connections[prerequisites[i][1]].push_back(prerequisites[i][0]);
+    }
+
+    for(int i=0;i<numCourses;i++)
+        if(precedence[i] == 0)
+            nodes.push(i);
+
+    int countEdgeRemoval = 0;
+
+    while(!nodes.empty()) {
+        int temp = nodes.front();
+        nodes.pop();
+
+        sortedVector.push_back(temp);
+
+        for(int i=0;i<connections[temp].size();i++) {
+            precedence[connections[temp][i]]--;
+            countEdgeRemoval++;
+            if(precedence[connections[temp][i]] == 0) {
+                nodes.push(connections[temp][i]);
+            }
+            // deleting v[2] places v[2] in position v[1] so we need to decrement i when deleting
+            connections[temp].erase(connections[temp].begin() + i);
+            i--;
+        }
+    }
+
+    if(countEdgeRemoval != prerequisites.size()) return {};
+
+    return sortedVector;
+}
+
+bool Graph::equationsPossible(vector<std::string> &equations) {
+    vector<int> team('z' - 'a' + 1,0);
+    vector<vector<pair<int,bool>>> connections('z'-'a'+1);
+    vector<bool> vizited('z'-'a'+1,false);
+    queue<int> nodeQueue;
+    int teamCounter = 1;
+
+    for(int i=0;i<equations.size();i++) {
+        if(equations[i][1] == '!') {
+            if(equations[i][0] != equations[i][3]) {
+                connections[equations[i][0]-'a'].push_back(make_pair(equations[i][3] - 'a', false));
+                connections[equations[i][3]-'a'].push_back(make_pair(equations[i][0] - 'a',false));
+            } else return false;
+        }
+        else
+            if(equations[i][0] != equations[i][3]) {
+                connections[equations[i][0]-'a'].push_back(make_pair(equations[i][3] - 'a', true));
+                connections[equations[i][3]-'a'].push_back(make_pair(equations[i][0] - 'a', true));
+            }
+    }
+
+    for(int i=0;i<26;i++) {
+        if(!vizited[i] && connections[i].size() > 0) {
+            vizited[i] = true;
+            if(team[i] == 0) team[i] = teamCounter++;
+            nodeQueue.push(i);
+
+            while(!nodeQueue.empty()) {
+                int temp = nodeQueue.front();
+                nodeQueue.pop();
+
+                for(int i=0;i<connections[temp].size();i++) {
+                    if(!vizited[connections[temp][i].first]) {
+                        vizited[connections[temp][i].first] = true;
+
+                        if(connections[temp][i].second == false && team[connections[temp][i].first] == 0)
+                            team[connections[temp][i].first] = teamCounter++;
+                        else if(connections[temp][i].second == true && team[connections[temp][i].first] == 0)
+                            team[connections[temp][i].first] = team[temp];
+
+                        if(connections[temp][i].second == true && team[connections[temp][i].first] != team[temp])
+                            return false;
+
+                        if(connections[temp][i].second == false && team[connections[temp][i].first] == team[temp])
+                            return false;
+
+                        nodeQueue.push(connections[temp][i].first);
+                    } else {
+                        if(connections[temp][i].second == true && team[connections[temp][i].first] != team[temp])
+                            return false;
+
+                        if(connections[temp][i].second == false && team[connections[temp][i].first] == team[temp])
+                            return false;
+                    }
+                }
+            }
+        }
+    }
+
+    return true;
+}
+
+vector<int> Graph::eventualSafeNodes(vector<vector<int>> &graph) {
+    vector<int> sortedVector;
+    vector<int> subsequent(graph.size(), 0);
+    vector<vector<int>> reverseGraph(graph.size());
+    queue<int> nodes;
+
+    for(int i=0;i<graph.size();i++) {
+        if(graph[i].size() > 0) subsequent[i] += graph[i].size();
+        for(int j=0;j<graph[i].size();j++) {
+            reverseGraph[graph[i][j]].push_back(i);
+        }
+    }
+
+    for(int i=0;i<subsequent.size();i++)
+        if(subsequent[i] == 0)
+            nodes.push(i);
+
+    while(!nodes.empty()) {
+        int temp = nodes.front();
+        nodes.pop();
+
+        sortedVector.push_back(temp);
+
+        for(int i=0;i<reverseGraph[temp].size();i++) {
+            subsequent[reverseGraph[temp][i]]--;
+            if(subsequent[reverseGraph[temp][i]] == 0) {
+                nodes.push(reverseGraph[temp][i]);
+            }
+            // deleting v[2] places v[2] in position v[1] so we need to decrement i when deleting
+            reverseGraph[temp].erase(reverseGraph[temp].begin() + i);
+            i--;
+        }
+    }
+
+    sort(sortedVector.begin(),sortedVector.end());
+    return sortedVector;
+}
+
 int main() {
     // Possible Bipartition Tests
     /*vector<vector<int>> d = {{1,2},{3,4},{5,6},
@@ -162,6 +314,35 @@ int main() {
 
     Graph g;
     cout << g.shortestBridge(t4);*/
+
+    // Course Schedule 2 Tests
+    /*Graph g;
+    vector<vector<int>> prerequisites1 = {{1,0}};
+    vector<vector<int>> prerequisites2 = {{1,0},{2,0},{3,1},{3,2}};
+    vector<vector<int>> prerequisites3 = {};
+    vector<int> result = g.findOrder(2,prerequisites3);
+    for(auto i:result) cout<<i<<" ";*/
+
+    // Satifiability of Equality Equations - this approach doesnt work
+    /*Graph g;
+    vector<vector<string>> inputs = {{"a==b","b!=a"},{"b==a","a==b"},{"a==b","b==c","a!=c"},{"c==c","b==d","x!=z"},{"a!=b","b!=c","c!=a"},{"b==b","b==e","e==c","d!=e"},{"a!=a"}};
+    vector<bool> solutions = {false,true,false,true,true,true,false};
+
+    for(int i=0;i<solutions.size();i++) {
+        cout<<"TEST "<<i<<": ";
+        if(solutions[i] != g.equationsPossible(inputs[i])) cout<<"FAILED\n";
+        else cout<<"PASSED\n";
+    }*/
+
+    // Find Eventual Safe Nodes
+    /*Graph g;
+    vector<vector<int>> graph1 = {{1,2},{2,3},{5},{0},{5},{},{}};
+    vector<vector<int>> graph2 = {{1,2,3,4},{1,2},{3,4},{0,4},{}};
+    vector<vector<int>> graph3 = {{1},{2},{0,3},{}};
+    vector<int> result = g.eventualSafeNodes(graph3);
+    cout<<"\n\tRESULT: "<<endl;
+    for(auto it:result) cout<<it<<" ";
+    cout<<endl;*/
 
     
     return 0;
