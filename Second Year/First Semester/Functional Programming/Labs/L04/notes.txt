@@ -1,0 +1,12 @@
+aplica 3 la fiecare din functiile din lista
+map ($3) [10-,*2,sqrt] => [7,9,1.7] 
+
+f1 (f2 3) <=> f1 $ f2 3 <=> (f1.f2) 3
+
+vect !! x -> pentru vectori scoate el de pe poz x
+la tupluri fst,snd scoate primul si al doilea element
+    trd(_,_,c) = c
+    definim noi pentru orice altceva
+
+myzip3 (a,e1) (b,e2) (c,e3) 
+myzip3 _ _ _ = []
