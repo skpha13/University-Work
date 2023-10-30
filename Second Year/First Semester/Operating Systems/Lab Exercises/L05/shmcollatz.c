@@ -94,6 +94,7 @@ int main(int argc, const char* argv[]) {
     }
 
     munmap(shm_ptr, shm_size);
+    shm_unlink(shm_name);
     printf("Done Parent %i Me %i\n",firstParentProcess,firstChildProcess);
     
     return 0;
