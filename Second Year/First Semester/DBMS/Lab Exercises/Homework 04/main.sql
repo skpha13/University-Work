@@ -6,7 +6,7 @@ create table subscrpitii (
     id number(6) primary key,
     nume varchar2(20),
     lista_filme filme
-)
+);
 
 declare
     v_filme filme := filme(1,2,3);
@@ -34,8 +34,8 @@ begin
     delete subscrpitii;
 end;
 
-drop type filme;
 drop table subscrpitii;
+drop type filme;
 
 -- exercitiul 10
 
