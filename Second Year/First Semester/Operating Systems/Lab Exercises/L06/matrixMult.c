@@ -36,6 +36,7 @@ int main (int argc, char* argv[]) {
     int cols = 3;
     int *matrix1 = malloc((rows * cols) * sizeof(int));
     int *matrix2 = malloc((rows * cols) * sizeof(int));
+    int *resultingMatrix = malloc((rows * cols) * sizeof(int));
 
     for(int i=0;i<rows*cols;i++) matrix1[i] = i+1;
     for(int i=0;i<rows*cols;i++) matrix2[i] = i+1;
@@ -48,22 +49,30 @@ int main (int argc, char* argv[]) {
     arguments.rowMultiplied = 0;
     arguments.columnMultiplied = 0;
 
-    if (pthread_create(&thr, NULL, multiplyRowWithColumn, &arguments)) {
-        perror(NULL);
-        return errno;
+    for(int i=0;i<rows;i++) {
+        for(int j=0;j<cols;j++) {
+            arguments.rowMultiplied = i;
+            arguments.columnMultiplied = j;
+
+            if (pthread_create(&thr, NULL, multiplyRowWithColumn, &arguments)) {
+                perror(NULL);
+                return errno;
+            }
+
+            void *result;
+            if (pthread_join(thr, &result)) {
+                perror(NULL);
+                return errno;
+            }
+            resultingMatrix[i * cols + j] = *((int*)result);
+
+            free(result);
+        }
     }
 
-    void *result;
-    if (pthread_join(thr, &result)) {
-        perror(NULL);
-        return errno;
-    }
-
-    printf("%i\n", *((int*)result));
-
-    free(result);
+    printMatrix(resultingMatrix,rows,cols);
     free(matrix1);
     free(matrix2);
-
+    free(resultingMatrix);
     return 0;
 }
