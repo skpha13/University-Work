@@ -10,7 +10,7 @@
 struct args {
     int *matrix1,*matrix2;
     int rows,cols, rowMultiplied, columnMultiplied;
-} arguments;
+};
 
 void printMatrix(int *m, int rows, int cols) {
     for(int i=0;i<rows;i++) {
@@ -41,14 +41,9 @@ int main (int argc, char* argv[]) {
     for(int i=0;i<rows*cols;i++) matrix1[i] = i+1;
     for(int i=0;i<rows*cols;i++) matrix2[i] = i+1;
 
-    pthread_t thr;
-    arguments.matrix1 = matrix1;
-    arguments.matrix2 = matrix2;
-    arguments.rows = rows;
-    arguments.cols = cols;
-    arguments.rowMultiplied = 0;
-    arguments.columnMultiplied = 0;
+    struct args arguments = {matrix1,matrix2,rows,cols,0,0};
 
+    pthread_t thr;
     for(int i=0;i<rows;i++) {
         for(int j=0;j<cols;j++) {
             arguments.rowMultiplied = i;
