@@ -9,7 +9,7 @@
 
 struct args {
     int *matrix1,*matrix2;
-    int rows,cols;
+    int rows,cols, rowMultiplied, columnMultiplied;
 } arguments;
 
 void printMatrix(int *m, int rows, int cols) {
@@ -20,9 +20,15 @@ void printMatrix(int *m, int rows, int cols) {
     }
 }
 
-void * multiply(void *v) {
+void * multiplyRowWithColumn(void *v) {
     struct args *arg = v;
-    printMatrix(arg->matrix1, arg->rows, arg->cols);
+    int *result = malloc(sizeof(int));
+    *result = 0;
+    for(int j=0;j<arg->cols;j++) {
+        *result += arg->matrix1[arg->rowMultiplied * arg->cols + j] * 
+                               arg->matrix2[j * arg->cols + arg->columnMultiplied];    
+    }
+    return result;
 }
 
 int main (int argc, char* argv[]) {
@@ -39,8 +45,10 @@ int main (int argc, char* argv[]) {
     arguments.matrix2 = matrix2;
     arguments.rows = rows;
     arguments.cols = cols;
+    arguments.rowMultiplied = 0;
+    arguments.columnMultiplied = 0;
 
-    if (pthread_create(&thr, NULL, multiply, &arguments)) {
+    if (pthread_create(&thr, NULL, multiplyRowWithColumn, &arguments)) {
         perror(NULL);
         return errno;
     }
@@ -51,6 +59,9 @@ int main (int argc, char* argv[]) {
         return errno;
     }
 
+    printf("%i\n", *((int*)result));
+
+    free(result);
     free(matrix1);
     free(matrix2);
 
