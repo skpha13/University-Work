@@ -7,26 +7,48 @@
 using namespace std;
 
 class Graph {
+private:
+    int n;
+    vector<vector<int>> connections;
+    vector<bool> vizited;
+
+    // private helper functions
+    void DFSforCriticalConnections(int node, vector<int>& level, vector<int>& low, vector<vector<int>>& result);
+
 public:
-    bool possibleBipartition(int n, vector<vector<int>>& dislikes);
+    // constructors
+    Graph(int n, vector<vector<int>>& connections);
+
+    // resolved functions
+    bool isBipartit();
+    vector<vector<int>> criticalConnections();
+
+    // unresolved functions
+
+        // a lot to change here, leave it for later
     int shortestBridge(vector<vector<int>>& grid);
     void DFSforShortestBridge(int i, int j,  vector<vector<int>>& grid, vector<vector<bool>>& vizited, queue<pair<int,int>>& waterNodes);
+
+        // same thing topological sort
     vector<int> findOrder(int numCourses, vector<vector<int>>& prerequisites);
-    bool equationsPossible(vector<string>& equations);
     vector<int> eventualSafeNodes(vector<vector<int>>& graph);
-    vector<vector<int>> criticalConnections(int n, vector<vector<int>>& connections);
-    void DFSforCriticalConnections(int node,vector<vector<int>>& adjacencyList, vector<bool>& vizited, vector<int>& level, vector<int>& low, vector<vector<int>>& result);
+
+        // this doesnt work
+    bool equationsPossible(vector<string>& equations);
 };
 
-bool Graph::possibleBipartition(int n, vector<vector<int>>& dislikes) {
-    vector<vector<int>> connections(n+1);
-    for(int i=0;i<dislikes.size();i++) {
-        connections[dislikes[i][0]].push_back(dislikes[i][1]);
-        connections[dislikes[i][1]].push_back(dislikes[i][0]);
+Graph::Graph(int n, vector<vector<int>> &connections) {
+    this->n = n;
+    this->connections.resize(n+1);
+    for(int i=0;i<connections.size();i++) {
+        this->connections[connections[i][0]].push_back(connections[i][1]);
+        this->connections[connections[i][1]].push_back(connections[i][0]);
     }
+    this->vizited.resize(n+1,false);
+}
 
+bool Graph::isBipartit() {
     vector<int> team(n+1,0);
-    vector<bool> vizited(n+1,false);
     queue<int> nodeQueue;
 
     for(int k=1;k<=n;k++) {
@@ -295,41 +317,33 @@ vector<int> Graph::eventualSafeNodes(vector<vector<int>> &graph) {
     return sortedVector;
 }
 
-void Graph::DFSforCriticalConnections(int node, vector<vector<int>>& adjacencyList, vector<bool> &vizited, vector<int> &level, vector<int> &low, vector<vector<int>>& result) {
+void Graph::DFSforCriticalConnections(int node, vector<int> &level, vector<int> &low, vector<vector<int>>& result) {
     vizited[node] = true;
-    for(int i=0;i<adjacencyList[node].size();i++) {
-        if(!vizited[adjacencyList[node][i]]) {
-            level[adjacencyList[node][i]] = level[node] + 1;
-            low[adjacencyList[node][i]] = level[node] + 1;
+    for(int i=0;i<connections[node].size();i++) {
+        if(!vizited[connections[node][i]]) {
+            level[connections[node][i]] = level[node] + 1;
+            low[connections[node][i]] = level[node] + 1;
 
-            DFSforCriticalConnections(adjacencyList[node][i],adjacencyList,vizited,level,low,result);
+            DFSforCriticalConnections(connections[node][i],level,low,result);
 
-            if(low[node] >= low[adjacencyList[node][i]])
-                low[node] = low[adjacencyList[node][i]];
+            if(low[node] >= low[connections[node][i]])
+                low[node] = low[connections[node][i]];
 
-            if(low[adjacencyList[node][i]] > level[node])
-                result.push_back({node,adjacencyList[node][i]});
-
+            if(low[connections[node][i]] > level[node])
+                result.push_back({node,connections[node][i]});
         }
         else {
-            if(level[node]-1 > level[adjacencyList[node][i]] && low[node] >= level[adjacencyList[node][i]])
-                low[node] = level[adjacencyList[node][i]];
+            if(level[node]-1 > level[connections[node][i]] && low[node] >= level[connections[node][i]])
+                low[node] = level[connections[node][i]];
         }
     }
 }
 
-vector<vector<int>> Graph::criticalConnections(int n, vector<vector<int>>& connections) {
+vector<vector<int>> Graph::criticalConnections() {
     vector<int> level(n,0),low(n,0);
-    vector<bool> vizited(n,false);
-    vector<vector<int>> adjacencyList(n);
     vector<vector<int>> result;
 
-    for(auto it:connections) {
-        adjacencyList[it[0]].push_back(it[1]);
-        adjacencyList[it[1]].push_back(it[0]);
-    }
-
-    DFSforCriticalConnections(0,adjacencyList,vizited,level,low,result);
+    DFSforCriticalConnections(0,level,low,result);
 
     return result;
 }
@@ -344,8 +358,8 @@ int main() {
     vector<vector<int>> d4 = {{1,2},{3,4},{4,5},{3,5}};
     vector<vector<int>> d5 = {{39,46},{4,41},{3,35},{8,44},{22,44},{7,49},{28,41},{7,25},{6,35},{2,22},{34,35},{3,7},{1,11},{11,48},{8,24},{6,7},{38,40},{37,48},{3,45},{44,45},{4,46},{23,35},{28,46},{7,28},{35,36},{18,20},{8,15},{17,41},{13,35},{6,22},{22,48},{22,39},{4,35},{8,38},{23,41},{10,41},{6,41},{18,48},{16,41},{37,44},{8,12},{18,36},{16,18},{7,44},{3,18},{10,46},{20,37},{2,37},{11,49},{30,45},{28,37},{23,37},{22,23},{5,37},{29,40},{16,35},{22,26},{46,49},{18,26},{8,9},{24,46},{8,28},{11,29},{22,24},{7,15},{4,37},{9,40},{8,32},{23,40},{40,42},{33,40},{17,45},{40,48},{12,41},{43,45},{38,41},{45,47},{12,18},{7,31},{34,37},{8,48},{4,11},{46,48},{2,7},{17,40},{12,46},{22,49},{46,50},{37,50},{22,36},{22,43},{41,44},{13,22},{11,16},{7,47},{14,37},{37,43},{13,37},{26,40},{19,41},{46,47},{16,22},{19,22},{22,33},{11,19},{35,44},{7,33},{41,49},{38,45},{25,35},{3,37},{15,22},{6,18},{11,30},{5,41},{8,33},{1,46},{31,46},{41,42},{18,28},{15,41},{35,49},{25,41},{20,45},{26,46},{8,43},{5,45},{28,40},{1,18},{23,46},{13,18},{35,38},{8,49},{11,44},{18,33},{4,7},{5,7},{10,11},{37,49},{9,22},{4,45},{32,45},{32,37},{29,35},{26,35},{7,29},{1,37},{8,14},{5,11},{18,29},{18,49},{21,41},{17,35},{7,10},{22,38},{40,43},{5,35},{33,35},{6,40},{34,40},{22,34},{16,40},{19,46},{18,39},{24,35},{19,35},{18,50},{8,17},{11,12},{27,35},{8,47},{7,9},{7,36},{8,34},{7,26},{31,41},{29,41},{10,45},{9,35},{33,46},{11,32},{34,45},{42,46},{15,40},{40,50},{30,40},{25,40},{15,37}};
 
-    Graph g;
-    cout << g.possibleBipartition(5,d4);*/
+    Graph g(5,d4);
+    cout << g.isBipartit();*/
 
     // Shortest Bridge Tests
     /*vector<vector<int>> t1 = {{0,1},{1,0}};
@@ -385,10 +399,10 @@ int main() {
     for(auto it:result) cout<<it<<" ";
     cout<<endl;*/
 
-    vector<vector<int>> connections1 = {{0,1},{1,2},{2,0},{1,3}};
+    /*vector<vector<int>> connections1 = {{0,1},{1,2},{2,0},{1,3}};
     vector<vector<int>> connections2 = {{0,1}};
-    Graph g;
-    for(auto it:g.criticalConnections(4,connections1))
-        cout<<"("<<it[0]<<", "<<it[1]<<") ";
+    Graph g(4,connections1);
+    for(auto it:g.criticalConnections())
+        cout<<"("<<it[0]<<", "<<it[1]<<") ";*/
     return 0;
 }
