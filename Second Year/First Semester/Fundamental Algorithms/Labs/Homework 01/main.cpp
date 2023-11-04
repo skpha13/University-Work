@@ -8,43 +8,57 @@ using namespace std;
 
 class Graph {
 private:
-    int n;
+    // n = number of nodes
+    int n, numberOfEdges;
     vector<vector<int>> connections;
     vector<bool> vizited;
+    vector<int> precedence;
 
     // private helper functions
     void DFSforCriticalConnections(int node, vector<int>& level, vector<int>& low, vector<vector<int>>& result);
+    void DFSforShortestBridge(int i, int j,  vector<vector<int>>& grid, vector<vector<bool>>& vizited, queue<pair<int,int>>& waterNodes);
 
 public:
     // constructors
-    Graph(int n, vector<vector<int>>& connections);
+    Graph(int n, vector<vector<int>> &connections, bool isOriented, bool needsPrecedence);
 
     // resolved functions
     bool isBipartit();
     vector<vector<int>> criticalConnections();
+    vector<int> topologicalSort();
 
     // unresolved functions
 
         // a lot to change here, leave it for later
     int shortestBridge(vector<vector<int>>& grid);
-    void DFSforShortestBridge(int i, int j,  vector<vector<int>>& grid, vector<vector<bool>>& vizited, queue<pair<int,int>>& waterNodes);
 
         // same thing topological sort
-    vector<int> findOrder(int numCourses, vector<vector<int>>& prerequisites);
     vector<int> eventualSafeNodes(vector<vector<int>>& graph);
 
         // this doesnt work
     bool equationsPossible(vector<string>& equations);
 };
 
-Graph::Graph(int n, vector<vector<int>> &connections) {
+Graph::Graph(int n, vector<vector<int>> &connections, bool isOriented = false, bool needsPrecedence = false) {
     this->n = n;
     this->connections.resize(n+1);
-    for(int i=0;i<connections.size();i++) {
-        this->connections[connections[i][0]].push_back(connections[i][1]);
-        this->connections[connections[i][1]].push_back(connections[i][0]);
+    this->numberOfEdges = connections.size();
+
+    if (isOriented == false) {
+        for (int i = 0; i < connections.size(); i++) {
+            this->connections[connections[i][0]].push_back(connections[i][1]);
+            this->connections[connections[i][1]].push_back(connections[i][0]);
+        }
+        this->vizited.resize(n+1,false);
     }
-    this->vizited.resize(n+1,false);
+    else {
+        this->precedence.resize(n,0);
+        for(int i=0;i<connections.size();i++) {
+            if(needsPrecedence) this->precedence[connections[i][0]]++;
+
+            this->connections[connections[i][1]].push_back(connections[i][0]);
+        }
+    }
 }
 
 bool Graph::isBipartit() {
@@ -171,28 +185,20 @@ int Graph::shortestBridge(vector<vector<int>> &grid) {
     return minCounter+1;
 }
 
-vector<int> Graph::findOrder(int numCourses, vector<vector<int>> &prerequisites) {
+vector<int> Graph::topologicalSort() {
     vector<int> sortedVector;
-    vector<int> precedence(numCourses, 0);
     queue<int> nodes;
-    vector<vector<int>> connections(numCourses);
+    int countEdgeRemoval = 0;
 
-    if(prerequisites.empty()) {
-        vector<int> allCourses;
-        for(int i=0;i<numCourses;i++)
-            allCourses.push_back(i);
+    if(numberOfEdges == 0) {
+        for(int i=0;i<n;i++)
+            sortedVector.push_back(i);
+        return sortedVector;
     }
 
-    for(int i=0;i<prerequisites.size();i++) {
-        precedence[prerequisites[i][0]]++;
-        connections[prerequisites[i][1]].push_back(prerequisites[i][0]);
-    }
-
-    for(int i=0;i<numCourses;i++)
+    for(int i=0;i<n;i++)
         if(precedence[i] == 0)
             nodes.push(i);
-
-    int countEdgeRemoval = 0;
 
     while(!nodes.empty()) {
         int temp = nodes.front();
@@ -212,7 +218,7 @@ vector<int> Graph::findOrder(int numCourses, vector<vector<int>> &prerequisites)
         }
     }
 
-    if(countEdgeRemoval != prerequisites.size()) return {};
+    if(countEdgeRemoval != numberOfEdges) return {};
 
     return sortedVector;
 }
@@ -358,7 +364,7 @@ int main() {
     vector<vector<int>> d4 = {{1,2},{3,4},{4,5},{3,5}};
     vector<vector<int>> d5 = {{39,46},{4,41},{3,35},{8,44},{22,44},{7,49},{28,41},{7,25},{6,35},{2,22},{34,35},{3,7},{1,11},{11,48},{8,24},{6,7},{38,40},{37,48},{3,45},{44,45},{4,46},{23,35},{28,46},{7,28},{35,36},{18,20},{8,15},{17,41},{13,35},{6,22},{22,48},{22,39},{4,35},{8,38},{23,41},{10,41},{6,41},{18,48},{16,41},{37,44},{8,12},{18,36},{16,18},{7,44},{3,18},{10,46},{20,37},{2,37},{11,49},{30,45},{28,37},{23,37},{22,23},{5,37},{29,40},{16,35},{22,26},{46,49},{18,26},{8,9},{24,46},{8,28},{11,29},{22,24},{7,15},{4,37},{9,40},{8,32},{23,40},{40,42},{33,40},{17,45},{40,48},{12,41},{43,45},{38,41},{45,47},{12,18},{7,31},{34,37},{8,48},{4,11},{46,48},{2,7},{17,40},{12,46},{22,49},{46,50},{37,50},{22,36},{22,43},{41,44},{13,22},{11,16},{7,47},{14,37},{37,43},{13,37},{26,40},{19,41},{46,47},{16,22},{19,22},{22,33},{11,19},{35,44},{7,33},{41,49},{38,45},{25,35},{3,37},{15,22},{6,18},{11,30},{5,41},{8,33},{1,46},{31,46},{41,42},{18,28},{15,41},{35,49},{25,41},{20,45},{26,46},{8,43},{5,45},{28,40},{1,18},{23,46},{13,18},{35,38},{8,49},{11,44},{18,33},{4,7},{5,7},{10,11},{37,49},{9,22},{4,45},{32,45},{32,37},{29,35},{26,35},{7,29},{1,37},{8,14},{5,11},{18,29},{18,49},{21,41},{17,35},{7,10},{22,38},{40,43},{5,35},{33,35},{6,40},{34,40},{22,34},{16,40},{19,46},{18,39},{24,35},{19,35},{18,50},{8,17},{11,12},{27,35},{8,47},{7,9},{7,36},{8,34},{7,26},{31,41},{29,41},{10,45},{9,35},{33,46},{11,32},{34,45},{42,46},{15,40},{40,50},{30,40},{25,40},{15,37}};
 
-    Graph g(5,d4);
+    Graph g(50,d);
     cout << g.isBipartit();*/
 
     // Shortest Bridge Tests
@@ -371,11 +377,13 @@ int main() {
     cout << g.shortestBridge(t4);*/
 
     // Course Schedule 2 Tests
-    /*Graph g;
-    vector<vector<int>> prerequisites1 = {{1,0}};
+    /*vector<vector<int>> prerequisites1 = {{1,0}};
     vector<vector<int>> prerequisites2 = {{1,0},{2,0},{3,1},{3,2}};
     vector<vector<int>> prerequisites3 = {};
-    vector<int> result = g.findOrder(2,prerequisites3);
+
+    Graph g(2,prerequisites1,true,true);
+
+    vector<int> result = g.topologicalSort();
     for(auto i:result) cout<<i<<" ";*/
 
     // Satifiability of Equality Equations - this approach doesnt work
@@ -401,7 +409,7 @@ int main() {
 
     /*vector<vector<int>> connections1 = {{0,1},{1,2},{2,0},{1,3}};
     vector<vector<int>> connections2 = {{0,1}};
-    Graph g(4,connections1);
+    Graph g(2,connections2);
     for(auto it:g.criticalConnections())
         cout<<"("<<it[0]<<", "<<it[1]<<") ";*/
     return 0;
