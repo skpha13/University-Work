@@ -37,6 +37,7 @@ private:
     vector<vector<int>> connections;
     vector<bool> vizited;
     vector<int> precedence;
+    vector<bool> markedNodes;
     bool findCompleteTopologicalSort;
     // for matrix traversal
     vector<pair<int,int>> directions = {{1,0}, {-1,0}, {0,-1}, {0,1}};
@@ -49,6 +50,8 @@ public:
     // constructors
     Graph();
     Graph(int n, int numberOfEdges, vector<pair<int,int>> &edges);
+    // anyValue to distinguish from last constructor
+    Graph(int n, vector<vector<int>> &connections, vector<bool> &markedNodes);
     Graph(int n, vector<vector<int>> &connections, bool isOriented = false, bool needsPrecedence = false);
 
     // resolved functions
@@ -63,6 +66,8 @@ public:
 
     // codeforces methods
     string directedGraphPathRestriction(vector<pair<int,int>> &edges);
+    pair<int,int> BFSFromOneNodeToAnother(int startNode);
+    int getMinimumMaximumDistanceBetweenTwoMarkedNodes(int startNode = 0);
 
         // this doesnt work
 //    bool equationsPossible(vector<string>& equations);
@@ -70,6 +75,11 @@ public:
 
 Graph::Graph() {
     this->findCompleteTopologicalSort = true;
+}
+
+Graph::Graph(int n, vector<vector<int>> &connections, vector<bool> &markedNodes): connections(connections), markedNodes(markedNodes) {
+    this->n = n;
+    this->vizited.resize(n+1,false);
 }
 
 Graph::Graph(int n, int numberOfEdges, vector<pair<int,int>> &edges) {
@@ -333,6 +343,46 @@ vector<vector<int>> Graph::criticalConnections() {
     return result;
 }
 
+pair<int,int> Graph::BFSFromOneNodeToAnother(int startNode) {
+    queue<int> nodeQueue;
+    vector<int> depth(n+1,0);
+    // first value is the marked node furthest from start node, second the depth
+    pair<int,int> maxDepthMarkedNode(0,0);
+
+    vizited[startNode] = true;
+    nodeQueue.push(startNode);
+
+    while(!nodeQueue.empty()) {
+        int current = nodeQueue.front();
+        nodeQueue.pop();
+
+        for(int i=0;i<connections[current].size();i++) {
+            if (!vizited[connections[current][i]]) {
+                vizited[connections[current][i]] = true;
+                depth[connections[current][i]] += depth[current] + 1;
+
+                if(markedNodes[connections[current][i]] && maxDepthMarkedNode.second < depth[connections[current][i]]) {
+                    maxDepthMarkedNode = {connections[current][i], depth[connections[current][i]]};
+                }
+                nodeQueue.push(connections[current][i]);
+            }
+        }
+    }
+
+    return maxDepthMarkedNode;
+}
+
+int Graph::getMinimumMaximumDistanceBetweenTwoMarkedNodes(int startNode) {
+    pair<int,int> firstResult = this->BFSFromOneNodeToAnother(startNode);
+
+    if(!this->vizited.empty()) this->vizited.clear();
+    this->vizited.resize(n+1,false);
+
+    pair<int,int> secondResult = this->BFSFromOneNodeToAnother(firstResult.first);
+
+    return (max(firstResult.second,secondResult.second) + 1)/2;
+}
+
 /*bool Graph::equationsPossible(vector<std::string> &equations) {
     vector<int> team('z' - 'a' + 1,0);
     vector<vector<pair<int,bool>>> connections('z'-'a'+1);
@@ -467,5 +517,30 @@ int main() {
 
     Graph g(n,m,edges);
     cout << g.directedGraphPathRestriction(edges);*/
+
+    // Minimum Maximum Distance
+    /*int t,n,k;
+
+    cin >> t;
+    for (int i=0;i<t;i++) {
+        cin >> n >> k;
+        vector<bool> marked(n+1,false);
+        vector<vector<int>> connections(n+1);
+        int temp;
+        for (int j=0;j<k;j++) {
+            cin >> temp;
+            marked[temp] = true;
+        }
+        for (int j=0;j<n-1;j++) {
+            int node1, node2;
+            cin >> node1 >> node2;
+            connections[node1].push_back(node2);
+            connections[node2].push_back(node1);
+        }
+        Graph g(n,connections, marked);
+        cout << g.getMinimumMaximumDistanceBetweenTwoMarkedNodes(temp) << endl;
+    }*/
+
+
     return 0;
 }
