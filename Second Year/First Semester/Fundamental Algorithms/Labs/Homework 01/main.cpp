@@ -11,33 +11,40 @@ private:
     // n = number of nodes
     int n, numberOfEdges;
     vector<vector<int>> connections;
+    vector<vector<int>> reverseGraph;
     vector<bool> vizited;
     vector<int> precedence;
+    vector<int> subsequent;
+    bool findCompleteTopologicalSort;
+
 
     // private helper functions
     void DFSforCriticalConnections(int node, vector<int>& level, vector<int>& low, vector<vector<int>>& result);
     void DFSforShortestBridge(int i, int j,  vector<vector<int>>& grid, vector<vector<bool>>& vizited, queue<pair<int,int>>& waterNodes);
+    void transposeGraph(vector<vector<int>> &graph);
 
 public:
     // constructors
+    Graph();
     Graph(int n, vector<vector<int>> &connections, bool isOriented, bool needsPrecedence);
 
     // resolved functions
     bool isBipartit();
     vector<vector<int>> criticalConnections();
     vector<int> topologicalSort();
+    vector<int> findSafeNodes(vector<vector<int>> &graph);
 
     // unresolved functions
-
         // a lot to change here, leave it for later
     int shortestBridge(vector<vector<int>>& grid);
-
-        // same thing topological sort
-    vector<int> eventualSafeNodes(vector<vector<int>>& graph);
 
         // this doesnt work
     bool equationsPossible(vector<string>& equations);
 };
+
+Graph::Graph() {
+    this->findCompleteTopologicalSort = true;
+}
 
 Graph::Graph(int n, vector<vector<int>> &connections, bool isOriented = false, bool needsPrecedence = false) {
     this->n = n;
@@ -190,13 +197,13 @@ vector<int> Graph::topologicalSort() {
     queue<int> nodes;
     int countEdgeRemoval = 0;
 
-    if(numberOfEdges == 0) {
+    if(numberOfEdges == 0 && findCompleteTopologicalSort) {
         for(int i=0;i<n;i++)
             sortedVector.push_back(i);
         return sortedVector;
     }
 
-    for(int i=0;i<n;i++)
+    for(int i=0;i<precedence.size();i++)
         if(precedence[i] == 0)
             nodes.push(i);
 
@@ -218,9 +225,62 @@ vector<int> Graph::topologicalSort() {
         }
     }
 
-    if(countEdgeRemoval != numberOfEdges) return {};
+    if(countEdgeRemoval != numberOfEdges && findCompleteTopologicalSort) return {};
 
     return sortedVector;
+}
+
+void Graph::transposeGraph(vector<vector<int>> &graph) {
+    precedence.resize(graph.size(),0);
+    connections.resize(graph.size());
+
+    for(int i=0;i<graph.size();i++) {
+        if(graph[i].size() > 0) precedence[i] += graph[i].size();
+        for(int j=0;j<graph[i].size();j++) {
+            connections[graph[i][j]].push_back(i);
+        }
+    }
+
+    this->findCompleteTopologicalSort = false;
+}
+
+vector<int> Graph::findSafeNodes(vector<vector<int>> &graph) {
+    this->transposeGraph(graph);
+    vector<int> sortedVector = this->topologicalSort();
+    sort(sortedVector.begin(),sortedVector.end());
+
+    return sortedVector;
+}
+
+void Graph::DFSforCriticalConnections(int node, vector<int> &level, vector<int> &low, vector<vector<int>>& result) {
+    vizited[node] = true;
+    for(int i=0;i<connections[node].size();i++) {
+        if(!vizited[connections[node][i]]) {
+            level[connections[node][i]] = level[node] + 1;
+            low[connections[node][i]] = level[node] + 1;
+
+            DFSforCriticalConnections(connections[node][i],level,low,result);
+
+            if(low[node] >= low[connections[node][i]])
+                low[node] = low[connections[node][i]];
+
+            if(low[connections[node][i]] > level[node])
+                result.push_back({node,connections[node][i]});
+        }
+        else {
+            if(level[node]-1 > level[connections[node][i]] && low[node] >= level[connections[node][i]])
+                low[node] = level[connections[node][i]];
+        }
+    }
+}
+
+vector<vector<int>> Graph::criticalConnections() {
+    vector<int> level(n,0),low(n,0);
+    vector<vector<int>> result;
+
+    DFSforCriticalConnections(0,level,low,result);
+
+    return result;
 }
 
 bool Graph::equationsPossible(vector<std::string> &equations) {
@@ -238,10 +298,10 @@ bool Graph::equationsPossible(vector<std::string> &equations) {
             } else return false;
         }
         else
-            if(equations[i][0] != equations[i][3]) {
-                connections[equations[i][0]-'a'].push_back(make_pair(equations[i][3] - 'a', true));
-                connections[equations[i][3]-'a'].push_back(make_pair(equations[i][0] - 'a', true));
-            }
+        if(equations[i][0] != equations[i][3]) {
+            connections[equations[i][0]-'a'].push_back(make_pair(equations[i][3] - 'a', true));
+            connections[equations[i][3]-'a'].push_back(make_pair(equations[i][0] - 'a', true));
+        }
     }
 
     for(int i=0;i<26;i++) {
@@ -283,75 +343,6 @@ bool Graph::equationsPossible(vector<std::string> &equations) {
     }
 
     return true;
-}
-
-vector<int> Graph::eventualSafeNodes(vector<vector<int>> &graph) {
-    vector<int> sortedVector;
-    vector<int> subsequent(graph.size(), 0);
-    vector<vector<int>> reverseGraph(graph.size());
-    queue<int> nodes;
-
-    for(int i=0;i<graph.size();i++) {
-        if(graph[i].size() > 0) subsequent[i] += graph[i].size();
-        for(int j=0;j<graph[i].size();j++) {
-            reverseGraph[graph[i][j]].push_back(i);
-        }
-    }
-
-    for(int i=0;i<subsequent.size();i++)
-        if(subsequent[i] == 0)
-            nodes.push(i);
-
-    while(!nodes.empty()) {
-        int temp = nodes.front();
-        nodes.pop();
-
-        sortedVector.push_back(temp);
-
-        for(int i=0;i<reverseGraph[temp].size();i++) {
-            subsequent[reverseGraph[temp][i]]--;
-            if(subsequent[reverseGraph[temp][i]] == 0) {
-                nodes.push(reverseGraph[temp][i]);
-            }
-            // deleting v[2] places v[2] in position v[1] so we need to decrement i when deleting
-            reverseGraph[temp].erase(reverseGraph[temp].begin() + i);
-            i--;
-        }
-    }
-
-    sort(sortedVector.begin(),sortedVector.end());
-    return sortedVector;
-}
-
-void Graph::DFSforCriticalConnections(int node, vector<int> &level, vector<int> &low, vector<vector<int>>& result) {
-    vizited[node] = true;
-    for(int i=0;i<connections[node].size();i++) {
-        if(!vizited[connections[node][i]]) {
-            level[connections[node][i]] = level[node] + 1;
-            low[connections[node][i]] = level[node] + 1;
-
-            DFSforCriticalConnections(connections[node][i],level,low,result);
-
-            if(low[node] >= low[connections[node][i]])
-                low[node] = low[connections[node][i]];
-
-            if(low[connections[node][i]] > level[node])
-                result.push_back({node,connections[node][i]});
-        }
-        else {
-            if(level[node]-1 > level[connections[node][i]] && low[node] >= level[connections[node][i]])
-                low[node] = level[connections[node][i]];
-        }
-    }
-}
-
-vector<vector<int>> Graph::criticalConnections() {
-    vector<int> level(n,0),low(n,0);
-    vector<vector<int>> result;
-
-    DFSforCriticalConnections(0,level,low,result);
-
-    return result;
 }
 
 int main() {
@@ -402,7 +393,7 @@ int main() {
     vector<vector<int>> graph1 = {{1,2},{2,3},{5},{0},{5},{},{}};
     vector<vector<int>> graph2 = {{1,2,3,4},{1,2},{3,4},{0,4},{}};
     vector<vector<int>> graph3 = {{1},{2},{0,3},{}};
-    vector<int> result = g.eventualSafeNodes(graph3);
+    vector<int> result = g.findSafeNodes(graph3);
     cout<<"\n\tRESULT: "<<endl;
     for(auto it:result) cout<<it<<" ";
     cout<<endl;*/
