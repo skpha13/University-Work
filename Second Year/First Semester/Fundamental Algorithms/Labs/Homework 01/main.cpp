@@ -6,6 +6,30 @@
 
 using namespace std;
 
+// this is used for matrix traversal, to get neighbours of current element
+class Neighbours {
+private:
+    int i,j;
+    const vector<vector<int>> &grid;
+public:
+    int getValue(pair<int,int> indices) {
+        if(i + indices.first >= 0 && i + indices.first < grid.size()
+           && j + indices.second >= 0 && j + indices.second < grid.size() )
+            return grid[i + indices.first][j + indices.second];
+
+        return -1;
+    }
+
+    pair<int, int> getIndices(pair<int, int> indices) {
+        return make_pair(i + indices.first, j + indices.second);
+    }
+
+    Neighbours(pair<int,int> indices ,const vector<vector<int>> &grid):grid(grid) {
+        this->i = indices.first;
+        this->j = indices.second;
+    }
+};
+
 class Graph {
 private:
     // n = number of nodes
@@ -16,11 +40,12 @@ private:
     vector<int> precedence;
     vector<int> subsequent;
     bool findCompleteTopologicalSort;
-
+    // for matrix traversal
+    vector<pair<int,int>> directions = {{1,0}, {-1,0}, {0,-1}, {0,1}};
 
     // private helper functions
     void DFSforCriticalConnections(int node, vector<int>& level, vector<int>& low, vector<vector<int>>& result);
-    void DFSforShortestBridge(int i, int j,  vector<vector<int>>& grid, vector<vector<bool>>& vizited, queue<pair<int,int>>& waterNodes);
+    void DFSforShortestBridge(pair<int, int> indices, vector<vector<int>>& grid, vector<vector<bool>>& vizited, queue<pair<int,int>>& waterNodes);
     void transposeGraph(vector<vector<int>> &graph);
 
 public:
@@ -33,13 +58,11 @@ public:
     vector<vector<int>> criticalConnections();
     vector<int> topologicalSort();
     vector<int> findSafeNodes(vector<vector<int>> &graph);
-
-    // unresolved functions
-        // a lot to change here, leave it for later
+    // optimize this to be faster
     int shortestBridge(vector<vector<int>>& grid);
 
         // this doesnt work
-    bool equationsPossible(vector<string>& equations);
+//    bool equationsPossible(vector<string>& equations);
 };
 
 Graph::Graph() {
@@ -102,18 +125,21 @@ bool Graph::isBipartit() {
     return true;
 }
 
-void Graph::DFSforShortestBridge(int i, int j, vector<vector<int>>& grid, vector<vector<bool>>& vizited, queue<pair<int,int>>& waterNodes) {
-    vizited[i][j] = true;
+void Graph::DFSforShortestBridge(pair<int, int> indices, vector<vector<int>>& grid, vector<vector<bool>>& vizited, queue<pair<int,int>>& waterNodes) {
+    vizited[indices.first][indices.second] = true;
+    Neighbours d(indices, grid);
 
-    if(i > 0 && grid[i-1][j] == 0) waterNodes.push(make_pair(i-1,j));
-    if(i < grid.size()-1 && grid[i+1][j] == 0) waterNodes.push(make_pair(i+1,j));
-    if(j > 0 && grid[i][j-1] == 0) waterNodes.push(make_pair(i,j-1));
-    if(j < grid.size()-1 && grid[i][j+1] == 0) waterNodes.push(make_pair(i,j+1));
+    for(auto it:directions) {
+        if (d.getValue(it) == 0) waterNodes.push(d.getIndices(it));
+    }
 
-    if(i > 0 && grid[i-1][j] == 1 && !vizited[i-1][j]) DFSforShortestBridge(i-1,j,grid,vizited,waterNodes);
-    if(i < grid.size()-1 && grid[i+1][j] == 1 && !vizited[i+1][j]) DFSforShortestBridge(i+1,j,grid,vizited,waterNodes);
-    if(j > 0 && grid[i][j-1] == 1 && !vizited[i][j-1]) DFSforShortestBridge(i,j-1,grid,vizited,waterNodes);
-    if(j < grid.size()-1 && grid[i][j+1] == 1 && !vizited[i][j+1]) DFSforShortestBridge(i,j+1,grid,vizited,waterNodes);
+    for(auto it:directions) {
+        if (d.getValue(it) == 1 && !vizited[d.getIndices(it).first][d.getIndices(it).second])
+            DFSforShortestBridge(
+                    d.getIndices(it),
+                    grid, vizited, waterNodes
+            );
+    }
 }
 
 int Graph::shortestBridge(vector<vector<int>> &grid) {
@@ -125,7 +151,7 @@ int Graph::shortestBridge(vector<vector<int>> &grid) {
         if(breakFor) break;
         for (int j = 0; j < grid[i].size(); j++)
             if (grid[i][j] == 1) {
-                DFSforShortestBridge(i, j, grid, vizited, waterNodes);
+                DFSforShortestBridge(make_pair(i,j), grid, vizited, waterNodes);
                 breakFor = true;
                 break;
             }
@@ -136,54 +162,42 @@ int Graph::shortestBridge(vector<vector<int>> &grid) {
     while(!waterNodes.empty()) {
         int i = waterNodes.front().first;
         int j = waterNodes.front().second;
+
         queue<pair<int,int>> bfsQ;
         vector<vector<int>> depth(grid.size(),vector<int>(grid.size(),0));
         waterNodes.pop();
         vector<vector<bool>> vizitedCopy = vizited;
+
         if(!vizitedCopy[i][j]) {
             vizitedCopy[i][j] = true;
             bfsQ.push(make_pair(i,j));
 
             while(!bfsQ.empty()) {
-                pair<int,int> temp = bfsQ.front();
+                pair<int,int> current = bfsQ.front();
+                Neighbours d(current, grid);
                 bfsQ.pop();
 
-                if(temp.first > 0 && grid[temp.first-1][temp.second] == 1 && !vizitedCopy[temp.first-1][temp.second]) {
-                    if(minCounter > depth[temp.first][temp.second]) minCounter = depth[temp.first][temp.second];
-                    break;
-                }
-                if(temp.first < grid.size()-1 && grid[temp.first+1][temp.second] == 1 && !vizitedCopy[temp.first+1][temp.second]) {
-                    if(minCounter > depth[temp.first][temp.second]) minCounter = depth[temp.first][temp.second];
-                    break;
-                }
-                if(temp.second > 0 && grid[temp.first][temp.second-1] == 1 && !vizitedCopy[temp.first][temp.second-1]) {
-                    if(minCounter > depth[temp.first][temp.second]) minCounter = depth[temp.first][temp.second];
-                    break;
-                }
-                if(temp.second < grid.size()-1 && grid[temp.first][temp.second+1] == 1 && !vizitedCopy[temp.first][temp.second+1]) {
-                    if(minCounter > depth[temp.first][temp.second]) minCounter = depth[temp.first][temp.second];
-                    break;
+                bool breakLoop = false;
+                for (auto it:directions) {
+                    bool breakFor = false;
+                    if (d.getValue(it) == 1 && !vizitedCopy[d.getIndices(it).first][d.getIndices(it).second]) {
+                        if (minCounter > depth[current.first][current.second])
+                            minCounter = depth[current.first][current.second];
+
+                        breakLoop = true;
+                        break;
+                    }
                 }
 
-                if(temp.first > 0 && grid[temp.first-1][temp.second] == 0 && !vizitedCopy[temp.first-1][temp.second]) {
-                    vizitedCopy[temp.first-1][temp.second] = true;
-                    depth[temp.first-1][temp.second] = depth[temp.first][temp.second] + 1;
-                    bfsQ.push(make_pair(temp.first-1,temp.second));
-                }
-                if(temp.first < grid.size()-1 && grid[temp.first+1][temp.second] == 0 && !vizitedCopy[temp.first+1][temp.second]) {
-                    vizitedCopy[temp.first+1][temp.second] = true;
-                    depth[temp.first+1][temp.second] = depth[temp.first][temp.second] + 1;
-                    bfsQ.push(make_pair(temp.first+1,temp.second));
-                }
-                if(temp.second > 0 && grid[temp.first][temp.second-1] == 0 && !vizitedCopy[temp.first][temp.second-1]) {
-                    vizitedCopy[temp.first][temp.second-1] = true;
-                    depth[temp.first][temp.second-1] = depth[temp.first][temp.second] + 1;
-                    bfsQ.push(make_pair(temp.first,temp.second-1));
-                }
-                if(temp.second < grid.size()-1 && grid[temp.first][temp.second+1] == 0 && !vizitedCopy[temp.first][temp.second+1]) {
-                    vizitedCopy[temp.first][temp.second+1] = true;
-                    depth[temp.first][temp.second+1] = depth[temp.first][temp.second] + 1;
-                    bfsQ.push(make_pair(temp.first,temp.second+1));
+                if(breakLoop) break;
+
+                for (auto it:directions) {
+                    if (d.getValue(it) == 0 && !vizitedCopy[d.getIndices(it).first][d.getIndices(it).second]) {
+                        vizitedCopy[d.getIndices(it).first][d.getIndices(it).second] = true;
+                        depth[d.getIndices(it).first][d.getIndices(it).second] =
+                                depth[current.first][current.second] + 1;
+                        bfsQ.push(d.getIndices(it));
+                    }
                 }
             }
         }
@@ -283,7 +297,7 @@ vector<vector<int>> Graph::criticalConnections() {
     return result;
 }
 
-bool Graph::equationsPossible(vector<std::string> &equations) {
+/*bool Graph::equationsPossible(vector<std::string> &equations) {
     vector<int> team('z' - 'a' + 1,0);
     vector<vector<pair<int,bool>>> connections('z'-'a'+1);
     vector<bool> vizited('z'-'a'+1,false);
@@ -343,7 +357,7 @@ bool Graph::equationsPossible(vector<std::string> &equations) {
     }
 
     return true;
-}
+}*/
 
 int main() {
     // Possible Bipartition Tests
