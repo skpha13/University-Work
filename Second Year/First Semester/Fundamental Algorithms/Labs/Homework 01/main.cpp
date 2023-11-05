@@ -1,20 +1,23 @@
 #include <iostream>
 #include <vector>
 #include <queue>
+#include <deque>
 #include <string>
 #include <algorithm>
+#include <fstream>
+#include <climits>
 
 using namespace std;
 
 // this is used for matrix traversal, to get neighbours of current element
 class Neighbours {
 private:
-    int i,j;
+    int i,j,indexedBy,rowLength;
     const vector<vector<int>> &grid;
 public:
     int getValue(pair<int,int> indices) {
-        if(i + indices.first >= 0 && i + indices.first < grid.size()
-           && j + indices.second >= 0 && j + indices.second < grid.size() )
+        if(i + indices.first >= indexedBy && i + indices.first < grid.size()
+           && j + indices.second >= indexedBy && j + indices.second < rowLength)
             return grid[i + indices.first][j + indices.second];
 
         return -1;
@@ -24,9 +27,14 @@ public:
         return make_pair(i + indices.first, j + indices.second);
     }
 
-    Neighbours(pair<int,int> indices ,const vector<vector<int>> &grid):grid(grid) {
+    Neighbours(pair<int,int> indices ,const vector<vector<int>> &grid, int indexedBy = 0, bool isSquare = true):grid(grid) {
         this->i = indices.first;
         this->j = indices.second;
+        this->indexedBy = indexedBy;
+        if(isSquare == false) {
+            this->rowLength = grid[0].size();
+        }
+        else this->rowLength = grid.size();
     }
 };
 
@@ -39,6 +47,7 @@ private:
     vector<int> precedence;
     vector<bool> markedNodes;
     bool findCompleteTopologicalSort;
+    pair<int,int> startNode, destinationNode;
     // for matrix traversal
     vector<pair<int,int>> directions = {{1,0}, {-1,0}, {0,-1}, {0,1}};
 
@@ -50,9 +59,9 @@ public:
     // constructors
     Graph();
     Graph(int n, int numberOfEdges, vector<pair<int,int>> &edges);
-    // anyValue to distinguish from last constructor
     Graph(int n, vector<vector<int>> &connections, vector<bool> &markedNodes);
     Graph(int n, vector<vector<int>> &connections, bool isOriented = false, bool needsPrecedence = false);
+    Graph(pair<int,int> startNode, pair<int,int> destinationNode);
 
     // resolved functions
     vector<int> getBipartition();
@@ -68,6 +77,9 @@ public:
     string directedGraphPathRestriction(vector<pair<int,int>> &edges);
     pair<int,int> BFSFromOneNodeToAnother(int startNode);
     int getMinimumMaximumDistanceBetweenTwoMarkedNodes(int startNode = 0);
+
+    // infoarena problems
+    int shortestCostInWeightedGraph(vector<vector<int>> &grid);
 
         // this doesnt work
 //    bool equationsPossible(vector<string>& equations);
@@ -115,6 +127,11 @@ Graph::Graph(int n, vector<vector<int>> &connections, bool isOriented, bool need
             this->connections[connections[i][1]].push_back(connections[i][0]);
         }
     }
+}
+
+Graph::Graph(pair<int, int> startNode, pair<int, int> destinationNode) {
+    this->startNode = startNode;
+    this->destinationNode = destinationNode;
 }
 
 vector<int> Graph::getBipartition() {
@@ -193,6 +210,7 @@ int Graph::shortestBridge(vector<vector<int>> &grid) {
     vector<vector<bool>> vizited(grid.size(),vector<bool>(grid[0].size(),false));
     bool breakFor = false;
 
+    // find first value of 1 and then use DFS to go trough the whole island
     for(int i=0;i<grid.size();i++) {
         if(breakFor) break;
         for (int j = 0; j < grid[i].size(); j++)
@@ -383,6 +401,38 @@ int Graph::getMinimumMaximumDistanceBetweenTwoMarkedNodes(int startNode) {
     return (max(firstResult.second,secondResult.second) + 1)/2;
 }
 
+int Graph::shortestCostInWeightedGraph(vector<vector<int>> &grid) {
+    deque <pair<int,int>> nodeQueue;
+    vector<vector<int>> depth(grid.size(), vector<int>(grid[0].size(),INT_MAX));
+    depth[startNode.first][startNode.second] = 0;
+    nodeQueue.push_back(startNode);
+
+    while(!nodeQueue.empty()) {
+        pair<int,int> current = nodeQueue.front();
+        nodeQueue.pop_front();
+        Neighbours d(current, grid,1,false);
+
+        for (auto it:directions) {
+            pair<int,int> temp = d.getIndices(it);
+            int newRow = temp.first, newCol = temp.second;
+
+            if(d.getValue(it) != -1 && depth[newRow][newCol] > depth[current.first][current.second])
+            {
+                if(grid[newRow][newCol] != grid[current.first][current.second]) {
+                    depth[newRow][newCol] = depth[current.first][current.second] + 1;
+                    nodeQueue.push_back(temp);
+                }
+                else {
+                    depth[newRow][newCol] = depth[current.first][current.second];
+                    nodeQueue.push_front(temp);
+                }
+            }
+        }
+    }
+
+    return depth[destinationNode.first][destinationNode.second];
+}
+
 /*bool Graph::equationsPossible(vector<std::string> &equations) {
     vector<int> team('z' - 'a' + 1,0);
     vector<vector<pair<int,bool>>> connections('z'-'a'+1);
@@ -541,6 +591,24 @@ int main() {
         cout << g.getMinimumMaximumDistanceBetweenTwoMarkedNodes(temp) << endl;
     }*/
 
+    // Minimum Cost Path in Forest
+        // CHANGE PATH WHEN UPLOADING TO INFOARENA
+    /*ifstream f("../padure.in");
+    ofstream g("../padure.out");
+
+    int n,m,pl,pc,cl,cc;
+    f >> n >> m >> pl >> pc >> cl >> cc;
+    vector<vector<int>> grid(n+1,vector<int>(m+1,0));
+    for (int i=1;i<=n;i++)
+        for (int j=1;j<=m;j++)
+            f >> grid[i][j];
+
+    Graph ob(make_pair(pl,pc), make_pair(cl,cc));
+
+    g << ob.shortestCostInWeightedGraph(grid);
+
+    f.close();
+    g.close();*/
 
     return 0;
 }
