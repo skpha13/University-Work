@@ -12,9 +12,14 @@ using namespace std;
 // this is used for matrix traversal, to get neighbours of current element
 class Neighbours {
 private:
+    // i = row j = column
+    // rowLength = depends if matrix is square or not
     int i,j,indexedBy,rowLength;
+    // the matrix to get the values, passed by reference
     const vector<vector<int>> &grid;
 public:
+    // returns -1 if next element is out of bounds
+    // otherwise returns the indices as a pair
     int getValue(pair<int,int> indices) {
         if(i + indices.first >= indexedBy && i + indices.first < grid.size()
            && j + indices.second >= indexedBy && j + indices.second < rowLength)
@@ -23,10 +28,12 @@ public:
         return -1;
     }
 
+    // returns new calculated indices
     pair<int, int> getIndices(pair<int, int> indices) {
         return make_pair(i + indices.first, j + indices.second);
     }
 
+    // constructor indexedBy if matrix starts with row/col 1
     Neighbours(pair<int,int> indices ,const vector<vector<int>> &grid, int indexedBy = 0, bool isSquare = true):grid(grid) {
         this->i = indices.first;
         this->j = indices.second;
@@ -46,9 +53,11 @@ private:
     vector<bool> vizited;
     vector<int> precedence;
     vector<bool> markedNodes;
+    // a bool to distinguish between the 2 topological sort problems
     bool findCompleteTopologicalSort;
+    // for problem Padure
     pair<int,int> startNode, destinationNode;
-    // for matrix traversal
+    // for matrix traversal to get all directions: N S W E
     vector<pair<int,int>> directions = {{1,0}, {-1,0}, {0,-1}, {0,1}};
 
     // private helper functions
@@ -70,6 +79,7 @@ public:
     void transposeGraph(vector<vector<int>> &graph);
     vector<int> topologicalSort();
     vector<int> findSafeNodes(vector<vector<int>> &graph);
+
     // optimize this to be faster
     int shortestBridge(vector<vector<int>>& grid);
 
@@ -80,9 +90,6 @@ public:
 
     // infoarena problems
     int shortestCostInWeightedGraph(vector<vector<int>> &grid);
-
-        // this doesnt work
-//    bool equationsPossible(vector<string>& equations);
 };
 
 Graph::Graph() {
@@ -135,9 +142,11 @@ Graph::Graph(pair<int, int> startNode, pair<int, int> destinationNode) {
 }
 
 vector<int> Graph::getBipartition() {
+    // team = represensts colors
     vector<int> team(n+1,0);
     queue<int> nodeQueue;
 
+    // if the graph is not connected we go trough all the nodes
     for(int k=1;k<=n;k++) {
         if (!vizited[k]) {
             int node = k;
@@ -153,13 +162,16 @@ vector<int> Graph::getBipartition() {
                     if (!vizited[connections[temp][i]]) {
                         vizited[connections[temp][i]] = true;
 
+                        // is theres a connection between 2 nodes and they are of the same team
+                        // return an empty array denoting that it is not a Bipartit graph
                         if (team[temp] == team[connections[temp][i]]) return {};
 
+                        // assign new teams
                         if (team[temp] == 1) team[connections[temp][i]] = 2;
                         else team[connections[temp][i]] = 1;
 
                         nodeQueue.push(connections[temp][i]);
-                    } else if (team[temp] == team[connections[temp][i]]) return {};
+                    } else if (team[temp] == team[connections[temp][i]]) return {}; // to check even if we have visited (for cycles)
                 }
             }
         }
@@ -169,6 +181,7 @@ vector<int> Graph::getBipartition() {
 }
 
 bool Graph::isBipartit() {
+    // it getBipartiton returns empty array -> its not bipartit
     if (this->getBipartition().empty()) return false;
     return true;
 }
@@ -180,6 +193,7 @@ string Graph::directedGraphPathRestriction(vector<pair<int,int>> &edges) {
     if(!teams.empty()) result += "YES\n";
     else return "NO\n";
 
+    // a bipartit problem, for each edge the orientation depends in which team the node is
     for(auto it:edges) {
         if (teams[it.first] == 1) result += "1";
         else if(teams[it.first] == 2) result += "0";
@@ -275,12 +289,14 @@ vector<int> Graph::topologicalSort() {
     queue<int> nodes;
     int countEdgeRemoval = 0;
 
+    // if there are no edges -> the vector with all nodes
     if(numberOfEdges == 0 && findCompleteTopologicalSort) {
         for(int i=0;i<n;i++)
             sortedVector.push_back(i);
         return sortedVector;
     }
 
+    // find the nodes with precedence 0 and put them in the nodeQueue
     for(int i=0;i<precedence.size();i++)
         if(precedence[i] == 0)
             nodes.push(i);
@@ -292,8 +308,10 @@ vector<int> Graph::topologicalSort() {
         sortedVector.push_back(temp);
 
         for(int i=0;i<connections[temp].size();i++) {
+            // "remove" the edge from the graph
             precedence[connections[temp][i]]--;
             countEdgeRemoval++;
+            // if new precedence is 0 push the node in the queue
             if(precedence[connections[temp][i]] == 0) {
                 nodes.push(connections[temp][i]);
             }
@@ -303,13 +321,17 @@ vector<int> Graph::topologicalSort() {
         }
     }
 
+    // if we didnt remove all edges it means that the graph has at leas one cycle
     if(countEdgeRemoval != numberOfEdges && findCompleteTopologicalSort) return {};
 
     return sortedVector;
 }
 
+// method to reverse graph, used for findSafeStates
 void Graph::transposeGraph(vector<vector<int>> &graph) {
+    // here precedence is actually subsequence
     precedence.resize(graph.size(),0);
+    // connections becomes there reverse graph
     connections.resize(graph.size());
 
     for(int i=0;i<graph.size();i++) {
@@ -323,14 +345,19 @@ void Graph::transposeGraph(vector<vector<int>> &graph) {
 }
 
 vector<int> Graph::findSafeNodes(vector<vector<int>> &graph) {
+    // reverse the graph
     this->transposeGraph(graph);
+    // get the topological sort
     vector<int> sortedVector = this->topologicalSort();
+    // sort the nodes
     sort(sortedVector.begin(),sortedVector.end());
 
     return sortedVector;
 }
 
 void Graph::DFSforCriticalConnections(int node, vector<int> &level, vector<int> &low, vector<vector<int>>& result) {
+    // level = depth of each node
+    // low = lowest level reachable from each node
     vizited[node] = true;
     for(int i=0;i<connections[node].size();i++) {
         if(!vizited[connections[node][i]]) {
@@ -339,13 +366,18 @@ void Graph::DFSforCriticalConnections(int node, vector<int> &level, vector<int> 
 
             DFSforCriticalConnections(connections[node][i],level,low,result);
 
+            // checks to see if next node can take us lower
             if(low[node] >= low[connections[node][i]])
                 low[node] = low[connections[node][i]];
 
+            // if its true it means that there is no return edge
+            // so we got a solution
             if(low[connections[node][i]] > level[node])
                 result.push_back({node,connections[node][i]});
         }
         else {
+            // if the next node is vizited, it means we have a cycle, and can go lower
+            // so we update accordingly
             if(level[node]-1 > level[connections[node][i]] && low[node] >= level[connections[node][i]])
                 low[node] = level[connections[node][i]];
         }
@@ -379,6 +411,7 @@ pair<int,int> Graph::BFSFromOneNodeToAnother(int startNode) {
                 vizited[connections[current][i]] = true;
                 depth[connections[current][i]] += depth[current] + 1;
 
+                // if current node is marked and its depth is lower than the current depth -> update maxDepthMarkedNode
                 if(markedNodes[connections[current][i]] && maxDepthMarkedNode.second < depth[connections[current][i]]) {
                     maxDepthMarkedNode = {connections[current][i], depth[connections[current][i]]};
                 }
@@ -391,18 +424,23 @@ pair<int,int> Graph::BFSFromOneNodeToAnother(int startNode) {
 }
 
 int Graph::getMinimumMaximumDistanceBetweenTwoMarkedNodes(int startNode) {
+    // here we need to call BFSFromOneNodeToAnother on a random marked node
     pair<int,int> firstResult = this->BFSFromOneNodeToAnother(startNode);
 
+    // clear the vizited vector
     if(!this->vizited.empty()) this->vizited.clear();
     this->vizited.resize(n+1,false);
 
+    // call it again for the node max depth marked node from the first BFS
     pair<int,int> secondResult = this->BFSFromOneNodeToAnother(firstResult.first);
 
+    // return the maximum out of those 2 , add 1 , divide by 2
     return (max(firstResult.second,secondResult.second) + 1)/2;
 }
 
 int Graph::shortestCostInWeightedGraph(vector<vector<int>> &grid) {
     deque <pair<int,int>> nodeQueue;
+    // depth but acts more like a cost matrix
     vector<vector<int>> depth(grid.size(), vector<int>(grid[0].size(),INT_MAX));
     depth[startNode.first][startNode.second] = 0;
     nodeQueue.push_back(startNode);
@@ -416,6 +454,10 @@ int Graph::shortestCostInWeightedGraph(vector<vector<int>> &grid) {
             pair<int,int> temp = d.getIndices(it);
             int newRow = temp.first, newCol = temp.second;
 
+            // if depth of new node is higher than current node and
+                // cells are different, then give new node depth = current node depth + 1 and push it back
+                // else give it the same depth and push it front
+            // we do this so we can prioritize the path that doesnt cost anything
             if(d.getValue(it) != -1 && depth[newRow][newCol] > depth[current.first][current.second])
             {
                 if(grid[newRow][newCol] != grid[current.first][current.second]) {
@@ -432,68 +474,6 @@ int Graph::shortestCostInWeightedGraph(vector<vector<int>> &grid) {
 
     return depth[destinationNode.first][destinationNode.second];
 }
-
-/*bool Graph::equationsPossible(vector<std::string> &equations) {
-    vector<int> team('z' - 'a' + 1,0);
-    vector<vector<pair<int,bool>>> connections('z'-'a'+1);
-    vector<bool> vizited('z'-'a'+1,false);
-    queue<int> nodeQueue;
-    int teamCounter = 1;
-
-    for(int i=0;i<equations.size();i++) {
-        if(equations[i][1] == '!') {
-            if(equations[i][0] != equations[i][3]) {
-                connections[equations[i][0]-'a'].push_back(make_pair(equations[i][3] - 'a', false));
-                connections[equations[i][3]-'a'].push_back(make_pair(equations[i][0] - 'a',false));
-            } else return false;
-        }
-        else
-        if(equations[i][0] != equations[i][3]) {
-            connections[equations[i][0]-'a'].push_back(make_pair(equations[i][3] - 'a', true));
-            connections[equations[i][3]-'a'].push_back(make_pair(equations[i][0] - 'a', true));
-        }
-    }
-
-    for(int i=0;i<26;i++) {
-        if(!vizited[i] && connections[i].size() > 0) {
-            vizited[i] = true;
-            if(team[i] == 0) team[i] = teamCounter++;
-            nodeQueue.push(i);
-
-            while(!nodeQueue.empty()) {
-                int temp = nodeQueue.front();
-                nodeQueue.pop();
-
-                for(int i=0;i<connections[temp].size();i++) {
-                    if(!vizited[connections[temp][i].first]) {
-                        vizited[connections[temp][i].first] = true;
-
-                        if(connections[temp][i].second == false && team[connections[temp][i].first] == 0)
-                            team[connections[temp][i].first] = teamCounter++;
-                        else if(connections[temp][i].second == true && team[connections[temp][i].first] == 0)
-                            team[connections[temp][i].first] = team[temp];
-
-                        if(connections[temp][i].second == true && team[connections[temp][i].first] != team[temp])
-                            return false;
-
-                        if(connections[temp][i].second == false && team[connections[temp][i].first] == team[temp])
-                            return false;
-
-                        nodeQueue.push(connections[temp][i].first);
-                    } else {
-                        if(connections[temp][i].second == true && team[connections[temp][i].first] != team[temp])
-                            return false;
-
-                        if(connections[temp][i].second == false && team[connections[temp][i].first] == team[temp])
-                            return false;
-                    }
-                }
-            }
-        }
-    }
-
-    return true;
-}*/
 
 int main() {
     // Possible Bipartition Tests
@@ -534,7 +514,7 @@ int main() {
 
     for(int i=0;i<solutions.size();i++) {
         cout<<"TEST "<<i<<": ";
-        if(solutions[i] != g.equationsPossible(inputs[i])) cout<<"FAILED\n";
+        if(solutions[i] != g.isPossibleEquation(inputs[i])) cout<<"FAILED\n";
         else cout<<"PASSED\n";
     }*/
 
