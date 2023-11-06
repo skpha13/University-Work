@@ -1,0 +1,6 @@
+foldl nu merge pentru o lista infinita -> stack overflow
+in schimb foldr merge 
+
+ex:
+take 3 $ foldr (\x xs -> (x+1) : xs) [] [1..] -- merge
+take 3 $ foldl (\xs x -> (x+1) : xs) [] [1..] -- nu merge
