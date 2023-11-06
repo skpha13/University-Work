@@ -60,13 +60,21 @@ private:
     // for matrix traversal to get all directions: N S W E
     vector<pair<int,int>> directions = {{1,0}, {-1,0}, {0,-1}, {0,1}};
 
+    // for union find, size for the rank of trees
+    vector<int> parent, size;
+
     // private helper functions
     void DFSforCriticalConnections(int node, vector<int>& level, vector<int>& low, vector<vector<int>>& result);
     void DFSforShortestBridge(pair<int, int> indices, vector<vector<int>>& grid, vector<vector<bool>>& vizited, queue<pair<int,int>>& waterNodes);
 
+    int find(int node);
+    void Union(int firstNode, int secondNode);
+
 public:
     // constructors
     Graph();
+    // any value is good, as it is the constructor for the union problem
+    Graph(bool needsUnion);
     Graph(int n, int numberOfEdges, vector<pair<int,int>> &edges);
     Graph(int n, vector<vector<int>> &connections, vector<bool> &markedNodes);
     Graph(int n, vector<vector<int>> &connections, bool isOriented = false, bool needsPrecedence = false);
@@ -79,6 +87,7 @@ public:
     void transposeGraph(vector<vector<int>> &graph);
     vector<int> topologicalSort();
     vector<int> findSafeNodes(vector<vector<int>> &graph);
+    bool equationsPossible(vector<string> &equations);
 
     // optimize this to be faster
     int shortestBridge(vector<vector<int>>& grid);
@@ -94,6 +103,12 @@ public:
 
 Graph::Graph() {
     this->findCompleteTopologicalSort = true;
+}
+
+Graph::Graph(bool needsUnion) {
+    this->parent.resize(27);
+    this->size.resize(27,0);
+    for (int i=0;i<parent.size();i++) parent[i] = i;
 }
 
 Graph::Graph(int n, vector<vector<int>> &connections, vector<bool> &markedNodes): connections(connections), markedNodes(markedNodes) {
@@ -475,6 +490,57 @@ int Graph::shortestCostInWeightedGraph(vector<vector<int>> &grid) {
     return depth[destinationNode.first][destinationNode.second];
 }
 
+int Graph::find(int node) {
+    if (parent[node] == node) return node;
+
+    // find the root node and do compression
+    int result = find(parent[node]);
+    parent[node] = result;
+    return result;
+}
+
+void Graph::Union(int firstNode, int secondNode) {
+    int firstNodeRoot = find(firstNode);
+    int secondNodeRoot = find(secondNode);
+
+    if (size[firstNode] < size[secondNode]) {
+        parent[firstNodeRoot] = secondNodeRoot;
+        return;
+    }
+
+    if (size[firstNode] > size[secondNode]) {
+        parent[secondNodeRoot] = firstNodeRoot;
+        return;
+    }
+
+    // if both sizes are equal then size goes up by one and it doesnt matter which ones the parent
+    parent[firstNodeRoot] = secondNodeRoot;
+    size[secondNodeRoot]++;
+}
+
+bool Graph::equationsPossible(vector<std::string> &equations) {
+
+    // watch out for test case where a == b, b != c, c == a
+    // sort the vector ? or traverse trough it twice?
+    for (auto it:equations) {
+        int firstLetter = it[0] - 'a';
+        int secondLetter = it[3] - 'a';
+
+        if (it[1] == '=')
+            Union(firstLetter,secondLetter);
+    }
+
+    for (auto it:equations) {
+        int firstLetter = it[0] - 'a';
+        int secondLetter = it[3] - 'a';
+
+        if (it[1] == '!' && find(firstLetter) == find(secondLetter))
+            return false;
+    }
+
+    return true;
+}
+
 int main() {
     // Possible Bipartition Tests
     /*vector<vector<int>> d = {{1,2},{3,4},{5,6},
@@ -508,13 +574,13 @@ int main() {
     for(auto i:result) cout<<i<<" ";*/
 
     // Satifiability of Equality Equations - this approach doesnt work
-    /*Graph g;
-    vector<vector<string>> inputs = {{"a==b","b!=a"},{"b==a","a==b"},{"a==b","b==c","a!=c"},{"c==c","b==d","x!=z"},{"a!=b","b!=c","c!=a"},{"b==b","b==e","e==c","d!=e"},{"a!=a"}};
+    /*vector<vector<string>> inputs = {{"a==b","b!=a"},{"b==a","a==b"},{"a==b","b==c","a!=c"},{"c==c","b==d","x!=z"},{"a!=b","b!=c","c!=a"},{"b==b","b==e","e==c","d!=e"},{"a!=a"}};
     vector<bool> solutions = {false,true,false,true,true,true,false};
 
     for(int i=0;i<solutions.size();i++) {
+        Graph g(true);
         cout<<"TEST "<<i<<": ";
-        if(solutions[i] != g.isPossibleEquation(inputs[i])) cout<<"FAILED\n";
+        if(solutions[i] != g.equationsPossible(inputs[i])) cout<<"FAILED\n";
         else cout<<"PASSED\n";
     }*/
 
