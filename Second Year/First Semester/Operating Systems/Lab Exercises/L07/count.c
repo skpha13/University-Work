@@ -76,6 +76,10 @@ int main(int argc, char *argv[]) {
             return errno;
         }
 
+        if (pthread_join(threads[i], NULL)) {
+            perror(NULL);
+            return errno;
+        }
     }
 
     pthread_mutex_destroy(&mtx);
