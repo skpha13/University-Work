@@ -29,7 +29,7 @@ public:
     }
 
     // returns new calculated indices
-    pair<int, int> getIndices(pair<int, int> indices) {
+    pair<int, int> getIndices(pair<int, int> indices) const {
         return make_pair(i + indices.first, j + indices.second);
     }
 
@@ -157,7 +157,7 @@ Graph::Graph(pair<int, int> startNode, pair<int, int> destinationNode) {
 }
 
 vector<int> Graph::getBipartition() {
-    // team = represensts colors
+    // team = represents colors
     vector<int> team(n+1,0);
     queue<int> nodeQueue;
 
@@ -177,7 +177,7 @@ vector<int> Graph::getBipartition() {
                     if (!vizited[connections[temp][i]]) {
                         vizited[connections[temp][i]] = true;
 
-                        // is theres a connection between 2 nodes and they are of the same team
+                        // if theres a connection between 2 nodes and they are on the same team
                         // return an empty array denoting that it is not a Bipartit graph
                         if (team[temp] == team[connections[temp][i]]) return {};
 
@@ -258,8 +258,9 @@ int Graph::shortestBridge(vector<vector<int>> &grid) {
 
         queue<pair<int,int>> bfsQ;
         vector<vector<int>> depth(grid.size(),vector<int>(grid.size(),0));
-        waterNodes.pop();
         vector<vector<bool>> vizitedCopy = vizited;
+
+        waterNodes.pop();
 
         if(!vizitedCopy[i][j]) {
             vizitedCopy[i][j] = true;
