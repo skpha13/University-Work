@@ -29,6 +29,7 @@ int init(int N) {
 }
 
 int barrier_point() {
+    // INTREBARE: daca toate thread urile doar cresc count ul atunci de ce avem nevoie de un mutex lock?
     pthread_mutex_lock(&mtx);
 
     count++;
