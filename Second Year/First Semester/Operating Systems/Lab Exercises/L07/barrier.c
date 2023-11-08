@@ -30,6 +30,8 @@ int init(int N) {
 
 int barrier_point() {
     // INTREBARE: daca toate thread urile doar cresc count ul atunci de ce avem nevoie de un mutex lock?
+    // RASPUNS: chiar daca fac doar ++ la un contor daca facem 2 thread uri fiecare sa creasca intr un for de la 0 la 100000
+        // atunci rezultatul nu va avea 200000, valoarea acceptata
     pthread_mutex_lock(&mtx);
 
     count++;
