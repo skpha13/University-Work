@@ -230,8 +230,8 @@ begin
                                  table ( e.orase ) t
                             group by e.cod_excursie)
     select cod_excursie
+    bulk collect into v_excursiiMinime
     from ExcursieCounts
-    where orase_count = (select min(orase_count) from ExcursieCounts)
-    bulk collect into v_excursiiMinime;
+    where orase_count = (select min(orase_count) from ExcursieCounts);
 end;
 /
