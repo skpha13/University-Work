@@ -9,6 +9,8 @@ data Tree = Lf Int
         | Node Operation Tree Tree
         deriving (Eq, Show)
 
+-- ========== EXPRESSIONS ========== 
+
 evalExp :: Expr -> Int
 evalExp (Const x) = x
 evalExp (x :+: y) = evalExp x + evalExp y
@@ -23,7 +25,9 @@ test11 = evalExp exp1 == 6
 test12 = evalExp exp2 == 14
 test13 = evalExp exp3 == 13
 test14 = evalExp exp4 == 16
+-- =================================
 
+-- ========== TREES ========== 
 evalArb :: Tree -> Int
 evalArb (Lf x) = x
 evalArb (Node op tree1 tree2) = case op of
@@ -49,3 +53,25 @@ test1 = expToArb exp1 == arb1
 test2 = expToArb exp2 == arb2
 test3 = expToArb exp3 == arb3
 test4 = expToArb exp4 == arb4
+-- =================================
+
+-- ========== BINARY SEARCH TREES ==========
+data IntSearchTree value
+        = Empty
+        | BNode
+                (IntSearchTree value) -- elemente cu cheia mai mica
+                Integer -- cheia elementului
+                (Maybe value) -- valoarea elementului
+                (IntSearchTree value) -- elemente cu cheia mai mare
+
+-- TODO: see how i can replace with value here instead of Integer
+lookup' :: Integer -> IntSearchTree Integer -> Maybe Integer
+lookup' x Empty = Nothing
+lookup' x (BNode leftTree key mvalue rightTree) = if x == key then Just key
+                                                else if x > key then lookup' x rightTree
+                                                        else lookup' x leftTree
+
+exampleTree = BNode (BNode Empty 1 (Just 0) Empty) 2 (Just 0) (BNode Empty 3 (Just 0) Empty)
+
+
+-- =================================
