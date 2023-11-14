@@ -77,7 +77,7 @@ lookup' x (BNode leftTree key mvalue rightTree) = if x == key && not(isNothing m
                                                         else if x > key then lookup' x rightTree
                                                         else lookup' x leftTree
 
-exampleTree = BNode (BNode Empty 1 (Just 1) Empty) 2 (Just 2) (BNode Empty 3 (Just 3) Empty)
+exampleTree = BNode (BNode Empty 2 (Just "h") (BNode Empty 3 (Just "a") Empty)) 4 (Just "a") (BNode Empty 8 Nothing Empty)
 
 -- returns sorted keys because of inorder traversal property of binary search trees
 keys :: IntSearchTree value -> [Int]
@@ -88,8 +88,34 @@ keys (BNode leftTree key mvalue rightTree) = x ++ [key] ++  y
 
 values :: IntSearchTree value -> [value]
 values Empty = []
-values (BNode leftTree key mvalue rightTree) = if not(isNothing mvalue) 
-                                                then values leftTree ++ [mvalue] ++ values rightTree
-                                                else values leftTree ++ values rightTree
+values (BNode leftTree key mvalue rightTree) = case mvalue of  
+                                                Just val -> values leftTree ++ [val] ++ values rightTree
+                                                Nothing -> values leftTree ++ values rightTree
+
+insert :: Int -> value -> IntSearchTree value -> IntSearchTree value
+insert x value Empty = (BNode Empty x (Just value) Empty)
+insert x value (BNode leftTree key mvalue rightTree) = if x == key then (BNode leftTree x (Just value) rightTree)  
+                                                                else if x < key then (BNode (insert x value leftTree) key mvalue rightTree) 
+                                                                else (BNode leftTree key mvalue (insert x value rightTree)) 
+
+delete :: Int -> IntSearchTree value -> IntSearchTree value
+delete _ Empty = Empty
+delete x (BNode leftTree key mvalue rightTree) = if x == key then (BNode leftTree x Nothing rightTree)
+                                                        else if x < key then (BNode (delete x leftTree) key mvalue rightTree)
+                                                        else (BNode leftTree key mvalue (delete x rightTree))
+
+
+toList :: IntSearchTree value -> [(Int, value)]
+toList Empty = []
+toList (BNode leftTree key mvalue rightTree) = case mvalue of
+                                                Just val -> toList leftTree ++ [(key, val)] ++ toList rightTree
+                                                Nothing -> toList leftTree ++ toList rightTree
+
+fromList :: [(Int, value)] -> IntSearchTree value
+fromList ls = foldr (\x acc -> insert (fst x) (snd x) acc) Empty ls
+
+instance Show (IntSearchTree value) where
+        show Empty = ""
+        show (BNode leftTree key _ rightTree) ="(" ++ show leftTree ++ "(" ++ (show key) ++ ")" ++ show rightTree ++ ")"
 
 -- =================================
