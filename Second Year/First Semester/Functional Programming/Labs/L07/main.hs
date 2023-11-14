@@ -1,3 +1,5 @@
+import Data.Maybe
+
 data Expr = Const Int
         | Expr :+: Expr
         | Expr :*: Expr
@@ -15,6 +17,11 @@ evalExp :: Expr -> Int
 evalExp (Const x) = x
 evalExp (x :+: y) = evalExp x + evalExp y
 evalExp (x :*: y) = evalExp x * evalExp y
+
+instance Show Expr where
+        show (Const x) = show x
+        show (e1 :+: e2) = "(" ++ show e1 ++ " + " ++ show e2 ++ ")"
+        show (e1 :*: e2) = "(" ++ show e1 ++ " * " ++ show e2 ++ ")"
 
 exp1 = ((Const 2 :*: Const 3) :+: (Const 0 :*: Const 5))
 exp2 = (Const 2 :*: (Const 3 :+: Const 4))
@@ -60,18 +67,29 @@ data IntSearchTree value
         = Empty
         | BNode
                 (IntSearchTree value) -- elemente cu cheia mai mica
-                Integer -- cheia elementului
+                Int -- cheia elementului
                 (Maybe value) -- valoarea elementului
                 (IntSearchTree value) -- elemente cu cheia mai mare
 
--- TODO: see how i can replace with value here instead of Integer
-lookup' :: Integer -> IntSearchTree Integer -> Maybe Integer
+lookup' :: Int -> IntSearchTree value -> Maybe value
 lookup' x Empty = Nothing
-lookup' x (BNode leftTree key mvalue rightTree) = if x == key then Just key
-                                                else if x > key then lookup' x rightTree
+lookup' x (BNode leftTree key mvalue rightTree) = if x == key && not(isNothing mvalue) then mvalue
+                                                        else if x > key then lookup' x rightTree
                                                         else lookup' x leftTree
 
-exampleTree = BNode (BNode Empty 1 (Just 0) Empty) 2 (Just 0) (BNode Empty 3 (Just 0) Empty)
+exampleTree = BNode (BNode Empty 1 (Just 1) Empty) 2 (Just 2) (BNode Empty 3 (Just 3) Empty)
 
+-- returns sorted keys because of inorder traversal property of binary search trees
+keys :: IntSearchTree value -> [Int]
+keys Empty = []
+keys (BNode leftTree key mvalue rightTree) = x ++ [key] ++  y
+                                                where x = keys leftTree
+                                                      y = keys rightTree 
+
+values :: IntSearchTree value -> [value]
+values Empty = []
+values (BNode leftTree key mvalue rightTree) = if not(isNothing mvalue) 
+                                                then values leftTree ++ [mvalue] ++ values rightTree
+                                                else values leftTree ++ values rightTree
 
 -- =================================
