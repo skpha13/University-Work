@@ -116,6 +116,9 @@ fromList ls = foldr (\x acc -> insert (fst x) (snd x) acc) Empty ls
 
 instance Show (IntSearchTree value) where
         show Empty = ""
+        show (BNode Empty key _ Empty) = "(" ++ (show key) ++ ")"
+        show (BNode Empty key _ rightTree) = "((" ++ (show key) ++ ")" ++ show rightTree ++ ")"
+        show (BNode leftTree key _ Empty) = "(" ++ show leftTree ++ "(" ++ (show key) ++ "))"
         show (BNode leftTree key _ rightTree) ="(" ++ show leftTree ++ "(" ++ (show key) ++ ")" ++ show rightTree ++ ")"
 
 -- =================================
