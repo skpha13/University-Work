@@ -47,4 +47,38 @@ def ex2():
     print("Probabilitate =",1 - prob)
 
 
-ex2()
+def ex4():
+    def a():
+        N = 100_000
+        p = 0.3
+        def generareNrGeoemtric(p):
+            U = np.random.rand()
+            X = int(np.ceil(np.log(U)/ np.log(1-p)))
+
+            return X
+
+        arr = []
+
+        for _ in range(N):
+            nr = generareNrGeoemtric(p)
+            arr.append(nr)
+
+        plt.hist(arr,bins=100,density=True)
+        plt.show()
+
+    def b():
+        N = 100_000
+        p = 0.3
+
+        U = np.random.rand(N)
+        X = np.ceil(np.log(U)/ np.log(1-p)).astype(int)
+        medie = np.sum(X)/N
+
+        print("Medie =",medie)
+
+        plt.hist(X, bins=100, density=True)
+        plt.show()
+
+    b()
+
+ex4()
