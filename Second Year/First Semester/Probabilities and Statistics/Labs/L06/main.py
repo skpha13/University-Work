@@ -16,7 +16,8 @@ def ex1():
         print("Media normala a zarurilor =",medie)
         print("Media cu elementele la patrat =", medie_patrat)
         print("Media la patrat =",np.square(medie))
-        print("Diferenta dintre medii =", medie_patrat - np.square(medie))
+        print("Variatia =", medie_patrat - np.square(medie))
+        print("n * p =",n*p)
 
         plt.hist(zar, bins=100, density=True)
         plt.show()
@@ -34,4 +35,16 @@ def ex1():
 
     c()
 
-ex1()
+def ex2():
+    N = 1_000_000
+    n = 500
+    p = 0.03
+    k = 10
+
+    X = np.random.binomial(n,p,N)
+    prob = np.mean(X < k)
+
+    print("Probabilitate =",1 - prob)
+
+
+ex2()
