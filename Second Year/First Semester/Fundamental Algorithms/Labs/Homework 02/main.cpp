@@ -11,7 +11,7 @@
 
 using namespace std;
 
-double distance(pair<short int, short int>, pair<short int, short int>);
+double distance(pair<int, int>, pair<int, int>);
 
 // this is used for matrix traversal, to get neighbours of current element
 class Neighbours {
@@ -68,7 +68,7 @@ private:
     vector<int> parent, size;
 
     // cablaj
-    vector<pair<short int, short int>> points;
+    vector<pair<int, int>> points;
     vector<double> cost;
 
     // private helper functions
@@ -88,7 +88,7 @@ public:
     Graph(int n, vector<vector<int>> &connections, bool isOriented = false, bool needsPrecedence = false);
     Graph(pair<int,int> startNode, pair<int,int> destinationNode);
 
-    Graph(int n, vector<pair<short int, short int>>& points);
+    Graph(int n, vector<pair<int, int>>& points);
 
     // resolved functions
     vector<int> getBipartition();
@@ -167,12 +167,12 @@ Graph::Graph(pair<int, int> startNode, pair<int, int> destinationNode) {
     this->destinationNode = destinationNode;
 }
 
-Graph::Graph(int n, vector<pair<short, short>>& points) {
+Graph::Graph(int n, vector<pair<int, int>>& points) {
     this->points = points;
     this->n = n;
 
-    this->cost.resize(n+1, INT_MAX);
-    cost[0] = 0;
+    this->cost.resize(n+1, 50000.00);
+    cost[0] = 0.0;
     for (int i=1;i<n;i++) {
         cost[i] = distance(points[i], points[0]);
     }
@@ -570,10 +570,10 @@ bool Graph::equationsPossible(vector<std::string> &equations) {
 */
 
 double Graph::prim() {
-    double totalCost = 0;
+    double totalCost = 0.0;
 
     for (int i=1;i<n;i++) {
-        double minimumDistance = INT_MAX;
+        double minimumDistance = 50000.00;
         int nextIndex = -1;
 
         for (int j=0;j<n;j++)
@@ -589,7 +589,7 @@ double Graph::prim() {
 
         for (int j=0;j<n;j++)
             if (vizited[j] == false) {
-                int newDistance = distance(points[nextIndex],points[j]);
+                double newDistance = distance(points[nextIndex],points[j]);
                 if (cost[j] > newDistance) cost[j] = newDistance;
             }
     }
@@ -598,8 +598,8 @@ double Graph::prim() {
 }
 
 // TODO: outside class functions
-double distance(pair<short int, short int> pointA, pair<short int, short int> pointB) {
-    return sqrt(pow(pointB.first - pointA.second,2) + pow(pointB.second - pointA.second,2));
+double distance(pair<int, int> pointA, pair<int, int> pointB) {
+    return sqrt(pow(pointB.first - pointA.first,2) + pow(pointB.second - pointA.second,2));
 }
 
 int main() {
@@ -610,7 +610,8 @@ int main() {
     int n;
     f >> n;
 
-    vector<pair<short int,short int>> points;
+    vector<pair<int,int>> points;
+    points.reserve(n+1);
 
     for (int i=0;i<n;i++) {
         int x,y;
@@ -619,7 +620,7 @@ int main() {
     }
 
     Graph ob(n,points);
-    g << fixed << setprecision(3) << ob.prim();
+    g << fixed << setprecision(4) << ob.prim();
 
     f.close();
     g.close();
