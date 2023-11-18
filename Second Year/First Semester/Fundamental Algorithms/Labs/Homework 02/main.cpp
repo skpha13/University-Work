@@ -6,8 +6,12 @@
 #include <algorithm>
 #include <fstream>
 #include <climits>
+#include <cmath>
+#include <iomanip>
 
 using namespace std;
+
+double distance(pair<short int, short int>, pair<short int, short int>);
 
 // this is used for matrix traversal, to get neighbours of current element
 class Neighbours {
@@ -63,6 +67,10 @@ private:
     // for union find, size for the rank of trees
     vector<int> parent, size;
 
+    // cablaj
+    vector<pair<short int, short int>> points;
+    vector<double> cost;
+
     // private helper functions
     void DFSforCriticalConnections(int node, vector<int>& level, vector<int>& low, vector<vector<int>>& result);
     void DFSforShortestBridge(pair<int, int> indices, vector<vector<int>>& grid, vector<vector<bool>>& vizited, queue<pair<int,int>>& waterNodes);
@@ -79,6 +87,8 @@ public:
     Graph(int n, vector<vector<int>> &connections, vector<bool> &markedNodes);
     Graph(int n, vector<vector<int>> &connections, bool isOriented = false, bool needsPrecedence = false);
     Graph(pair<int,int> startNode, pair<int,int> destinationNode);
+
+    Graph(int n, vector<pair<short int, short int>>& points);
 
     // resolved functions
     vector<int> getBipartition();
@@ -99,6 +109,7 @@ public:
 
     // infoarena problems
     int shortestCostInWeightedGraph(vector<vector<int>> &grid);
+    double prim();
 };
 
 Graph::Graph() {
@@ -156,6 +167,21 @@ Graph::Graph(pair<int, int> startNode, pair<int, int> destinationNode) {
     this->destinationNode = destinationNode;
 }
 
+Graph::Graph(int n, vector<pair<short, short>>& points) {
+    this->points = points;
+    this->n = n;
+
+    this->cost.resize(n+1, INT_MAX);
+    cost[0] = 0;
+    for (int i=1;i<n;i++) {
+        cost[i] = distance(points[i], points[0]);
+    }
+
+    this->vizited.resize(n+1,false);
+    vizited[0] = true;
+}
+
+/*
 vector<int> Graph::getBipartition() {
     // team = represents colors
     vector<int> team(n+1,0);
@@ -541,9 +567,62 @@ bool Graph::equationsPossible(vector<std::string> &equations) {
 
     return true;
 }
+*/
+
+double Graph::prim() {
+    double totalCost = 0;
+
+    for (int i=1;i<n;i++) {
+        double minimumDistance = INT_MAX;
+        int nextIndex = -1;
+
+        for (int j=0;j<n;j++)
+            if (vizited[j] == false)
+                if (cost[j] < minimumDistance) {
+                    minimumDistance = cost[j];
+                    nextIndex = j;
+                }
+
+        // set next node as vizited and update totalCost
+        vizited[nextIndex] = true;
+        totalCost += minimumDistance;
+
+        for (int j=0;j<n;j++)
+            if (vizited[j] == false) {
+                int newDistance = distance(points[nextIndex],points[j]);
+                if (cost[j] > newDistance) cost[j] = newDistance;
+            }
+    }
+
+    return totalCost;
+}
+
+// TODO: outside class functions
+double distance(pair<short int, short int> pointA, pair<short int, short int> pointB) {
+    return sqrt(pow(pointB.first - pointA.second,2) + pow(pointB.second - pointA.second,2));
+}
 
 int main() {
-    
+    // TODO: change path when uploading to infoarena
+    ifstream f("cablaj.in");
+    ofstream g("cablaj.out");
+
+    int n;
+    f >> n;
+
+    vector<pair<short int,short int>> points;
+
+    for (int i=0;i<n;i++) {
+        int x,y;
+        f >> x >> y;
+        points.emplace_back(x,y);
+    }
+
+    Graph ob(n,points);
+    g << fixed << setprecision(3) << ob.prim();
+
+    f.close();
+    g.close();
 
     return 0;
 }
