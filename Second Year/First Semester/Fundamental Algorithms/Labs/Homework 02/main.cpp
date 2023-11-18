@@ -13,6 +13,10 @@ using namespace std;
 
 double distance(pair<int, int>, pair<int, int>);
 
+struct Edge {
+    int node, cost;
+};
+
 // this is used for matrix traversal, to get neighbours of current element
 class Neighbours {
 private:
@@ -71,6 +75,9 @@ private:
     vector<pair<int, int>> points;
     vector<double> cost;
 
+    // camionas
+    int resistance;
+
     // private helper functions
     void DFSforCriticalConnections(int node, vector<int>& level, vector<int>& low, vector<vector<int>>& result);
     void DFSforShortestBridge(pair<int, int> indices, vector<vector<int>>& grid, vector<vector<bool>>& vizited, queue<pair<int,int>>& waterNodes);
@@ -89,6 +96,7 @@ public:
     Graph(pair<int,int> startNode, pair<int,int> destinationNode);
 
     Graph(int n, vector<pair<int, int>>& points);
+    Graph(int n, int numberOfEdges, int resistance);
 
     // resolved functions
     vector<int> getBipartition();
@@ -110,6 +118,7 @@ public:
     // infoarena problems
     int shortestCostInWeightedGraph(vector<vector<int>> &grid);
     double prim();
+    int numberOfPathsToChange(const vector<vector<Edge>> &graph);
 };
 
 Graph::Graph() {
@@ -179,6 +188,12 @@ Graph::Graph(int n, vector<pair<int, int>>& points) {
 
     this->vizited.resize(n+1,false);
     vizited[0] = true;
+}
+
+Graph::Graph(int n, int numberOfEdges, int resistance) {
+    this->n = n;
+    this->numberOfEdges = numberOfEdges;
+    this->resistance = resistance;
 }
 
 /*
@@ -569,6 +584,7 @@ bool Graph::equationsPossible(vector<std::string> &equations) {
 }
 */
 
+// TODO: try to make it with heap
 double Graph::prim() {
     double totalCost = 0.0;
 
@@ -602,9 +618,36 @@ double distance(pair<int, int> pointA, pair<int, int> pointB) {
     return sqrt(pow(pointB.first - pointA.first,2) + pow(pointB.second - pointA.second,2));
 }
 
+int Graph::numberOfPathsToChange(const vector<vector<Edge>> &graph) {
+    deque<int> nodeQueue;
+    vector<int> depth(n+1,INT_MAX);
+    depth[1] = 0;
+    nodeQueue.push_back(1);
+
+    while(!nodeQueue.empty()) {
+        int currentNode = nodeQueue.front();
+        nodeQueue.pop_front();
+
+        for(auto neighbour:graph[currentNode]) {
+            if (depth[neighbour.node] > depth[currentNode]) {
+                if (neighbour.cost < resistance) {
+                    depth[neighbour.node] = depth[currentNode] + 1;
+                    nodeQueue.push_back(neighbour.node);
+                } else {
+                    depth[neighbour.node] = depth[currentNode];
+                    nodeQueue.push_front(neighbour.node);
+                }
+            }
+        }
+    }
+
+    return depth[n];
+}
+
 int main() {
     // TODO: change path when uploading to infoarena
-    ifstream f("cablaj.in");
+        // CABLAJ
+    /*ifstream f("cablaj.in");
     ofstream g("cablaj.out");
 
     int n;
@@ -621,6 +664,26 @@ int main() {
 
     Graph ob(n,points);
     g << fixed << setprecision(4) << ob.prim();
+
+    f.close();
+    g.close();*/
+
+        // CAMIONAS
+    ifstream f("camionas.in");
+    ofstream g ("camionas.out");
+
+    int n,m,G,x,y,c;
+    f >> n >> m >> G;
+    vector<vector<Edge>> connections(n+1);
+
+    for (int i=0;i<m;i++) {
+        f >> x >> y >> c;
+        connections[x].push_back(Edge {.node = y, .cost = c});
+        connections[y].push_back(Edge {.node = x, .cost = c});
+    }
+
+    Graph ob(n,m,G);
+    g << ob.numberOfPathsToChange(connections);
 
     f.close();
     g.close();
