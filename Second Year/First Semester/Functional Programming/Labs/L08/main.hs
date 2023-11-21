@@ -1,3 +1,5 @@
+import Data.Maybe
+
 class Collection c where
     empty :: c key value
     singleton :: key -> value -> c key value
@@ -30,6 +32,15 @@ instance Collection PairList where
     insert k v (PairList (x:xs))
         | k == fst x = PairList ((k,v) : xs)
         | length xs == 0 = PairList (x : (k,v) :  xs)
-        | otherwise =  (insert k v (PairList xs))
+        | otherwise =  insert k v (PairList xs)
     toList (PairList []) = []
     toList (PairList (x:xs)) = x : (toList $ PairList xs)
+    clookup _ (PairList []) = Nothing
+    clookup key (PairList ((k, v):xs)) 
+        | key == k = Just v
+        | otherwise = clookup key (PairList xs)
+    delete _ (PairList []) = empty
+    delete key (PairList ((k,v):xs))
+        | key == k = PairList xs
+        | otherwise = PairList((k, v) : getPairList (delete key (PairList xs)))
+
