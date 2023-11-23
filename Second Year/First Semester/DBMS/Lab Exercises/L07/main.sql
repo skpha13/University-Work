@@ -189,6 +189,7 @@ EXCEPTION
             0,
             'Nu exista angajati cu numele dat'
         );
+        commit;
         RAISE_APPLICATION_ERROR(-20000,'Nu exista angajati cu numele dat');
         return -1;
     WHEN TOO_MANY_ROWS THEN
@@ -199,6 +200,7 @@ EXCEPTION
             0,
             'Exista mai multi angajati cu numele dat'
         );
+        commit;
         RAISE_APPLICATION_ERROR(-20001,'Exista mai multi angajati cu numele dat');
         return -1;
     WHEN OTHERS THEN
@@ -209,13 +211,14 @@ EXCEPTION
             0,
             'Alta eroare!'
         );
+        commit;
         RAISE_APPLICATION_ERROR(-20002, 'Alta eroare!');
         return -1;
 END f2_ami;
 /
 
 begin
-    DBMS_OUTPUT.PUT_LINE(f2_ami('test'));
+    DBMS_OUTPUT.PUT_LINE(f2_ami('King'));
 end;
 /
 
