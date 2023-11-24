@@ -1,7 +1,6 @@
 import Data.Maybe
 
 -- ========== CLASS COLLECTION ========== 
-
 class Collection c where
     empty :: c key value
     singleton :: key -> value -> c key value
@@ -46,8 +45,6 @@ instance Collection PairList where
         | key == k = PairList xs
         | otherwise = PairList((k, v) : getPairList (delete key (PairList xs)))
 
-
-
 data SearchTree key value
     = Empty
     | BNode
@@ -85,5 +82,56 @@ instance (Show key, Show value) => Show (SearchTree key value) where
         show (BNode leftTree key _ rightTree) ="(" ++ show leftTree ++ "(" ++ (show key) ++ ")" ++ show rightTree ++ ")"
 
 tree = (singleton 1 2 :: SearchTree Int Int)
+-- ======================================
 
--- =================================
+-- ========== PUNCTE PUNCTE =============
+data Punct = Pt [Int]
+
+data Arb = Vid | F Int | N Arb Arb
+          deriving Show
+
+class ToFromArb a where
+    toArb :: a -> Arb
+    fromArb :: Arb -> a
+
+helperShowPunct :: [Int] -> String
+helperShowPunct [] = ""
+helperShowPunct (x:xs) = ", " ++ show x ++ helperShowPunct xs
+
+instance Show Punct where
+    show (Pt []) = "()"
+    show (Pt [x]) = "(" ++ show x ++ ")"
+    show (Pt (x:xs)) = "(" ++ show x ++ helperShowPunct xs ++ ")"
+
+getListaPuncte :: Punct -> [Int]
+getListaPuncte (Pt list) = list
+
+instance ToFromArb Punct where
+    toArb (Pt []) = Vid
+    toArb (Pt (x:xs)) = N (F x) (toArb (Pt xs))
+    fromArb Vid = Pt []
+    fromArb (F x) = Pt [x]
+    fromArb (N arb1 arb2) = Pt $ (getListaPuncte $ fromArb arb1) ++ (getListaPuncte $ fromArb arb2)
+-- ======================================
+
+-- ========== FIGURI GEOMETRICE ==========
+data Geo a = Square a | Rectangle a a | Circle a
+    deriving Show
+
+class GeoOps g where
+    perimeter :: (Floating a) => g a -> a
+    area :: (Floating a) => g a -> a
+
+instance GeoOps Geo where
+    perimeter (Square x) = x * 4
+    perimeter (Rectangle x y) = 2 * (x + y)
+    perimeter (Circle x) = 2 * pi * x
+    area (Square x) = x * x
+    area (Rectangle x y) = x * y
+    area (Circle x) = pi * x * x
+
+instance (Floating a, Eq a) => Eq (Geo a) where
+    (Square x) == (Square y) = perimeter (Square x) == perimeter (Square y)
+    (Rectangle x y) == (Rectangle a b) = perimeter (Rectangle x y) == perimeter (Rectangle a b)
+    (Circle x) == (Circle y) = perimeter (Circle x) == perimeter (Circle y)
+-- =======================================
