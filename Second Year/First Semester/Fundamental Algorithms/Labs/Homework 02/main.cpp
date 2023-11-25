@@ -59,16 +59,10 @@ private:
     int n, numberOfEdges;
     // adjacency list
     vector<vector<int>> connections;
-
+    // adjacency list with weighted connections
+    vector<vector<Edge>> connectionsWithCost;
     // for matrix traversal to get all directions: N S W E
     vector<pair<int,int>> directions = {{1,0}, {-1,0}, {0,-1}, {0,1}};
-
-    // cablaj
-    vector<pair<int, int>> points;
-    vector<double> cost;
-
-    // camionas
-    int resistance;
 
     // private helper functions
     void DFSforCriticalConnections(int node, vector<int> &level, vector<int> &low, vector<vector<int>> &result,
@@ -78,16 +72,15 @@ private:
 public:
     // constructors
     Graph();
+    Graph(int n);
+    Graph(int n, int numberOfEdges);
     Graph(vector<vector<int>> &connections);
+    Graph(int n, int numberOfEdges, vector<vector<Edge>>& connectionsWithCost);
     Graph(int n, int numberOfEdges, vector<pair<int,int>> &edges);
     // copy = to distinguish between copying a full
     // adjacency list or initializing it
     Graph(int n, vector<vector<int>> &connections, int copy);
     Graph(int n, vector<vector<int>> &connections, bool isOriented = false);
-
-    // cablaj si camionas
-    Graph(int n, vector<pair<int, int>>& points);
-    Graph(int n, int numberOfEdges, int resistance);
 
     // returns a vector with a bipartition or empty if its not possible
     vector<int> getBipartition();
@@ -110,8 +103,8 @@ public:
     int shortestCostInWeightedGraph(pair<int,int>, pair<int,int>);
 
     // cablaj & camionas
-    double prim();
-    int numberOfPathsToChange(const vector<vector<Edge>> &graph);
+    double MstForCoordinates(vector<pair<int, int>> &coordinates);
+    int BfsZeroOne(double resistance);
 
     // getters
     int getSize() const { return n; }
@@ -119,8 +112,18 @@ public:
 
 Graph::Graph() { }
 
+Graph::Graph(int n) {
+    this->n = n;
+}
+
 Graph::Graph(int n, vector<vector<int>> &connections, int copy): connections(connections){
     this->n = n;
+}
+
+Graph::Graph(int n, int numberOfEdges, vector<vector<Edge>> &connectionsWithCost) {
+    this->n = n;
+    this->numberOfEdges = numberOfEdges;
+    this->connectionsWithCost = connectionsWithCost;
 }
 
 Graph::Graph(int n, int numberOfEdges, vector<pair<int,int>> &edges) {
@@ -152,21 +155,9 @@ Graph::Graph(int n, vector<vector<int>> &connections, bool isOriented) {
     }
 }
 
-Graph::Graph(int n, vector<pair<int, int>>& points) {
-    this->points = points;
-    this->n = n;
-
-    this->cost.resize(n+1, 50000.00);
-    cost[0] = 0.0;
-    for (int i=1;i<n;i++) {
-        cost[i] = distance(points[i], points[0]);
-    }
-}
-
-Graph::Graph(int n, int numberOfEdges, int resistance) {
+Graph::Graph(int n, int numberOfEdges) {
     this->n = n;
     this->numberOfEdges = numberOfEdges;
-    this->resistance = resistance;
 }
 
 Graph::Graph(vector<vector<int>> &connections) {
@@ -472,10 +463,16 @@ int Graph::shortestCostInWeightedGraph(pair<int,int> startNode, pair<int,int> de
     return depth[destinationNode.first][destinationNode.second];
 }
 
-double Graph::prim() {
+double Graph::MstForCoordinates(vector<pair<int, int>> &coordinates) {
     double totalCost = 0.0;
     vector<bool> vizited(n+1, false);
     vizited[0] = true;
+
+    vector<double> cost(n+1, 50000.00);
+    cost[0] = 0.0;
+    for (int i=1;i<n;i++) {
+        cost[i] = distance(coordinates[i], coordinates[0]);
+    }
 
     for (int i=1;i<n;i++) {
         double minimumDistance = 50000.00;
@@ -494,7 +491,7 @@ double Graph::prim() {
 
         for (int j=0;j<n;j++)
             if (vizited[j] == false) {
-                double newDistance = distance(points[nextIndex],points[j]);
+                double newDistance = distance(coordinates[nextIndex],coordinates[j]);
                 if (cost[j] > newDistance) cost[j] = newDistance;
             }
     }
@@ -502,7 +499,7 @@ double Graph::prim() {
     return totalCost;
 }
 
-int Graph::numberOfPathsToChange(const vector<vector<Edge>> &graph) {
+int Graph::BfsZeroOne(double resistance) {
     deque<int> nodeQueue;
     vector<int> depth(n+1,INT_MAX);
     depth[1] = 0;
@@ -512,7 +509,7 @@ int Graph::numberOfPathsToChange(const vector<vector<Edge>> &graph) {
         int currentNode = nodeQueue.front();
         nodeQueue.pop_front();
 
-        for(auto neighbour:graph[currentNode]) {
+        for(auto neighbour:connectionsWithCost[currentNode]) {
             if (depth[neighbour.node] > depth[currentNode]) {
                 if (neighbour.cost < resistance) {
                     depth[neighbour.node] = depth[currentNode] + 1;
@@ -621,23 +618,23 @@ public:
     }
 
     void cablaj() {
-        ifstream f("../cablaj.in");
-        ofstream g("../cablaj.out");
+        ifstream f("cablaj.in");
+        ofstream g("cablaj.out");
 
         int n;
         f >> n;
 
-        vector<pair<int,int>> points;
-        points.reserve(n+1);
+        vector<pair<int,int>> coordinates;
+        coordinates.reserve(n+1);
 
         for (int i=0;i<n;i++) {
             int x,y;
             f >> x >> y;
-            points.emplace_back(x,y);
+            coordinates.emplace_back(x,y);
         }
 
-        Graph ob(n,points);
-        g << fixed << setprecision(4) << ob.prim();
+        Graph ob(n);
+        g << fixed << setprecision(4) << ob.MstForCoordinates(coordinates);
 
         f.close();
         g.close();
@@ -657,8 +654,8 @@ public:
             connections[y].push_back(Edge {.node = x, .cost = c});
         }
 
-        Graph ob(n,m,G);
-        g << ob.numberOfPathsToChange(connections);
+        Graph ob(n,m, connections);
+        g << ob.BfsZeroOne(G);
 
         f.close();
         g.close();
@@ -756,6 +753,7 @@ void Solution::Union(int firstNode, int secondNode) {
 }
 
 int main() {
+        // HOMEWORK 01
     // Possible Bipartition Tests
     /*vector<vector<int>> d = {{1,2},{3,4},{5,6},
                             {6,7},{8,9},{7,8}};
@@ -827,11 +825,12 @@ int main() {
     /*Solution s;
     s.padure();*/
 
-        // CABLAJ
+        // HOMEWORK 02
+    // CABLAJ
     /*Solution s;
     s.cablaj();*/
 
-        // CAMIONAS
+    // CAMIONAS
     /*Solution s;
     s.camionas();*/
 
