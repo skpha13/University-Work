@@ -75,6 +75,7 @@ public:
     Graph(int n);
     Graph(int n, int numberOfEdges);
     Graph(vector<vector<int>> &connections);
+    Graph(int n, vector<vector<Edge>>& connectionsWithCost);
     Graph(int n, int numberOfEdges, vector<vector<Edge>>& connectionsWithCost);
     Graph(int n, int numberOfEdges, vector<pair<int,int>> &edges);
     // copy = to distinguish between copying a full
@@ -106,6 +107,8 @@ public:
     double MstForCoordinates(vector<pair<int, int>> &coordinates);
     int BfsZeroOne(double resistance);
 
+    int shortestPathWithMaxStops(int source, int destination, int maxStops);
+
     // getters
     int getSize() const { return n; }
 };
@@ -118,6 +121,11 @@ Graph::Graph(int n) {
 
 Graph::Graph(int n, vector<vector<int>> &connections, int copy): connections(connections){
     this->n = n;
+}
+
+Graph::Graph(int n, vector<vector<Edge>> &connectionsWithCost) {
+    this->n = n;
+    this->connectionsWithCost = connectionsWithCost;
 }
 
 Graph::Graph(int n, int numberOfEdges, vector<vector<Edge>> &connectionsWithCost) {
@@ -525,6 +533,36 @@ int Graph::BfsZeroOne(double resistance) {
     return depth[n];
 }
 
+int Graph::shortestPathWithMaxStops(int source, int destination, int maxStops) {
+    vector<int> distance(n, INT_MAX);
+    distance[source] = 0;
+
+    // first int = number of stops for that node
+    queue<pair<int, Edge>> nodeQueue;
+    nodeQueue.emplace(0, Edge {.node = source, .cost = 0});
+
+    int currentNode = source, cost, numberOfStops;
+    while(!nodeQueue.empty()) {
+        numberOfStops = nodeQueue.front().first;
+        if (numberOfStops > maxStops) break;
+
+        currentNode = nodeQueue.front().second.node;
+        cost = nodeQueue.front().second.cost;
+        nodeQueue.pop();
+
+        for(auto it:connectionsWithCost[currentNode]) {
+            if (distance[it.node] > cost + it.cost) {
+                distance[it.node] = cost + it.cost;
+                nodeQueue.emplace(numberOfStops + 1, Edge {.node = it.node, .cost = distance[it.node]});
+            }
+        }
+    }
+
+    if (distance[destination] != INT_MAX) return distance[destination];
+
+    return -1;
+}
+
 // TODO: outside class functions
 double distance(pair<int, int> pointA, pair<int, int> pointB) {
     return sqrt(pow(pointB.first - pointA.first,2) + pow(pointB.second - pointA.second,2));
@@ -596,6 +634,16 @@ public:
     vector<vector<int>> criticalConnections(int n, vector<vector<int>>& connections) {
         Graph g(n, connections);
         return g.criticalConnections();
+    }
+
+    int findCheapestPrice(int n, vector<vector<int>>& flights, int src, int dst, int k) {
+        vector<vector<Edge>> connectionsWithCost(n);
+        for (auto it:flights) {
+            connectionsWithCost[it[0]].push_back(Edge {.node = it[1], .cost = it[2]});
+        }
+
+        Graph g(n,connectionsWithCost);
+        return g.shortestPathWithMaxStops(src, dst, k);
     }
 
     // INFOARENA PROBLEMS
@@ -833,6 +881,33 @@ int main() {
     // CAMIONAS
     /*Solution s;
     s.camionas();*/
+
+    // CHEAPEST FLIGHTS
+    /*Solution s1, s2, s3;
+    int n1 = 4, src1 = 0, dst1 = 3, k1 = 1;
+    vector<vector<int>> flights1 = {
+            {0, 1, 100},
+            {1, 2, 100},
+            {2, 0, 100},
+            {1, 3, 600},
+            {2, 3, 200}
+    };
+    int n2 = 2, src2 = 1, dst2 = 0, k2 = 0;
+    vector<vector<int>> flights2 {
+            {0, 1, 2}
+    };
+
+    int n3 = 4, src3 = 0, dst3 = 3, k3 = 1;
+    vector<vector<int>> flights3 = {
+            {0, 1, 1},
+            {0, 2, 5},
+            {1, 2, 1},
+            {2, 3, 1}
+    };
+
+    cout << s1.findCheapestPrice(n1, flights1, src1, dst1, k1) << endl;
+    cout << s2.findCheapestPrice(n2, flights2, src2, dst2, k2) << endl;
+    cout << s3.findCheapestPrice(n3, flights3, src3, dst3, k3);*/
 
     return 0;
 }
