@@ -577,6 +577,14 @@ private:
     vector<int> parent, size;
 
 public:
+    // CONSTRUCTOR
+    Solution () { }
+    Solution(int n) {
+        this->parent.resize(n+1);
+        this->size.resize(n+1,0);
+        for (int i=0;i<parent.size();i++) parent[i] = i;
+    }
+
     // LEETCODE PROBLEMS
     bool possibleBipartition(int n, vector<vector<int>>& dislikes) {
         Graph g(n,dislikes);
@@ -704,6 +712,58 @@ public:
 
         Graph ob(n,m, connections);
         g << ob.BfsZeroOne(G);
+
+        f.close();
+        g.close();
+    }
+
+    void rusuoaica() {
+        ifstream f("rusuoaica.in");
+        ofstream g("rusuoaica.out");
+
+        struct edge {
+            int node1, node2, cost;
+
+            bool operator<(const edge& e) {
+                return this->cost < e.cost;
+            }
+        };
+
+        vector<edge> tunels;
+
+        int N,M,A, totalSum = 0, numberOfEdgesAdded = 0;
+        f >> N >> M >> A;
+        tunels.reserve(M);
+
+        int t1, t2, t3;
+        for (int i=0; i<M; i++) {
+            f >> t1 >> t2 >> t3;
+            tunels.emplace_back(edge {.node1 = t1, .node2 = t2, .cost = t3});
+        }
+
+        sort(tunels.begin(), tunels.end());
+
+        this->parent.resize(N + 1);
+        this->size.resize(N + 1,0);
+        for (int i=0;i<parent.size();i++) parent[i] = i;
+
+        for (auto & tunel : tunels) {
+            if (numberOfEdgesAdded >= N-1) break;
+
+            int parent1 = find(tunel.node1);
+            int parent2 = find(tunel.node2);
+
+            if (parent1 != parent2 && tunel.cost <= A) {
+                totalSum += tunel.cost;
+                numberOfEdgesAdded++;
+                Union(parent1, parent2);
+            }
+            else {
+                totalSum -= tunel.cost;
+            }
+        }
+
+        g << totalSum + (N - numberOfEdgesAdded - 1) * A << endl;
 
         f.close();
         g.close();
@@ -908,6 +968,10 @@ int main() {
     cout << s1.findCheapestPrice(n1, flights1, src1, dst1, k1) << endl;
     cout << s2.findCheapestPrice(n2, flights2, src2, dst2, k2) << endl;
     cout << s3.findCheapestPrice(n3, flights3, src3, dst3, k3);*/
+
+    // RUSUOAICA
+    Solution s;
+    s.rusuoaica();
 
     return 0;
 }

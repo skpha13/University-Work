@@ -1,0 +1,171 @@
+/******************************************************************************
+
+                              Online C++ Compiler.
+               Code, Compile, Run and Debug C++ program online.
+Write your code in this editor and press "Run" button to compile and execute it.
+
+*******************************************************************************/
+
+#include <iostream>
+#include <string.h>
+
+using namespace std;
+
+class Persoana{
+private:
+    char* nume;
+    string prenume;
+    int varsta;
+    bool angajat;
+    char initialaTata;
+
+    float* cheltuieliInUltimeleNLuni;
+    int nLuni;
+
+    string* cumparaturileInUltimaLuna;
+    int nrProduse;
+
+
+    const int idPersoana;
+    static int contorId;
+    
+public:
+
+    Persoana():idPersoana(contorId++){
+        
+        this->nume=new char[strlen("Anonim")+1];
+        strcpy(this->nume,"Anonim");
+        
+        this->prenume="Anonim";
+        this->varsta=0;
+        this->angajat=false;
+        this->initialaTata='H';
+        
+        this->cumparaturileInUltimaLuna=NULL;
+        this->cheltuieliInUltimeleNLuni=NULL;
+        
+        this->nLuni=0;
+        this->nrProduse=0;
+        
+    }
+    Persoana(char* nume, string prenume, int varsta, bool angajat, char initialaTata, float* cheltuieliInUltimeleNLuni,
+             int nLuni, string* cumparaturileInUltimaLuna, int nrProduse):idPersoana(contorId++)
+    {
+        this->nume=new char[strlen(nume)+1];
+        strcpy(this->nume,nume);
+        this->prenume=prenume;
+        this->varsta=varsta;
+        this->angajat=angajat;
+        this->initialaTata=initialaTata;
+        
+        this->nLuni=nLuni;
+        this->cheltuieliInUltimeleNLuni=new float[nLuni];
+        for(int i=0; i<this->nLuni;i++)
+         this->cheltuieliInUltimeleNLuni[i]=cheltuieliInUltimeleNLuni[i];
+         
+        this->nrProduse=nrProduse;
+        this->cumparaturileInUltimaLuna=new string[nrProduse];
+        
+        for(int i=0; i<this->nrProduse;i++)
+         this->cumparaturileInUltimaLuna[i]=cumparaturileInUltimaLuna[i];
+                 
+   }
+   
+   
+    Persoana(const Persoana& per):idPersoana(per.idPersoana){
+        
+        this->nume=new char[strlen(per.nume)+1];
+        strcpy(this->nume,per.nume);
+        this->prenume=per.prenume;
+        this->varsta=per.varsta;
+        this->angajat=per.angajat;
+        this->initialaTata=per.initialaTata;
+        
+        this->nLuni=per.nLuni;
+        this->cheltuieliInUltimeleNLuni=new float[per.nLuni];
+        for(int i=0; i<this->nLuni;i++)
+         this->cheltuieliInUltimeleNLuni[i]=per.cheltuieliInUltimeleNLuni[i];
+         
+        this->nrProduse=per.nrProduse;
+        this->cumparaturileInUltimaLuna=new string[per.nrProduse];
+        
+        for(int i=0; i<this->nrProduse;i++)
+         this->cumparaturileInUltimaLuna[i]=per.cumparaturileInUltimaLuna[i];
+        
+        
+        
+    }
+    
+    string getPrenume(){return this->prenume;}
+    static int getContorId(){return Persoana::contorId;}
+    int getIdPersoana() {return this->idPersoana;}
+    void setPrenume(string prenume){
+        this->prenume=prenume;
+    }
+    Persoana operator= (const Persoana& per){
+        if(this!=&per){
+        if(this->nume!=NULL)
+            delete[] this->nume;
+        if(this->cheltuieliInUltimeleNLuni!=NULL)
+            delete[] this->cheltuieliInUltimeleNLuni;
+        if(this->cumparaturileInUltimaLuna!=NULL)
+            delete[] this->cumparaturileInUltimaLuna;
+        
+        this->nume=new char[strlen(per.nume)+1];
+        strcpy(this->nume,per.nume);
+        this->prenume=per.prenume;
+        this->varsta=per.varsta;
+        this->angajat=per.angajat;
+        this->initialaTata=per.initialaTata;
+        
+        this->nLuni=per.nLuni;
+        this->cheltuieliInUltimeleNLuni=new float[per.nLuni];
+        for(int i=0; i<this->nLuni;i++)
+         this->cheltuieliInUltimeleNLuni[i]=per.cheltuieliInUltimeleNLuni[i];
+         
+        this->nrProduse=per.nrProduse;
+        this->cumparaturileInUltimaLuna=new string[per.nrProduse];
+        
+        for(int i=0; i<this->nrProduse;i++)
+         this->cumparaturileInUltimaLuna[i]=per.cumparaturileInUltimaLuna[i];
+            
+        }
+        return *this;
+        
+    }
+
+    ~Persoana(){
+        
+        if(this->nume!=NULL)
+            delete[] this->nume;
+        if(this->cheltuieliInUltimeleNLuni!=NULL)
+            delete[] this->cheltuieliInUltimeleNLuni;
+        if(this->cumparaturileInUltimaLuna!=NULL)
+            delete[] this->cumparaturileInUltimaLuna;
+            
+        
+    }
+};
+
+int Persoana::contorId=1000;
+int main()
+{
+    
+    Persoana a;
+    a.setPrenume("Eduard12");
+    cout<<a.getPrenume()<<" "<<a.getContorId()<<" "<<a.getIdPersoana();
+    
+    char nume[]={"Szmeteanca"};
+    float chel[]={3.4,5.6,10};
+    string cump[]={"Mere","Pere","Cola","Apa"};
+    
+    Persoana b(nume,"Eduard",24,false,'X',chel,3,cump,4);
+        cout<<b.getPrenume()<<" "<<b.getContorId()<<" "<<b.getIdPersoana();
+        
+    Persoana c(a),d;
+    d=a;
+    
+    cout<<endl;
+    cout<<d.getPrenume()<<" "<<d.getContorId()<<" "<<d.getIdPersoana();
+    return 0;
+}

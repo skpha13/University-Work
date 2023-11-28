@@ -1,0 +1,338 @@
+#include <iostream>
+#include<vector>
+using namespace std;
+
+class CitireAfisare
+{
+public:
+    virtual ostream& Afisare(ostream&)const=0;
+    virtual istream& Citire(istream&)=0;
+
+
+};
+
+class Produs:public CitireAfisare
+{
+protected:
+    string nume;
+    float pretBrut;
+public:
+    Produs();
+    Produs(string nume, float pretBrut);
+    Produs& operator=(const Produs& p);
+    Produs(const Produs&);
+
+    virtual ostream& Afisare(ostream&)const;
+    virtual istream& Citire(istream&);
+    friend istream& operator>>(istream& in, Produs& p);
+    friend ostream& operator<<(ostream& out, const Produs& p);
+
+    string getNume()const;
+    virtual float calculeazaPret()=0;
+};
+
+ostream& Produs::Afisare(ostream& out)const
+{
+    out<<"Numele produsului este: "<<this->nume<<"\n";
+    out<<"Pretul brut al produsului este: "<<this->pretBrut<<"\n";
+    return out;
+}
+
+istream& Produs::Citire(istream& in)
+{
+
+    cout<<"Dati numele produsului: ";
+    in>>this->nume;
+    cout<<"Dati pretul brut al produsului: ";
+    in>>this->pretBrut;
+    return in;
+
+}
+
+Produs::Produs()
+{
+    this->nume="Anonim";
+    this->pretBrut=0;
+}
+
+Produs::Produs(string nume, float pretBrut)
+{
+    this->nume=nume;
+    this->pretBrut=pretBrut;
+}
+
+Produs& Produs::operator=(const Produs& p)
+{
+    if(this!=&p)
+    {
+        this->nume=p.nume;
+        this->pretBrut=p.pretBrut;
+    }
+    return *this;
+}
+
+Produs::Produs(const Produs& p)
+{
+    this->nume=p.nume;
+    this->pretBrut=p.pretBrut;
+}
+
+string Produs::getNume()const
+{
+    return this->nume;
+}
+
+istream& operator>>(istream& in, Produs& p)
+{
+    return p.Citire(in);
+}
+
+ostream& operator<<(ostream& out, const Produs& p)
+{
+    return p.Afisare(out);
+}
+
+class ProdusPerisabil:public Produs
+{
+private:
+    string dataExp;
+public:
+    ProdusPerisabil();
+    ProdusPerisabil(string nume, float pretBrut, string dataExp);
+    ProdusPerisabil(string dataExp);
+//    ProdusPerisabil(Produs p, string dataExp);
+    ProdusPerisabil& operator=(const ProdusPerisabil& p);
+    ProdusPerisabil(const ProdusPerisabil&);
+    //friend istream& operator>>(istream& in, ProdusPerisabil& p);
+    //friend ostream& operator<<(ostream& out, const ProdusPerisabil &p
+    ostream& Afisare(ostream&)const;
+    istream& Citire(istream&);
+    float calculeazaPret()
+    {
+        return (float) 25/100*this->pretBrut+this->pretBrut;
+    }
+
+};
+
+/*
+ProdusPerisabil::ProdusPerisabil(Produs p, string dataExp):Produs(p){
+
+    this->dataExp=dataExp;
+
+}
+*/
+
+ostream& ProdusPerisabil::Afisare(ostream& out) const
+{
+
+    Produs::Afisare(out);
+    out<<"Data Exp: "<<this->dataExp<<endl;
+    return out;
+
+}
+
+istream& ProdusPerisabil::Citire(istream& in)
+{
+
+    Produs::Citire(in);
+    cout<<"Data Exp: ";
+    in>>this->dataExp;
+    return in;
+}
+ProdusPerisabil::ProdusPerisabil():Produs()
+{
+    this->dataExp="Data";
+}
+ProdusPerisabil::ProdusPerisabil(string dataExp):Produs()
+{
+
+    this->dataExp=dataExp;
+
+}
+
+ProdusPerisabil::ProdusPerisabil(string nume, float pretBrut, string dataExp):Produs(nume,pretBrut)
+{
+
+    this->dataExp=dataExp;
+}
+
+ProdusPerisabil& ProdusPerisabil:: operator=(const ProdusPerisabil& p)
+{
+    if(this!=&p)
+    {
+        Produs::operator=(p);
+        this->dataExp=p.dataExp;
+    }
+    return *this;
+}
+
+ProdusPerisabil::ProdusPerisabil(const ProdusPerisabil& p):Produs(p)
+{
+
+    this->dataExp=p.dataExp;
+}
+/*
+
+istream& operator>>(istream& in, ProdusPerisabil& p)
+{
+    in>>(Produs&)p;
+    cout<<"Data expirarii: ";
+    in>>p.dataExp;
+    return in;
+}
+
+ostream& operator<<(ostream& out, const ProdusPerisabil& p)
+{
+    out<<(Produs&)p;
+    out<<"Data expirarii: "<<p.dataExp<<".\n";
+    return out;
+}
+*/
+
+class ProdusNeperisabil:public Produs
+{
+private:
+    int aniGarantie;
+public:
+    ProdusNeperisabil();
+    ProdusNeperisabil(string nume, float pretBrut,  int aniGarantie);
+    ProdusNeperisabil& operator=(const ProdusNeperisabil& );
+    ProdusNeperisabil(const ProdusNeperisabil& p);
+    //friend istream& operator>>(istream& in, ProdusNeperisabil& p);
+    //friend ostream& operator<<(ostream& out, const  ProdusNeperisabil& p);
+
+    ostream& Afisare(ostream&)const;
+    istream& Citire(istream&);
+
+    float calculeazaPret()
+    {
+        return (float) 10/100*this->pretBrut+this->pretBrut;
+    }
+
+};
+
+ostream& ProdusNeperisabil::Afisare(ostream& out) const
+{
+
+    Produs::Afisare(out);
+    out<<"Ani Garantie: "<<this->aniGarantie<<endl;
+    return out;
+
+}
+
+istream& ProdusNeperisabil::Citire(istream& in)
+{
+
+    Produs::Citire(in);
+    cout<<"Ani Garantie";
+    in>>this->aniGarantie;
+    return in;
+}
+ProdusNeperisabil::ProdusNeperisabil():Produs()
+{
+    this->aniGarantie=0;
+}
+
+ProdusNeperisabil::ProdusNeperisabil(string nume, float pretBrut, int aniGarantie):Produs(nume,pretBrut)
+{
+    this->aniGarantie=aniGarantie;
+}
+
+ProdusNeperisabil& ProdusNeperisabil:: operator=(const ProdusNeperisabil& p)
+{
+    if(this!=&p)
+    {
+        Produs::operator=(p);
+        this->aniGarantie=p.aniGarantie;
+    }
+    return *this;
+}
+
+
+
+
+ProdusNeperisabil::ProdusNeperisabil(const ProdusNeperisabil& p):Produs(p)
+{
+    this->aniGarantie=p.aniGarantie;
+}
+
+/*
+istream& operator>>(istream& in, ProdusNeperisabil& p)
+{
+    in>>(Produs&)p;
+    cout<<"Dati anii de garantie ai produsului: ";
+    in>>p.aniGarantie;
+    return in;
+}
+
+ostream& operator<<(ostream& out, const ProdusNeperisabil& p)
+{
+    out<<(Produs&)p;
+    out<<"Acest produs are "<<p.aniGarantie<<" ani garantie.\n";
+    return out;
+}
+*/
+
+int main()
+{
+    vector<Produs*>listaProduse;
+    int i=0;
+    int k=1;
+    while(k==1)
+    {
+        cout<<"\n1.Pentru a adauga un produs perisabil.";
+        cout<<"\n2.Pentru a adauga un produs neperisabil.";
+        cout<<"\n3.Pentru a afisa produsele";
+        cout<<"\n4.Stop.";
+        cout<<"\n5.Pentru a afisa preturile finale ale produselor din stock.";
+        int comanda;
+        cin>>comanda;
+        switch(comanda)
+        {
+        case 1:
+        {
+            Produs *p=new ProdusPerisabil();
+            cin>>*p;
+            listaProduse.push_back(p);
+            break;
+        }
+        case 2:
+        {
+            Produs *p=new ProdusNeperisabil();
+            cin>>*p;
+            listaProduse.push_back(p);
+            break;;
+        }
+        case 3:
+        {
+            if(listaProduse.size())
+            {
+                for(auto &p:listaProduse)
+                    cout<<*p<<'\n';
+            }
+            else
+                cout<<"Nu exista niciun produs adaugat in stock!\n";
+            break;
+        }
+        case 4:
+        {
+            k=0;
+            break;
+
+        }
+        case 5:
+        {
+            if(listaProduse.size())
+            {
+                for(int j=0; j<listaProduse.size(); j++)
+                    cout<<"\nProdusul: "<<listaProduse[j]->getNume()<<" are pretul: "<<listaProduse[j]->calculeazaPret()<<".\n";
+            }
+            else
+                cout<<"Nu exista niciun produs adaugat in stock!\n";
+            break;
+        }
+
+        }
+    }
+    return 0;
+}

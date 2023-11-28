@@ -1,0 +1,361 @@
+#include <iostream>
+#include <string.h>
+using namespace std;
+
+class Persoana{
+private:
+    char* nume;
+    string prenume;
+    int varsta;
+    bool angajat;
+    char initialaTatat;
+
+    float* cheltuieliInUltimeleNLuni;
+    int nLuni;
+
+    string* cumparaturileInUltimaLuna;
+    int nrProduse;
+
+
+    const int idPersoana;
+    static int contorId;
+
+public:
+    Persoana();
+    Persoana(char* nume, string prenume, int varsta, bool angajat, char initialaTatat, float* cheltuieliInUltimeleNLuni,
+             int nLuni, string* cumparaturileInUltimaLuna, int nrProduse);
+    Persoana (const Persoana& per);
+    Persoana& operator= (const Persoana& per);
+
+    void setCheltuieli(float * cheltuieliInUltimeleNLuni, int nLuni);
+    void setVarsta( int varsta);
+    void setNume(char* nume);
+    int getVarsta();
+    const char* getNume();
+    const float*  getCheltuieliInUltimeleNLuni()const ;
+    int getNluni();
+
+    friend ostream& operator<<(ostream& out,const Persoana& p);
+    friend istream& operator>>(istream& in, Persoana& p);
+
+    const Persoana& operator++();//pre-incremetare
+    const Persoana operator++(int);//post-incrementare
+
+    void afisare();
+
+    ~Persoana();
+
+
+
+};
+int Persoana::contorId=1000;
+const Persoana& Persoana::operator++(){
+    this->varsta++;
+    return *this;
+}
+const Persoana Persoana::operator++(int){
+    Persoana aux(*this);
+    this->varsta++;
+    return aux;
+}
+
+istream& operator>>(istream& in, Persoana& p)
+{
+
+    cout<<"\nNume: ";
+    char aux[100];
+    in>>aux;
+
+    if(p.nume!=NULL)
+        delete[] p.nume;
+    p.nume=new char[strlen(aux)+1];
+    strcpy(p.nume,aux);
+
+
+    cout<<"\nPrenume: ";
+    in>>p.prenume;
+    cout<<"\nVarsta: ";
+    in>>p.varsta;
+    cout<<"\nAngajat [1-true/0-false]: ";
+    in>>p.angajat;
+    cout<<"\nInitiala tata: ";
+    in>>p.initialaTatat;
+
+    cout<<"\nPe cate luni contorizam? ";
+    in>>p.nLuni;
+    cout<<"\nValori: ";
+
+    if(p.cheltuieliInUltimeleNLuni!=NULL)
+        delete[] p.cheltuieliInUltimeleNLuni;
+    p.cheltuieliInUltimeleNLuni=new float[p.nLuni];
+    for(int i=0; i<p.nLuni; i++)
+        in>>p.cheltuieliInUltimeleNLuni[i];
+
+    cout<<"\nCate produse ati cumparat in ultima luna: ";
+    in>>p.nrProduse;
+
+    if(p.cumparaturileInUltimaLuna!=NULL)
+        delete[] p.cumparaturileInUltimaLuna;
+    p.cumparaturileInUltimaLuna=new string[p.nrProduse];
+    cout<<"\nProduse: ";
+    for(int i=0; i<p.nrProduse; i++)
+        in>>p.cumparaturileInUltimaLuna[i];
+
+
+    return in;
+
+}
+
+ostream& operator<<(ostream& out, const Persoana& p)
+{
+
+
+    out<<"\nId persoana: "<<p.idPersoana;
+    out<<"\nNume: "<<p.nume;
+    out<<"\nPrenume: "<<p.prenume;
+    out<<"\nVarsta: "<<p.varsta;
+    out<<"\nInitiala tata: "<<p.initialaTatat;
+    out<<"\nAngajat: ";
+    if(p.angajat) out<<"da";
+    else out<<"nu";
+    out<<"\nIn ultimele "<<p.nLuni<<" luni a cumparat produse in valoare de: ";
+    for(int i=0; i<p.nLuni; i++)
+        out<<p.cheltuieliInUltimeleNLuni[i]<<", ";
+    out<<"\nIn ultima luna a cumparat produsele: ";
+    for(int i=0; i<p.nrProduse; i++)
+        out<<p.cumparaturileInUltimaLuna[i]<<", ";
+
+
+    return out;
+
+}
+
+ void Persoana::setCheltuieli(float * cheltuieliInUltimeleNLuni, int nLuni){
+        if(this->cheltuieliInUltimeleNLuni!=NULL)
+            delete[] this->cheltuieliInUltimeleNLuni;
+        this->nLuni=nLuni;
+        this->cheltuieliInUltimeleNLuni=new float[this->nLuni];
+        for(int i=0; i<this->nLuni; i++)
+            this->cheltuieliInUltimeleNLuni[i]=cheltuieliInUltimeleNLuni[i];
+
+    }
+void  Persoana::setVarsta( int varsta){
+
+        this->varsta=varsta;
+    }
+void  Persoana::setNume(char* nume){
+
+         if(this->nume!=NULL)
+            delete[] this->nume;
+        this->nume=new char[strlen(nume)+1];
+        strcpy(this->nume,nume);
+
+    }
+int  Persoana::getVarsta(){
+
+        return this->varsta;
+    }
+const char*  Persoana::getNume(){
+        return this->nume;
+    }
+const float*   Persoana::getCheltuieliInUltimeleNLuni()const {
+      //   this->cheltuieliInUltimeleNLuni=NULL; const dupa delcararea
+        return this->cheltuieliInUltimeleNLuni;
+    }
+int  Persoana::getNluni(){
+        return this->nLuni;
+    }
+Persoana::Persoana():idPersoana(contorId++){
+
+        this->nume=new char[strlen("Anonim")+1];
+        strcpy(this->nume,"Anonim");
+
+        this->prenume="Anonim";
+        this->varsta=0;
+        this->angajat=false;
+        this->initialaTatat='W';
+
+        this->nLuni=0;
+        this->nrProduse=0;
+
+        this->cheltuieliInUltimeleNLuni=NULL;
+        this->cumparaturileInUltimaLuna=NULL;
+
+    }
+
+ Persoana::Persoana(char* nume, string prenume, int varsta, bool angajat, char initialaTatat, float* cheltuieliInUltimeleNLuni,
+             int nLuni, string* cumparaturileInUltimaLuna, int nrProduse):idPersoana(contorId++)
+    {
+
+        this->nume=new char[strlen(nume)+1];
+        strcpy(this->nume,nume);
+
+        this->prenume=prenume;
+        this->varsta=varsta;
+        this->angajat=angajat;
+        this->initialaTatat=initialaTatat;
+
+        this->nLuni=nLuni;
+        this->cheltuieliInUltimeleNLuni=new float[this->nLuni];
+        for(int i=0; i<this->nLuni; i++)
+            this->cheltuieliInUltimeleNLuni[i]=cheltuieliInUltimeleNLuni[i];
+
+        this->cumparaturileInUltimaLuna=new string[nrProduse];
+        for(int i=0; i<nrProduse;i++)
+            this->cumparaturileInUltimaLuna[i]=cumparaturileInUltimaLuna[i];
+        this->nrProduse=nrProduse;
+
+
+    }
+
+ Persoana::Persoana (const Persoana& per):idPersoana(per.idPersoana){
+
+        this->nume=new char[strlen(per.nume)+1];
+        strcpy(this->nume,per.nume);
+
+        this->prenume=per.prenume;
+        this->varsta=per.varsta;
+        this->angajat=per.angajat;
+        this->initialaTatat=per.initialaTatat;
+
+        this->nLuni=per.nLuni;
+        this->cheltuieliInUltimeleNLuni=new float[this->nLuni];
+        for(int i=0; i<this->nLuni; i++)
+            this->cheltuieliInUltimeleNLuni[i]=per.cheltuieliInUltimeleNLuni[i];
+
+        this->cumparaturileInUltimaLuna=new string[per.nrProduse];
+        for(int i=0; i<per.nrProduse;i++)
+            this->cumparaturileInUltimaLuna[i]=per.cumparaturileInUltimaLuna[i];
+        this->nrProduse=per.nrProduse;
+
+
+
+    }
+
+Persoana&  Persoana::operator= (const Persoana& per){
+
+        if(this!=&per){
+
+        if(this->nume!=NULL)
+            delete[] this->nume;
+        if(this->cheltuieliInUltimeleNLuni!=NULL)
+            delete[] this->cheltuieliInUltimeleNLuni;
+        if(this->cumparaturileInUltimaLuna!=NULL)
+            delete[] this->cumparaturileInUltimaLuna;
+
+        this->nume=new char[strlen(per.nume)+1];
+        strcpy(this->nume,per.nume);
+
+        this->prenume=per.prenume;
+        this->varsta=per.varsta;
+        this->angajat=per.angajat;
+        this->initialaTatat=per.initialaTatat;
+
+        this->nLuni=per.nLuni;
+        this->cheltuieliInUltimeleNLuni=new float[this->nLuni];
+        for(int i=0; i<this->nLuni; i++)
+            this->cheltuieliInUltimeleNLuni[i]=per.cheltuieliInUltimeleNLuni[i];
+
+        this->cumparaturileInUltimaLuna=new string[per.nrProduse];
+        for(int i=0; i<per.nrProduse;i++)
+            this->cumparaturileInUltimaLuna[i]=per.cumparaturileInUltimaLuna[i];
+        this->nrProduse=per.nrProduse;
+
+
+        }
+
+        return *this;
+
+    }
+
+Persoana::~Persoana(){
+
+        if(this->nume!=NULL)
+            delete[] this->nume;
+        if(this->cheltuieliInUltimeleNLuni!=NULL)
+            delete[] this->cheltuieliInUltimeleNLuni;
+        if(this->cumparaturileInUltimaLuna!=NULL)
+            delete[] this->cumparaturileInUltimaLuna;
+
+    }
+
+
+void  Persoana::afisare(){
+
+
+        cout<<"\n\nPersoana are id: "<< this->idPersoana;
+        cout<<"\nNume: "<<this->nume;
+        cout<<"\nVarsta: "<<this->varsta;
+        cout<<"\nAngajat: "; if(this->angajat) cout<<"DA"; else cout<<"NU";
+        cout<<"\nIntialaTata: "<< this->initialaTatat;
+        if(this->nLuni!=0)
+        {
+
+        cout<<"\nIn ultimele "<<this->nLuni<<" luni a avut urmatoarele cheltuieli:\n";
+        for(int i=0; i<this->nLuni;i++)
+            cout<<"Luna "<<i+1<<" a cheltuit: "<<this->cheltuieliInUltimeleNLuni[i]<<" lei"<<endl;
+        }
+        if(this->nrProduse!=0)
+        {
+        cout<<"In ultima luna a cumparat urmatoareke articole: ";
+        for(int i=0;i<this->nrProduse;i++)
+            cout<<this->cumparaturileInUltimaLuna[i]<<", ";
+
+        }
+        cout<<endl;
+
+
+    }
+
+
+
+
+int main()
+{
+    Persoana a;
+    a.afisare();
+
+    char nume[]={"Szmeteanca"};
+    float chel[]={3.4,5.6,10};
+    string cump[]={"Mere","Pere","Cola","Apa"};
+
+    Persoana b(nume,"Eduard",24,false,'X',chel,3,cump,4);
+    b.afisare();
+
+
+    Persoana c(b); //cc
+    Persoana d=b; //cc
+    c.afisare();
+    d.afisare();
+
+    Persoana e;
+    e=b;
+    e.afisare();
+
+    //sett gett
+    char nume1[]={"Szmeteanca1"};
+    float chel1[]={10,11,12};
+    a.setCheltuieli(chel1,3);
+    for(int i=0;i<a.getNluni();i++){
+        cout<<a.getCheltuieliInUltimeleNLuni()[i];
+
+    }
+
+    a.setNume(nume1);
+    a.setVarsta(50);
+    cout<<"\n"<<a.getNume()<<endl<<a.getVarsta();
+
+    /*cout<<a;
+    cin>>a;
+    cout<<a;*/
+
+    cout<<c;
+    cout<<endl;
+    cout<<++c;
+    cout<<c++;
+    cout<<c;
+
+
+
+    return 0;
+}
