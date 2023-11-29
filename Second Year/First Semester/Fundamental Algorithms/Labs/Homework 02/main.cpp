@@ -15,6 +15,10 @@ double distance(pair<int, int>, pair<int, int>);
 
 struct Edge {
     int node, cost;
+
+    bool operator<(const Edge& e) const {
+        return this->cost < e.cost;
+    }
 };
 
 // this is used for matrix traversal, to get neighbours of current element
@@ -108,6 +112,11 @@ public:
     int BfsZeroOne(double resistance);
 
     int shortestPathWithMaxStops(int source, int destination, int maxStops);
+
+    // returning a pointer to the dynamically alocated vector
+    // so we can avoid copying
+    const vector<vector<int>>* floydWarshall() const;
+    const vector<int>* dijkstraFromSource(int source = 1, const vector<int> &isRailway = { }) const;
 
     // getters
     int getSize() const { return n; }
@@ -563,6 +572,50 @@ int Graph::shortestPathWithMaxStops(int source, int destination, int maxStops) {
     return -1;
 }
 
+// TODO: useless so far
+const vector<vector<int>>* Graph::floydWarshall() const {
+    vector<vector<int>>* costs = new vector<vector<int>>(n+1, vector<int>(n+1, INT_MAX));
+    // TODO: initialize for each edge
+
+    for (int k=1; k<=n; k++)
+        for (int i=1; i<=n; i++)
+            for (int j=1; j<=n; j++)
+                if ((*costs)[i][j] > (*costs)[i][k] + (*costs)[k][j])
+                    (*costs)[i][j] = (*costs)[i][k] + (*costs)[k][j];
+
+    return costs;
+}
+
+const vector<int>* Graph::dijkstraFromSource(int source, const vector<int> &isRailway) const {
+    vector<bool> visited(n+1, false);
+    vector<int>* costs = new vector<int>(n+1, INT_MAX);
+    priority_queue<Edge> priorityQueue;
+    priorityQueue.push((Edge {.node = source, .cost = 0}));
+
+    int counter = 0;
+    while (!priorityQueue.empty()) {
+        int currentNode = priorityQueue.top().node;
+        int currentCost = priorityQueue.top().cost;
+        priorityQueue.pop();
+
+        if (visited[currentNode] == false) {
+            visited[currentNode] = true;
+            (*costs)[currentNode] = currentCost;
+
+            for(auto neighbour : connectionsWithCost[currentNode]) {
+                if ((*costs)[neighbour.node] > (*costs)[currentNode] + neighbour.cost) {
+                    (*costs)[neighbour.node] = (*costs)[currentNode] + neighbour.cost;
+                    if (isRailway[neighbour.node] < (*costs)[neighbour.node]) counter++;
+                    priorityQueue.push(Edge {.node = neighbour.node, .cost = (*costs)[neighbour.node]});
+                }
+            }
+        }
+    }
+
+    cout << numberOfEdges - counter << endl;
+    return costs;
+}
+
 // TODO: outside class functions
 double distance(pair<int, int> pointA, pair<int, int> pointB) {
     return sqrt(pow(pointB.first - pointA.first,2) + pow(pointB.second - pointA.second,2));
@@ -830,6 +883,33 @@ public:
 
         cout << result;
     }
+
+    void JzzhuAndCities() {
+        int n, m, k, u, v, x, s, y;
+        cin >> n >> m >> k;
+
+        vector<int> isRailway(n+1, INT_MAX);
+        vector<vector<Edge>> connectionsWithCost(n+1);
+
+        for (int i=0; i<m; i++) {
+            cin >> u >> v >> x;
+            connectionsWithCost[u].push_back(Edge {.node = v, .cost = x});
+            connectionsWithCost[v].push_back(Edge {.node = u, .cost = x});
+        }
+        Graph g(n, k,connectionsWithCost);
+
+        for (int i=0; i<k; i++) {
+            cin >> s >> y;
+            isRailway[s] = min(isRailway[s], y);
+            connectionsWithCost[1].push_back(Edge {.node = s, .cost = x});
+            connectionsWithCost[s].push_back(Edge {.node = 1, .cost = x});
+        }
+
+//        Graph g(n, k,connectionsWithCost);
+        const vector<int>* temp = g.dijkstraFromSource(1, isRailway);
+
+        delete temp;
+    }
 };
 
 int Solution::find(int node) {
@@ -970,8 +1050,12 @@ int main() {
     cout << s3.findCheapestPrice(n3, flights3, src3, dst3, k3);*/
 
     // RUSUOAICA
+    /*Solution s;
+    s.rusuoaica();*/
+
+    // Jzzhu and Cities
     Solution s;
-    s.rusuoaica();
+    s.JzzhuAndCities();
 
     return 0;
 }
