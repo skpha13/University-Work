@@ -17,7 +17,7 @@ struct Edge {
     long long node, cost;
 
     bool operator<(const Edge& e) const {
-        return this->cost < e.cost;
+        return this->cost > e.cost;
     }
 };
 
@@ -116,7 +116,7 @@ public:
     // returning a pointer to the dynamically alocated vector
     // so we can avoid copying
     const vector<vector<int>>* floydWarshall() const;
-    const vector<long long> * dijkstraFromSource(int source = 1, const vector<long long> &isRailway = { }) const;
+    const vector<long long int> *dijkstraFromSource(int source = 1) const;
 
     // getters
     int getSize() const { return n; }
@@ -586,13 +586,14 @@ const vector<vector<int>>* Graph::floydWarshall() const {
     return costs;
 }
 
-const vector<long long> * Graph::dijkstraFromSource(int source, const vector<long long> &isRailway) const {
+const vector<long long int> * Graph::dijkstraFromSource(int source) const {
     vector<bool> visited(n+1, false);
     vector<long long>* costs = new vector<long long>(n+1, LONG_LONG_MAX);
+    (*costs)[source] = 0;
+
     priority_queue<Edge> priorityQueue;
     priorityQueue.push((Edge {.node = source, .cost = 0}));
 
-    int counter = 0;
     while (!priorityQueue.empty()) {
         long long currentNode = priorityQueue.top().node;
         long long currentCost = priorityQueue.top().cost;
@@ -600,19 +601,16 @@ const vector<long long> * Graph::dijkstraFromSource(int source, const vector<lon
 
         if (visited[currentNode] == false) {
             visited[currentNode] = true;
-            (*costs)[currentNode] = currentCost;
 
             for(auto neighbour : connectionsWithCost[currentNode]) {
                 if ((*costs)[neighbour.node] > (*costs)[currentNode] + neighbour.cost) {
                     (*costs)[neighbour.node] = (*costs)[currentNode] + neighbour.cost;
-                    if (isRailway[neighbour.node] < (*costs)[neighbour.node]) counter++;
                     priorityQueue.push(Edge {.node = neighbour.node, .cost = (*costs)[neighbour.node]});
                 }
             }
         }
     }
 
-    cout << numberOfEdges - counter << endl;
     return costs;
 }
 
@@ -886,30 +884,62 @@ public:
 
     void JzzhuAndCities() {
         int n,m,k,u,v,s;
-        long long x,y;
+        long long x,y, counter = 0;
         cin >> n >> m >> k;
 
-        vector<long long> isRailway(n+1, LONG_LONG_MAX);
+        vector<long long> railway(n + 1, LONG_LONG_MAX);
         vector<vector<Edge>> connectionsWithCost(n+1);
+        vector<long long> numberOfTrains(n+1, 0);
 
         for (int i=0; i<m; i++) {
             cin >> u >> v >> x;
             connectionsWithCost[u].push_back(Edge {.node = v, .cost = x});
             connectionsWithCost[v].push_back(Edge {.node = u, .cost = x});
         }
-        Graph g(n, k,connectionsWithCost);
 
         for (int i=0; i<k; i++) {
             cin >> s >> y;
-            isRailway[s] = min(isRailway[s], y);
-//            connectionsWithCost[1].push_back(Edge {.node = s, .cost = x});
-//            connectionsWithCost[s].push_back(Edge {.node = 1, .cost = x});
+            numberOfTrains[s]++;
+            railway[s] = min(railway[s], y);
         }
 
-//        Graph g(n, k,connectionsWithCost);
-        const vector<long long>* temp = g.dijkstraFromSource(1, isRailway);
+        for (int i=1; i<=n; i++) {
+            if (numberOfTrains[i] > 0)
+                // one sided because we wont need to go from any node to 1
+                connectionsWithCost[1].push_back(Edge {.node = i, .cost = railway[i]});
+        }
 
-        delete temp;
+        Graph g(n, k,connectionsWithCost);
+        const vector<long long>* costs = g.dijkstraFromSource(1);
+
+        for (int i=1; i<=n; i++)
+            if (numberOfTrains[i] > 0) {
+                // start with maximum number of trains to eliminate
+                counter += numberOfTrains[i] - 1;
+
+                // if its bigger eliminate last one as well
+                if (railway[i] > (*costs)[i])
+                    counter++;
+
+                // if its equal check to see if we have more connections to the city
+                if (railway[i] == (*costs)[i]) {
+                    bool hasConnection = false;
+
+                    for (auto it: connectionsWithCost[i])
+                        if ((*costs)[i] == (*costs)[it.node] + it.cost) {
+                            hasConnection = true;
+                            break;
+                        }
+
+                    // if we do we can eliminate the train as well
+                    if (hasConnection)
+                        counter++;
+                }
+            }
+
+        cout << counter << endl;
+
+        delete costs;
     }
 };
 
