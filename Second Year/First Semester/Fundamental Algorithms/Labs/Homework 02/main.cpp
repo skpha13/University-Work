@@ -14,7 +14,7 @@ using namespace std;
 double distance(pair<int, int>, pair<int, int>);
 
 struct Edge {
-    int node, cost;
+    long long node, cost;
 
     bool operator<(const Edge& e) const {
         return this->cost < e.cost;
@@ -116,7 +116,7 @@ public:
     // returning a pointer to the dynamically alocated vector
     // so we can avoid copying
     const vector<vector<int>>* floydWarshall() const;
-    const vector<int>* dijkstraFromSource(int source = 1, const vector<int> &isRailway = { }) const;
+    const vector<long long> * dijkstraFromSource(int source = 1, const vector<long long> &isRailway = { }) const;
 
     // getters
     int getSize() const { return n; }
@@ -586,16 +586,16 @@ const vector<vector<int>>* Graph::floydWarshall() const {
     return costs;
 }
 
-const vector<int>* Graph::dijkstraFromSource(int source, const vector<int> &isRailway) const {
+const vector<long long> * Graph::dijkstraFromSource(int source, const vector<long long> &isRailway) const {
     vector<bool> visited(n+1, false);
-    vector<int>* costs = new vector<int>(n+1, INT_MAX);
+    vector<long long>* costs = new vector<long long>(n+1, LONG_LONG_MAX);
     priority_queue<Edge> priorityQueue;
     priorityQueue.push((Edge {.node = source, .cost = 0}));
 
     int counter = 0;
     while (!priorityQueue.empty()) {
-        int currentNode = priorityQueue.top().node;
-        int currentCost = priorityQueue.top().cost;
+        long long currentNode = priorityQueue.top().node;
+        long long currentCost = priorityQueue.top().cost;
         priorityQueue.pop();
 
         if (visited[currentNode] == false) {
@@ -885,10 +885,11 @@ public:
     }
 
     void JzzhuAndCities() {
-        int n, m, k, u, v, x, s, y;
+        int n,m,k,u,v,s;
+        long long x,y;
         cin >> n >> m >> k;
 
-        vector<int> isRailway(n+1, INT_MAX);
+        vector<long long> isRailway(n+1, LONG_LONG_MAX);
         vector<vector<Edge>> connectionsWithCost(n+1);
 
         for (int i=0; i<m; i++) {
@@ -901,12 +902,12 @@ public:
         for (int i=0; i<k; i++) {
             cin >> s >> y;
             isRailway[s] = min(isRailway[s], y);
-            connectionsWithCost[1].push_back(Edge {.node = s, .cost = x});
-            connectionsWithCost[s].push_back(Edge {.node = 1, .cost = x});
+//            connectionsWithCost[1].push_back(Edge {.node = s, .cost = x});
+//            connectionsWithCost[s].push_back(Edge {.node = 1, .cost = x});
         }
 
 //        Graph g(n, k,connectionsWithCost);
-        const vector<int>* temp = g.dijkstraFromSource(1, isRailway);
+        const vector<long long>* temp = g.dijkstraFromSource(1, isRailway);
 
         delete temp;
     }
