@@ -821,6 +821,55 @@ public:
         g.close();
     }
 
+    int dragoni1(vector<vector<int>>& connections, vector<int> dmax) {
+        vector<vector<Edge>> connectionsWithCost(connections.size());
+
+        for (auto it:connections) {
+            connectionsWithCost[it[0]].push_back(Edge {.node = it[1], .cost = dmax[1] < it[2]});
+            connectionsWithCost[it[1]].push_back(Edge {.node = it[0], .cost = dmax[1] < it[2]});
+        }
+
+        // -1 because i create it with +1
+        Graph g(connections.size()-1, connectionsWithCost);
+        vector<int> costs = g.BfsZeroOne(1);
+
+        int maxCost = 0, maxCostIndex = -1;
+        for (int i=1; i<costs.size(); i++)
+            if (costs[i] == 0 && maxCost < dmax[i]) {
+                maxCost = dmax[i];
+                maxCostIndex = i;
+            }
+
+        return dmax[maxCostIndex];
+    }
+
+    int dragoni2(vector<vector<int>>& connections, vector<int> dmax) {
+        return 0;
+    }
+
+    void dragoni() {
+        ifstream f("dragoni.in");
+        ofstream g("dragoni.out");
+
+        int p,n,m,a,b,d;
+        f >> p >> n >> m;
+        vector<int> dmax(n+1);
+        vector<vector<int>> connections;
+
+        for (int i=1; i<=n; i++)
+            f >> dmax[i];
+
+        for (int i=0; i<m; i++) {
+            f >> a >> b >> d;
+            connections.push_back({a, b, d});
+        }
+
+        if (p == 1)
+            g << dragoni1(connections, dmax) << endl;
+        else
+            g << dragoni2(connections, dmax) << endl;
+    }
+
     // CODEFORCES PROBLEMS
     void minimumMaximumDistance() {
         int t,n,k;
@@ -1090,6 +1139,7 @@ int main() {
     s.JzzhuAndCities();*/
 
     // DRAGONI
-    
+    Solution s;
+    s.dragoni();
     return 0;
 }
