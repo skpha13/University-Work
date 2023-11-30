@@ -109,7 +109,7 @@ public:
 
     // cablaj & camionas
     double MstForCoordinates(vector<pair<int, int>> &coordinates);
-    int BfsZeroOne(double resistance);
+    vector<int> BfsZeroOne(int source);
 
     int shortestPathWithMaxStops(int source, int destination, int maxStops);
 
@@ -516,30 +516,29 @@ double Graph::MstForCoordinates(vector<pair<int, int>> &coordinates) {
     return totalCost;
 }
 
-int Graph::BfsZeroOne(double resistance) {
+vector<int> Graph::BfsZeroOne(int source) {
     deque<int> nodeQueue;
     vector<int> depth(n+1,INT_MAX);
-    depth[1] = 0;
-    nodeQueue.push_back(1);
+    depth[source] = 0;
+    nodeQueue.push_back(source);
 
     while(!nodeQueue.empty()) {
         int currentNode = nodeQueue.front();
         nodeQueue.pop_front();
 
         for(auto neighbour:connectionsWithCost[currentNode]) {
-            if (depth[neighbour.node] > depth[currentNode]) {
-                if (neighbour.cost < resistance) {
-                    depth[neighbour.node] = depth[currentNode] + 1;
-                    nodeQueue.push_back(neighbour.node);
-                } else {
-                    depth[neighbour.node] = depth[currentNode];
+            if (depth[neighbour.node] - neighbour.cost > depth[currentNode]) {
+                depth[neighbour.node] = depth[currentNode] + neighbour.cost;
+
+                if (neighbour.cost == 0)
                     nodeQueue.push_front(neighbour.node);
-                }
+                else
+                    nodeQueue.push_back(neighbour.node);
             }
         }
     }
 
-    return depth[n];
+    return depth;
 }
 
 int Graph::shortestPathWithMaxStops(int source, int destination, int maxStops) {
@@ -757,12 +756,14 @@ public:
 
         for (int i=0;i<m;i++) {
             f >> x >> y >> c;
-            connections[x].push_back(Edge {.node = y, .cost = c});
-            connections[y].push_back(Edge {.node = x, .cost = c});
+            connections[x].push_back(Edge {.node = y, .cost = c < G});
+            connections[y].push_back(Edge {.node = x, .cost = c < G});
         }
 
         Graph ob(n,m, connections);
-        g << ob.BfsZeroOne(G);
+        vector<int> costs = ob.BfsZeroOne(1);
+
+        g << costs[n] << endl;
 
         f.close();
         g.close();
@@ -973,7 +974,7 @@ void Solution::Union(int firstNode, int secondNode) {
 
 int main() {
         // HOMEWORK 01
-    // Possible Bipartition Tests
+    // POSSIBLE BIPARTITIONS
     /*vector<vector<int>> d = {{1,2},{3,4},{5,6},
                             {6,7},{8,9},{7,8}};
 
@@ -985,7 +986,7 @@ int main() {
     Solution s;
     cout << s.possibleBipartition(4,d2);*/
 
-    // Shortest Bridge Tests
+    // SHORTEST BRIDGE
     /*vector<vector<int>> t1 = {{0,1},{1,0}};
     vector<vector<int>> t2 = {{0,1,0},{0,0,0},{0,0,1}};
     vector<vector<int>> t3 = {{1,1,1,1,1},{1,0,0,0,1},{1,0,1,0,1},{1,0,0,0,1},{1,1,1,1,1}};
@@ -994,7 +995,7 @@ int main() {
     Solution s;
     cout << s.shortestBridge(t4);*/
 
-    // Course Schedule 2 Tests
+    // COURSE SCHEDULE 2
     /*vector<vector<int>> prerequisites1 = {{1,0}};
     vector<vector<int>> prerequisites2 = {{1,0},{2,0},{3,1},{3,2}};
     vector<vector<int>> prerequisites3 = {};
@@ -1004,7 +1005,7 @@ int main() {
     vector<int> result = s.findOrder(2,prerequisites1);
     for(auto i:result) cout<<i<<" ";*/
 
-    // Satifiability of Equality Equations - this approach doesnt work
+    // SATISFIABILITY OF EQUALITY EQUATIONS
     /*vector<vector<string>> inputs = {{"a==b","b!=a"},{"b==a","a==b"},{"a==b","b==c","a!=c"},{"c==c","b==d","x!=z"},{"a!=b","b!=c","c!=a"},{"b==b","b==e","e==c","d!=e"},{"a!=a"}};
     vector<bool> solutions = {false,true,false,true,true,true,false};
 
@@ -1015,7 +1016,7 @@ int main() {
         else cout<<"PASSED\n";
     }*/
 
-    // Find Eventual Safe Nodes
+    // FIND EVENTUAL SAFE STATES
     /*Solution s;
     vector<vector<int>> graph1 = {{1,2},{2,3},{5},{0},{5},{},{}};
     vector<vector<int>> graph2 = {{1,2,3,4},{1,2},{3,4},{0,4},{}};
@@ -1025,22 +1026,22 @@ int main() {
     for(auto it:result) cout<<it<<" ";
     cout<<endl;*/
 
-    // Critical Connections Tests
+    // CRITICAL CONNECTIONS
     /*vector<vector<int>> connections1 = {{0,1},{1,2},{2,0},{1,3}};
     vector<vector<int>> connections2 = {{0,1}};
     Solution s;
     for(auto it:s.criticalConnections(4,connections1))
         cout<<"("<<it[0]<<", "<<it[1]<<") ";*/
 
-    // Graph Without Long Directed Paths
+    // GRAPH WITHOUT LONG DIRECTED PATHS
     /*Solution s;
     s.graphWithoutLongDirectedPaths();*/
 
-    // Minimum Maximum Distance
+    // MINIMUM MAXIMUM DISTANCE
     /*Solution s;
     s.minimumMaximumDistance();*/
 
-    // Minimum Cost Path in Forest
+    // PADURE
     /*Solution s;
     s.padure();*/
 
@@ -1084,9 +1085,11 @@ int main() {
     /*Solution s;
     s.rusuoaica();*/
 
-    // Jzzhu and Cities
-    Solution s;
-    s.JzzhuAndCities();
+    // JZZHU AND CITIES
+    /*Solution s;
+    s.JzzhuAndCities();*/
 
+    // DRAGONI
+    
     return 0;
 }
