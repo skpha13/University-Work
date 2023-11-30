@@ -821,7 +821,7 @@ public:
         g.close();
     }
 
-    int dragoni1(vector<vector<int>>& connections, vector<int> dmax) {
+    int dragoni1(vector<vector<int>>& connections,const vector<int>& dmax) {
         vector<vector<Edge>> connectionsWithCost(connections.size());
 
         for (auto it:connections) {
@@ -843,8 +843,52 @@ public:
         return dmax[maxCostIndex];
     }
 
-    int dragoni2(vector<vector<int>>& connections, vector<int> dmax) {
-        return 0;
+    int dragoni2(vector<vector<int>>& connections,const vector<int>& dmax) {
+        vector<vector<Edge>> connectionsWithCost(dmax.size());
+
+        for (auto it: connections) {
+            connectionsWithCost[it[0]].push_back(Edge{.node = it[1], .cost = it[2]});
+            connectionsWithCost[it[1]].push_back(Edge{.node = it[0], .cost = it[2]});
+        }
+
+        vector<int> costs(dmax.size(), INT_MAX);
+        vector<int> dragons(dmax.size(), 0);
+        costs[1] = 0;
+        dragons[1] = dmax[1];
+
+        // edge and value of dragon
+        priority_queue<pair<Edge, int>> priorityQueue;
+        priorityQueue.emplace(Edge{.node = 1, .cost = 0}, dmax[1]);
+
+        while (!priorityQueue.empty()) {
+            int currentNode = priorityQueue.top().first.node;
+            int currentCost = priorityQueue.top().first.cost;
+            int currentDragon = priorityQueue.top().second;
+            priorityQueue.pop();
+
+            for (auto neighbour: connectionsWithCost[currentNode])
+                if (currentDragon >= neighbour.cost)
+                    if (costs[neighbour.node] > currentCost + neighbour.cost) {
+                        costs[neighbour.node] = currentCost + neighbour.cost;
+
+                        if (dmax[neighbour.node] > currentDragon) {
+                            dragons[neighbour.node] = dmax[neighbour.node];
+                            priorityQueue.emplace(Edge{.node = neighbour.node, .cost = costs[neighbour.node]},
+                                                   dmax[neighbour.node]);
+                        } else {
+                            dragons[neighbour.node] = currentDragon;
+                            priorityQueue.emplace(Edge{.node = neighbour.node, .cost = costs[neighbour.node]},
+                                                   currentDragon);
+                        }
+                    }
+                    else if (dragons[neighbour.node] < currentDragon) {
+                        dragons[neighbour.node] = currentDragon;
+                        priorityQueue.emplace(Edge {.node = neighbour.node, .cost = currentCost + neighbour.cost},
+                                                   currentDragon);
+                    }
+        }
+
+        return costs[dmax.size()-1];
     }
 
     void dragoni() {
@@ -1139,7 +1183,7 @@ int main() {
     s.JzzhuAndCities();*/
 
     // DRAGONI
-    Solution s;
-    s.dragoni();
+    /*Solution s;
+    s.dragoni();*/
     return 0;
 }
