@@ -117,6 +117,8 @@ public:
     // so we can avoid copying
     const vector<vector<int>>* floydWarshall() const;
     const vector<long long int> *dijkstraFromSource(int source = 1) const;
+    // first int is the parent, second the cost
+    const vector<pair<int,long long>> *dijkstraWithPathsFromSource(int source = 1) const;
 
     // getters
     int getSize() const { return n; }
@@ -613,10 +615,48 @@ const vector<long long int> * Graph::dijkstraFromSource(int source) const {
     return costs;
 }
 
+const vector<pair<int, long long>> * Graph::dijkstraWithPathsFromSource(int source) const {
+    vector<bool> visited(n+1, false);
+    vector<pair<int,long long>> *pathAndCost = new vector<pair<int, long long>>(n+1, make_pair(-1,LONG_LONG_MAX));
+    (*pathAndCost)[source].first = source;
+    (*pathAndCost)[source].second = 0;
+
+    priority_queue<Edge> priorityQueue;
+    priorityQueue.push((Edge {.node = source, .cost = 0}));
+
+    while (!priorityQueue.empty()) {
+        long long currentNode = priorityQueue.top().node;
+        long long currentCost = priorityQueue.top().cost;
+        priorityQueue.pop();
+
+        if (visited[currentNode] == false) {
+            visited[currentNode] = true;
+
+            for(auto neighbour : connectionsWithCost[currentNode]) {
+                if ((*pathAndCost)[neighbour.node].second > (*pathAndCost)[currentNode].second + neighbour.cost) {
+                    (*pathAndCost)[neighbour.node].second = (*pathAndCost)[currentNode].second + neighbour.cost;
+                    (*pathAndCost)[neighbour.node].first = currentNode;
+                    priorityQueue.push(Edge {.node = neighbour.node, .cost = (*pathAndCost)[neighbour.node].second});
+                }
+            }
+        }
+    }
+
+    return pathAndCost;
+}
+
 // TODO: outside class functions
 double distance(pair<int, int> pointA, pair<int, int> pointB) {
     return sqrt(pow(pointB.first - pointA.first,2) + pow(pointB.second - pointA.second,2));
 }
+
+struct Muchie {
+    int firstNode, secondNode, cost;
+
+    bool operator<(const Muchie& m) {
+        return this->cost < m.cost;
+    }
+};
 
 class Solution {
 private:
@@ -914,6 +954,110 @@ public:
             g << dragoni2(connections, dmax) << endl;
     }
 
+    void printPath(int index, const vector<pair<int, long long>> *list, ofstream &g) {
+        vector<int> path;
+
+        while ((*list)[index].first != index) {
+            path.push_back(index);
+            index = (*list)[index].first;
+        }
+        path.push_back(index);
+
+        g << path.size() << " ";
+
+        for (auto it:path)
+            g << it << " ";
+        g << endl;
+    }
+
+    void trilant() {
+        ifstream f("trilant.in");
+        ofstream g("trilant.out");
+
+        int n,m,a,b,c,p,q,t;
+        f >> n >> m >> a >> b >> c;
+
+        vector<vector<Edge>> connectionsWithCost(n+1);
+        for (int i=0; i<m; i++) {
+            f >> p >> q >> t;
+            connectionsWithCost[p].push_back(Edge {.node = q, .cost = t});
+            connectionsWithCost[q].push_back(Edge {.node = p, .cost = t});
+        }
+
+        Graph ob(n,m,connectionsWithCost);
+        const vector<pair<int,long long>> *lantA = ob.dijkstraWithPathsFromSource(a);
+        const vector<pair<int,long long>> *lantB = ob.dijkstraWithPathsFromSource(b);
+        const vector<pair<int,long long>> *lantC = ob.dijkstraWithPathsFromSource(c);
+
+        long long minimum = LONG_LONG_MAX;
+        int index = 0;
+        for (int i=1; i<=n; i++) {
+            if (minimum > (*lantA)[i].second + (*lantB)[i].second + (*lantC)[i].second) {
+                minimum = (*lantA)[i].second + (*lantB)[i].second + (*lantC)[i].second;
+                index = i;
+            }
+        }
+
+        g << minimum << endl;
+        printPath(index, lantA, g);
+        printPath(index, lantB, g);
+        printPath(index, lantC, g);
+
+        delete lantA;
+        delete lantB;
+        delete lantC;
+
+        f.close();
+        g.close();
+    }
+
+    void apm2() {
+        ifstream f("apm2.in");
+        ofstream g("apm2.out");
+
+        int n,m,q,x,y,t;
+        vector<Muchie> edges;
+
+        f >> n >> m >> q;
+        for (int i=0; i<m; i++) {
+            f >> x >> y >> t;
+            edges.push_back(Muchie {.firstNode = x,
+                                    .secondNode = y,
+                                    .cost = t});
+        }
+
+        sort(edges.begin(), edges.end());
+
+        this->parent.resize(n+1);
+        for (int i=0;i<parent.size();i++) parent[i] = i;
+        this->size.resize(n+1, 0);
+        vector<Muchie> maximumCost;
+
+        for (int i=0; i<q; i++) {
+            f >> x >> y;
+            maximumCost.push_back(Muchie {.firstNode = x, .secondNode = y, .cost = -1});
+        }
+
+        for (auto edge : edges) {
+            int firstParent = this->find(edge.firstNode);
+            int secondParent = this->find(edge.secondNode);
+
+            if (firstParent != secondParent) {
+                this->Union(firstParent, secondParent);
+
+                for (auto &it:maximumCost)
+                    if (it.cost == -1 && this->find(it.firstNode) == this->find(it.secondNode))
+                        it.cost = edge.cost - 1;
+            }
+        }
+
+        for (auto it:maximumCost)
+            g << it.cost << endl;
+
+        f.close();
+        g.close();
+    }
+
     // CODEFORCES PROBLEMS
     void minimumMaximumDistance() {
         int t,n,k;
@@ -1185,5 +1329,13 @@ int main() {
     // DRAGONI
     /*Solution s;
     s.dragoni();*/
+
+    // TRILANT
+    /*Solution s;
+    s.trilant();*/
+
+    // APM2
+    Solution s;
+    s.apm2();
     return 0;
 }
