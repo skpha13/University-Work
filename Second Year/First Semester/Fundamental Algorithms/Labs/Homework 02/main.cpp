@@ -752,20 +752,28 @@ public:
     }
 
     vector<bool> distanceLimitedPathsExist(int n, vector<vector<int>>& edgeList, vector<vector<int>>& queries) {
+        this->parent.resize(n);
+        for (int i=0; i<parent.size(); i++) parent[i] = i;
+        this->size.resize(n, 0);
         vector<bool> result(queries.size(), false);
 
-        vector<vector<Edge>> connectionsWithCost(n);
-        for (auto it: edgeList) {
-            connectionsWithCost[it[0]].push_back(Edge {.node = it[1], .cost = it[2]});
-            connectionsWithCost[it[1]].push_back(Edge {.node = it[0], .cost = it[2]});
-        }
-        Graph g(n, connectionsWithCost);
+        sort(edgeList.begin(), edgeList.end(), compareDistance);
 
-        const vector<vector<int>> * costs = g.floydWarshall();
+        for (int i=0; i<queries.size(); i++)
+            queries[i].push_back(i);
 
-        for (int i=0; i<queries.size(); i++) {
-            if (queries[i][2] > (*costs)[queries[i][0]][queries[i][1]])
-                result[i] = true;
+        sort(queries.begin(), queries.end(), compareDistance);
+
+        for (auto it: queries) {
+            int limit = it[2];
+
+            for (auto edge: edgeList) {
+                if (edge[2] >= limit) break;
+                this->Union(edge[0], edge[1]);
+            }
+
+            if (this->find(it[0]) == this->find(it[1]))
+                result[it[3]] = true;
         }
 
         return result;
