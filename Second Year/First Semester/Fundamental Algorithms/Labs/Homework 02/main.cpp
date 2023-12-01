@@ -573,16 +573,19 @@ int Graph::shortestPathWithMaxStops(int source, int destination, int maxStops) {
     return -1;
 }
 
-// TODO: useless so far
 const vector<vector<int>>* Graph::floydWarshall() const {
     vector<vector<int>>* costs = new vector<vector<int>>(n+1, vector<int>(n+1, INT_MAX));
-    // TODO: initialize for each edge
+    for (int i=0; i<n; i++) {
+        (*costs)[i][i] = 0;
+        for (auto it: connectionsWithCost[i]) {
+            (*costs)[i][it.node] = min((*costs)[i][it.node], (int)it.cost);
+        }
+    }
 
-    for (int k=1; k<=n; k++)
-        for (int i=1; i<=n; i++)
-            for (int j=1; j<=n; j++)
-                if ((*costs)[i][j] > (*costs)[i][k] + (*costs)[k][j])
-                    (*costs)[i][j] = (*costs)[i][k] + (*costs)[k][j];
+    for (int k=0; k<n; k++)
+        for (int i=0; i<n; i++)
+            for (int j=0; j<n; j++)
+                (*costs)[i][j] = min((*costs)[i][j], max((*costs)[k][j], (*costs)[i][k]));
 
     return costs;
 }
@@ -742,6 +745,30 @@ public:
 
         Graph g(n,connectionsWithCost);
         return g.shortestPathWithMaxStops(src, dst, k);
+    }
+
+    static bool compareDistance(const vector<int>& vect1, const vector<int>& vect2) {
+        return vect1[2] < vect2[2];
+    }
+
+    vector<bool> distanceLimitedPathsExist(int n, vector<vector<int>>& edgeList, vector<vector<int>>& queries) {
+        vector<bool> result(queries.size(), false);
+
+        vector<vector<Edge>> connectionsWithCost(n);
+        for (auto it: edgeList) {
+            connectionsWithCost[it[0]].push_back(Edge {.node = it[1], .cost = it[2]});
+            connectionsWithCost[it[1]].push_back(Edge {.node = it[0], .cost = it[2]});
+        }
+        Graph g(n, connectionsWithCost);
+
+        const vector<vector<int>> * costs = g.floydWarshall();
+
+        for (int i=0; i<queries.size(); i++) {
+            if (queries[i][2] > (*costs)[queries[i][0]][queries[i][1]])
+                result[i] = true;
+        }
+
+        return result;
     }
 
     // INFOARENA PROBLEMS
@@ -1335,7 +1362,26 @@ int main() {
     s.trilant();*/
 
     // APM2
+    /*Solution s;
+    s.apm2();*/
+
+    // CHECKING EXISTANCE OF EDGE LENGTH LIMITED PATHS
+    int n1 = 3;
+    vector<vector<int>> edgeList1 = {
+            {0, 1, 2},
+            {1, 2, 4},
+            {2, 0, 8},
+            {1, 0, 16}
+    };
+    vector<vector<int>> queries1 = {
+            {0, 1, 2},
+            {0, 2, 5}
+    };
+
     Solution s;
-    s.apm2();
+    vector<bool> temp = s.distanceLimitedPathsExist(n1, edgeList1, queries1);
+    for (auto it: temp) cout << it << " ";
+    cout << endl;
+
     return 0;
 }
