@@ -11,27 +11,58 @@
 
 using namespace std;
 
+/**
+ * @brief Used for a problem to calculate euclidian distance between 2 points in a plane
+ * @param pair<int,int> first point
+ * @param pair<int,int> second point
+ * @returns distanace between the two points
+ */
 double distance(pair<int, int>, pair<int, int>);
 
+/**
+ * @brief
+ * Helps for storing weighted edges in a graph
+ */
 struct Edge {
+    /**
+     * @var node = represents the node where the edge enters
+     * @var cost = cost of the edge
+     */
     long long node, cost;
 
+    /**
+     * @brief Overload for operator < for data structures based on comparison
+     * @param e another edge
+     */
     bool operator<(const Edge& e) const {
         return this->cost > e.cost;
     }
 };
 
-// this is used for matrix traversal, to get neighbours of current element
+/**
+ * @brief
+ * Used for getting the neighbours in a matrix <br/>
+ * Diresctions are as follows: {N, S, E, W} : {{-1, 0}, {1, 0}, {0, 1}, {0, -1}}
+ */
 class Neighbours {
 private:
-    // i = row j = column
-    // rowLength = depends if matrix is square or not
+    /**
+     * @var i = row
+     * @var j = column
+     * @var indexedBy = the number which the matrix is indexed by
+     * @var rowLength = depends if matrix is square or not
+     * @var grid = represents the matrix passed by a const reference to avoid copying
+    */
     int i,j,indexedBy,rowLength;
-    // the matrix to get the values, passed by reference
     const vector<vector<int>> &grid;
 public:
-    // returns -1 if next element is out of bounds
-    // otherwise returns the indices as a pair
+    /**
+     * @param
+     * pair<int,int> indices = row, column indices of matrix
+     *
+     * @returns -1 if the element is out of bounds
+     * @returns value of the element from pair indices
+     * */
     int getValue(pair<int,int> indices) {
         if(i + indices.first >= indexedBy && i + indices.first < grid.size()
            && j + indices.second >= indexedBy && j + indices.second < rowLength)
@@ -40,12 +71,23 @@ public:
         return -1;
     }
 
-    // returns new calculated indices
+    /**
+     * @param
+     * pair<int,int> indices = row, column indices of matrix
+     * @returns
+     * newly calculated indices based on {N, S, E, W} directions
+     * */
     pair<int, int> getIndices(pair<int, int> indices) const {
         return make_pair(i + indices.first, j + indices.second);
     }
 
-    // constructor indexedBy if matrix starts with row/col 1
+    /**
+     *
+     * @param indices = pair of indices from matrix
+     * @param grid = the matrix itself
+     * @param indexedBy = the value the matrix is indexed by
+     * @param isSquare = false for non-square matrix, true for square matrix
+     */
     Neighbours(pair<int,int> indices ,const vector<vector<int>> &grid, int indexedBy = 0, bool isSquare = true):grid(grid) {
         this->i = indices.first;
         this->j = indices.second;
@@ -57,70 +99,167 @@ public:
     }
 };
 
+/**
+ * @brief The graph class containing all important algorithms
+ * */
 class Graph {
 private:
-    // n = number of nodes
+    /**
+     * @var n = number of nodes
+     * @var numberOfEdges = number of edges
+     * @var connections = adjacency list of connections from one node to another
+     * @var connectionsWithCost = same as connections but with weighted edges
+     * @var directions = vector containing all directions in a matrix
+     * */
     int n, numberOfEdges;
-    // adjacency list
     vector<vector<int>> connections;
-    // adjacency list with weighted connections
     vector<vector<Edge>> connectionsWithCost;
-    // for matrix traversal to get all directions: N S W E
     vector<pair<int,int>> directions = {{1,0}, {-1,0}, {0,-1}, {0,1}};
 
-    // private helper functions
+    /**
+     * @brief Helper function to get all critical edges from a graph inside a vector passed by reference
+     * @param node = source node for DFS
+     * @param level = vector containing depth of each node
+     * @param low = vector of lowest level a node can go to
+     * @param result = vector containing critical edges
+     * @param vizited = vector to keep of track of traversal of nodes
+     */
     void DFSforCriticalConnections(int node, vector<int> &level, vector<int> &low, vector<vector<int>> &result,
                                    vector<bool> &vizited);
+    /**
+     * @brief Helper function to traverse a matrix and get all water nodes connected to an island
+     * @param indices = source node
+     * @param grid = the matrix to be traversed
+     * @param vizited = visited vector
+     * @param waterNodes = vector of water nodes
+     */
     void DFSforShortestBridge(pair<int, int> indices, vector<vector<int>>& grid, vector<vector<bool>>& vizited, queue<pair<int,int>>& waterNodes);
 
 public:
-    // constructors
+    /** @CONSTRUCTORS */
+    /**
+     * @brief Emtpy constructor, doesn't initialize anything
+     */
     Graph();
+    /** @brief Initializes the number of nodes */
     Graph(int n);
+    /** @brief Initializes number of nodes and number of edges */
     Graph(int n, int numberOfEdges);
+    /** @brief Initializes number of nodes and copies the adjacency list */
     Graph(vector<vector<int>> &connections);
+    /** @brief Initializes number of nodes and copies the adjacency list (with costs) */
     Graph(int n, vector<vector<Edge>>& connectionsWithCost);
+    /** @brief Initializes number of nodes/edges and copies the adjacency list */
     Graph(int n, int numberOfEdges, vector<vector<Edge>>& connectionsWithCost);
+    /** @brief Initializes number of nodes and constructs the adjacency list */
     Graph(int n, int numberOfEdges, vector<pair<int,int>> &edges);
-    // copy = to distinguish between copying a full
-    // adjacency list or initializing it
+    /** @brief Initializes number of nodes and copies the adjacency list
+     * @param copy = to distinguish between copying and constructing the adjacency list
+     * */
     Graph(int n, vector<vector<int>> &connections, int copy);
+    /**
+     * @brief Contructs the adjacency list based on bidirection/one-sided edges
+     * @param isOriented = true (for oriented graphs), otherwise false
+     */
     Graph(int n, vector<vector<int>> &connections, bool isOriented = false);
 
-    // returns a vector with a bipartition or empty if its not possible
+    /** @METHODS */
+    /**
+     * @returns vector containing bipartition of nodes in graph
+     * or empty array if it's not bipartite
+     */
     vector<int> getBipartition();
-    // true/false is its bipartite
+    /**
+     * @return
+     * True if graph is bipartite, false otherwise
+     */
     bool isBipartite();
-    // returns vector with edges that are critical connections
+    /**
+     * @return vector containing all critical edges in a graph, or empty vector if there are none
+     */
     vector<vector<int>> criticalConnections();
-    // transposes the graph
+    /**
+     * @brief transposes the unweighted graph
+     */
     void transposeGraph();
-    // returns the topologic order of the graph, parameter is used if the graph is DAG or not
-    vector<int> topologicalSort(bool = true);
+    /**
+     * @param isDAG (directed acyclic graph) set to true/false accordingly
+     * @returns topological order of the graph
+     */
+    vector<int> topologicalSort(bool isDAG = true);
+    /**
+     * @warning Should have been separated from class Graph
+     * @param grid = matrix of nodes
+     * @return number of minimum nodes between two islands
+     */
     int shortestBridge(vector<vector<int>>& grid);
-
-    // <node, distance> between 2 marked nodes
-    // startNode = nodes to start search from
+    /**
+     * @param startNode = source node to start from
+     * @param markedNodes = vector with true/false values, true for marked nodes
+     * @return maximum distance between two marked nodes as pair<int,int>
+     * of node and distance
+     */
     pair<int,int> MaxDistanceToMarkedNode(int startNode, vector<bool> &markedNodes);
-
-    // first parameter = start node
-    // second one = destination node
-    int shortestCostInWeightedGraph(pair<int,int>, pair<int,int>);
-
-    // cablaj & camionas
+    /**
+     * @param startNode = pair<int,int> of indices of source node
+     * @param destinationNode = pair<int,int> of indices of destination node
+     * @return the smallest cost to reach destination node from source node in a matrix
+     */
+    int smallestCostInWeightedGraph(pair<int,int> startNode, pair<int,int> destinationNode);
+    /**
+     * @warning Should be moved outside class, in Solution
+     * @param coordinates = vector of pair<int,int> representing coordinates of points in plane
+     * @return total cost of MST (minimum spanning tree)
+     */
     double MstForCoordinates(vector<pair<int, int>> &coordinates);
+    /**
+     * @brief Implementation of a Zero One BFS
+     * @param source = start node
+     * @returns
+     * vector containing distances between source and all nodes in graph
+     */
     vector<int> BfsZeroOne(int source);
-
+    /**
+     * @brief Funciton to get shortest distance between source and destination <br/>
+     * while at most k stops
+     * @param source = start node
+     * @param destination = destination node
+     * @param maxStops = maximum number of stops between source and destination
+     * @returns
+     * Smallest distance between source and destination
+     */
     int shortestPathWithMaxStops(int source, int destination, int maxStops);
-
-    // returning a pointer to the dynamically alocated vector
-    // so we can avoid copying
+    /**
+     * @brief Floyd Warshall algorithm
+     * @warning
+     * returns a pointer to a constant matrix to avoid copying
+     * @return
+     * A matrix containing minumum distances between all pairs of vertices
+     */
     const vector<vector<int>>* floydWarshall() const;
+    /**
+     * @brief Dijkstra algorithm
+     * @param source = start node, default value = 1
+     * @warning returns a pointer to a constant vector to avoid copying
+     * @return vector with minimum distances from source node to all other nodes
+     */
     const vector<long long int> *dijkstraFromSource(int source = 1) const;
-    // first int is the parent, second the cost
+    /**
+     * @brief Dijkstra algoritm with path
+     * @param source = start node, default value = 1
+     * @warning returns a pointer to a constant vector of pair<int,long long> to avoid copying
+     * @return
+     * Vector of pair<int,long long> <br/>
+     * First element is the parent, used for path finding <br/>
+     * Second element is the cost
+     */
     const vector<pair<int,long long>> *dijkstraWithPathsFromSource(int source = 1) const;
 
-    // getters
+    /** @GETTERS */
+    /**
+     * @return
+     * Number of nodes for the graph
+     */
     int getSize() const { return n; }
 };
 
@@ -185,7 +324,11 @@ Graph::Graph(vector<vector<int>> &connections) {
 }
 
 vector<int> Graph::getBipartition() {
-    // team = represents colors
+    /**
+     * @var team = represents the colors of the nodes
+     * @var nodeQueue = the queue used for BFS
+     * vizited = visited vector
+     */
     vector<int> team(n+1,0);
     queue<int> nodeQueue;
     vector<bool> vizited (n+1, false);
@@ -234,6 +377,7 @@ void Graph::DFSforShortestBridge(pair<int, int> indices, vector<vector<int>>& gr
     vizited[indices.first][indices.second] = true;
     Neighbours d(indices, grid);
 
+    // traverse every direction
     for(auto it:directions) {
         if (d.getValue(it) == 0) waterNodes.push(d.getIndices(it));
     }
@@ -445,7 +589,7 @@ pair<int,int> Graph::MaxDistanceToMarkedNode(int startNode, vector<bool> &marked
     return maxDepthMarkedNode;
 }
 
-int Graph::shortestCostInWeightedGraph(pair<int,int> startNode, pair<int,int> destinationNode) {
+int Graph::smallestCostInWeightedGraph(pair<int,int> startNode, pair<int,int> destinationNode) {
     deque <pair<int,int>> nodeQueue;
     // depth but acts more like a cost matrix
     vector<vector<int>> depth(connections.size(), vector<int>(connections[0].size(),INT_MAX));
@@ -487,12 +631,14 @@ double Graph::MstForCoordinates(vector<pair<int, int>> &coordinates) {
     vector<bool> vizited(n+1, false);
     vizited[0] = true;
 
+    // initialize values for cost
     vector<double> cost(n+1, 50000.00);
     cost[0] = 0.0;
     for (int i=1;i<n;i++) {
         cost[i] = distance(coordinates[i], coordinates[0]);
     }
 
+    // prim algorithm
     for (int i=1;i<n;i++) {
         double minimumDistance = 50000.00;
         int nextIndex = -1;
@@ -586,6 +732,7 @@ const vector<vector<int>>* Graph::floydWarshall() const {
         for (int i=0; i<n; i++)
             for (int j=0; j<n; j++)
                 (*costs)[i][j] = min((*costs)[i][j], max((*costs)[k][j], (*costs)[i][k]));
+                // wanted to actually get the maximum cost from a path between a pair of veritces
 
     return costs;
 }
@@ -648,25 +795,54 @@ const vector<pair<int, long long>> * Graph::dijkstraWithPathsFromSource(int sour
     return pathAndCost;
 }
 
-// TODO: outside class functions
 double distance(pair<int, int> pointA, pair<int, int> pointB) {
     return sqrt(pow(pointB.first - pointA.first,2) + pow(pointB.second - pointA.second,2));
 }
 
+/**
+ * @brief Helper structures used for storing edges inside a vector
+ */
 struct Muchie {
+    /**
+     * @var firstNode = starting node of edge
+     * @var secondNode = ending node of edge
+     * @var cost = cost of edge fromFirst node to secondNode
+     */
     int firstNode, secondNode, cost;
 
+    /**
+     * @brief Used for data structure which require comparison
+     * @param m = object of same type to be compared
+     * @return Comparison between two Muchie structures
+     */
     bool operator<(const Muchie& m) {
         return this->cost < m.cost;
     }
 };
 
+/**
+ * @brief Class used for having all the solution for all the problems
+ */
 class Solution {
 private:
-    // union & find
+    /**
+     * Find function from disjoint data structure
+     * @param node = node to be evaluated
+     * @return
+     * Parent of node
+     */
     int find(int node);
+    /**
+     * @brief Union funciton from disjoint data structure <br/>
+     * Used to unite firstNode with secondNode
+     * @param firstNode
+     * @param secondNode
+     */
     void Union(int firstNode, int secondNode);
-    // for union find, size for the rank of trees
+    /**
+     * @var parent = vector containing parent of each node
+     * @var size = rank of each node
+     */
     vector<int> parent, size;
 
 public:
@@ -792,7 +968,7 @@ public:
                 f >> grid[i][j];
 
         Graph ob(grid);
-        g << ob.shortestCostInWeightedGraph(make_pair(pl,pc), make_pair(cl,cc));
+        g << ob.smallestCostInWeightedGraph(make_pair(pl, pc), make_pair(cl, cc));
 
         f.close();
         g.close();
@@ -1374,7 +1550,7 @@ int main() {
     s.apm2();*/
 
     // CHECKING EXISTANCE OF EDGE LENGTH LIMITED PATHS
-    int n1 = 3;
+    /*int n1 = 3;
     vector<vector<int>> edgeList1 = {
             {0, 1, 2},
             {1, 2, 4},
@@ -1389,7 +1565,7 @@ int main() {
     Solution s;
     vector<bool> temp = s.distanceLimitedPathsExist(n1, edgeList1, queries1);
     for (auto it: temp) cout << it << " ";
-    cout << endl;
-
+    cout << endl;*/
+    
     return 0;
 }
