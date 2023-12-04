@@ -28,7 +28,8 @@ struct Edge {
      * @var node = represents the node where the edge enters
      * @var cost = cost of the edge
      */
-    long long node, cost;
+    int node;
+    long long cost;
 
     /**
      * @brief Overload for operator < for data structures based on comparison
@@ -211,7 +212,7 @@ public:
      * @param coordinates = vector of pair<int,int> representing coordinates of points in plane
      * @return total cost of MST (minimum spanning tree)
      */
-    double MstForCoordinates(vector<pair<int, int>> &coordinates);
+    double MstForCoordinates(vector<pair<int, int>> &coordinates) const;
     /**
      * @brief Implementation of a Zero One BFS
      * @param source = start node
@@ -626,7 +627,7 @@ int Graph::smallestCostInWeightedGraph(pair<int,int> startNode, pair<int,int> de
     return depth[destinationNode.first][destinationNode.second];
 }
 
-double Graph::MstForCoordinates(vector<pair<int, int>> &coordinates) {
+double Graph::MstForCoordinates(vector<pair<int, int>> &coordinates) const {
     double totalCost = 0.0;
     vector<bool> vizited(n+1, false);
     vizited[0] = true;
@@ -847,7 +848,7 @@ private:
 
 public:
     // CONSTRUCTOR
-    Solution () { }
+    Solution () = default;
     Solution(int n) {
         this->parent.resize(n+1);
         this->size.resize(n+1,0);
