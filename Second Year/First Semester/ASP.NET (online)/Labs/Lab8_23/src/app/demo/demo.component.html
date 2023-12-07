@@ -1,0 +1,84 @@
+<mat-card id="titleContainer">
+  <mat-card-content>{{title}}</mat-card-content>
+</mat-card>
+
+<!-- Click -->
+<mat-card>
+  <mat-card-content>
+    <p>Counter value is {{counter}}</p>
+    <button mat-raised-button
+            color="accent"
+            (click)="addToCounter()">
+      Add to counter
+    </button>
+  </mat-card-content>
+</mat-card>
+
+<!-- For & styling -->
+<mat-card>
+  <mat-card-content>
+    <p> List with *ngFor</p>
+    <mat-list role="list">
+      <mat-list-item role="listitem"
+                     *ngFor="let user of users; index as i"
+                     (click)="selectUser(user)"
+                     [class.selected]="user?.id === selectedUser?.id"
+                     [style.background]="user?.background">
+        User's name: {{user?.name}}; index: {{i}}
+      </mat-list-item>
+    </mat-list>
+    <br/>
+    <p [ngStyle]="{background: selectedUser?.background}">Selected user name is {{selectedUser?.name}}</p>
+  </mat-card-content>
+</mat-card>
+
+<!-- If -->
+<mat-card *ngIf="selectedUser.id">
+  <mat-card-content>
+    <p> *ngIf </p>
+    <p> A user is selected </p>
+  </mat-card-content>
+</mat-card>
+<mat-card *ngIf="users.length >= 4">
+  <mat-card-content>
+    <p> *ngIf </p>
+    <p> We have more than 4 users</p>
+  </mat-card-content>
+</mat-card>
+<mat-card *ngIf="users.length < 4">
+  <mat-card-content>
+    <p> *ngIf </p>
+    <p> We have less than 4 users</p>
+  </mat-card-content>
+</mat-card>
+
+<mat-card>
+  <mat-card-content>
+    <button mat-raised-button color="accent"
+            (click)="addUser()">
+      Add user
+    </button>
+    <button mat-raised-button color="primary"
+            (click)="deleteUser()">
+      Delete user
+    </button>
+  </mat-card-content>
+</mat-card>
+
+<!-- Switch -->
+<p>ngSwitch</p>
+<mat-card [ngSwitch]="users.length">
+  <ng-template [ngSwitchCase]="1">1</ng-template>
+  <ng-template [ngSwitchCase]="5">5</ng-template>
+  <ng-template [ngSwitchCase]="6">6</ng-template>
+  <ng-template [ngSwitchCase]="8">8</ng-template>
+  <ng-template [ngSwitchCase]="3">3</ng-template>
+</mat-card>
+
+<!-- Model binding -->
+<mat-card>
+  <mat-card-content>
+    <p> Model binding with NgModel </p>
+    <input matInput type="type" [(ngModel)]="selectedUser.name">
+  </mat-card-content>
+</mat-card>

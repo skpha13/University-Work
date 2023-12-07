@@ -1,0 +1,24 @@
+<div>
+  Main component
+  <app-demo></app-demo>
+
+  <p>App routing</p>
+  <nav>
+    <ul>
+      <li>
+        <a routerLink="/route1-component" routerLinkActive="active">
+          Route 1 component
+        </a>
+      </li>
+      <li>
+        <a routerLink="/route2-component" routerLinkActive="active">
+          Route 2 component
+        </a>
+      </li>
+    </ul>
+  </nav>
+  <div>
+    <p>This content will be changed when navigating</p>
+    <router-outlet></router-outlet>
+  </div>
+</div>

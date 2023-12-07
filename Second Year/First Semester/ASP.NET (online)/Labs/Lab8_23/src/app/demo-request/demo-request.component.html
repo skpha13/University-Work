@@ -1,0 +1,14 @@
+<p>Requests</p>
+<mat-card>
+  <mat-card-content>
+    <p>Student 1 with id passed in route name is {{StudentFromApi1?.name}}</p>
+    <p>Student 2 with id passed in query name is {{StudentFromApi2?.name}}</p>
+    <p>Student 3 with id passed in header name is {{StudentFromApi3?.name}}</p>
+    <p> Students list:</p>
+    <p *ngFor="let student of Students">
+      Student name is: {{student.name}}
+      Student age is: {{student.age}}
+      Student id is: {{student.id}}
+    </p>
+  </mat-card-content>
+</mat-card>
