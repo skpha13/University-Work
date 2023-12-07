@@ -149,6 +149,72 @@ def exercitiu1(niu, sigma):
     plt.hist(Z, bins=100, density=True, label='Z', color='green', alpha=0.5)
     plt.plot(x, y, color = 'black', label = 'f(x)')
     plt.show()
-    
-    
-exercitiu1(0, 1)
+
+
+# exercitiu1(0, 1)
+
+def exercitiu2(niu, sigma, alfa, beta):
+    N = 100_000
+    X = np.random.normal(niu, sigma, size=N)
+    Y = alfa + X
+    Z = beta * X
+    W = alfa + beta * X
+
+    f = lambda x: 1/(np.sqrt(2*np.pi*sigma)) * np.exp((-(x-(alfa + niu))**2)/(2*sigma))
+    g = lambda x: 1/(np.sqrt(2*np.pi*beta**2*sigma)) * np.exp((-(x-(beta * niu))**2)/(2*sigma**2*beta**2))
+    h = lambda x: 1/(np.sqrt(2*np.pi*beta**2*sigma)) * np.exp((-(x-(alfa + beta * niu))**2)/(2*sigma**2*beta**2))
+
+    x = np.linspace(-40, 40, 1000)
+    y = f(x)
+    t = g(x)
+    u = h(x)
+
+    plt.hist(Y, bins=100, density=True, label='a', color='blue', alpha=0.5)
+    plt.hist(Z, bins=100, density=True, label='b', color='red', alpha=0.5)
+    plt.hist(W, bins=100, density=True, label='c', color='green', alpha=0.5)
+    plt.plot(x, y, color = 'black', label = 'f(x)')
+    plt.plot(x, t, color = 'yellow', label = 'g(x)')
+    plt.plot(x, u, color = 'purple', label = 'h(x)')
+    plt.show()
+
+
+# exercitiu2(0, 1, 5, 10)
+
+def exercitiu3(niu, sigma):
+    N = 1_000
+    n = 500
+
+    lam = 3
+    X = np.random.poisson(lam, size=(N, n))
+    mu = lam
+    var = lam
+
+    def CLT(X, mu, var):
+        sample_means = np.mean(X, axis=1)
+
+        theoretical_mean = mu
+        theoretical_std = np.sqrt(var / n)
+
+        plt.figure(figsize=(8, 6))
+
+        plt.hist(sample_means, bins=30, density=True, alpha=0.7, color='blue')
+
+        normal_distribution = np.random.normal(theoretical_mean, theoretical_std, 1000)
+        plt.hist(normal_distribution, bins=30, density=True, alpha=0.5, color='red')
+
+        # f = lambda x: 1/(np.sqrt(2*np.pi*mu**2)) * np.exp(-(x**2)/(2*mu**2))
+        # x = np.linspace(-4,4,1000, axis=0)
+        # y = f(X)
+        #
+        # plt.plot(x, y, color = 'purple', label = 'f(x)')
+        
+        plt.title('Central Limit Theorem Demonstration')
+        plt.xlabel('Sample Means')
+        plt.ylabel('Frequency')
+        plt.legend(['Sample Means', 'CLT Normal Approximation'])
+        plt.show()
+
+    CLT(X, mu, var)
+
+
+exercitiu3(0, 1)
