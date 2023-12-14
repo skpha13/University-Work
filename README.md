@@ -30,4 +30,4 @@
   - [Probabilities and Statistics](https://github.com/skpha13/University-Work/tree/main/Second%20Year/First%20Semester/Probabilities%20and%20Statistics)
 
 - Second semester:
-  - [Advanced Object-oriented Programming]()
+  - [Advanced Object-oriented Programming](https://github.com/skpha13/University-Work/tree/main/Second%20Year/Second%20Semester/Advanced%20Object-oriented%20Programming)
