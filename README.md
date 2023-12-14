@@ -28,3 +28,6 @@
   - [Fundamental Algorithms](https://github.com/skpha13/University-Work/tree/main/Second%20Year/First%20Semester/Fundamental%20Algorithms)
   - [Operating Systems](https://github.com/skpha13/University-Work/tree/main/Second%20Year/First%20Semester/Operating%20Systems)
   - [Probabilities and Statistics](https://github.com/skpha13/University-Work/tree/main/Second%20Year/First%20Semester/Probabilities%20and%20Statistics)
+
+- Second semester:
+  - [Advanced Object-oriented Programming]()
