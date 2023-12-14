@@ -34,6 +34,7 @@
   - [Extension Methods (C# Programming Guide)](https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/classes-and-structs/extension-methods#:~:text=Extension%20methods%20enable%20you%20to,methods%20on%20the%20extended%20type)
 
 - Lab 7:
+
   - [Node.js](https://nodejs.org/en)
   - [Angular - Setup](https://angular.io/guide/setup-local)
   - [Angular - Build your first app](https://angular.io/tutorial/first-app)
@@ -41,3 +42,6 @@
   - [Angular - Component Lifecycle](https://angular.io/guide/lifecycle-hooks)
   - [Learn the SCSS (Sass) Basics in 5 Minutes](https://medium.com/swlh/learn-the-scss-sass-basics-in-5-minutes-73002653b443)
   - [Learn TypeScript – The Ultimate Beginners Guide](https://www.freecodecamp.org/news/learn-typescript-beginners-guide/)
+
+- Lab 9:
+  - [Repository Pattern](https://programmingwithwolfgang.com/repository-pattern-net-core/)
