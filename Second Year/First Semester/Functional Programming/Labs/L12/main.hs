@@ -73,9 +73,7 @@ instance Applicative List where
     (<*>) (Cons x y) l = append (fmap x l) (y <*> l)
                             where 
                                 append :: List a -> List a -> List a
-                                append Nil Nil = Nil
-                                append ls Nil = ls
-                                append (Nil) ls = ls
+                                append Nil ls = ls
                                 append (Cons x l) ls = (Cons x (append l ls))
 
 f = Cons (+1) (Cons (*2) Nil)
