@@ -75,9 +75,20 @@ instance (Functor f, Functor g) => Functor (IgnoreOne f g a) where
 data Notorious g o a t = Notorious (g o) (g a) (g t)
 
 instance (Functor g) => Functor (Notorious g o a) where
-    fmap h (Notorious go ga gt) = Notorious (fmap h go) (fmap h ga) (fmap h gt)
+    fmap h (Notorious go ga gt) = Notorious go ga (fmap h gt)
 
 
 data GoatLord a = NoGoat | OneGoat a | MoreGoats (GoatLord a) (GoatLord a) (GoatLord a)
 
+instance Functor GoatLord where
+    fmap _ NoGoat = NoGoat
+    fmap f (OneGoat a) = (OneGoat (f a))
+    fmap f (MoreGoats a b c) = MoreGoats (fmap f a) (fmap f b) (fmap f c)
+
+
 data TalkToMe a = Halt | Print String a | Read (String -> a)
+
+instance Functor TalkToMe where
+    fmap _ Halt = Halt
+    fmap f (Print str a) = (Print str (f a))
+    fmap f (Read fun) = Read (f . fun)
