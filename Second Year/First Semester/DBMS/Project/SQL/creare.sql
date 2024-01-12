@@ -16,14 +16,21 @@ create table SUBSCRIPTIE (
 create table UTILIZATOR (
     utilizator_id number(6) constraint pk_utilizator primary key ,
     subscriptie_id number(6) not null ,
-    plata_id number(6) not null ,
     porecla varchar2(50) constraint porecla_null not null ,
     mail varchar2(255) constraint mail_null not null ,
     parola varchar2(255) constraint parola_null not null,
     data_creare date default current_date ,
     data_exp_sub date not null ,
-    constraint fk_subscriptie foreign key (subscriptie_id) references SUBSCRIPTIE(subscriptie_id),
-    constraint fk_plata foreign key (plata_id) references PLATA(plata_id)
+    constraint fk_subscriptie foreign key (subscriptie_id) references SUBSCRIPTIE(subscriptie_id)
+);
+
+create table LISTA_CARDURI (
+    lista_carduri_id number(6) constraint pk_list_card primary key ,
+    plata_id number(6) not null ,
+    utilizator_id number(6) not null ,
+    constraint fk_plata_card foreign key (plata_id) references PLATA(plata_id) ,
+    constraint fk_util_card foreign key (utilizator_id) references UTILIZATOR(utilizator_id) ,
+    CONSTRAINT uk_plata_util UNIQUE (utilizator_id, plata_id)
 );
 
 create table SERIAL (
@@ -47,11 +54,9 @@ create table  SUBSCRIPTIE_SERIAL (
     serial_id number(6) not null ,
     subscriptie_id number(6) not null ,
     constraint fk_subscriptie_asoc foreign key (subscriptie_id) references SUBSCRIPTIE(subscriptie_id) ,
-    constraint fk_serial_asoc foreign key (serial_id) references SERIAL(serial_id)
+    constraint fk_serial_asoc foreign key (serial_id) references SERIAL(serial_id) ,
+    CONSTRAINT uk_serial_subscriptie UNIQUE (serial_id, subscriptie_id)
 );
-
-ALTER TABLE SUBSCRIPTIE_SERIAL
-ADD CONSTRAINT uk_serial_subscriptie UNIQUE (serial_id, subscriptie_id);
 
 create table DIRECTOR (
     director_id number(6) constraint pk_director primary key ,
@@ -70,20 +75,18 @@ create table FILM (
     constraint fk_director foreign key (director_id) references DIRECTOR(director_id)
 );
 
-create table  SUBSCRIPTIE_FILM (
+create table SUBSCRIPTIE_FILM (
     subscriptie_film_id number(6) constraint pk_sub_film primary key ,
     film_id number(6) not null ,
     subscriptie_id number(6) not null ,
     constraint fk_subscriptie_asocf foreign key (subscriptie_id) references SUBSCRIPTIE(subscriptie_id) ,
-    constraint fk_serial_asocf foreign key (film_id) references FILM(film_id)
+    constraint fk_serial_asocf foreign key (film_id) references FILM(film_id) ,
+    CONSTRAINT uk_film_subscriptie UNIQUE (film_id, subscriptie_id)
 );
-
-ALTER TABLE SUBSCRIPTIE_FILM
-ADD CONSTRAINT uk_film_subscriptie UNIQUE (film_id, subscriptie_id);
 
 create table ROL (
     rol_id number(6) constraint pk_rol primary key ,
-    nume varchar2(50) constraint caracter_null not null ,
+    tip varchar2(50) constraint caracter_null not null ,
     descriere varchar2(255) ,
     importanta number(4,2) constraint imp_check check ( importanta >= 1 and importanta <= 10 )
 );
@@ -92,8 +95,7 @@ create table ACTOR (
     actor_id number(6) constraint pk_actor primary key ,
     nume varchar2(50) constraint nume_act_null not null ,
     prenume varchar2(50) constraint prenume_act_null not null ,
-    data_nastere  date ,
-    salariu number(7) default 3000
+    data_nastere  date
 );
 
 create table SERIAL_ACTOR (
@@ -101,11 +103,9 @@ create table SERIAL_ACTOR (
     serial_id number(6) not null ,
     actor_id number(6) not null ,
     constraint fk_actor_asocA foreign key (actor_id) references ACTOR(actor_id) ,
-    constraint fk_serial_asocA foreign key (serial_id) references SERIAL(serial_id)
+    constraint fk_serial_asocA foreign key (serial_id) references SERIAL(serial_id) ,
+    CONSTRAINT uk_serial_actor UNIQUE (serial_id, actor_id)
 );
-
-ALTER TABLE SERIAL_ACTOR
-ADD CONSTRAINT uk_serial_actor UNIQUE (SERIAL_ID, actor_id);
 
 create table ROL_JUCAT (
     film_rol_actor_id number(6) constraint pk_rol_jucat primary key ,
@@ -113,13 +113,14 @@ create table ROL_JUCAT (
     actor_id number(6) not null ,
     rol_id number(6) not null ,
     timp_ecran number(3) ,
+    salariu number(7) default 3000 ,
     constraint fk_film_asocRJ foreign key (film_id) references FILM(film_id) ,
     constraint fk_actor_asocRJ foreign key (actor_id) references ACTOR(actor_id) ,
-    constraint fk_rol foreign key (rol_id) references ROL(rol_id)
+    constraint fk_rol foreign key (rol_id) references ROL(rol_id) ,
+    CONSTRAINT uk_film_actor_rol UNIQUE (film_id, actor_id, rol_id)
 );
 
-ALTER TABLE ROL_JUCAT
-ADD CONSTRAINT uk_filmn_actor_rol UNIQUE (film_id, actor_id, rol_id);
+-- SEQUENCE --
 
 create sequence incrementare_serial
 start with 1
@@ -128,14 +129,12 @@ minvalue 0
 maxvalue 10000
 nocycle;
 
-
 create sequence incrementare_film
 start with 1
 increment by 1
 minvalue 0
 maxvalue 10000
 nocycle;
-
 
 create sequence incrementare_actor
 start with 1
@@ -144,7 +143,6 @@ minvalue 0
 maxvalue 10000
 nocycle;
 
-
 create sequence incrementare_rol_jucat
 start with 1
 increment by 1
@@ -152,38 +150,35 @@ minvalue 0
 maxvalue 10000
 nocycle;
 
-/*drop table ACTOR;
-drop table DIRECTOR;
-drop table EPISOD;
-drop table FILM;
-drop table PLATA;
-drop table ROL;
+create sequence incrementare_lista_carduri
+start with 1
+increment by 1
+minvalue 0
+maxvalue 10000
+nocycle;
+
+/*
 drop table ROL_JUCAT;
-drop table SERIAL;
+drop table LISTA_CARDURI;
 drop table SERIAL_ACTOR;
-drop table SUBSCRIPTIE;
 drop table SUBSCRIPTIE_FILM;
 drop table SUBSCRIPTIE_SERIAL;
+drop table ACTOR;
+drop table ROL;
+drop table FILM;
+drop table DIRECTOR;
+drop table EPISOD;
+drop table SERIAL;
 drop table UTILIZATOR;
+drop table PLATA;
+drop table SUBSCRIPTIE;
 
 drop sequence incrementare_rol_jucat;
 drop sequence INCREMENTARE_ACTOR;
 drop sequence INCREMENTARE_FILM;
-drop sequence incrementare_serial;*/
-
+drop sequence incrementare_lista_carduri;
+drop sequence incrementare_serial;
+*/
 
 commit;
 rollback;
-
-/*
-select constraint_name, constraint_type, TABLE_NAME
-from SYS.USER_CONSTRAINTS
-where lower(table_name) = 'utilizator';*/
-
-select *
-from user_tables;
-
-spool D:\"UNI CODE"\Univeristy-Work\"Second Year"\"First Semester"\DBMS\Project\SpoolOutput\insert.sql
-select 'DROP TABLE ' || table_name || ';'
-from user_tables;
-spool off;

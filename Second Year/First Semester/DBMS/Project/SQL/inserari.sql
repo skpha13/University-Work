@@ -19,17 +19,29 @@ insert all
 select 'worked' from dual;
 
 insert all
-    into UTILIZATOR(utilizator_id, subscriptie_id, plata_id, porecla, mail, parola, data_exp_sub) values (101,55245,1001,'NovaFire','handsomeDaniel@gmail.com','RD_2003','14/06/2023')
-    into UTILIZATOR(utilizator_id, subscriptie_id, plata_id, porecla, mail, parola, data_exp_sub) values (102,55245,1002,'Dingo','din.go@yahoo.com','39hsrda9','05/05/2023')
-    into UTILIZATOR(utilizator_id, subscriptie_id, plata_id, porecla, mail, parola, data_exp_sub) values (103,55245,1003,'Zed999','duncan_thomas@yahoo.com','Zed_MY_life','27/05/2023')
-    into UTILIZATOR(utilizator_id, subscriptie_id, plata_id, porecla, mail, parola, data_exp_sub) values (104,39959,1004,'Lulu','mun.benj@yahoo.com','Aida_2022','22/05/2023')
-    into UTILIZATOR(utilizator_id, subscriptie_id, plata_id, porecla, mail, parola, data_exp_sub) values (105,39959,1005,'Kirby','stepehnson14@gmail.com','kirby1306','14/05/2023')
-    into UTILIZATOR(utilizator_id, subscriptie_id, plata_id, porecla, mail, parola, data_exp_sub) values (106,39959,1006,'Joshuuuuua','josh.h@gmail.com','netflixPassword','18/05/2023')
-    into UTILIZATOR(utilizator_id, subscriptie_id, plata_id, porecla, mail, parola, data_exp_sub) values (107,39959,1007,'happydog1234','happy.dog123@yahoo.com','dogggsAREsweet','10/06/2023')
-    into UTILIZATOR(utilizator_id, subscriptie_id, plata_id, porecla, mail, parola, data_exp_sub) values (108,67933,1008,'RoninHack','martin_net@yahoo.com','genshin001','01/06/2023')
-    into UTILIZATOR(utilizator_id, subscriptie_id, plata_id, porecla, mail, parola, data_exp_sub) values (109,67933,1009,'Matoka26','avaiscool@gmail.com','Mihai1234568','08/06/2023')
-    into UTILIZATOR(utilizator_id, subscriptie_id, plata_id, porecla, mail, parola, data_exp_sub) values (110,78477,1001,'skpha','ray.ana@gmail.com','VulturViteaz','15/06/2023')
+    into UTILIZATOR(utilizator_id, subscriptie_id, porecla, mail, parola,data_exp_sub) values (101,55245,'NovaFire','handsomeDaniel@gmail.com','RD_2003','14/06/2023')
+    into UTILIZATOR(utilizator_id, subscriptie_id, porecla, mail, parola,data_exp_sub) values (102,55245,'Dingo','din.go@yahoo.com','39hsrda9','05/05/2023')
+    into UTILIZATOR(utilizator_id, subscriptie_id, porecla, mail, parola,data_exp_sub) values (103,55245,'Zed999','duncan_thomas@yahoo.com','Zed_MY_life','27/05/2023')
+    into UTILIZATOR(utilizator_id, subscriptie_id, porecla, mail, parola,data_exp_sub) values (104,39959,'Lulu','mun.benj@yahoo.com','Aida_2022','22/05/2023')
+    into UTILIZATOR(utilizator_id, subscriptie_id, porecla, mail, parola,data_exp_sub) values (105,39959,'Kirby','stepehnson14@gmail.com','kirby1306','14/05/2023')
+    into UTILIZATOR(utilizator_id, subscriptie_id, porecla, mail, parola,data_exp_sub) values (106,39959,'Joshuuuuua','josh.h@gmail.com','netflixPassword','18/05/2023')
+    into UTILIZATOR(utilizator_id, subscriptie_id, porecla, mail, parola,data_exp_sub) values (107,39959,'happydog1234','happy.dog123@yahoo.com','dogggsAREsweet','10/06/2023')
+    into UTILIZATOR(utilizator_id, subscriptie_id, porecla, mail, parola,data_exp_sub) values (108,67933,'RoninHack','martin_net@yahoo.com','genshin001','01/06/2023')
+    into UTILIZATOR(utilizator_id, subscriptie_id, porecla, mail, parola,data_exp_sub) values (109,67933,'Matoka26','avaiscool@gmail.com','Mihai1234568','08/06/2023')
+    into UTILIZATOR(utilizator_id, subscriptie_id, porecla, mail, parola,data_exp_sub) values (110,78477,'skpha','ray.ana@gmail.com','VulturViteaz','15/06/2023')
 select 'worked' from dual;
+
+-- secventa nu merge cu insert all, da aceeasi valoare
+insert into LISTA_CARDURI(lista_carduri_id, plata_id, utilizator_id) values (INCREMENTARE_LISTA_CARDURI.nextval,1001,101);
+insert into LISTA_CARDURI(lista_carduri_id, plata_id, utilizator_id) values (INCREMENTARE_LISTA_CARDURI.nextval,1002,102);
+insert into LISTA_CARDURI(lista_carduri_id, plata_id, utilizator_id) values (INCREMENTARE_LISTA_CARDURI.nextval,1003,103);
+insert into LISTA_CARDURI(lista_carduri_id, plata_id, utilizator_id) values (INCREMENTARE_LISTA_CARDURI.nextval,1004,104);
+insert into LISTA_CARDURI(lista_carduri_id, plata_id, utilizator_id) values (INCREMENTARE_LISTA_CARDURI.nextval,1005,105);
+insert into LISTA_CARDURI(lista_carduri_id, plata_id, utilizator_id) values (INCREMENTARE_LISTA_CARDURI.nextval,1006,106);
+insert into LISTA_CARDURI(lista_carduri_id, plata_id, utilizator_id) values (INCREMENTARE_LISTA_CARDURI.nextval,1007,107);
+insert into LISTA_CARDURI(lista_carduri_id, plata_id, utilizator_id) values (INCREMENTARE_LISTA_CARDURI.nextval,1008,108);
+insert into LISTA_CARDURI(lista_carduri_id, plata_id, utilizator_id) values (INCREMENTARE_LISTA_CARDURI.nextval,1009,109);
+insert into LISTA_CARDURI(lista_carduri_id, plata_id, utilizator_id) values (INCREMENTARE_LISTA_CARDURI.nextval,1001,110);
 
 insert all
     into DIRECTOR(director_id, nume, prenume, data_nastere, nota) VALUES (100001,'Tanner','Stella','28/12/1992',7.5)
@@ -40,24 +52,24 @@ insert all
 select 'worked' from dual;
 
 insert all
-    into ROL(rol_id, nume, descriere, importanta) VALUES (111,'Principal','Va juca cel mai mult',10)
-    into ROL(rol_id, nume, descriere, importanta) VALUES (112,'Secundar','Va participa destul de des',9.5)
-    into ROL(rol_id, nume, descriere, importanta) VALUES (113,'Erou','Cel care ii va salva pe toti',9.75)
-    into ROL(rol_id, nume, descriere, importanta) VALUES (114,'Raufacator','Cel care va incerca sa ii distruga pe toti',8.8)
-    into ROL(rol_id, nume, descriere, importanta) VALUES (115,'Fundal','Doar va aparea pe fundalul filmului pentru a popula scena cu oameni',4.5)
+    into ROL(rol_id, tip, descriere, importanta) VALUES (111,'Principal','Va juca cel mai mult',10)
+    into ROL(rol_id, tip, descriere, importanta) VALUES (112,'Secundar','Va participa destul de des',9.5)
+    into ROL(rol_id, tip, descriere, importanta) VALUES (113,'Erou','Cel care ii va salva pe toti',9.75)
+    into ROL(rol_id, tip, descriere, importanta) VALUES (114,'Raufacator','Cel care va incerca sa ii distruga pe toti',8.8)
+    into ROL(rol_id, tip, descriere, importanta) VALUES (115,'Fundal','Doar va aparea pe fundalul filmului pentru a popula scena cu oameni',4.5)
 select 'worked' from dual;
 
 insert all
-    into ACTOR(actor_id, nume, prenume, data_nastere, salariu) VALUES (10, 'Smith', 'John', '13/05/1980', 5000)
-    into ACTOR(actor_id, nume, prenume, data_nastere, salariu) VALUES (11, 'Doe', 'Jane', '20/08/1990', 6000)
-    into ACTOR(actor_id, nume, prenume, data_nastere, salariu) VALUES (12, 'Garcia', 'Maria', '15/04/1985', 4500)
-    into ACTOR(actor_id, nume, prenume, data_nastere, salariu) VALUES (13, 'Kim', 'Soo', '01/10/1995', 5500)
-    into ACTOR(actor_id, nume, prenume, data_nastere, salariu) VALUES (14, 'Wang', 'Lei', '22/07/1988', 7000)
-    into ACTOR(actor_id, nume, prenume, data_nastere, salariu) VALUES (15, 'Singh', 'Rajesh', '10/12/1992', 4800)
-    into ACTOR(actor_id, nume, prenume, data_nastere, salariu) VALUES (16, 'Lee', 'Ji-hye', '28/02/1987', 6500)
-    into ACTOR(actor_id, nume, prenume, data_nastere, salariu) VALUES (17, 'Baker', 'William', '18/09/1983', 5200)
-    into ACTOR(actor_id, nume, prenume, data_nastere, salariu) VALUES (18, 'Khan', 'Aamir', '14/03/1965', 9000)
-    into ACTOR(actor_id, nume, prenume, data_nastere, salariu) VALUES (19, 'Santos', 'Pedro', '05/01/1998', 4000)
+    into ACTOR(actor_id, nume, prenume, data_nastere) VALUES (10, 'Smith', 'John', '13/05/1980')
+    into ACTOR(actor_id, nume, prenume, data_nastere) VALUES (11, 'Doe', 'Jane', '20/08/1990')
+    into ACTOR(actor_id, nume, prenume, data_nastere) VALUES (12, 'Garcia', 'Maria', '15/04/1985')
+    into ACTOR(actor_id, nume, prenume, data_nastere) VALUES (13, 'Kim', 'Soo', '01/10/1995')
+    into ACTOR(actor_id, nume, prenume, data_nastere) VALUES (14, 'Wang', 'Lei', '22/07/1988')
+    into ACTOR(actor_id, nume, prenume, data_nastere) VALUES (15, 'Singh', 'Rajesh', '10/12/1992')
+    into ACTOR(actor_id, nume, prenume, data_nastere) VALUES (16, 'Lee', 'Ji-hye', '28/02/1987')
+    into ACTOR(actor_id, nume, prenume, data_nastere) VALUES (17, 'Baker', 'William', '18/09/1983')
+    into ACTOR(actor_id, nume, prenume, data_nastere) VALUES (18, 'Khan', 'Aamir', '14/03/1965')
+    into ACTOR(actor_id, nume, prenume, data_nastere) VALUES (19, 'Santos', 'Pedro', '05/01/1998')
 select 'worked' from dual;
 
 insert all
@@ -102,37 +114,77 @@ insert all
 select 'worked' from dual;
 
 -- secventa nu merge cu insert all, da aceeasi valoare
-insert into SUBSCRIPTIE_SERIAL(subscriptie_serial_id, serial_id, subscriptie_id) VALUES (INCREMENTARE_SERIAL.nextval,1,78477);
-insert into SUBSCRIPTIE_SERIAL(subscriptie_serial_id, serial_id, subscriptie_id) VALUES (INCREMENTARE_SERIAL.nextval,2,67933);
-insert into SUBSCRIPTIE_SERIAL(subscriptie_serial_id, serial_id, subscriptie_id) VALUES (INCREMENTARE_SERIAL.nextval,2,78477);
-insert into SUBSCRIPTIE_SERIAL(subscriptie_serial_id, serial_id, subscriptie_id) VALUES (INCREMENTARE_SERIAL.nextval,3,55245);
-insert into SUBSCRIPTIE_SERIAL(subscriptie_serial_id, serial_id, subscriptie_id) VALUES (INCREMENTARE_SERIAL.nextval,3,39959);
-insert into SUBSCRIPTIE_SERIAL(subscriptie_serial_id, serial_id, subscriptie_id) VALUES (INCREMENTARE_SERIAL.nextval,3,94030);
-insert into SUBSCRIPTIE_SERIAL(subscriptie_serial_id, serial_id, subscriptie_id) VALUES (INCREMENTARE_SERIAL.nextval,3,67933);
-insert into SUBSCRIPTIE_SERIAL(subscriptie_serial_id, serial_id, subscriptie_id) VALUES (INCREMENTARE_SERIAL.nextval,3,78477);
-insert into SUBSCRIPTIE_SERIAL(subscriptie_serial_id, serial_id, subscriptie_id) VALUES (INCREMENTARE_SERIAL.nextval,4,67933);
-insert into SUBSCRIPTIE_SERIAL(subscriptie_serial_id, serial_id, subscriptie_id) VALUES (INCREMENTARE_SERIAL.nextval,4,78477);
-insert into SUBSCRIPTIE_SERIAL(subscriptie_serial_id, serial_id, subscriptie_id) VALUES (INCREMENTARE_SERIAL.nextval,5,94030);
-insert into SUBSCRIPTIE_SERIAL(subscriptie_serial_id, serial_id, subscriptie_id) VALUES (INCREMENTARE_SERIAL.nextval,5,67933);
-insert into SUBSCRIPTIE_SERIAL(subscriptie_serial_id, serial_id, subscriptie_id) VALUES (INCREMENTARE_SERIAL.nextval,5,78477);
 
-insert into SUBSCRIPTIE_film(subscriptie_film_id, film_id, subscriptie_id) VALUES (INCREMENTARE_film.nextval,9,78477);
-insert into SUBSCRIPTIE_film(subscriptie_film_id, film_id, subscriptie_id) VALUES (INCREMENTARE_film.nextval,8,67933);
-insert into SUBSCRIPTIE_film(subscriptie_film_id, film_id, subscriptie_id) VALUES (INCREMENTARE_film.nextval,8,78477);
-insert into SUBSCRIPTIE_film(subscriptie_film_id, film_id, subscriptie_id) VALUES (INCREMENTARE_film.nextval,3,55245);
-insert into SUBSCRIPTIE_film(subscriptie_film_id, film_id, subscriptie_id) VALUES (INCREMENTARE_film.nextval,3,39959);
-insert into SUBSCRIPTIE_film(subscriptie_film_id, film_id, subscriptie_id) VALUES (INCREMENTARE_film.nextval,3,94030);
-insert into SUBSCRIPTIE_film(subscriptie_film_id, film_id, subscriptie_id) VALUES (INCREMENTARE_film.nextval,3,67933);
-insert into SUBSCRIPTIE_film(subscriptie_film_id, film_id, subscriptie_id) VALUES (INCREMENTARE_film.nextval,3,78477);
+    -- SUBSCRIPTIE_SERIAL --
+
+insert into SUBSCRIPTIE_SERIAL(subscriptie_serial_id, serial_id, subscriptie_id) VALUES (INCREMENTARE_SERIAL.nextval,6,55245);
+
+insert into SUBSCRIPTIE_SERIAL(subscriptie_serial_id, serial_id, subscriptie_id) VALUES (INCREMENTARE_SERIAL.nextval,6,39959);
+insert into SUBSCRIPTIE_SERIAL(subscriptie_serial_id, serial_id, subscriptie_id) VALUES (INCREMENTARE_SERIAL.nextval,5,39959);
+insert into SUBSCRIPTIE_SERIAL(subscriptie_serial_id, serial_id, subscriptie_id) VALUES (INCREMENTARE_SERIAL.nextval,4,39959);
+
+insert into SUBSCRIPTIE_SERIAL(subscriptie_serial_id, serial_id, subscriptie_id) VALUES (INCREMENTARE_SERIAL.nextval,6,94030);
+insert into SUBSCRIPTIE_SERIAL(subscriptie_serial_id, serial_id, subscriptie_id) VALUES (INCREMENTARE_SERIAL.nextval,5,94030);
+insert into SUBSCRIPTIE_SERIAL(subscriptie_serial_id, serial_id, subscriptie_id) VALUES (INCREMENTARE_SERIAL.nextval,4,94030);
+insert into SUBSCRIPTIE_SERIAL(subscriptie_serial_id, serial_id, subscriptie_id) VALUES (INCREMENTARE_SERIAL.nextval,3,94030);
+
+insert into SUBSCRIPTIE_SERIAL(subscriptie_serial_id, serial_id, subscriptie_id) VALUES (INCREMENTARE_SERIAL.nextval,6,67933);
+insert into SUBSCRIPTIE_SERIAL(subscriptie_serial_id, serial_id, subscriptie_id) VALUES (INCREMENTARE_SERIAL.nextval,5,67933);
+insert into SUBSCRIPTIE_SERIAL(subscriptie_serial_id, serial_id, subscriptie_id) VALUES (INCREMENTARE_SERIAL.nextval,4,67933);
+insert into SUBSCRIPTIE_SERIAL(subscriptie_serial_id, serial_id, subscriptie_id) VALUES (INCREMENTARE_SERIAL.nextval,3,67933);
+insert into SUBSCRIPTIE_SERIAL(subscriptie_serial_id, serial_id, subscriptie_id) VALUES (INCREMENTARE_SERIAL.nextval,2,67933);
+
+insert into SUBSCRIPTIE_SERIAL(subscriptie_serial_id, serial_id, subscriptie_id) VALUES (INCREMENTARE_SERIAL.nextval,6,78477);
+insert into SUBSCRIPTIE_SERIAL(subscriptie_serial_id, serial_id, subscriptie_id) VALUES (INCREMENTARE_SERIAL.nextval,5,78477);
+insert into SUBSCRIPTIE_SERIAL(subscriptie_serial_id, serial_id, subscriptie_id) VALUES (INCREMENTARE_SERIAL.nextval,4,78477);
+insert into SUBSCRIPTIE_SERIAL(subscriptie_serial_id, serial_id, subscriptie_id) VALUES (INCREMENTARE_SERIAL.nextval,3,78477);
+insert into SUBSCRIPTIE_SERIAL(subscriptie_serial_id, serial_id, subscriptie_id) VALUES (INCREMENTARE_SERIAL.nextval,2,78477);
+insert into SUBSCRIPTIE_SERIAL(subscriptie_serial_id, serial_id, subscriptie_id) VALUES (INCREMENTARE_SERIAL.nextval,1,78477);
+-- ==========================================================================================================================
+
+    -- SUBSCRIPTIE_FILM --
+
+insert into SUBSCRIPTIE_film(subscriptie_film_id, film_id, subscriptie_id) VALUES (INCREMENTARE_film.nextval,10,55245);
+insert into SUBSCRIPTIE_film(subscriptie_film_id, film_id, subscriptie_id) VALUES (INCREMENTARE_film.nextval,9,55245);
+insert into SUBSCRIPTIE_film(subscriptie_film_id, film_id, subscriptie_id) VALUES (INCREMENTARE_film.nextval,8,55245);
+
+insert into SUBSCRIPTIE_film(subscriptie_film_id, film_id, subscriptie_id) VALUES (INCREMENTARE_film.nextval,10,39959);
+insert into SUBSCRIPTIE_film(subscriptie_film_id, film_id, subscriptie_id) VALUES (INCREMENTARE_film.nextval,9,39959);
+insert into SUBSCRIPTIE_film(subscriptie_film_id, film_id, subscriptie_id) VALUES (INCREMENTARE_film.nextval,8,39959);
+insert into SUBSCRIPTIE_film(subscriptie_film_id, film_id, subscriptie_id) VALUES (INCREMENTARE_film.nextval,7,39959);
+insert into SUBSCRIPTIE_film(subscriptie_film_id, film_id, subscriptie_id) VALUES (INCREMENTARE_film.nextval,6,39959);
+
 insert into SUBSCRIPTIE_film(subscriptie_film_id, film_id, subscriptie_id) VALUES (INCREMENTARE_film.nextval,10,94030);
-insert into SUBSCRIPTIE_film(subscriptie_film_id, film_id, subscriptie_id) VALUES (INCREMENTARE_film.nextval,7,55245);
-insert into SUBSCRIPTIE_film(subscriptie_film_id, film_id, subscriptie_id) VALUES (INCREMENTARE_film.nextval,1,39959);
-insert into SUBSCRIPTIE_film(subscriptie_film_id, film_id, subscriptie_id) VALUES (INCREMENTARE_film.nextval,2,67933);
-insert into SUBSCRIPTIE_film(subscriptie_film_id, film_id, subscriptie_id) VALUES (INCREMENTARE_film.nextval,4,55245);
-insert into SUBSCRIPTIE_film(subscriptie_film_id, film_id, subscriptie_id) VALUES (INCREMENTARE_film.nextval,5,55245);
-insert into SUBSCRIPTIE_film(subscriptie_film_id, film_id, subscriptie_id) VALUES (INCREMENTARE_film.nextval,5,39959);
-insert into SUBSCRIPTIE_film(subscriptie_film_id, film_id, subscriptie_id) VALUES (INCREMENTARE_film.nextval,5,94030);
+insert into SUBSCRIPTIE_film(subscriptie_film_id, film_id, subscriptie_id) VALUES (INCREMENTARE_film.nextval,9,94030);
+insert into SUBSCRIPTIE_film(subscriptie_film_id, film_id, subscriptie_id) VALUES (INCREMENTARE_film.nextval,8,94030);
+insert into SUBSCRIPTIE_film(subscriptie_film_id, film_id, subscriptie_id) VALUES (INCREMENTARE_film.nextval,7,94030);
 insert into SUBSCRIPTIE_film(subscriptie_film_id, film_id, subscriptie_id) VALUES (INCREMENTARE_film.nextval,6,94030);
+insert into SUBSCRIPTIE_film(subscriptie_film_id, film_id, subscriptie_id) VALUES (INCREMENTARE_film.nextval,5,94030);
+insert into SUBSCRIPTIE_film(subscriptie_film_id, film_id, subscriptie_id) VALUES (INCREMENTARE_film.nextval,4,94030);
+
+insert into SUBSCRIPTIE_film(subscriptie_film_id, film_id, subscriptie_id) VALUES (INCREMENTARE_film.nextval,10,67933);
+insert into SUBSCRIPTIE_film(subscriptie_film_id, film_id, subscriptie_id) VALUES (INCREMENTARE_film.nextval,9,67933);
+insert into SUBSCRIPTIE_film(subscriptie_film_id, film_id, subscriptie_id) VALUES (INCREMENTARE_film.nextval,8,67933);
+insert into SUBSCRIPTIE_film(subscriptie_film_id, film_id, subscriptie_id) VALUES (INCREMENTARE_film.nextval,7,67933);
+insert into SUBSCRIPTIE_film(subscriptie_film_id, film_id, subscriptie_id) VALUES (INCREMENTARE_film.nextval,6,67933);
+insert into SUBSCRIPTIE_film(subscriptie_film_id, film_id, subscriptie_id) VALUES (INCREMENTARE_film.nextval,5,67933);
+insert into SUBSCRIPTIE_film(subscriptie_film_id, film_id, subscriptie_id) VALUES (INCREMENTARE_film.nextval,4,67933);
+insert into SUBSCRIPTIE_film(subscriptie_film_id, film_id, subscriptie_id) VALUES (INCREMENTARE_film.nextval,3,67933);
+insert into SUBSCRIPTIE_film(subscriptie_film_id, film_id, subscriptie_id) VALUES (INCREMENTARE_film.nextval,2,67933);
+
+insert into SUBSCRIPTIE_film(subscriptie_film_id, film_id, subscriptie_id) VALUES (INCREMENTARE_film.nextval,10,78477);
+insert into SUBSCRIPTIE_film(subscriptie_film_id, film_id, subscriptie_id) VALUES (INCREMENTARE_film.nextval,9,78477);
+insert into SUBSCRIPTIE_film(subscriptie_film_id, film_id, subscriptie_id) VALUES (INCREMENTARE_film.nextval,8,78477);
+insert into SUBSCRIPTIE_film(subscriptie_film_id, film_id, subscriptie_id) VALUES (INCREMENTARE_film.nextval,7,78477);
+insert into SUBSCRIPTIE_film(subscriptie_film_id, film_id, subscriptie_id) VALUES (INCREMENTARE_film.nextval,6,78477);
+insert into SUBSCRIPTIE_film(subscriptie_film_id, film_id, subscriptie_id) VALUES (INCREMENTARE_film.nextval,5,78477);
+insert into SUBSCRIPTIE_film(subscriptie_film_id, film_id, subscriptie_id) VALUES (INCREMENTARE_film.nextval,4,78477);
+insert into SUBSCRIPTIE_film(subscriptie_film_id, film_id, subscriptie_id) VALUES (INCREMENTARE_film.nextval,3,78477);
+insert into SUBSCRIPTIE_film(subscriptie_film_id, film_id, subscriptie_id) VALUES (INCREMENTARE_film.nextval,2,78477);
+insert into SUBSCRIPTIE_film(subscriptie_film_id, film_id, subscriptie_id) VALUES (INCREMENTARE_film.nextval,1,78477);
+insert into SUBSCRIPTIE_film(subscriptie_film_id, film_id, subscriptie_id) VALUES (INCREMENTARE_film.nextval,11,78477);
+insert into SUBSCRIPTIE_film(subscriptie_film_id, film_id, subscriptie_id) VALUES (INCREMENTARE_film.nextval,12,78477);
+-- =====================================================================================================================
 
 insert into SERIAL_ACTOR(serial_actor_id, serial_id, actor_id) VALUES (INCREMENTARE_ACTOR.nextval,1,10);
 insert into SERIAL_ACTOR(serial_actor_id, serial_id, actor_id) VALUES (INCREMENTARE_ACTOR.nextval,1,11);
@@ -153,36 +205,36 @@ insert into SERIAL_ACTOR(serial_actor_id, serial_id, actor_id) VALUES (INCREMENT
 insert into SERIAL_ACTOR(serial_actor_id, serial_id, actor_id) VALUES (INCREMENTARE_ACTOR.nextval,5,14);
 insert into SERIAL_ACTOR(serial_actor_id, serial_id, actor_id) VALUES (INCREMENTARE_ACTOR.nextval,5,18);
 
-insert into ROL_JUCAT(film_rol_actor_id, film_id, rol_id, actor_id, timp_ecran) VALUES (INCREMENTARE_ROL_JUCAT.nextval,1,111,10,80);
-insert into ROL_JUCAT(film_rol_actor_id, film_id, rol_id, actor_id, timp_ecran) VALUES (INCREMENTARE_ROL_JUCAT.nextval,1,112,11,35);
+insert into ROL_JUCAT(film_rol_actor_id, film_id, rol_id, actor_id, timp_ecran, salariu) VALUES (INCREMENTARE_ROL_JUCAT.nextval,1,111,10,80,10000);
+insert into ROL_JUCAT(film_rol_actor_id, film_id, rol_id, actor_id, timp_ecran, salariu) VALUES (INCREMENTARE_ROL_JUCAT.nextval,1,112,11,35,3500);
 insert into ROL_JUCAT(film_rol_actor_id, film_id, rol_id, actor_id, timp_ecran) VALUES (INCREMENTARE_ROL_JUCAT.nextval,1,115,12,10);
-insert into ROL_JUCAT(film_rol_actor_id, film_id, rol_id, actor_id, timp_ecran) VALUES (INCREMENTARE_ROL_JUCAT.nextval,1,115,13,5);
-insert into ROL_JUCAT(film_rol_actor_id, film_id, rol_id, actor_id, timp_ecran) VALUES (INCREMENTARE_ROL_JUCAT.nextval,2,113,14,67);
-insert into ROL_JUCAT(film_rol_actor_id, film_id, rol_id, actor_id, timp_ecran) VALUES (INCREMENTARE_ROL_JUCAT.nextval,2,114,15,55);
-insert into ROL_JUCAT(film_rol_actor_id, film_id, rol_id, actor_id, timp_ecran) VALUES (INCREMENTARE_ROL_JUCAT.nextval,3,111,16,72);
-insert into ROL_JUCAT(film_rol_actor_id, film_id, rol_id, actor_id, timp_ecran) VALUES (INCREMENTARE_ROL_JUCAT.nextval,3,113,17,48);
-insert into ROL_JUCAT(film_rol_actor_id, film_id, rol_id, actor_id, timp_ecran) VALUES (INCREMENTARE_ROL_JUCAT.nextval,3,114,18,37);
-insert into ROL_JUCAT(film_rol_actor_id, film_id, rol_id, actor_id, timp_ecran) VALUES (INCREMENTARE_ROL_JUCAT.nextval,4,111,18,57);
-insert into ROL_JUCAT(film_rol_actor_id, film_id, rol_id, actor_id, timp_ecran) VALUES (INCREMENTARE_ROL_JUCAT.nextval,4,113,18,43);
-insert into ROL_JUCAT(film_rol_actor_id, film_id, rol_id, actor_id, timp_ecran) VALUES (INCREMENTARE_ROL_JUCAT.nextval,4,114,19,23);
-insert into ROL_JUCAT(film_rol_actor_id, film_id, rol_id, actor_id, timp_ecran) VALUES (INCREMENTARE_ROL_JUCAT.nextval,5,111,15,66);
-insert into ROL_JUCAT(film_rol_actor_id, film_id, rol_id, actor_id, timp_ecran) VALUES (INCREMENTARE_ROL_JUCAT.nextval,5,112,13,43);
-insert into ROL_JUCAT(film_rol_actor_id, film_id, rol_id, actor_id, timp_ecran) VALUES (INCREMENTARE_ROL_JUCAT.nextval,5,113,12,52);
-insert into ROL_JUCAT(film_rol_actor_id, film_id, rol_id, actor_id, timp_ecran) VALUES (INCREMENTARE_ROL_JUCAT.nextval,5,115,10,12);
-insert into ROL_JUCAT(film_rol_actor_id, film_id, rol_id, actor_id, timp_ecran) VALUES (INCREMENTARE_ROL_JUCAT.nextval,6,111,11,12);
-insert into ROL_JUCAT(film_rol_actor_id, film_id, rol_id, actor_id, timp_ecran) VALUES (INCREMENTARE_ROL_JUCAT.nextval,6,112,16,12);
-insert into ROL_JUCAT(film_rol_actor_id, film_id, rol_id, actor_id, timp_ecran) VALUES (INCREMENTARE_ROL_JUCAT.nextval,6,115,17,12);
-insert into ROL_JUCAT(film_rol_actor_id, film_id, rol_id, actor_id, timp_ecran) VALUES (INCREMENTARE_ROL_JUCAT.nextval,6,115,15,22);
-insert into ROL_JUCAT(film_rol_actor_id, film_id, rol_id, actor_id, timp_ecran) VALUES (INCREMENTARE_ROL_JUCAT.nextval,6,115,13,10);
-insert into ROL_JUCAT(film_rol_actor_id, film_id, rol_id, actor_id, timp_ecran) VALUES (INCREMENTARE_ROL_JUCAT.nextval,7,111,14,57);
-insert into ROL_JUCAT(film_rol_actor_id, film_id, rol_id, actor_id, timp_ecran) VALUES (INCREMENTARE_ROL_JUCAT.nextval,7,114,14,63);
-insert into ROL_JUCAT(film_rol_actor_id, film_id, rol_id, actor_id, timp_ecran) VALUES (INCREMENTARE_ROL_JUCAT.nextval,7,112,13,44);
-insert into ROL_JUCAT(film_rol_actor_id, film_id, rol_id, actor_id, timp_ecran) VALUES (INCREMENTARE_ROL_JUCAT.nextval,8,113,19,77);
-insert into ROL_JUCAT(film_rol_actor_id, film_id, rol_id, actor_id, timp_ecran) VALUES (INCREMENTARE_ROL_JUCAT.nextval,8,114,18,82);
-insert into ROL_JUCAT(film_rol_actor_id, film_id, rol_id, actor_id, timp_ecran) VALUES (INCREMENTARE_ROL_JUCAT.nextval,9,111,12,93);
-insert into ROL_JUCAT(film_rol_actor_id, film_id, rol_id, actor_id, timp_ecran) VALUES (INCREMENTARE_ROL_JUCAT.nextval,9,115,17,23);
-insert into ROL_JUCAT(film_rol_actor_id, film_id, rol_id, actor_id, timp_ecran) VALUES (INCREMENTARE_ROL_JUCAT.nextval,9,115,13,44);
-insert into ROL_JUCAT(film_rol_actor_id, film_id, rol_id, actor_id, timp_ecran) VALUES (INCREMENTARE_ROL_JUCAT.nextval,10,111,19,123);
+insert into ROL_JUCAT(film_rol_actor_id, film_id, rol_id, actor_id, timp_ecran, salariu) VALUES (INCREMENTARE_ROL_JUCAT.nextval,1,115,13,5, 4000);
+insert into ROL_JUCAT(film_rol_actor_id, film_id, rol_id, actor_id, timp_ecran, salariu) VALUES (INCREMENTARE_ROL_JUCAT.nextval,2,113,14,67,8000);
+insert into ROL_JUCAT(film_rol_actor_id, film_id, rol_id, actor_id, timp_ecran, salariu) VALUES (INCREMENTARE_ROL_JUCAT.nextval,2,114,15,55,4570);
+insert into ROL_JUCAT(film_rol_actor_id, film_id, rol_id, actor_id, timp_ecran, salariu) VALUES (INCREMENTARE_ROL_JUCAT.nextval,3,111,16,72,9800);
+insert into ROL_JUCAT(film_rol_actor_id, film_id, rol_id, actor_id, timp_ecran, salariu) VALUES (INCREMENTARE_ROL_JUCAT.nextval,3,113,17,48,4300);
+insert into ROL_JUCAT(film_rol_actor_id, film_id, rol_id, actor_id, timp_ecran, salariu) VALUES (INCREMENTARE_ROL_JUCAT.nextval,3,114,18,37,3500);
+insert into ROL_JUCAT(film_rol_actor_id, film_id, rol_id, actor_id, timp_ecran, salariu) VALUES (INCREMENTARE_ROL_JUCAT.nextval,4,111,18,57,6000);
+insert into ROL_JUCAT(film_rol_actor_id, film_id, rol_id, actor_id, timp_ecran, salariu) VALUES (INCREMENTARE_ROL_JUCAT.nextval,4,113,18,43,6500);
+insert into ROL_JUCAT(film_rol_actor_id, film_id, rol_id, actor_id, timp_ecran, salariu) VALUES (INCREMENTARE_ROL_JUCAT.nextval,4,114,19,23,3400);
+insert into ROL_JUCAT(film_rol_actor_id, film_id, rol_id, actor_id, timp_ecran, salariu) VALUES (INCREMENTARE_ROL_JUCAT.nextval,5,111,15,66,7500);
+insert into ROL_JUCAT(film_rol_actor_id, film_id, rol_id, actor_id, timp_ecran, salariu) VALUES (INCREMENTARE_ROL_JUCAT.nextval,5,112,13,43,4600);
+insert into ROL_JUCAT(film_rol_actor_id, film_id, rol_id, actor_id, timp_ecran, salariu) VALUES (INCREMENTARE_ROL_JUCAT.nextval,5,113,12,52,6350);
+insert into ROL_JUCAT(film_rol_actor_id, film_id, rol_id, actor_id, timp_ecran, salariu) VALUES (INCREMENTARE_ROL_JUCAT.nextval,5,115,10,12,4000);
+insert into ROL_JUCAT(film_rol_actor_id, film_id, rol_id, actor_id, timp_ecran, salariu) VALUES (INCREMENTARE_ROL_JUCAT.nextval,6,111,11,12,4000);
+insert into ROL_JUCAT(film_rol_actor_id, film_id, rol_id, actor_id, timp_ecran, salariu) VALUES (INCREMENTARE_ROL_JUCAT.nextval,6,112,16,12,3000);
+insert into ROL_JUCAT(film_rol_actor_id, film_id, rol_id, actor_id, timp_ecran, salariu) VALUES (INCREMENTARE_ROL_JUCAT.nextval,6,115,17,12,5500);
+insert into ROL_JUCAT(film_rol_actor_id, film_id, rol_id, actor_id, timp_ecran, salariu) VALUES (INCREMENTARE_ROL_JUCAT.nextval,6,115,15,22,5750);
+insert into ROL_JUCAT(film_rol_actor_id, film_id, rol_id, actor_id, timp_ecran, salariu) VALUES (INCREMENTARE_ROL_JUCAT.nextval,6,115,13,10,3200);
+insert into ROL_JUCAT(film_rol_actor_id, film_id, rol_id, actor_id, timp_ecran, salariu) VALUES (INCREMENTARE_ROL_JUCAT.nextval,7,111,14,57,9000);
+insert into ROL_JUCAT(film_rol_actor_id, film_id, rol_id, actor_id, timp_ecran, salariu) VALUES (INCREMENTARE_ROL_JUCAT.nextval,7,114,14,63,8700);
+insert into ROL_JUCAT(film_rol_actor_id, film_id, rol_id, actor_id, timp_ecran, salariu) VALUES (INCREMENTARE_ROL_JUCAT.nextval,7,112,13,44,6570);
+insert into ROL_JUCAT(film_rol_actor_id, film_id, rol_id, actor_id, timp_ecran, salariu) VALUES (INCREMENTARE_ROL_JUCAT.nextval,8,113,19,77,10000);
+insert into ROL_JUCAT(film_rol_actor_id, film_id, rol_id, actor_id, timp_ecran, salariu) VALUES (INCREMENTARE_ROL_JUCAT.nextval,8,114,18,82,12000);
+insert into ROL_JUCAT(film_rol_actor_id, film_id, rol_id, actor_id, timp_ecran, salariu) VALUES (INCREMENTARE_ROL_JUCAT.nextval,9,111,12,93,30000);
+insert into ROL_JUCAT(film_rol_actor_id, film_id, rol_id, actor_id, timp_ecran, salariu) VALUES (INCREMENTARE_ROL_JUCAT.nextval,9,115,17,23,5300);
+insert into ROL_JUCAT(film_rol_actor_id, film_id, rol_id, actor_id, timp_ecran, salariu) VALUES (INCREMENTARE_ROL_JUCAT.nextval,9,115,13,44,3100);
+insert into ROL_JUCAT(film_rol_actor_id, film_id, rol_id, actor_id, timp_ecran, salariu) VALUES (INCREMENTARE_ROL_JUCAT.nextval,10,111,19,123,7000);
 
 insert into FILM(film_id, director_id, denumire, nota, data_aparitie) VALUES (11, 100002, 'Top Gun: Maverick', NULL, '23/11/2021');
 insert into FILM(film_id, director_id, denumire, nota, data_aparitie) VALUES (12, 100003, 'Avengers: Endgame', NULL, '23/11/2021');
@@ -192,6 +244,18 @@ insert into DIRECTOR(director_id, nume, prenume, data_nastere, nota) VALUES (100
 insert into SUBSCRIPTIE_film(subscriptie_film_id, film_id, subscriptie_id) VALUES (INCREMENTARE_film.nextval,11,78477);
 insert into SUBSCRIPTIE_film(subscriptie_film_id, film_id, subscriptie_id) VALUES (INCREMENTARE_film.nextval,12,78477);
 
-insert into ACTOR(actor_id, nume, prenume, data_nastere, salariu) VALUES (20, 'James', 'Bond', '13/02/2000', 7500);
+insert into ACTOR(actor_id, nume, prenume, data_nastere) VALUES (20, 'James', 'Bond', '13/02/2000');
 
 insert into SERIAL(serial_id, denumire, nota, data_aparitie) VALUES (6, 'Rick and Morty', 7.4, '12/11/2016');
+insert into EPISOD(episod_id, serial_id, denumire, numar, durata) VALUES (18,6,'Pilot',1,21);
+insert into EPISOD(episod_id, serial_id, denumire, numar, durata) VALUES (19,6,'Lawnmower Dog',2,19);
+insert into EPISOD(episod_id, serial_id, denumire, numar, durata) VALUES (20,6,'Anatomy Park',3,23);
+
+-- inserari pentru ex 9
+insert into UTILIZATOR(utilizator_id, subscriptie_id, porecla, mail, parola,data_exp_sub) values (111,78477,'skpha','skpha@gmail.com','VulturViteaz','15/06/2023');
+insert into FILM(film_id, director_id, denumire, nota, data_aparitie) VALUES (13,100006,'Talk with me',9,'28/07/2023');
+insert into SUBSCRIPTIE(subscriptie_id, tip, cost) VALUES (12345,'ULTIMATE',0);
+insert into UTILIZATOR(utilizator_id, subscriptie_id, porecla, mail, parola,data_exp_sub) values (112,12345,'OnePiece','anime@gmail.com','animelover03','21/11/2023');
+
+-- inserare film nou pentru ex 11
+insert into FILM(film_id, director_id, denumire, nota, data_aparitie) values (999,100006,'Test',2,'15/11/2023');

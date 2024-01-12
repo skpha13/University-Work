@@ -1,7 +1,8 @@
 -- numele celui care plateste, utilizatorii care au cea mai ieftina subsciptie, si caruia ii
 -- expira cardul cat mai curand
 -- bloc de cerere with
-select NUME || ' ' || PRENUME Nume
+-- !!! am schimbat proiectul, acest query nu mai merge
+/*select NUME || ' ' || PRENUME Nume
 from PLATA
 where DATA_EXP in ( select min(plt.DATA_EXP)
                     from PLATA plt
@@ -12,7 +13,7 @@ where DATA_EXP in ( select min(plt.DATA_EXP)
                                             select p.PLATA_ID
                                             from PLATA p
                                             join UTILIZATOR u on p.PLATA_ID = u.PLATA_ID
-                                            join sub on u.SUBSCRIPTIE_ID = sub.SUBSCRIPTIE_ID));
+                                            join sub on u.SUBSCRIPTIE_ID = sub.SUBSCRIPTIE_ID));*/
 
 -- pretul si numele subscriptiilor care au cel putin 4 filme
 -- grupari de date cu subcereri nesincronizate in care intervin cel putin 3 tabele, functii grup, filtrare
@@ -30,7 +31,8 @@ where SUBSCRIPTIE_ID in (select SF.SUBSCRIPTIE_ID
 -- si cate zile mai sunt pana cand le expira cardul si cate zile sunt pana le expira abonamentul
 -- subcereri sincronizate cu 3 tabele, subcere nesincronizata in clauza from
 -- 2 functii pe string uri, 2 pe date
-select concat(concat(initcap(p.nume),' '),initcap(p.prenume)) "NUME", round((data_exp-sysdate)) as Days, Zile.exp
+-- !!! am schimbat proiectul, acest query nu mai merge
+/*select concat(concat(initcap(p.nume),' '),initcap(p.prenume)) "NUME", round((data_exp-sysdate)) as Days, Zile.exp
 from plata p, ( select P1.PLATA_ID cod, U2.DATA_EXP_SUB exp
                 from UTILIZATOR U2, PLATA P1
                 where P1.PLATA_ID = U2.PLATA_ID) Zile
@@ -39,7 +41,7 @@ where plata_id in ( select plata_id
                     where p.plata_id = u.plata_id and exists ( select 1
                                                                from subscriptie s
                                                                where u.subscriptie_id = s.subscriptie_id))
-and Zile.cod = p.PLATA_ID;
+and Zile.cod = p.PLATA_ID;*/
 
 -- sa se afiseze numele, nota, daca a aparut in 1944 si daca este recomandat pentru fiecare film (recomandat <=> nota > 5)
 -- nvl, decode, case
@@ -157,3 +159,29 @@ join film2 f on d.DIRECTOR_ID = f.DIRECTOR_ID;
 -- R1 = SELECT(FILM, nota >= 9 and data_aparitie >= 01/01/2000)
 -- R2 = PROJECT(DIRECTOR, nume)
 -- REZULTAT = R3 = JOIN(R1,R2)
+
+-- exista o subscriptie care sa contina toate filmele cu nota 10? Sa se afiseze DA sau NU corespunzator.
+select DISTINCT SUBSCRIPTIE_ID
+from SUBSCRIPTIE_FILM s1
+where not exists((select FILM_ID
+                  from FILM
+                  where NOTA = 10)
+            MINUS
+                (select f.FILM_ID
+                 from SUBSCRIPTIE_FILM s2, film f
+                 where f.FILM_ID = s2.FILM_ID
+                 and s2.SUBSCRIPTIE_ID = s1.SUBSCRIPTIE_ID));
+
+-- exista o subscriptie care sa contina toate filmele cu nota 10? Sa se afiseze DA sau NU corespunzator.
+select case when not exists(
+    (select FILM_ID
+    from FILM
+    where NOTA = 10)
+MINUS
+    (select f.FILM_ID
+     from SUBSCRIPTIE_FILM s2, film f
+     where f.FILM_ID = s2.FILM_ID))
+then 'DA'
+else 'NU'
+end Exista
+from dual;
