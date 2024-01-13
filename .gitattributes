@@ -2,3 +2,10 @@
 *.docx linguist-vendored
 *.pdf linguist-vendored
 *.png linguist-vendored
+*.jpg linguist-vendored
+*.gif linguist-vendored
+*.xlsx linguist-vendored
+*.pptx linguist-vendored
+*.zip linguist-vendored
+*.tar.gz linguist-vendored
+*.csv linguist-vendored
