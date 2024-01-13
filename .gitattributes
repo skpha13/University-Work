@@ -1,0 +1,4 @@
+*.txt linguist-vendored
+*.docx linguist-vendored
+*.pdf linguist-vendored
+*.png linguist-vendored
