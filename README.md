@@ -10,7 +10,7 @@
   - [Critical and Ethical Thinking](https://github.com/skpha13/Univeristy-Work/tree/main/First%20Year/First%20Semester/Critical%20and%20Ethical%20Thinking)
   - [Differential and Integral Calculus](https://github.com/skpha13/Univeristy-Work/tree/main/First%20Year/First%20Semester/Differential%20and%20Integral%20Calculus)
   - [Mathematical Logic](https://github.com/skpha13/Univeristy-Work/tree/main/First%20Year/First%20Semester/Mathematical%20Logic)
-  - [System Arhitecture](https://github.com/skpha13/Univeristy-Work/tree/main/First%20Year/First%20Semester/Sistem%20Arhitecture)
+  - [System Architecture](https://github.com/skpha13/Univeristy-Work/tree/main/First%20Year/First%20Semester/Sistem%20Arhitecture)
 - Second semester:
   - [Databases](https://github.com/skpha13/University-Work/tree/main/First%20Year/Second%20Semester/Databases)
   - [Data Structures](https://github.com/skpha13/University-Work/tree/main/First%20Year/Second%20Semester/Data%20Structures)
