@@ -145,9 +145,9 @@ def exercitiu1(niu, sigma):
     y = f(x)
     
     plt.hist(X, bins=100, density=True, label='X', color='blue', alpha=0.5)
-    plt.hist(Y, bins=100, density=True, label='Y', color='red', alpha=0.5)
-    plt.hist(Z, bins=100, density=True, label='Z', color='green', alpha=0.5)
-    plt.plot(x, y, color = 'black', label = 'f(x)')
+    # plt.hist(Y, bins=100, density=True, label='Y', color='red', alpha=0.5)
+    # plt.hist(Z, bins=100, density=True, label='Z', color='green', alpha=0.5)
+    # plt.plot(x, y, color = 'black', label = 'f(x)')
     plt.show()
 
 
@@ -217,4 +217,4 @@ def exercitiu3(niu, sigma):
     CLT(X, mu, var)
 
 
-exercitiu3(0, 1)
+exercitiu1(3, 1764)
