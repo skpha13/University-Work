@@ -30,4 +30,9 @@
   - [Probabilities and Statistics](https://github.com/skpha13/University-Work/tree/main/Second%20Year/First%20Semester/Probabilities%20and%20Statistics)
 
 - Second semester:
+  - [Advanced Algorithms](https://github.com/skpha13/University-Work/tree/main/Second%20Year/Second%20Semester/Advanced%20Algorithms)
   - [Advanced Object-oriented Programming](https://github.com/skpha13/University-Work/tree/main/Second%20Year/Second%20Semester/Advanced%20Object-oriented%20Programming)
+  - [Artificial Intelligence](https://github.com/skpha13/University-Work/tree/main/Second%20Year/Second%20Semester/Artificial%20Intelligence)
+  - [Computer Networks](https://github.com/skpha13/University-Work/tree/main/Second%20Year/Second%20Semester/Computer%20Networks)
+  - [Programming Language Fundamentals](https://github.com/skpha13/University-Work/tree/main/Second%20Year/Second%20Semester/Programming%20Language%20Fundamentals)
+  - [Software Development Methodologies](https://github.com/skpha13/University-Work/tree/main/Second%20Year/Second%20Semester/Software%20Development%20Methodologies)
