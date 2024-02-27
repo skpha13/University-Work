@@ -19,7 +19,7 @@
   - [Object-oriented programming](https://github.com/skpha13/University-Work/tree/main/First%20Year/Second%20Semester/Object-oriented%20programming)
   - [Web Technologies](https://github.com/skpha13/University-Work/tree/main/First%20Year/Second%20Semester/Web%20Technologies)
 
-**I. Second year:**
+**II. Second year:**
 
 - First semester:
   - [ASP.NET (online)](<https://github.com/skpha13/University-Work/tree/main/Second%20Year/First%20Semester/ASP.NET%20(online)>)
