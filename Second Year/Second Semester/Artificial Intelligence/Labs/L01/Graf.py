@@ -31,7 +31,7 @@ class Graf:
         return informatieNod in self.lista_scopuri
 
     def succesori(self, nod):
-        succesori=[]
+        succesori = []
         for index in range(len(self.matrice_adiacenta)):
             if self.matrice_adiacenta[nod.informatie][index] == 1 and not nod.inDrum(index):
                 succesori.append(NodArbore(index, nod))
@@ -69,7 +69,7 @@ def breadthFirst(graf, nsol=1):
     queue = [NodArbore(graf.nod_start)]
 
     while queue:
-        nod_curent=queue.pop(0)
+        nod_curent = queue.pop(0)
         if graf.scop(nod_curent.informatie):
             print(repr(nod_curent))
             nsol -= 1
@@ -77,8 +77,22 @@ def breadthFirst(graf, nsol=1):
             if nsol == 0:
                 return
 
-        succesori=graf.succesori(nod_curent)
+        succesori = graf.succesori(nod_curent)
         queue += succesori
 
+def depthFirst(graf, node, nsol=1):
+    if graf.scop(node.informatie):
+        print(repr(node))
+        nsol -= 1
+        return nsol
+
+    succesori = graf.succesori(node)
+
+    for succ in succesori:
+        if nsol > 0:
+            nsol = depthFirst(graf, succ, nsol)
+
+    return nsol
+
 graf = Graf(m, start, scopuri)
-breadthFirst(graf, 2)
+depthFirst(graf, NodArbore(0), 5)
