@@ -80,6 +80,26 @@ def breadthFirst(graf, nsol=1):
         succesori = graf.succesori(nod_curent)
         queue += succesori
 
+# Optimized BFS
+def breadthFirstOpt(graf, nsol=1):
+    queue = [NodArbore(graf.nod_start)]
+
+    while queue:
+        nod_curent = queue.pop(0)
+
+        succesori = graf.succesori(nod_curent)
+
+        for succesor in succesori:
+            queue.append(succesor)
+
+            if graf.scop(succesor.informatie):
+                print(repr(succesor))
+                nsol -= 1
+
+                if nsol == 0:
+                    return
+
+# Recursive DFS
 def depthFirst(graf, node, nsol=1):
     if graf.scop(node.informatie):
         print(repr(node))
@@ -94,5 +114,21 @@ def depthFirst(graf, node, nsol=1):
 
     return nsol
 
+# Linear DFS
+def depthFirstLinear(graf, start_node, nsol=1):
+    stack = [start_node]
+
+    while stack and nsol > 0:
+        current_node = stack.pop()
+
+        if graf.scop(current_node.informatie):
+            print(repr(current_node))
+            nsol -= 1
+        else:
+            successors = graf.succesori(current_node)
+            stack.extend(successors)
+
+    return nsol
+
 graf = Graf(m, start, scopuri)
-depthFirst(graf, NodArbore(0), 5)
+depthFirstLinear(graf, NodArbore(0), 5)
