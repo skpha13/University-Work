@@ -302,25 +302,56 @@ bssos (AtrE var exp) state =
 bssos (Seq stmt1 stmt2) state =
     let tempState = bssos stmt1 state
     in bssos stmt2 tempState
--- bssos (IfE exp stmt1 stmt2) state =
---     case valueb exp of 
---         True -> 
---         False ->
---         _ ->
+bssos (IfE exp stmt1 stmt2) state =
+    if valueb exp state
+        then bssos stmt1 state
+        else bssos stmt2 state
+bssos (WhileE exp stmt) state =
+    if valueb exp state
+        then bssos (WhileE exp stmt) state
+        else state
+bssos _ state = state
 
 sssos1 :: (Stmt, [(String, Int)]) -> (Stmt, [(String, Int)])
-sssos1 = undefined
+sssos1 (Skip, state) = (Skip, state)
+sssos1 (AtrE var exp, state) =
+    let varValue = value exp state
+    in (Skip, update var varValue state)
+sssos1 (Seq stmt1 stmt2, state) =
+    case stmt1 of 
+        Skip -> (stmt2, state)
+        _ -> let (stmt1', state') = sssos1 (stmt1, state)
+             in (Seq stmt1' stmt2, state')
+sssos1 (IfE exp stmt1 stmt2, state) = 
+    case valueb exp state of
+        True -> (stmt1, state)
+        _ -> (stmt2, state)
+sssos1 (WhileE exp stmt, state) =
+    case valueb exp state of 
+        True -> sssos1 (WhileE exp stmt, state) 
+        _ -> (Skip, state)
+sssos1 (_, state) = (Skip, state)
 
 -- the next 2 are mutually recursive
 sssos_star :: (Stmt, [(String, Int)]) -> [(Stmt, [(String, Int)])]
-sssos_star = undefined
+sssos_star (stmt, state) =
+  case stmt of
+    Skip -> [(Skip, state)]
+    _ -> let (stmt', state') = sssos1 (stmt, state)
+         in (stmt', state') : sssos_star (stmt', state')
 
 sssos_plus :: (Stmt, [(String, Int)]) -> [(Stmt, [(String, Int)])]
-sssos_plus = undefined
+sssos_plus (stmt, state) =
+  case stmt of
+    Skip -> []
+    _ -> let (stmt', state') = sssos1 (stmt, state)
+         in (stmt', state') : sssos_plus (stmt', state')
 
 sssos_final_state :: (Stmt, [(String, Int)]) -> [(String, Int)]
-sssos_final_state = undefined
-
+sssos_final_state (stmt, state) =
+  case sssos_star (stmt, state) of
+    [] -> state
+    states -> snd (last states)
 prog = sum_no_p -- replace this with inf_cycle_p
 inits = (prog, [])
 
