@@ -1,0 +1,24 @@
+1. Sa se creeze o clasa ReadFromKeyboard cu metodele CRUD (create, read, update, delete) + o metoda help si o metoda quit care sa opreasca aplicatia.
+De la tastatura sa se intorduca numele action-ului (metodei) si parametrii corespunzatori.
+Dupa executia actiunii sa se afiseze un mesaj cu detaliile executiei.
+
+
+Exemplu:
+-----------
+Enter Command >>> update
+Command received: update
+Username: >>> John
+Sold: >>> 56
+The sold was updated for user John 56
+Enter Command >>> help
+Command received: help
+
+	Accepted commands:
+		help: Instructions on how to use the application
+		update: Update data. Can receive two parameters: username and sold.
+		delete: Delete the user's data.  Receive the username.
+		quit: Close the application.
+
+2. Sa se creeze o clasa simpla (POJO) continand proprietatile utilizate la punctul 1 (username, sold)
+
+3. Sa se creeze o clasa DataStorage continand colectie/colectii statice pentru stocarea si actualizarea valorilor introduse de utilizator la punctul 1.
