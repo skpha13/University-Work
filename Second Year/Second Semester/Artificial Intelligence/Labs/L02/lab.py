@@ -13,13 +13,55 @@ class NodArbore:
         return drum[::-1]
 
     def inDrum(self, infonod):
-        return any(node.informatie == infonod for node in self.drumRadacina())
+        nod = self
+        while nod:
+            if nod.informatie == infonod:
+                return True
+            nod = nod.parinte
+        return False
 
     def __str__(self):
         return str(self.informatie)
 
     def __repr__(self):
         return "{} ({})".format(self.informatie, "->".join([str(x) for x in self.drumRadacina()]))
+
+    def afisSolFisier(self, file, output):
+        output = output[11:-1].split("->")
+        optiuni = [
+            ("(Stanga: <barca>)", "<Dreapta>"),
+            ("(Stanga)", "(Dreapta: <barca>)")
+        ]
+        counter_optiuni = 0
+        file_string = ""
+        output.append("(0, 0, 0)")
+
+        n = 0
+        for i in range(len(output) - 1):
+            pozitie_barca = optiuni[counter_optiuni % 2]
+            numbers = output[i].replace('(', ' ').replace(')', ' ').replace(',', ' ').split(' ')
+            next_numbers = output[i + 1].replace('(', ' ').replace(')', ' ').replace(',', ' ').split(' ')
+
+            misionari = int(numbers[1])
+            canibali = int(numbers[3])
+            misionari_nou = int(next_numbers[1])
+            canibali_nou = int(next_numbers[3])
+
+            if i == 0:
+                n = misionari
+            misionari_right = n - misionari
+            canibali_right = n - canibali
+
+            file_string += f"{pozitie_barca[0]} {canibali} canibali {misionari} misionari ...... {pozitie_barca[1]} {canibali_right} canibali {misionari_right} misionari\n"
+            if counter_optiuni % 2 == 0 and i != len(output) - 2:
+                file_string += f"\n>>> Barca s-a deplasat de la malul stang la malul drept cu {canibali - canibali_nou} canibali si {misionari - misionari_nou} misionari.\n"
+            elif counter_optiuni % 2 == 1 and i != len(output) - 2:
+                file_string += f"\n>>> Barca s-a deplasat de la malul drept la malul stang cu {canibali_nou - canibali} canibali si {misionari_nou - misionari} misionari.\n"
+
+            counter_optiuni += 1
+
+        file.writelines(file_string)
+
 
 class Graf:
     def __init__(self, nod_start, lista_scopuri):
@@ -80,39 +122,16 @@ class Graf:
         return lSuccesori
 
 
-a = NodArbore(1)
-b = NodArbore(2, a)
-c = NodArbore(3, b)
-
-# print(c.drumRadacina())
-# print(c.inDrum(2))
-# print(c.inDrum(5))
-# print(c.__str__())
-# print(repr(c))
-# print()
-
-m = [
-    [0, 1, 0, 1, 1, 0, 0, 0, 0, 0],
-    [1, 0, 1, 0, 0, 1, 0, 0, 0, 0],
-    [0, 1, 0, 0, 0, 1, 0, 1, 0, 0],
-    [1, 0, 0, 0, 0, 0, 1, 0, 0, 0],
-    [1, 0, 0, 0, 0, 0, 0, 1, 0, 0],
-    [0, 1, 1, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 1, 0, 0, 0, 0, 0, 0],
-    [0, 0, 1, 0, 1, 0, 0, 0, 1, 1],
-    [0, 0, 0, 0, 0, 0, 0, 1, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 1, 0, 0]
-]
-start = 0
-scopuri = [5, 9]
-
 def breadthFirst(graf, nsol=1):
+    file = open("output.txt", "w")
     queue = [NodArbore(graf.nod_start)]
 
     while queue:
         nod_curent = queue.pop(0)
         if graf.scop(nod_curent.informatie):
-            print(repr(nod_curent))
+            nod_curent.afisSolFisier(file, repr(nod_curent))
+            file.close()
+            # print(repr(nod_curent))
             nsol -= 1
 
             if nsol == 0:
