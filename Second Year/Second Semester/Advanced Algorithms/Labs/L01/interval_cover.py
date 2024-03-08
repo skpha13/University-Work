@@ -7,15 +7,41 @@ intervale = []
 
 for i in range(n):
     line = input().strip().split(" ")
-    intervale.append(((int(line[0]), int(line[1])), i))
+    intervale.append(((int(line[0]), int(line[1])), i + 1))
 
-intervale.sort(key=lambda x: x[0][1])
+intervale.sort(key=lambda x: x[0][0])
+start = a
+end = b - 1
 sol = [intervale[0]]
 
-for interval in intervale:
-    if interval[0][0] > sol[-1][0][1]:
-        sol.append(interval)
+i = 0
+while i < len(intervale):
+    if intervale[i][0][0] <= start:
+        end = max(intervale[i][0][1], end)
+        i += 1
+    else:
+        start = end
+        sol.append(intervale[i])
 
-print(len(sol))
-for interval in sol:
-    print(interval[1], end=" ")
+        if intervale[i][0][0] > end or end >= b:
+            break
+
+# check to see if it covers
+covers = True
+if not (sol[0][0][0] <= a and sol[-1][0][1] >= b):
+    covers = False
+
+for i in range(len(sol) - 1):
+    current_el = sol[i][0]
+    next_el = sol[i+1][0]
+
+    if current_el[1] + 1 < next_el[0]:
+        covers = False
+
+if covers:
+    print(len(sol))
+    if len(sol) > 0:
+        for interval in sol:
+            print(interval[1], end=" ")
+else:
+    print(0)
