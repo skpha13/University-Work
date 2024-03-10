@@ -50,3 +50,9 @@
 ---
 
 *Courtesy of [Matoka26](https://github.com/Matoka26) for these notes.*
+
+# Useful Links
+
+[All Final Exam Questions](https://itexamanswers.net/ccna-1-v7-0-final-exam-answers-test-online.html)
+
+[Final Exam Quiz](https://quizglobal.com/playquiz/CCNA%201%20ITN%20v7%20Final%20Exam)
