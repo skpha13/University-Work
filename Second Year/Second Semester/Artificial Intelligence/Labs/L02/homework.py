@@ -4,11 +4,11 @@ class NodArbore:
         self.parinte = parinte
 
     def drumRadacina(self):
-        nod=self
-        drum=[]
+        nod = self
+        drum = []
         while nod:
             drum.append(nod)
-            nod=nod.parinte
+            nod = nod.parinte
 
         return drum[::-1]
 
@@ -89,30 +89,36 @@ class Graf:
             canMalCurent = Graf.N - nod.informatie[1]
 
         minMisBarca = 1
-        maxMisBarca = min(misMalCurent,Graf.M)
+        maxMisBarca = min(misMalCurent, Graf.M)
 
-        for mb in range(minMisBarca, maxMisBarca+1):
+        for mb in range(minMisBarca, maxMisBarca + 1):
             if mb == 0:
                 minCanBarca = 1
                 maxCanBarca = min(canMalCurent, Graf.M)
             else:
                 minCanBarca = 0
-                maxCanBarca = min(canMalCurent, mb,  Graf.M - mb)
+                maxCanBarca = min(canMalCurent, mb, Graf.M - mb)
 
             for cb in range(minCanBarca, maxCanBarca + 1):
-                misMalCurentNou=misMalCurent-mb
-                canMalCurentNou=canMalCurent-cb
-                misMalOpusNou=misMalOpus+mb
-                canMalOpusNou=canMalOpus+cb
+                misMalCurentNou = misMalCurent - mb
+                canMalCurentNou = canMalCurent - cb
+                misMalOpusNou = misMalOpus + mb
+                canMalOpusNou = canMalOpus + cb
 
-                if (not testConditie(misMalCurentNou,canMalCurentNou)) and nod.informatie[2] == 0:
+                misBarca = abs(misMalCurentNou - misMalCurent)
+                canBarca = abs(canMalCurentNou - canMalCurent)
+
+                if canBarca > misBarca:
                     continue
 
-                if (not testConditie(misMalOpusNou,canMalOpusNou)) and (nod.informatie[2] + 1) % 2 == 0:
+                if (not testConditie(misMalCurentNou, canMalCurentNou)) and nod.informatie[2] == 0:
+                    continue
+
+                if (not testConditie(misMalOpusNou, canMalOpusNou)) and (nod.informatie[2] + 1) % 2 == 0:
                     continue
 
                 if nod.informatie[2] == 1:
-                    infoNodSuccesor=(misMalCurentNou,canMalCurentNou,0)
+                    infoNodSuccesor = (misMalCurentNou, canMalCurentNou, 0)
                 else:
                     infoNodSuccesor = (misMalOpusNou, canMalOpusNou, 1)
 
@@ -123,14 +129,15 @@ class Graf:
 
 
 def breadthFirst(graf, nsol=1):
-    file = open("output.txt", "w")
+    file = open("output.txt", "a")
+    file.truncate(0)
     queue = [NodArbore(graf.nod_start)]
 
     while queue:
         nod_curent = queue.pop(0)
         if graf.scop(nod_curent.informatie):
             nod_curent.afisSolFisier(file, repr(nod_curent))
-            file.close()
+            file.write("--------------------------------------------------------------------------------------\n\n\n")
             print(repr(nod_curent))
             nsol -= 1
 
@@ -139,6 +146,9 @@ def breadthFirst(graf, nsol=1):
 
         succesori = graf.succesori(nod_curent)
         queue += succesori
+
+    file.close()
+
 
 # Optimized BFS
 def breadthFirstOpt(graf, nsol=1):
@@ -159,6 +169,7 @@ def breadthFirstOpt(graf, nsol=1):
                 if nsol == 0:
                     return
 
+
 # Recursive DFS
 def depthFirst(graf, node, nsol=1):
     if graf.scop(node.informatie):
@@ -173,6 +184,7 @@ def depthFirst(graf, node, nsol=1):
             nsol = depthFirst(graf, succ, nsol)
 
     return nsol
+
 
 # Linear DFS
 def depthFirstLinear(graf, start_node, nsol=1):
@@ -190,6 +202,7 @@ def depthFirstLinear(graf, start_node, nsol=1):
 
     return nsol
 
+
 # graf = Graf(m, start, scopuri)
 # depthFirstLinear(graf, NodArbore(0), 5)
 
@@ -206,4 +219,4 @@ with open("configuratie_graf.txt", "r") as input:
 
     graf = Graf(start, scopuri)
 
-    breadthFirst(graf, 1)
+    breadthFirst(graf, 2)
