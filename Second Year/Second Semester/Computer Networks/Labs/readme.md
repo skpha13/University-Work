@@ -1,8 +1,6 @@
 # Video Demonstrations
 
-## **[Access Video Demos](https://drive.google.com/drive/u/1/folders/1oSHqeWMYrmbEs0ciBt40iKCPVCFbJpaU)**
-
-*Courtesy of [Ana Rosu](https://github.com/ana-rosu) for the video demonstrations.*
+**[Access Video Demos](https://drive.google.com/drive/u/1/folders/1oSHqeWMYrmbEs0ciBt40iKCPVCFbJpaU)**
 
 # Student Performance Overview
 
@@ -49,10 +47,13 @@
   - Final Exam Lab: 6 points
 ---
 
-*Courtesy of [Matoka26](https://github.com/Matoka26) for these notes.*
-
 # Useful Links
 
 [All Final Exam Questions](https://itexamanswers.net/ccna-1-v7-0-final-exam-answers-test-online.html)
 
 [Final Exam Quiz](https://quizglobal.com/playquiz/CCNA%201%20ITN%20v7%20Final%20Exam)
+#
+
+*Courtesy of [Matoka26](https://github.com/Matoka26) for these notes.*
+
+*Courtesy of [Ana Rosu](https://github.com/ana-rosu) for the video demonstrations.*
