@@ -62,6 +62,7 @@ class Graf:
                 lSuccesori.append(NodArbore(infoSuccesor, nod.g + self.matr[nod.informatie][infoSuccesor], self.estimeaza_h(infoSuccesor), nod))
 
         return lSuccesori
+
 def aStarSolMultiple(graf, nsol=1):
     queue = [NodArbore(graf.nod_start)]
 
@@ -95,6 +96,56 @@ def aStarSolMultiplePQ(graf, nsol=1):
         for it in succesori:
             queue.put(it)
 
+def a_star(graf: Graf, nsol=1):
+    open = [NodArbore(graf.nod_start)]
+    closed = []
+
+    while open:
+        nod_curent = open.pop(0)
+
+        if graf.scop(nod_curent.informatie):
+            print(repr(nod_curent))
+            nsol -= 1
+
+            if nsol == 0:
+                return
+
+        succesori = graf.succesori(nod_curent)
+        closed.append(nod_curent)
+
+        for s in succesori:
+            nod_nou = None
+            if not nod_curent.inDrum(s.informatie):
+                if s in open:
+                    index_nod = open.index(s)
+
+                    if s.f < open[index_nod].f or (s.f == open[index_nod].f and s.g > open[index_nod].g):
+                        open.pop(index_nod)
+                        # seteaza pt s parinte g si f
+                        s.parinte = nod_curent
+                        s.g += nod_curent.g
+                        s.h = graf.estimeaza_h(s.informatie)
+                        s.f = s.g + s.h
+                        nod_nou = s
+                if s in closed:
+                    index_nod = closed.index(s)
+
+                    if s.f < closed[index_nod].f or (s.f == closed[index_nod].f and s.g > closed[index_nod].g):
+                        closed.pop(index_nod)
+                        # seteaza pt s parinte g si f
+                        s.parinte = nod_curent
+                        s.g += nod_curent.g
+                        s.h = graf.estimeaza_h(s.informatie)
+                        s.f = s.g + s.h
+                        nod_nou = s
+                else:
+                    nod_nou = s
+
+                if nod_nou is not None:
+                    open.append(nod_nou)
+                    open.sort()
+
+
 with open("configuratie_graf.txt", "r") as input:
     m = [
         [0, 3, 5, 10, 0, 0, 100],
@@ -116,9 +167,16 @@ with open("configuratie_graf.txt", "r") as input:
     aStarSolMultiple(graf, 10)
     end_normal = time.perf_counter_ns()
 
+    graf = Graf(m, start, scopuri, h)
+
     start_pq = time.perf_counter_ns()
     aStarSolMultiplePQ(graf, 10)
     end_pq = time.perf_counter_ns()
+
+    graf = Graf(m, start, scopuri, h)
+    print()
+
+    a_star(graf, 1)
 
     print(f"\nTime normal: {(end_normal - start_normal) / 1000} ms\nTime PQ: {(end_pq - start_pq) / 1000} ms")
 
