@@ -1,6 +1,23 @@
 from queue import PriorityQueue
 import time
 
+def bin_search(listaNoduri, nodNou, ls, ld):
+    if len(listaNoduri)==0:
+        return 0
+
+    if ls==ld:
+        if nodNou <= listaNoduri[ls]:
+            return ls
+        else:
+            return ld + 1
+    else:
+        mij=(ls+ld)//2
+
+        if nodNou <= listaNoduri[ls]:
+            return bin_search(listaNoduri, nodNou, ls, mij)
+        else:
+            return bin_search(listaNoduri, nodNou, mij + 1, ld)
+
 class NodArbore:
     def __init__(self, informatie, g = 0, h = 0, parinte=None):
         self.informatie = informatie
@@ -34,6 +51,9 @@ class NodArbore:
 
     def __lt__(self, other):
         return self.f < other.f or (self.f == other.f and self.g > other.g)
+
+    def __gt__(self, other):
+        return self.f > other.f or (self.f == other.f  and self.g < other.g)
 
     def __str__(self):
         return f"({str(self.informatie)}, g:{self.g}, f:{self.f})"
@@ -145,6 +165,25 @@ def a_star(graf: Graf, nsol=1):
                     open.append(nod_nou)
                     open.sort()
 
+def aStarSolMultiple2(graf, nsol=1):
+    queue = [NodArbore(graf.nod_start)]
+
+    while queue:
+        nod_curent = queue.pop(0)
+        if graf.scop(nod_curent.informatie):
+            print(repr(nod_curent))
+            nsol -= 1
+
+            if nsol == 0:
+                return
+
+        succesori = graf.succesori(nod_curent)
+        for it in succesori:
+            index = bin_search(queue, it, 0, len(queue)-1)
+            queue.insert(index, it)
+
+        # queue += succesori
+        # queue.sort()
 
 with open("configuratie_graf.txt", "r") as input:
     m = [
@@ -176,7 +215,7 @@ with open("configuratie_graf.txt", "r") as input:
     graf = Graf(m, start, scopuri, h)
     print()
 
-    a_star(graf, 1)
+    aStarSolMultiple2(graf, 1)
 
     print(f"\nTime normal: {(end_normal - start_normal) / 1000} ms\nTime PQ: {(end_pq - start_pq) / 1000} ms")
 
