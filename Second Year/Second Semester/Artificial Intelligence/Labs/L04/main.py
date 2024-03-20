@@ -29,11 +29,11 @@ class NodArbore:
 
     def drumRadacina(self):
         nod = self
-        drum = [nod]
-        while nod.parinte is not None:
+        l = []
+        while nod:
+            l.append(nod)
             nod = nod.parinte
-            drum = [nod] + drum
-        return drum
+        return l[::-1]
 
     def inDrum(self, infonod):
         nod = self
@@ -52,9 +52,6 @@ class NodArbore:
 
     def __lt__(self, other):
         return self.f < other.f or (self.f == other.f and self.g > other.g)
-
-    def __gt__(self, other):
-        return self.f > other.f or (self.f == other.f  and self.g < other.g)
 
     def __str__(self):
         return f"({str(self.informatie)}, g:{self.g}, f:{self.f})"
@@ -103,7 +100,7 @@ class Graf:
                 continue
 
             copie_stive = copy.deepcopy(nod.informatie)
-            bloc = copie_stive[i].pop(0)
+            bloc = copie_stive[i].pop()
 
             for j in range(len(nod.informatie)):
                 if i == j:
@@ -228,6 +225,6 @@ def main():
     graf = Graf(start, scopuri)
     print()
 
-    aStarSolMultiple(graf, 1, "euristica mutari")
+    aStarSolMultiple(graf, 4, "euristica mutari")
 
 main()
