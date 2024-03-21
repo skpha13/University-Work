@@ -1,0 +1,28 @@
+1. Write a Java program to compare two strings lexicographically, ignoring case differences.
+
+2.  Write a program to find the number of vowels, consonants, digits and white space characters in a string.
+
+    Input:
+    "This is 1 string"
+
+    Output:
+    Vowels: 3
+    Consonants: 9
+    Digits: 1
+    Spaces: 3
+
+3. Given a string of letters.
+   Find out the number of occurrence of each letter in that string.
+   Print them in lexicographical order
+
+   Input:
+   "abracadabra:
+
+   Output:
+   a: 5
+   b: 2
+   c: 1
+   d: 1
+   r: 2
+
+4. Write a Java program to remove the duplicate elements of a given array and return the new length of the array.
