@@ -1,3 +1,4 @@
+import io
 from queue import PriorityQueue
 import copy
 import time
@@ -43,6 +44,22 @@ class NodArbore:
             nod = nod.parinte
         return False
 
+    def afisSolFisier(self, file: io):
+        if self.parinte is not None:
+            self.parinte.afisSolFisier(file)
+
+        max_size = max(len(item) for item in self.informatie)
+        for size in range(max_size-1, -1, -1):
+            for sublist in self.informatie:
+                try:
+                    file.write(sublist[size])
+                    file.write(" ")
+                except IndexError:
+                    file.write("  ")
+            file.write("\n")
+
+        file.write("-----\n")
+        file.write(f"Cost partial: {self.f}\n")
 
     def __eq__(self, other):
         return self.g == other.g and self.f == other.f
@@ -116,11 +133,14 @@ class Graf:
 
 def aStarSolMultiple(graf, nsol, euristica):
     queue = [NodArbore(graf.nod_start)]
+    output = open("output.txt", "w")
 
     while queue:
         nod_curent = queue.pop(0)
         if graf.scop(nod_curent.informatie):
-            print(repr(nod_curent))
+            output.write("Solutie: \n")
+            nod_curent.afisSolFisier(output)
+            output.write(f"\nCost: {nod_curent.f}\nLungime: {nod_curent.g}\n=================\n\n")
             nsol -= 1
 
             if nsol == 0:
@@ -129,6 +149,8 @@ def aStarSolMultiple(graf, nsol, euristica):
         succesori = graf.succesori(nod_curent, euristica)
         queue += succesori
         queue.sort()
+
+    output.close()
 
 def aStarSolMultiplePQ(graf, nsol=1):
     queue = PriorityQueue()
