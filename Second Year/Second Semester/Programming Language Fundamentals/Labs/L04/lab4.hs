@@ -75,7 +75,7 @@ symbol :: String -> Parser String
 symbol symb = token (string symb)
 
 data AExp = Nu Int | Qid String | PlusE AExp AExp | TimesE AExp AExp | DivE AExp AExp
-    deriving Show
+    deriving (Show, Eq)
     
 aexp :: Parser AExp
 aexp = plusexp <|> mulexp <|> divexp <|> npexp
@@ -300,23 +300,71 @@ test_bssos = bssos prog []
 
 -- This is where the new stuff starts
 
--- substitutes the QidX with the string by the the arithmetic expression
+-- substitutes the QidX with the string by the arithmetic expression
 substaexp :: AExp -> String -> AExp -> AExp
-substaexp = undefined
+substaexp exp str (Qid var) = if str == var then exp else (Qid var)
+substaexp exp str (PlusE left right) = (PlusE (substaexp exp str left) (substaexp exp str right))
+substaexp exp str (TimesE left right) = (TimesE (substaexp exp str left) (substaexp exp str right))
+substaexp exp str (DivE left right) = (DivE (substaexp exp str left) (substaexp exp str right))
+substaexp exp str (Nu nr) = Nu nr
+
+test_substaexp = substaexp (Nu 5) "x" (PlusE (Qid "x") (TimesE (Nu 2) (Qid "y"))) == PlusE (Nu 5) (TimesE (Nu 2) (Qid "y"))
 
 data Assn = BEX Bool | LEX AExp AExp | NotEX Assn | AndEX Assn Assn | DisjInfX [Assn]
+    deriving (Show, Eq)
 
 -- value of an assertion relative to a state, similar to valueb
 valueassn :: Assn -> [(String, Int)] -> Bool
-valueassn = undefined
+valueassn (BEX val) _ = val
+valueassn (LEX left right) ls = value left ls <= value right ls
+valueassn (NotEX assertion) ls = not (valueassn assertion ls)
+valueassn (AndEX ass1 ass2) ls = (valueassn ass1 ls) && (valueassn ass2 ls)
+valueassn (DisjInfX xs) ls = foldr (||) False (map (`valueassn` ls) xs)
 
+test_valueassn = and
+    [ valueassn (BEX True) [] == True
+    , valueassn (BEX False) [] == False
+    , valueassn (LEX (Nu 2) (Nu 3)) [("x", 5), ("y", 10)] == True
+    , valueassn (LEX (Nu 3) (Nu 2)) [("x", 5), ("y", 10)] == False
+    , valueassn (NotEX (BEX True)) [] == False
+    , valueassn (NotEX (BEX False)) [] == True
+    , valueassn (AndEX (BEX True) (BEX True)) [] == True
+    , valueassn (AndEX (BEX True) (BEX False)) [] == False
+    , valueassn (DisjInfX [BEX False, BEX False, BEX True]) [] == True
+    , valueassn (DisjInfX [BEX False, BEX False, BEX False]) [] == False
+    ]
+ 
 -- converts a boolean expression to an assertion
 convassn :: BExp -> Assn
-convassn = undefined
+convassn (BE val) = BEX val
+convassn (LE left right) = LEX left right
+convassn (NotE exp) = NotEX (convassn exp)
+convassn (AndE left right) = AndEX (convassn left) (convassn right)
+
+test_convassn = and
+    [ convassn (BE True) == BEX True
+    , convassn (BE False) == BEX False
+    , convassn (LE (Qid "x") (Qid "y")) == LEX (Qid "x") (Qid "y")
+    , convassn (NotE (BE True)) == NotEX (BEX True)
+    , convassn (AndE (BE True) (BE False)) == AndEX (BEX True) (BEX False)
+    , convassn (AndE (LE (Qid "x") (Qid "y")) (NotE (BE True))) == AndEX (LEX (Qid "x") (Qid "y")) (NotEX (BEX True))
+    ]
 
 -- substitutes the QidX with the string by the the arithmetic expression
 substassn :: Assn -> String -> AExp -> Assn
-substassn = undefined
+substassn (BEX val) _ _ = BEX val
+substassn (LEX left right) var exp = LEX (substaexp exp var left) (substaexp exp var right)
+substassn (NotEX middle) var exp = NotEX (substassn middle var exp)
+substassn (AndEX left right) var exp = AndEX (substassn left var exp) (substassn right var exp) 
+substassn (DisjInfX ls) var exp = DisjInfX (map (\x -> substassn x var exp) ls)
+
+test_substassn = and
+    [ substassn (BEX True) "x" (Qid "x") == BEX True
+    , substassn (LEX (Qid "x") (Qid "y")) "x" (PlusE (Qid "x") (Qid "z")) == LEX (PlusE (Qid "x") (Qid "z")) (Qid "y")
+    , substassn (NotEX (BEX True)) "y" (TimesE (Qid "y") (Qid "z")) == NotEX (BEX True)
+    , substassn (AndEX (LEX (Qid "x") (Qid "y")) (NotEX (BEX True))) "x" (Qid "z") == AndEX (LEX (Qid "z") (Qid "y")) (NotEX (BEX True))
+    , substassn (DisjInfX [BEX False, BEX True, LEX (Qid "x") (Qid "y")]) "x" (Nu 10) == DisjInfX [BEX False, BEX True, LEX (Nu 10) (Qid "y")]
+    ]
 
 -- logical or
 orx :: Assn -> Assn -> Assn
@@ -328,7 +376,15 @@ extr (DisjInfX li) = li
 
 -- computes the weakest precondition
 wp :: Stmt -> Assn -> Assn
-wp = undefined
+wp Skip assn = assn
+wp (AtrE var exp) assn = substassn assn var exp 
+wp (Seq stmt1 stmt2) assn = wp stmt2 (wp stmt1 assn)
+wp (IfE condition stmt1 stmt2) assn = orx (AndEX (convassn condition) (wp stmt1 assn)) (AndEX (NotEX (convassn condition)) (wp stmt2 assn))
+wp (WhileE condition stmt) assn = DisjInfX (map p [0..])
+    where
+        p :: Int -> Assn
+        p 0 = AndEX (convassn (NotE condition)) assn 
+        p k = AndEX (convassn condition) (wp stmt (p $ k-1))
 
 test1 = valueassn (wp prog (LEX (Qid "s") (Nu 5051))) [] -- should return true
 
