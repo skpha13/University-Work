@@ -15,6 +15,11 @@ class Logging:
         self.out.write(string)
         self.out.write("\n")
 
+    def log_dupa_recombinare(self, string: str):
+        self.out.write("\nDupa recombinare\n")
+        self.out.write(string)
+        self.out.write("\n")
+
     def log_probabilitati_selectie(self, fitness_relativ):
         self.out.write("Probabilitati Selectie\n")
         for (index, it) in enumerate(fitness_relativ):
@@ -41,6 +46,12 @@ class Logging:
                 self.out.write(f"<{probabilitate} participa")
 
             self.out.write("\n")
+        self.out.write("\n")
+
+    def log_recombinare(self, selected_indices, element1, element2, result1, result2, index):
+        self.out.write(f"Recombinare dintre cromozomul {selected_indices[0]} cu cromozomul {selected_indices[1]}\n")
+        self.out.write(f"{element1[2]} {element2[2]} punct {index}\n")
+        self.out.write(f"Rezultat:\t{result1} {result2}\n")
 
 
 class Algoritm:
@@ -104,11 +115,10 @@ class Algoritm:
         self.file.log_cromozomi_selectati(probabilitati, u_generati)
         # ===========================================
 
+        self.cromozomi = cromozomi_selectati
         #  ======= LOGGING CROMOZOMI DUPA SELECTIE =======
         self.file.log_dupa_selectie(repr(self))
         # ================================================
-
-        return cromozomi_selectati
 
     def incrucisare(self):
         def incrucisarePereche(binary1, binary2, index):
@@ -122,8 +132,31 @@ class Algoritm:
         self.file.log_crossover_selectie(self.cromozomi, probabiliate_crossover, self.probabilitateCrossover)
         # =================================================
 
+        while len(participa_crossover) >= 2:
+            selected_indices = np.random.choice(len(participa_crossover), size=2, replace=False)
+            element1, element2 = participa_crossover[selected_indices[0]], participa_crossover[selected_indices[1]]
 
-    #   TODO: do crossover in array and then union the result with the non-participating chromosomes
+            participa_crossover = np.delete(participa_crossover, selected_indices, 0).tolist()
+
+            punct_rupere = np.random.randint(0, self.LUNGIME_CROMOZOM + 1)
+            result1, result2 = incrucisarePereche(element1[2], element2[2], punct_rupere)
+
+            # ======= LOGGING RECOMBINARE INCRUCISARE =======
+            self.file.log_recombinare(selected_indices, element1, element2, result1, result2, punct_rupere)
+            # ===============================================
+
+            element1[2] = result1
+            element2[2] = result2
+            nu_participa_crossover.append(element1)
+            nu_participa_crossover.append(element2)
+        else:
+            if len(participa_crossover) == 1:
+                nu_participa_crossover.append(participa_crossover[0])
+
+        self.cromozomi = nu_participa_crossover
+        # ======= LOGGING DUPA RECOMBINARE =======
+        self.file.log_dupa_recombinare(repr(self))
+        # =====================================
 
     def mutatie(self):
         pass
