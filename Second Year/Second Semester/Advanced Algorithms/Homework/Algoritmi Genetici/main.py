@@ -103,10 +103,14 @@ class Algoritm:
         def incrucisarePereche(binary1, binary2, index):
             return binary1[:index] + binary2[index:], binary2[:index] + binary1[index:]
 
+        probabiliate_crossover = np.random.rand(self.numarCromozomi)
+        participa_crossover = [cromozom for cromozom, prob in zip(self.cromozomi, probabiliate_crossover) if prob < self.probabilitateCrossover]
+        nu_participa_crossover = [cromozom for cromozom, prob in zip(self.cromozomi, probabiliate_crossover) if prob >= self.probabilitateCrossover]
+
+    #   TODO: do crossover in array and then union the result with the non-participating chromosomes
 
     def mutatie(self):
         pass
-
 
 def citireDate():
     with open("input.txt", "r") as file:
