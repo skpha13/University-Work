@@ -3,6 +3,7 @@ package test.compare.comparator;
 import compare.comparator.Song;
 import compare.comparator.SongNameComparator;
 import compare.comparator.SongRatingComparator;
+import compare.comparator.SongYearComparator;
 
 import java.util.Arrays;
 
@@ -24,6 +25,13 @@ public class TestSongComparator {
         System.out.println("SORTED BY NAME: ");
         SongNameComparator nameComparator = new SongNameComparator();
         Arrays.sort(songs, nameComparator);
+        for (Song song : songs) {
+            System.out.println("\t" + song.getName());
+        }
+
+        System.out.println("SORTED BY YEAR: ");
+        SongYearComparator yearComporator = new SongYearComparator();
+        Arrays.sort(songs, yearComporator);
         for (Song song : songs) {
             System.out.println("\t" + song.getName());
         }

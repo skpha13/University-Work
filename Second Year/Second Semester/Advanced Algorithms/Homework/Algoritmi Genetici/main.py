@@ -20,6 +20,11 @@ class Logging:
         self.out.write(string)
         self.out.write("\n")
 
+    def log_dupa_mutatie(self, string: str):
+        self.out.write("\nDupa mutatie\n")
+        self.out.write(string)
+        self.out.write("\n")
+
     def log_probabilitati_selectie(self, fitness_relativ):
         self.out.write("Probabilitati Selectie\n")
         for (index, it) in enumerate(fitness_relativ):
@@ -52,6 +57,11 @@ class Logging:
         self.out.write(f"Recombinare dintre cromozomul {selected_indices[0]} cu cromozomul {selected_indices[1]}\n")
         self.out.write(f"{element1[2]} {element2[2]} punct {index}\n")
         self.out.write(f"Rezultat:\t{result1} {result2}\n")
+
+    def log_mutatie_selectie(self, indices, probabilitate):
+        self.out.write(f"Probabilitate de mutatie pentru fiecare gena {probabilitate}\nAu fost modificati cromozomii:\n")
+        for it in indices:
+            self.out.write(f"{it + 1}\n")
 
 
 class Algoritm:
@@ -138,7 +148,7 @@ class Algoritm:
 
             participa_crossover = np.delete(participa_crossover, selected_indices, 0).tolist()
 
-            punct_rupere = np.random.randint(0, self.LUNGIME_CROMOZOM + 1)
+            punct_rupere = np.random.randint(0, self.LUNGIME_CROMOZOM)
             result1, result2 = incrucisarePereche(element1[2], element2[2], punct_rupere)
 
             # ======= LOGGING RECOMBINARE INCRUCISARE =======
@@ -159,7 +169,29 @@ class Algoritm:
         # =====================================
 
     def mutatie(self):
-        pass
+        probabiliate_mutatie = np.random.rand(self.numarCromozomi)
+        participa_mutatie_index = [index for index, prob in enumerate(probabiliate_mutatie) if prob < self.probabilitateCrossover]
+
+        for index in participa_mutatie_index:
+            pozitie_bit = np.random.randint(0, self.LUNGIME_CROMOZOM)
+            bit_string = list(self.cromozomi[index][2])
+
+            if bit_string[pozitie_bit] == '0':
+                bit_string[pozitie_bit] = '1'
+            else:
+                bit_string[pozitie_bit] = '0'
+
+            new_string = ''.join(bit_string)
+            self.cromozomi[index][2] = new_string
+
+        # ======= LOGGING DUPA RECOMBINARE =======
+        self.file.log_mutatie_selectie(participa_mutatie_index, self.probabilitateMutatie)
+        # =====================================
+
+        # ======= LOGGING DUPA RECOMBINARE =======
+        self.file.log_dupa_mutatie(repr(self))
+        # =====================================
+
 
 def citireDate():
     with open("input.txt", "r") as file:
@@ -183,6 +215,7 @@ def main():
     alg.codificare()
     alg.selectie()
     alg.incrucisare()
+    alg.mutatie()
     pass
 
 if __name__ == "__main__":
