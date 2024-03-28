@@ -32,6 +32,17 @@ class Logging:
             self.out.write(f"u={it} selectam cromozomul {np.searchsorted(probabilitati, it) + 1}\n")
         self.out.write("\n")
 
+    def log_crossover_selectie(self, cromozomi, probabilitati_crossover, probabilitate):
+        self.out.write(f"Probabilitatea de incrucisare {probabilitate}\n")
+        for (index, it) in enumerate(cromozomi):
+            self.out.write(f"{index + 1}: {it[2]} u={probabilitati_crossover[index]}")
+
+            if probabilitati_crossover[index] < probabilitate:
+                self.out.write(f"<{probabilitate} participa")
+
+            self.out.write("\n")
+
+
 class Algoritm:
     LUNGIME_CROMOZOM = 0
     PAS_DISCRETIZARE = 0
@@ -107,6 +118,11 @@ class Algoritm:
         participa_crossover = [cromozom for cromozom, prob in zip(self.cromozomi, probabiliate_crossover) if prob < self.probabilitateCrossover]
         nu_participa_crossover = [cromozom for cromozom, prob in zip(self.cromozomi, probabiliate_crossover) if prob >= self.probabilitateCrossover]
 
+        # ======= LOGGING PROBABILITATE INCRUCISARE =======
+        self.file.log_crossover_selectie(self.cromozomi, probabiliate_crossover, self.probabilitateCrossover)
+        # =================================================
+
+
     #   TODO: do crossover in array and then union the result with the non-participating chromosomes
 
     def mutatie(self):
@@ -133,6 +149,7 @@ def main():
     alg = citireDate()
     alg.codificare()
     alg.selectie()
+    alg.incrucisare()
     pass
 
 if __name__ == "__main__":
