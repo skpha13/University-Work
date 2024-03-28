@@ -2,8 +2,21 @@ import io
 import numpy as np
 
 class Logging:
+    LOGGING_ENABLED = True
+    SHOW_TITLE = True
     def __init__(self, file_stream: io):
         self.out = file_stream
+
+    def log(self, function, *args):
+        if self.LOGGING_ENABLED == True:
+            function(*args)
+
+    def log_maximum(self, maximum, average):
+        if self.SHOW_TITLE == True:
+            self.out.write(f"Evolutia maximului\n")
+            self.SHOW_TITLE = False
+
+        self.out.write(f"Maximum: {maximum} media: {average}")
 
     def log_initial(self, string: str):
         self.out.write("Populatia initiala\n")
@@ -63,7 +76,6 @@ class Logging:
         for it in indices:
             self.out.write(f"{it + 1}\n")
 
-
 class Algoritm:
     LUNGIME_CROMOZOM = 0
     PAS_DISCRETIZARE = 0
@@ -84,7 +96,8 @@ class Algoritm:
         self.cromozomi = [[x, self.f(x), ""] for x in np.random.uniform(self.a, self.b, numarCromozomi)]
 
         # ======= LOGGING IN OUPUT FILE =======
-        self.file.log_initial(repr(self))
+        self.file.log(self.file.log_initial, repr(self))
+        # self.file.log_initial(repr(self))
         # =====================================
 
     def __repr__(self):
@@ -92,6 +105,12 @@ class Algoritm:
         for (index, it) in enumerate(self.cromozomi):
             output += f"{index + 1}: {it[2]} x= {it[0]} f={it[1]}\n"
         return output
+
+    def getMaximum(self):
+        return max(self.cromozomi, key=lambda x: x[1])[1]
+
+    def getAverage(self):
+        return np.mean([x[1] for x in self.cromozomi])
 
     def codificare(self):
         for number in self.cromozomi:
@@ -110,11 +129,13 @@ class Algoritm:
         probabilitati = np.cumsum(fitness_relativ)
 
         # ======= LOGGING PROBABILITATI SELECTIE =======
-        self.file.log_probabilitati_selectie(fitness_relativ)
+        self.file.log(self.file.log_probabilitati_selectie, fitness_relativ)
+        # self.file.log_probabilitati_selectie(fitness_relativ)
         # ==============================================
 
         # ======= LOGGING INTERVALE PROBABILITATI SELECTIE =======
-        self.file.log_intervale_probabilitati(probabilitati)
+        self.file.log(self.file.log_intervale_probabilitati, probabilitati)
+        # self.file.log_intervale_probabilitati(probabilitati)
         # ========================================================
 
         u_generati = np.random.random(self.numarCromozomi - 1)
@@ -122,12 +143,14 @@ class Algoritm:
         cromozomi_selectati.append(elitist)
 
         # ======= LOGGING CROMOZOMI SELECTATI =======
-        self.file.log_cromozomi_selectati(probabilitati, u_generati)
+        self.file.log(self.file.log_cromozomi_selectati, probabilitati, u_generati)
+        # self.file.log_cromozomi_selectati(probabilitati, u_generati)
         # ===========================================
 
         self.cromozomi = cromozomi_selectati
         #  ======= LOGGING CROMOZOMI DUPA SELECTIE =======
-        self.file.log_dupa_selectie(repr(self))
+        self.file.log(self.file.log_dupa_selectie, repr(self))
+        # self.file.log_dupa_selectie(repr(self))
         # ================================================
 
     def incrucisare(self):
@@ -139,7 +162,8 @@ class Algoritm:
         nu_participa_crossover = [cromozom for cromozom, prob in zip(self.cromozomi, probabiliate_crossover) if prob >= self.probabilitateCrossover]
 
         # ======= LOGGING PROBABILITATE INCRUCISARE =======
-        self.file.log_crossover_selectie(self.cromozomi, probabiliate_crossover, self.probabilitateCrossover)
+        self.file.log(self.file.log_crossover_selectie, self.cromozomi, probabiliate_crossover, self.probabilitateCrossover)
+        # self.file.log_crossover_selectie(self.cromozomi, probabiliate_crossover, self.probabilitateCrossover)
         # =================================================
 
         while len(participa_crossover) >= 2:
@@ -152,7 +176,8 @@ class Algoritm:
             result1, result2 = incrucisarePereche(element1[2], element2[2], punct_rupere)
 
             # ======= LOGGING RECOMBINARE INCRUCISARE =======
-            self.file.log_recombinare(selected_indices, element1, element2, result1, result2, punct_rupere)
+            self.file.log(self.file.log_recombinare, selected_indices, element1, element2, result1, result2, punct_rupere)
+            # self.file.log_recombinare(selected_indices, element1, element2, result1, result2, punct_rupere)
             # ===============================================
 
             element1[2] = result1
@@ -165,7 +190,8 @@ class Algoritm:
 
         self.cromozomi = nu_participa_crossover
         # ======= LOGGING DUPA RECOMBINARE =======
-        self.file.log_dupa_recombinare(repr(self))
+        self.file.log(self.file.log_dupa_recombinare, repr(self))
+        # self.file.log_dupa_recombinare(repr(self))
         # =====================================
 
     def mutatie(self):
@@ -185,11 +211,13 @@ class Algoritm:
             self.cromozomi[index][2] = new_string
 
         # ======= LOGGING DUPA RECOMBINARE =======
-        self.file.log_mutatie_selectie(participa_mutatie_index, self.probabilitateMutatie)
+        self.file.log(self.file.log_mutatie_selectie, participa_mutatie_index, self.probabilitateMutatie)
+        # self.file.log_mutatie_selectie(participa_mutatie_index, self.probabilitateMutatie)
         # =====================================
 
         # ======= LOGGING DUPA RECOMBINARE =======
-        self.file.log_dupa_mutatie(repr(self))
+        self.file.log(self.file.log_dupa_mutatie, repr(self))
+        # self.file.log_dupa_mutatie(repr(self))
         # =====================================
 
 
@@ -216,7 +244,19 @@ def main():
     alg.selectie()
     alg.incrucisare()
     alg.mutatie()
+    alg.file.LOGGING_ENABLED = False
+
+    alg.file.log_maximum(alg.getMaximum(), alg.getAverage())
+
+    alg = citireDate()
+    alg.codificare()
+    alg.selectie()
+    alg.incrucisare()
+    alg.mutatie()
     pass
 
 if __name__ == "__main__":
     main()
+
+# TODO: calculate x based on bit configuration (decode)
+# TODO: bug float urile se fac str in incrucisare
