@@ -16,7 +16,7 @@ class Logging:
             self.out.write(f"Evolutia maximului\n")
             self.SHOW_TITLE = False
 
-        self.out.write(f"Maximum: {maximum} media: {average}")
+        self.out.write(f"Maximum:{maximum}\t\tmedia:{average}\n")
 
     def log_initial(self, string: str):
         self.out.write("Populatia initiala\n")
@@ -121,6 +121,12 @@ class Algoritm:
 
             number[-1] = padded_binary_string
 
+    def decodificare(self):
+        for index in range(len(self.cromozomi)):
+            function_index = int(self.cromozomi[index][2], 2)
+            self.cromozomi[index][0] = self.a + function_index * self.PAS_DISCRETIZARE
+            self.cromozomi[index][1] = self.f(self.cromozomi[index][0])
+
     def selectie(self):
         fitness_total = np.sum([sub_array[1] for sub_array in self.cromozomi])
 
@@ -170,7 +176,12 @@ class Algoritm:
             selected_indices = np.random.choice(len(participa_crossover), size=2, replace=False)
             element1, element2 = participa_crossover[selected_indices[0]], participa_crossover[selected_indices[1]]
 
+            # toList in converteste toate elementele la str
             participa_crossover = np.delete(participa_crossover, selected_indices, 0).tolist()
+            # fac conversia in float pentru x si f(x)
+            for index in range(len(participa_crossover)):
+                participa_crossover[index][0] = float(participa_crossover[index][0])
+                participa_crossover[index][1] = float(participa_crossover[index][1])
 
             punct_rupere = np.random.randint(0, self.LUNGIME_CROMOZOM)
             result1, result2 = incrucisarePereche(element1[2], element2[2], punct_rupere)
@@ -240,23 +251,16 @@ def citireDate():
 
 def main():
     alg = citireDate()
-    alg.codificare()
-    alg.selectie()
-    alg.incrucisare()
-    alg.mutatie()
-    alg.file.LOGGING_ENABLED = False
+    for _ in range(alg.numarEtape):
+        alg.codificare()
+        alg.selectie()
+        alg.incrucisare()
+        alg.mutatie()
 
-    alg.file.log_maximum(alg.getMaximum(), alg.getAverage())
+        alg.file.LOGGING_ENABLED = False
+        alg.decodificare()
 
-    alg = citireDate()
-    alg.codificare()
-    alg.selectie()
-    alg.incrucisare()
-    alg.mutatie()
-    pass
+        alg.file.log_maximum(alg.getMaximum(), alg.getAverage())
 
 if __name__ == "__main__":
     main()
-
-# TODO: calculate x based on bit configuration (decode)
-# TODO: bug float urile se fac str in incrucisare
