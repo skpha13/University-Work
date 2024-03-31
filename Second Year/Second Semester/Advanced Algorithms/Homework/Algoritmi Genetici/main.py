@@ -1,5 +1,10 @@
 import io
+import time
+
+import matplotlib.pyplot as plt
 import numpy as np
+from matplotlib.animation import FuncAnimation
+
 
 class Logging:
     LOGGING_ENABLED = True
@@ -109,8 +114,22 @@ class Algoritm:
     def getMaximum(self):
         return max(self.cromozomi, key=lambda x: x[1])[1]
 
+    def getMaximumCoordinates(self):
+        max_cromozom = max(self.cromozomi, key=lambda x: x[1])
+        return max_cromozom[0], max_cromozom[1]
+
     def getAverage(self):
         return np.mean([x[1] for x in self.cromozomi])
+
+    def getAverageCoordinates(self):
+        mean_value = np.mean([x[1] for x in self.cromozomi])
+        valueList = [0 for _ in range(len(self.cromozomi))]
+
+        for (index, it) in enumerate(self.cromozomi):
+            valueList[index] = abs(it[1] - mean_value)
+
+        lowest_cromozom = self.cromozomi[np.argmin(valueList)]
+        return lowest_cromozom[0], lowest_cromozom[1]
 
     def codificare(self):
         for number in self.cromozomi:
@@ -231,6 +250,41 @@ class Algoritm:
         # self.file.log_dupa_mutatie(repr(self))
         # =====================================
 
+class Animation:
+    a = 0
+    b = 0
+    f = None
+    maximum = (0, 0)
+    average = (0, 0)
+
+    def __init__(self, a, b, f):
+        self.a = a
+        self.b = b
+        self.f = f
+
+        self.x_values = np.linspace(self.a, self.b, 1000)
+        self.y_values = self.f(self.x_values)
+
+        self.fig, self.ax = plt.subplots()
+        self.ax.set_xlim(self.a, self.b)
+        self.ax.set_ylim(min(self.y_values), max(self.y_values) + 0.1)
+
+        self.line, = self.ax.plot(self.x_values, self.y_values, lw=2, color='b', label='Function')
+
+        self.max_point, = self.ax.plot([], [], 'ro', markersize=8, label='Maximum')
+        self.avg_point, = self.ax.plot([], [], 'go', markersize=8, label='Average')
+
+        self.ax.legend()
+
+    def update(self, frame):
+        self.max_point.set_data([], [])
+        self.avg_point.set_data([], [])
+
+        self.max_point.set_data(*zip(*self.maximum[:frame+1]))
+        self.avg_point.set_data(*zip(*self.average[:frame+1]))
+
+        return self.max_point, self.avg_point
+
 
 def citireDate():
     with open("input.txt", "r") as file:
@@ -251,6 +305,11 @@ def citireDate():
 
 def main():
     alg = citireDate()
+    anim = Animation(alg.a, alg.b, alg.f)
+
+    max_points = []
+    avg_points = []
+
     for _ in range(alg.numarEtape):
         alg.codificare()
         alg.selectie()
@@ -260,7 +319,16 @@ def main():
         alg.file.LOGGING_ENABLED = False
         alg.decodificare()
 
+        max_points.append(alg.getMaximumCoordinates())
+        avg_points.append(alg.getAverageCoordinates())
+
         alg.file.log_maximum(alg.getMaximum(), alg.getAverage())
+
+    anim.maximum = max_points
+    anim.average = avg_points
+    temp = FuncAnimation(plt.gcf(), anim.update, len(max_points), interval=100, blit=True)
+    plt.show()
+
 
 if __name__ == "__main__":
     main()
