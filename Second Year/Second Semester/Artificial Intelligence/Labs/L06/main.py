@@ -60,7 +60,7 @@ class InfoJoc:
         else:
             self.matr = [[InfoJoc.GOL] * InfoJoc.NR_COLOANE for _ in range(InfoJoc.NR_COLOANE)]
 
-    
+
     @classmethod
     def jucator_opus(cls, jucator):
         return 'x' if jucator == '0' else '0'
@@ -97,7 +97,7 @@ class InfoJoc:
                     lMutari.append(InfoJoc(infoSuccesor))
 
         return lMutari
-    
+
 
     #linie deschisa inseamna linie pe care jucatorul mai poate forma o configuratie castigatoare
     #practic e o linie care nu conține simbolul jucatorului opus
@@ -116,7 +116,7 @@ class InfoJoc:
             + self.linie_deschisa([self.matr[0][2], self.matr[1][1], self.matr[2][0]], jucator)
 
 
-    #restAdancime = cat mai are pana ajunge la adancimea maxima    
+    #restAdancime = cat mai are pana ajunge la adancimea maxima
     def estimeaza_scor(self, restAdancime):
         rez = self.final()
         if rez == "remiza":
@@ -126,7 +126,7 @@ class InfoJoc:
             return 100 + restAdancime
 
         if rez == InfoJoc.JMIN:
-            return -100 + restAdancime
+            return -100 - restAdancime
 
         return self.linii_deschise(InfoJoc.JMAX) - self.linii_deschise(InfoJoc.JMIN)
 
@@ -142,7 +142,7 @@ class InfoJoc:
         return self.sirAfisare()
 
     def __repr__(self):
-        return self.sirAfisare()        
+        return self.sirAfisare()
 
 
 
@@ -156,34 +156,34 @@ class Stare:
     def __init__(self, tabla_joc, j_curent, adancime, parinte=None, estimare=None):
         self.tabla_joc=tabla_joc
         self.j_curent=j_curent
-        
+
         #adancimea in arborele de stari
-        self.adancime=adancime    
-        
+        self.adancime=adancime
+
         #estimarea favorabilitatii starii (daca e finala) sau al celei mai bune stari-fiice (pentru jucatorul curent)
         self.estimare=estimare
-        
+
         #lista de mutari posibile din starea curenta
         self.mutari_posibile=[]
-        
+
         #cea mai buna mutare din lista de mutari posibile pentru jucatorul curent
         self.stare_aleasa=None
 
 
-    def mutari(self):        
+    def mutari(self):
         l_mutari=self.tabla_joc.mutari(self.j_curent)
         juc_opus=InfoJoc.jucator_opus(self.j_curent)
         l_stari_mutari=[Stare(mutare, juc_opus, self.adancime-1, parinte=self) for mutare in l_mutari]
 
         return l_stari_mutari
-        
-    
+
+
     def __str__(self):
         sir= str(self.tabla_joc) + "(Juc curent:"+self.j_curent+")\n"
         return sir
-    
 
-            
+
+
 """ Algoritmul MinMax """
 
 def min_max(stare):
@@ -201,46 +201,43 @@ def min_max(stare):
     stare.estimare = stare.stare_aleasa.estimare
 
     return stare
-    
+
 
 def alpha_beta(alpha, beta, stare):
-    if stare.tabla_joc.final() or stare.adancime == 0:
+    if stare.tabla_joc.final() or  stare.adancime == 0:
         stare.estimare = stare.tabla_joc.estimeaza_scor(stare.adancime)
         return stare
 
-    stare.mutari_posibile = stare.mutari_posibile
-
+    stare.mutari_posibile = stare.mutari()
     if stare.j_curent == InfoJoc.JMIN:
         stare.estimare = float('inf')
-
         for mutare in stare.mutari_posibile:
-            mutareCuSubarbore = alpha_beta(alpha, beta, mutare)
+            mutareCuSubarbore =  alpha_beta(alpha, beta, mutare)
             if mutareCuSubarbore.estimare < stare.estimare:
                 stare.estimare = mutareCuSubarbore.estimare
                 stare.stare_aleasa = mutareCuSubarbore
-
             if beta > mutareCuSubarbore.estimare:
                 beta = mutareCuSubarbore.estimare
-
                 if alpha >= beta:
                     return stare
     else:
         stare.estimare = -float('inf')
-
         for mutare in stare.mutari_posibile:
             mutareCuSubarbore = alpha_beta(alpha, beta, mutare)
             if mutareCuSubarbore.estimare > stare.estimare:
                 stare.estimare = mutareCuSubarbore.estimare
                 stare.stare_aleasa = mutareCuSubarbore
-
             if alpha < mutareCuSubarbore.estimare:
                 alpha = mutareCuSubarbore.estimare
-
                 if alpha >= beta:
                     return stare
+        stare.stare_aleasa = max(stare.mutari_posibile, key=lambda x: x.estimare)
+
+    stare.estimare = stare.stare_aleasa.estimare
 
     return stare
-    
+
+
 
 
 def afis_daca_final(stare_curenta):
@@ -250,12 +247,12 @@ def afis_daca_final(stare_curenta):
             print("Remiza!")
         else:
             print("A castigat "+final)
-            
+
         return True
-        
+
     return False
-        
-    
+
+
 
 def main():
     #initializare algoritm
@@ -275,16 +272,16 @@ def main():
         else:
             print("Raspunsul trebuie sa fie x sau 0.")
     InfoJoc.JMAX= '0' if InfoJoc.JMIN == 'x' else 'x'
-    
-    
+
+
     #initializare tabla
     tabla_curenta=InfoJoc();
     print("Tabla initiala")
     print(str(tabla_curenta))
-    
+
     #creare stare initiala
     stare_curenta=Stare(tabla_curenta,'x',ADANCIME_MAX)
-    
+
     #setari interf grafica
     pygame.init()
     pygame.display.set_caption('x si 0')
@@ -297,7 +294,7 @@ def main():
     de_mutat=False
     tabla_curenta.deseneaza_grid()
     while True :
-        
+
         if (stare_curenta.j_curent==InfoJoc.JMIN):
         #muta jucatorul
             #[MOUSEBUTTONDOWN, MOUSEMOTION,....]
@@ -307,15 +304,15 @@ def main():
                     pygame.quit() #inchide fereastra
                     sys.exit()
                 elif event.type == pygame.MOUSEBUTTONDOWN: #click
-                    
+
                     pos = pygame.mouse.get_pos()#coordonatele clickului
-                    
+
                     for linie in range(InfoJoc.NR_COLOANE):
                         for coloana in range(InfoJoc.NR_COLOANE):
-                        
+
                             if InfoJoc.celuleGrid[linie][coloana].collidepoint(pos):#verifica daca punctul cu coord pos se afla in dreptunghi(celula)
                                 ###############################
-                                
+
                                 if stare_curenta.tabla_joc.matr[linie][coloana] == InfoJoc.JMIN:
                                     if (de_mutat and linie==de_mutat[0] and coloana==de_mutat[1]):
                                         #daca am facut click chiar pe patratica selectata, o deselectez
@@ -325,33 +322,33 @@ def main():
                                         de_mutat=(linie, coloana)
                                         #desenez gridul cu patratelul marcat
                                         stare_curenta.tabla_joc.deseneaza_grid(de_mutat)
-                                elif stare_curenta.tabla_joc.matr[linie][coloana] == InfoJoc.GOL:    
+                                elif stare_curenta.tabla_joc.matr[linie][coloana] == InfoJoc.GOL:
                                     if de_mutat:
                                         #### eventuale teste legate de mutarea simbolului
                                         stare_curenta.tabla_joc.matr[de_mutat[0]][de_mutat[1]]=InfoJoc.GOL
-                                        de_mutat=False        
+                                        de_mutat=False
                                     #plasez simbolul pe "tabla de joc"
                                     stare_curenta.tabla_joc.matr[linie][coloana]=InfoJoc.JMIN
                                     stare_curenta.tabla_joc.deseneaza_grid()
                                     #afisarea starii jocului in urma mutarii utilizatorului
                                     print("\nTabla dupa mutarea jucatorului")
                                     print(str(stare_curenta))
-                                    
-                                    
+
+
                                     #testez daca jocul a ajuns intr-o stare finala
                                     #si afisez un mesaj corespunzator in caz ca da
                                     if (afis_daca_final(stare_curenta)):
                                         break
-                                        
-                                        
+
+
                                     #S-a realizat o mutare. Schimb jucatorul cu cel opus
                                     stare_curenta.j_curent=InfoJoc.jucator_opus(stare_curenta.j_curent)
-                                    
-        
+
+
         #--------------------------------
         else: #jucatorul e JMAX (calculatorul)
             #Mutare calculator
-            
+
             #preiau timpul in milisecunde de dinainte de mutare
             t_inainte=int(round(time.time() * 1000))
             if tip_algoritm=='1':
@@ -361,19 +358,19 @@ def main():
             stare_curenta.tabla_joc=stare_actualizata.stare_aleasa.tabla_joc
             print("Tabla dupa mutarea calculatorului")
             print(str(stare_curenta))
-            
+
             stare_curenta.tabla_joc.deseneaza_grid()
             #preiau timpul in milisecunde de dupa mutare
             t_dupa=int(round(time.time() * 1000))
             print("Calculatorul a \"gandit\" timp de "+str(t_dupa-t_inainte)+" milisecunde.")
-            
+
             if (afis_daca_final(stare_curenta)):
                 break
-                
+
             #S-a realizat o mutare. Schimb jucatorul cu cel opus
             stare_curenta.j_curent=InfoJoc.jucator_opus(stare_curenta.j_curent)
 
-            
+
 if __name__ == "__main__" :
     main()
     while True :
