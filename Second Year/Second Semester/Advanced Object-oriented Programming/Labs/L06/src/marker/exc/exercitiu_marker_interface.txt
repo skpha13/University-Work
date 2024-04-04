@@ -1,0 +1,10 @@
+1. Sa se creeze o interfata de tip marker, Transformable.
+
+2. Sa se creeze o clasa care transforma obiecte cu ajutorul unei metode transform().
+Aceasta metoda sa arunce o exceptie (NotTransformableException) in cazul in care obiectul ce trebuie tranformat nu este de tipul Transformable
+
+3. Sa se creeze o clasa (sau un record) a carei obiecte pot fi transformate (Bumblebee avand fieldurile String color, boolean friendly)
+4. Sa se creeze o clasa (sau un record) a carei obiecte nu pot fi transformate (Sofa avand fieldurile String colour, int age) - arunca exceptia creata anterior
+
+5. O clasa TestTransformable pentru testarea obiectelor de tip Bumblebee
+6. O clasa TestNotTransformable pentru testarea obiectelor de tip Sofa
