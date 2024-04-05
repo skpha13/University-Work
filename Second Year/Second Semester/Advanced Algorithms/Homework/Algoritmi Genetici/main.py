@@ -182,9 +182,14 @@ class Algoritm:
         def incrucisarePereche(binary1, binary2, index):
             return binary1[:index] + binary2[index:], binary2[:index] + binary1[index:]
 
+
+        elitist = self.cromozomi[-1]
+        self.cromozomi.pop()
         probabiliate_crossover = np.random.rand(self.numarCromozomi)
         participa_crossover = [cromozom for cromozom, prob in zip(self.cromozomi, probabiliate_crossover) if prob < self.probabilitateCrossover]
         nu_participa_crossover = [cromozom for cromozom, prob in zip(self.cromozomi, probabiliate_crossover) if prob >= self.probabilitateCrossover]
+
+        nu_participa_crossover.append(elitist)
 
         # ======= LOGGING PROBABILITATE INCRUCISARE =======
         self.file.log(self.file.log_crossover_selectie, self.cromozomi, probabiliate_crossover, self.probabilitateCrossover)
@@ -226,7 +231,7 @@ class Algoritm:
 
     def mutatie(self):
         probabiliate_mutatie = np.random.rand(self.numarCromozomi)
-        participa_mutatie_index = [index for index, prob in enumerate(probabiliate_mutatie) if prob < self.probabilitateCrossover]
+        participa_mutatie_index = [index for index, prob in enumerate(probabiliate_mutatie) if prob < self.probabilitateMutatie and index < len(probabiliate_mutatie) - 1]
 
         for index in participa_mutatie_index:
             pozitie_bit = np.random.randint(0, self.LUNGIME_CROMOZOM)
