@@ -1,0 +1,18 @@
+nod: sezon_ploios
+0.5
+nod: stropitoare
+0.3
+nod: ploaie
+sezon_ploios
+1 0.9
+0 0.1
+nod: ud
+stropitoare, ploaie
+1 1 0.95
+1 0 0.9
+0 1 0.8
+0 0 0.1
+observatii:
+sezon_ploios:1; ploaie:1; stropitoare:1
+interogare:
+ud

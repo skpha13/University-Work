@@ -1,0 +1,37 @@
+nod: angajat
+0.4
+nod: vine_la_ore
+angajat
+1 0.2
+0 0.7
+nod: jocuri_calculator
+0.5
+nod: planifica_timp
+0.4
+nod: timp_studiu_acasa
+jocuri_calculator, planifica_timp
+1 1 0.5
+1 0 0.1
+0 1 0.95
+0 0 0.3
+nod: pasionat
+0.35
+nod: citeste_carte_domeniu
+pasionat, timp_studiu_acasa
+1 1 0.85
+1 0 0.45
+0 1 0.3
+0 0 0.05
+nod: face_temele
+vine_la_ore, timp_studiu_acasa
+1 1 0.95
+1 0 0.35
+0 1 0.7
+0 0 0.15
+nod: promoveaza_materia
+face_temele
+1 0.9
+0 0.4
+observatii:
+angajat:0; jocuri_calculator:1; pasionat:1; planifica_timp:0
+interogare: promoveaza_materia

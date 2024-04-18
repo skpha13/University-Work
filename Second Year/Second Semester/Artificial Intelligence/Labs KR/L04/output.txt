@@ -1,0 +1,99 @@
+Solutie: 
+  b   
+a c d 
+-----
+Cost partial: 0
+  b a 
+  c d 
+-----
+Cost partial: 3
+    a 
+b c d 
+-----
+Cost partial: 3
+c   a 
+b   d 
+-----
+Cost partial: 3
+
+Cost: 3
+Lungime: 3
+=================
+
+Solutie: 
+  b   
+a c d 
+-----
+Cost partial: 0
+b     
+a c d 
+-----
+Cost partial: 3
+c     
+b     
+a   d 
+-----
+Cost partial: 3
+d     
+c     
+b     
+a     
+-----
+Cost partial: 3
+
+Cost: 3
+Lungime: 3
+=================
+
+Solutie: 
+  b   
+a c d 
+-----
+Cost partial: 0
+    b 
+a c d 
+-----
+Cost partial: 3
+    c 
+    b 
+a   d 
+-----
+Cost partial: 3
+    a 
+    c 
+    b 
+    d 
+-----
+Cost partial: 3
+
+Cost: 3
+Lungime: 3
+=================
+
+Solutie: 
+  b   
+a c d 
+-----
+Cost partial: 0
+  b a 
+  c d 
+-----
+Cost partial: 3
+    a 
+b c d 
+-----
+Cost partial: 3
+    c 
+    a 
+b   d 
+-----
+Cost partial: 4
+c   a 
+b   d 
+-----
+Cost partial: 4
+
+Cost: 4
+Lungime: 4
+=================
+
