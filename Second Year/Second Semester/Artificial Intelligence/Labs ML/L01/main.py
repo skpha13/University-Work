@@ -16,11 +16,11 @@ print("F: ")
 standard_deviation = np.std(images)
 print(standard_deviation)
 
-mean_image = np.mean(images, axis=0).astype(np.uint8)
-io.imshow(mean_image)
+mean_image = np.mean(images, axis=0)
+io.imshow(mean_image.astype(np.uint8))
 io.show()
 
-normalized_images = np.divide(np.subtract(images, mean_image), standard_deviation)
+normalized_images = np.divide(np.subtract(images, mean_image), standard_deviation).astype(np.uint8)
 io.imshow(normalized_images[0])
 io.show()
 
@@ -33,3 +33,4 @@ io.show()
 flipped_images = np.flip(images, axis=(1,2))
 io.imshow(flipped_images[0])
 io.show()
+
