@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <unordered_set>
 #include <algorithm>
 
 using namespace std;
@@ -107,6 +108,38 @@ public:
     ConvexHull() = delete;
 };
 
+struct hash_pair {
+    template <class T1, class T2>
+    size_t operator()(const pair<T1, T2>& p) const
+    {
+        auto hash1 = hash<T1>{}(p.first);
+        auto hash2 = hash<T2>{}(p.second);
+
+        if (hash1 != hash2) {
+            return hash1 ^ hash2;
+        }
+
+        return hash1;
+    }
+};
+
+double getDistance(const pair<int,int> &pointA, const pair<int,int> &pointB) {
+    return sqrt(pow(pointA.first - pointB.first, 2) + pow(pointA.second - pointB.second, 2));
+}
+
+
+struct Candidate {
+    pair<int, int> i;
+    pair<int, int> j;
+    pair<int, int> r;
+    int insertIndex;
+
+    double getDistance() {
+        return (::getDistance(i, r) + ::getDistance(r, j)) /
+               ::getDistance(i, j);
+    }
+};
+
 int main() {
     int n, x, y;
     vector<pair<int, int>> points;
@@ -119,9 +152,54 @@ int main() {
 
     sort(points.begin(), points.end());
 
-    vector<pair<int, int>> result = ConvexHull::getConvexHull(points);
-    printf("%zu\n", result.size());
-    for (auto point: result)
+    vector<pair<int, int>> convexHull = ConvexHull::getConvexHull(points);
+    unordered_set<pair<int, int>, hash_pair> subTour;
+
+    for (auto point: convexHull)
+        subTour.insert(point);
+
+    int countOfRemainingPoints = points.size() - convexHull.size();
+    vector<Candidate> candidates;
+
+    while (countOfRemainingPoints) {
+        for (auto point: points) {
+            if (subTour.find(point) == subTour.end()) {
+                int minIndex = 0;
+                double minDistance = DBL_MAX;
+                for (int i=0; i < convexHull.size() - 1; i++) {
+                    double distance =
+                            getDistance(convexHull[i], point) +
+                            getDistance(point, convexHull[i + 1]) -
+                            getDistance(convexHull[i], convexHull[i + 1]);
+                    if (distance < minDistance) {
+                        minDistance = distance;
+                        minIndex = i;
+                    }
+                }
+
+                candidates.emplace_back(Candidate {
+                    .i = convexHull[minIndex],
+                    .j = convexHull[minIndex + 1],
+                    .r = point,
+                    .insertIndex = minIndex
+                });
+            }
+        }
+
+        Candidate minCandidate = candidates[0];
+        for (int i=1; i<candidates.size(); i++) {
+            if (candidates[i].getDistance() < minCandidate.getDistance())
+                minCandidate = candidates[i];
+        }
+
+        convexHull.insert(convexHull.begin() + minCandidate.insertIndex + 1, minCandidate.r);
+        candidates.clear();
+        subTour.insert(minCandidate.r);
+        countOfRemainingPoints--;
+    }
+
+    convexHull.emplace_back(convexHull[0]);
+    for (auto point: convexHull)
         printf("%d %d\n", point.first, point.second);
 
     return 0;
