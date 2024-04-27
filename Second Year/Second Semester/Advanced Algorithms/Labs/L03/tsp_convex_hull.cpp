@@ -2,6 +2,8 @@
 #include <vector>
 #include <unordered_set>
 #include <algorithm>
+#include <cmath>
+#include <cfloat>
 
 using namespace std;
 
@@ -23,9 +25,9 @@ using namespace std;
 class Orientation {
 public:
     static int orientationTest(pair<int, int> P, pair<int, int> Q, pair<int, int> R) {
-        int addElements = Q.first * R.second + P.second * R.first + P.first * Q.second;
-        int substractElements = Q.first * P.second + Q.second * R.first + P.first * R.second;
-        int det = addElements - substractElements;
+        long long det = (1LL * Q.first * R.second - 1LL * R.first * Q.second) -
+                        (1LL * P.first * R.second - 1LL * R.first * P.second) +
+                        (1LL * P.first * Q.second - 1LL * Q.first * P.second);
 
         if (det < 0)
             return 1;
@@ -97,6 +99,7 @@ public:
             }
         }
 
+        reverse(top_convex_hull.begin(), top_convex_hull.end());
         bottom_convex_hull.insert(
                 bottom_convex_hull.end() ,
                 top_convex_hull.begin() + 1,
@@ -141,6 +144,7 @@ struct Candidate {
 };
 
 int main() {
+    // read input and sort vector
     int n, x, y;
     vector<pair<int, int>> points;
     cin >> n;
@@ -155,14 +159,17 @@ int main() {
     vector<pair<int, int>> convexHull = ConvexHull::getConvexHull(points);
     unordered_set<pair<int, int>, hash_pair> subTour;
 
+    // see what points are in the sub tour and which not
     for (auto point: convexHull)
         subTour.insert(point);
 
     int countOfRemainingPoints = points.size() - convexHull.size();
     vector<Candidate> candidates;
 
+    // do this while we have not inserted all points in the sub tour
     while (countOfRemainingPoints) {
         for (auto point: points) {
+            // for a point which is not in sub tour find all candidates
             if (subTour.find(point) == subTour.end()) {
                 int minIndex = 0;
                 double minDistance = DBL_MAX;
@@ -186,6 +193,7 @@ int main() {
             }
         }
 
+        // insert the best candidate
         Candidate minCandidate = candidates[0];
         for (int i=1; i<candidates.size(); i++) {
             if (candidates[i].getDistance() < minCandidate.getDistance())
@@ -198,9 +206,19 @@ int main() {
         countOfRemainingPoints--;
     }
 
-    convexHull.emplace_back(convexHull[0]);
-    for (auto point: convexHull)
-        printf("%d %d\n", point.first, point.second);
+    // Find point with minimum x value
+    int minXValueIndex = 0;
+    for (int i=1; i<convexHull.size(); i++) {
+        if (convexHull[i].first < convexHull[minXValueIndex].first)
+            minXValueIndex = i;
+    }
+
+    // print result
+    for (int i=minXValueIndex; i<convexHull.size(); i++)
+        printf("%d %d\n", convexHull[i].first, convexHull[i].second);
+
+    for (int i=0; i<=minXValueIndex; i++)
+        printf("%d %d\n", convexHull[i].first, convexHull[i].second);
 
     return 0;
 }

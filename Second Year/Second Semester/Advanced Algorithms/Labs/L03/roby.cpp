@@ -20,9 +20,9 @@ using namespace std;
 class Orientation {
 public:
     static int orientationTest(pair<int, int> P, pair<int, int> Q, pair<int, int> R) {
-        int addElements = Q.first * R.second + P.second * R.first + P.first * Q.second;
-        int substractElements = Q.first * P.second + Q.second * R.first + P.first * R.second;
-        int det = addElements - substractElements;
+        long long det = (1LL * Q.first * R.second - 1LL * R.first * Q.second) -
+                        (1LL * P.first * R.second - 1LL * R.first * P.second) +
+                        (1LL * P.first * Q.second - 1LL * Q.first * P.second);
 
         if (det < 0)
             return 1;
