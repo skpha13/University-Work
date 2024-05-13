@@ -119,7 +119,11 @@ gamma t = zip (fv t) freshvarlist
 
 -- auxiliary function for annotation: given a term and a list of fresh variables, returns the annotated term and the list of remaining fresh variables
 annotate_aux :: LambdaTerm -> [String] -> (AnnLambdaTerm, [String])
-annotate_aux = undefined
+annotate_aux (Var x) ls = ((AVar x), ls)
+annotate_aux (Lam x t) (h:xs) = let result = (annotate_aux t xs) in (ALam x h (fst result), (snd result))
+annotate_aux (App t1 t2) ls = let result1 = annotate_aux t1 ls
+                                  result2 = annotate_aux t2 (snd result1) in
+                                (AApp (fst result1) (fst result2), snd result2)  
 
 -- annotates a term as in the type inference algorithm; returns the annotated term and the list of remaining fresh variables 
 annotate :: LambdaTerm -> (AnnLambdaTerm, [String])
@@ -127,7 +131,22 @@ annotate t = annotate_aux t [x | x <- freshvarlist, notElem x [w | (z, w) <- (ga
 
 -- auxiliary function for constraints: given an annotated term, a list of fresh variables and a context, returns the list of equationsand the list of remaining fresh variables
 constraints_aux :: AnnLambdaTerm -> [String] -> [(String,String)] -> ([Equ], [String])
-constraints_aux = undefined
+constraints_aux (AVar x) (v:vs) gamma =
+    let Just w = lookup x gamma
+    in ([Equ (Variable v) (Variable w)], vs)
+constraints_aux (AApp t s) (x:(y:xs)) gamma =
+    let (es1, v:vs) = constraints_aux t (y:xs) gamma
+        (es2, ws) = constraints_aux s (v:vs) gamma
+    in
+        (
+            es1
+                ++ es2
+                ++ [Equ (Variable y) (FuncSym "arr" [Variable v, Variable x])]
+            , ws
+        ) 
+constraints_aux (ALam x s t) (y:(z:xs)) gamma = 
+    let (es, vs) = constraints_aux t (z:xs) ((x,s):gamma)
+    in (es ++ [Equ (Variable y) (FuncSym "arr" [Variable s, Variable z])], vs)
 
 -- finds the list of equations associated to a term together with the type variable to which the term corresponds
 constraints :: LambdaTerm -> ([Equ], String)
