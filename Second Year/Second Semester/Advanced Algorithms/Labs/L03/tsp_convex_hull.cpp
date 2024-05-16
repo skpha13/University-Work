@@ -184,13 +184,6 @@ int main() {
                     }
                 }
 
-                candidates.emplace_back(Candidate {
-                    .i = convexHull[minIndex],
-                    .j = convexHull[minIndex + 1],
-                    .r = point,
-                    .insertIndex = minIndex
-                });
-
                 // Checking for last two points in subtour:
                 // This results in the line of last point in convex hull with first point in convex hull
                 double distance =
@@ -199,13 +192,12 @@ int main() {
                         getDistance(convexHull[convexHull.size()-1], convexHull[0]);
 
                 if (distance < minDistance) {
-                    minDistance = distance;
                     minIndex = convexHull.size() - 1;
                 }
 
                 candidates.emplace_back(Candidate {
-                    .i = convexHull[convexHull.size()-1],
-                    .j = convexHull[0],
+                    .i = convexHull[minIndex],
+                    .j = convexHull[(minIndex + 1) % convexHull.size()],
                     .r = point,
                     .insertIndex = minIndex
                 });
