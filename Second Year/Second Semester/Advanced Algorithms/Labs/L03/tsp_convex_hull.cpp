@@ -190,6 +190,25 @@ int main() {
                     .r = point,
                     .insertIndex = minIndex
                 });
+
+                // Checking for last two points in subtour:
+                // This results in the line of last point in convex hull with first point in convex hull
+                double distance =
+                        getDistance(convexHull[convexHull.size()-1], point) +
+                        getDistance(point, convexHull[0]) -
+                        getDistance(convexHull[convexHull.size()-1], convexHull[0]);
+
+                if (distance < minDistance) {
+                    minDistance = distance;
+                    minIndex = convexHull.size() - 1;
+                }
+
+                candidates.emplace_back(Candidate {
+                    .i = convexHull[convexHull.size()-1],
+                    .j = convexHull[0],
+                    .r = point,
+                    .insertIndex = minIndex
+                });
             }
         }
 
