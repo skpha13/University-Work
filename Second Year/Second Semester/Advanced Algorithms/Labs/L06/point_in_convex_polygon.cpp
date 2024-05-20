@@ -72,28 +72,6 @@ long long crossProduct(pair<int, int> A, pair<int, int> B, pair<int, int> C) {
     return crossProduct(newA, newB);
 }
 
-bool checkEdgeCases(vector<pair<int, int>> &polygon, pair<int, int> point) {
-    int orientationWithPoint = Orientation::orientationTest(polygon[1], point, polygon[0]);
-    int orientationWithLastSegment = Orientation::orientationTest(polygon[1], polygon[polygon.size()-1], polygon[0]);
-
-    if (orientationWithPoint != 0 && orientationWithPoint != orientationWithLastSegment)
-        return false;
-
-    orientationWithPoint = Orientation::orientationTest(polygon[polygon.size()-1], point, polygon[0]);
-    int orientationWithFirstSegment = Orientation::orientationTest(polygon[polygon.size()-1], polygon[1], polygon[0]);
-
-    if (orientationWithPoint != 0 && orientationWithPoint != orientationWithFirstSegment)
-        return false;
-
-    orientationWithPoint = Orientation::orientationTest(polygon[1], point, polygon[0]);
-    if (orientationWithPoint == 0) {
-        return (polygon[1].first * polygon[1].first + polygon[1].second * polygon[1].second)
-                >= (point.first * point.first + point.second * point.second);
-    }
-
-    return true;
-}
-
 Answer isInTriangle(pair<int, int> A, pair<int, int> B, pair<int, int> C, pair<int, int> point) {
     long long s1 = abs(crossProduct(A, B, C));
     long long s2 = abs(crossProduct(point, A, B)) + abs(crossProduct(point, B, C)) + abs(crossProduct(point, C, A));
@@ -109,8 +87,22 @@ Answer isInTriangle(pair<int, int> A, pair<int, int> B, pair<int, int> C, pair<i
 }
 
 Answer isInsideConvexPolygon(vector<pair<int, int>> &polygon, pair<int, int> point) {
-    if (checkEdgeCases(polygon, point) == false)
+    int orientationWithPoint = Orientation::orientationTest(polygon[1], point, polygon[0]);
+    int orientationWithLastSegment = Orientation::orientationTest(polygon[1], polygon[polygon.size()-1], polygon[0]);
+
+    if (orientationWithPoint != 0 && orientationWithPoint != orientationWithLastSegment)
         return OUTSIDE;
+
+    orientationWithPoint = Orientation::orientationTest(polygon[polygon.size()-1], point, polygon[0]);
+    int orientationWithFirstSegment = Orientation::orientationTest(polygon[polygon.size()-1], polygon[1], polygon[0]);
+
+    if (orientationWithPoint != 0 && orientationWithPoint != orientationWithFirstSegment)
+        return OUTSIDE;
+
+    orientationWithPoint = Orientation::orientationTest(polygon[1], point, polygon[0]);
+    if (orientationWithPoint == 0 && (polygon[1].first * polygon[1].first + polygon[1].second * polygon[1].second) < (point.first * point.first + point.second * point.second)) {
+        return OUTSIDE;
+    }
 
     int left = 1, right = polygon.size()-1, mid;
     while (left < right - 1) {
