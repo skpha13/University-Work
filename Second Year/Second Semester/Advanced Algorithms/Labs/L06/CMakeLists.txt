@@ -3,4 +3,4 @@ project(L06)
 
 set(CMAKE_CXX_STANDARD 20)
 
-add_executable(L06 main.cpp)
+add_executable(L06 point_in_convex_polygon.cpp)
