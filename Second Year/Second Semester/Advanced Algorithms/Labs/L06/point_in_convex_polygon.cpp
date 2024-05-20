@@ -76,12 +76,7 @@ bool checkEdgeCases(vector<pair<int, int>> &polygon, pair<int, int> point) {
     int orientationWithPoint = Orientation::orientationTest(polygon[1], point, polygon[0]);
     int orientationWithLastSegment = Orientation::orientationTest(polygon[1], polygon[polygon.size()-1], polygon[0]);
 
-    if (orientationWithPoint == 0) {
-        return (polygon[1].first * polygon[1].first + polygon[1].second * polygon[1].second)
-                >= (point.first * point.first + point.second * point.second);
-    }
-
-    if (orientationWithPoint != orientationWithLastSegment)
+    if (orientationWithPoint != 0 && orientationWithPoint != orientationWithLastSegment)
         return false;
 
     orientationWithPoint = Orientation::orientationTest(polygon[polygon.size()-1], point, polygon[0]);
@@ -89,6 +84,12 @@ bool checkEdgeCases(vector<pair<int, int>> &polygon, pair<int, int> point) {
 
     if (orientationWithPoint != 0 && orientationWithPoint != orientationWithFirstSegment)
         return false;
+
+    orientationWithPoint = Orientation::orientationTest(polygon[1], point, polygon[0]);
+    if (orientationWithPoint == 0) {
+        return (polygon[1].first * polygon[1].first + polygon[1].second * polygon[1].second)
+                >= (point.first * point.first + point.second * point.second);
+    }
 
     return true;
 }
@@ -98,8 +99,7 @@ Answer isInTriangle(pair<int, int> A, pair<int, int> B, pair<int, int> C, pair<i
     long long s2 = abs(crossProduct(point, A, B)) + abs(crossProduct(point, B, C)) + abs(crossProduct(point, C, A));
 
     if (s1 == s2) {
-        if (Orientation::orientationTest(A, B, point) == 0 ||
-            Orientation::orientationTest(B, C, point) == 0)
+        if (Orientation::orientationTest(A, B, point) == 0)
             return BOUNDARY;
 
         return INSIDE;
@@ -120,6 +120,22 @@ Answer isInsideConvexPolygon(vector<pair<int, int>> &polygon, pair<int, int> poi
             left = mid;
         else
             right = mid;
+    }
+
+    // check to see coliniarity on edge cases
+    if (left == 1 && isInTriangle(polygon[left], polygon[left+1], polygon[0], point) == INSIDE &&
+        (Orientation::orientationTest(polygon[0], polygon[left], point) == 0 ||
+         Orientation::orientationTest(polygon[left], polygon[left+1], point) == 0))
+    {
+        return BOUNDARY;
+    }
+
+    // check to see coliniarity on edge cases
+    if (left == polygon.size()-2 && isInTriangle(polygon[left], polygon[left+1], polygon[0], point) == INSIDE &&
+        (Orientation::orientationTest(polygon[0], polygon[left+1], point) == 0 ||
+         Orientation::orientationTest(polygon[left], polygon[left+1], point) == 0))
+    {
+        return BOUNDARY;
     }
 
     return isInTriangle(polygon[left], polygon[left+1], polygon[0], point);
