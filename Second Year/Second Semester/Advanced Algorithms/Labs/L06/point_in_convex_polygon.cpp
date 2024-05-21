@@ -154,7 +154,7 @@ int main() {
         if (compare(polygon[i], polygon[smallestXIndex]))
             smallestXIndex = i;
     }
-    rotate(polygon.begin(), polygon.begin() + smallestXIndex, polygon.end());
+    // rotate(polygon.begin(), polygon.begin() + smallestXIndex, polygon.end());
 
     cin >> m;
     for (int i=0; i<m; i++) {
