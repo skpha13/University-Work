@@ -56,12 +56,12 @@ bool compare(pair<int,int> A, pair<int, int> B) {
     return A.first < B.first || (A.first == B.first && A.second < B.second);
 }
 
-long long crossProduct(pair<int, int> A, pair<int, int> B) {
-    return A.first * B.second - A.second * B.first;
+long long crossProduct(pair<long long , long long > A, pair<long long , long long > B) {
+    return 1LL * A.first * B.second - 1LL * A.second * B.first;
 }
 
-long long crossProduct(pair<int, int> A, pair<int, int> B, pair<int, int> C) {
-    pair<int, int> newA, newB;
+long long crossProduct(pair<long long, long long> A, pair<long long, long long> B, pair<long long, long long> C) {
+    pair<long, long> newA, newB;
 
     newA.first = B.first - A.first;
     newA.second = B.second - A.second;
@@ -133,6 +133,10 @@ Answer isInsideConvexPolygon(vector<pair<int, int>> &polygon, pair<int, int> poi
     return isInTriangle(polygon[left], polygon[left+1], polygon[0], point);
 }
 
+//#include "fstream"
+
+//ifstream f(R"(C:\Users\mal13\Desktop\tests\convex5.in)");
+
 int main() {
     int n, m;
     vector<pair<int, int>> polygon;
@@ -150,7 +154,7 @@ int main() {
         if (compare(polygon[i], polygon[smallestXIndex]))
             smallestXIndex = i;
     }
-    rotate(polygon.begin(), polygon.end() + smallestXIndex, polygon.end());
+    rotate(polygon.begin(), polygon.begin() + smallestXIndex, polygon.end());
 
     cin >> m;
     for (int i=0; i<m; i++) {
