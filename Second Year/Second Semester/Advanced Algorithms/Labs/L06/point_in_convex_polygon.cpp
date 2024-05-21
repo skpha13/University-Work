@@ -72,7 +72,7 @@ long long crossProduct(pair<long long, long long> A, pair<long long, long long> 
     return crossProduct(newA, newB);
 }
 
-Answer isInTriangle(pair<int, int> A, pair<int, int> B, pair<int, int> C, pair<int, int> point) {
+Answer isInTriangle(pair<long long, long long> A, pair<long long, long long> B, pair<long long, long long> C, pair<long long, long long> point) {
     long long s1 = abs(crossProduct(A, B, C));
     long long s2 = abs(crossProduct(point, A, B)) + abs(crossProduct(point, B, C)) + abs(crossProduct(point, C, A));
 
@@ -133,10 +133,6 @@ Answer isInsideConvexPolygon(vector<pair<int, int>> &polygon, pair<int, int> poi
     return isInTriangle(polygon[left], polygon[left+1], polygon[0], point);
 }
 
-//#include "fstream"
-
-//ifstream f(R"(C:\Users\mal13\Desktop\tests\convex5.in)");
-
 int main() {
     int n, m;
     vector<pair<int, int>> polygon;
@@ -154,7 +150,7 @@ int main() {
         if (compare(polygon[i], polygon[smallestXIndex]))
             smallestXIndex = i;
     }
-    // rotate(polygon.begin(), polygon.begin() + smallestXIndex, polygon.end());
+     rotate(polygon.begin(), polygon.begin() + smallestXIndex, polygon.end());
 
     cin >> m;
     for (int i=0; i<m; i++) {
