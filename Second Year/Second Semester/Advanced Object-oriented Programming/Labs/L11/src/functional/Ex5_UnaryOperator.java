@@ -6,6 +6,13 @@ import java.util.function.LongUnaryOperator;
 import java.util.function.UnaryOperator;
 
 public class Ex5_UnaryOperator {
+    public static void main(String[] args) {
+        double d = 3.5;
+        long dd = 4;
+
+        squareItDoubleUnaryOperator(d);
+        squareItLongUnaryOperator(4);
+    }
 
     public void convertToUppercase() {
         UnaryOperator<String> convertToUppercase = String::toUpperCase;
@@ -16,12 +23,12 @@ public class Ex5_UnaryOperator {
         IntUnaryOperator doubledIt = x -> x * 2;
         System.out.println(doubledIt.applyAsInt(d));
     }
-    public void squareItLongUnaryOperator() {
+    public static void squareItLongUnaryOperator(long d) {
         LongUnaryOperator squareIt = x -> x * x;
-        System.out.println(squareIt.applyAsLong(12));
+        System.out.println(squareIt.applyAsLong(d));
     }
-    public void squareItDoubleUnaryOperator() {
+    public static void squareItDoubleUnaryOperator(double d) {
         DoubleUnaryOperator squareIt = x -> x * x;
-        System.out.println(squareIt.applyAsDouble(12));
+        System.out.println(squareIt.applyAsDouble(d));
     }
 }
