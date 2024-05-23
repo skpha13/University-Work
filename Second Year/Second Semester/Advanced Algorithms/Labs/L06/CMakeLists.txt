@@ -3,4 +3,4 @@ project(L06)
 
 set(CMAKE_CXX_STANDARD 20)
 
-add_executable(L06 point_in_convex_polygon.cpp)
+add_executable(L06 position_of_point_relative_to_polygon.cpp)
