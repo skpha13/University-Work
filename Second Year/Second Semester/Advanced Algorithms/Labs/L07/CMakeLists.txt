@@ -3,4 +3,4 @@ project(L07)
 
 set(CMAKE_CXX_STANDARD 20)
 
-add_executable(L07 is_edge_legal.cpp)
+add_executable(L07 half-plane_intersection.cpp)
