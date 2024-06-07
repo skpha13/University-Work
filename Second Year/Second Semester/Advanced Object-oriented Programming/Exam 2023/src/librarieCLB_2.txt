@@ -1,0 +1,10 @@
+The Secret Garden,Frances Hodgson Burnett,1st,250,12.99
+To Kill a Mockingbird,Harper Lee,2nd,180,9.95
+1984,George Orwell,3rd,320,14.50
+Pride and Prejudice,Jane Austen,1st,150,11.75
+The Great Gatsby,F. Scott Fitzgerald,2nd,200,10.99
+Brave New World,Aldous Huxley,1st,280,13.25
+The Catcher in the Rye,J.D. Salinger,3rd,210,9.50
+Lord of the Flies,William Golding,2nd,190,8.75
+Jane Eyre,Charlotte Brontë,1st,220,12.00
+The Hobbit,J.R.R. Tolkien,3rd,300,15.99
