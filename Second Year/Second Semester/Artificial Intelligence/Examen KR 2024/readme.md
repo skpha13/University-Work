@@ -1,0 +1,2 @@
+> [!WARNING]
+> At least one exercise on the exam is incorrect and does not have a valid answer. The professor made mistakes in the exam, resulting in one or two exercises being incorrect and lacking a correct answer.
