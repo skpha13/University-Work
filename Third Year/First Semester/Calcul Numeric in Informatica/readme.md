@@ -1,1 +1,0 @@
-# Calcul Numeric in Informatica
