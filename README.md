@@ -35,3 +35,10 @@
   - [Computer Networks](https://github.com/skpha13/University-Work/tree/main/Second%20Year/Second%20Semester/Computer%20Networks)
   - [Programming Language Fundamentals](https://github.com/skpha13/University-Work/tree/main/Second%20Year/Second%20Semester/Programming%20Language%20Fundamentals)
   - [Software Development Methodologies](https://github.com/skpha13/University-Work/tree/main/Second%20Year/Second%20Semester/Software%20Development%20Methodologies)
+
+**III. Third year:**
+
+- First semester:
+  - [Calcul Numeric in Informatica](https://github.com/skpha13/University-Work/tree/main/Third%20Year/First%20Semester/Calcul%20Numeric%20in%20Informatica)
+  - [Grafica pe Calculator](https://github.com/skpha13/University-Work/tree/main/Third%20Year/First%20Semester/Grafica%20pe%20Calculator)
+  - [Prelucrarea Semnalelor](https://github.com/skpha13/University-Work/tree/main/Third%20Year/First%20Semester/Prelucrarea%20Semnalelor)
