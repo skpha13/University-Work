@@ -1,1 +1,0 @@
-# Grafica pe Calculator
