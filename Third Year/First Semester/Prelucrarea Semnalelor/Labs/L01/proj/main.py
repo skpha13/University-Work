@@ -69,13 +69,17 @@ n = 10_000
 plot("Square", np.linspace(0, t, n), np.sign(sinusoidal_signal(1, 300, t, 0, n)))
 
 # (e)
+cmap = "binary"
 random_signal = np.random.rand(128, 128)
-plt.imshow(random_signal)
+plt.imshow(random_signal, cmap=cmap)
+plt.savefig(fname=f"./plots/random_image.pdf", format="pdf")
 plt.show()
+plt.close()
 
 # (f)
-random_signal_generated = np.zeros((128, 128))
-plt.imshow(random_signal_generated)
+generated_signal = np.full((128, 128), 128)
+plt.imshow(generated_signal, cmap=cmap, vmin=0, vmax=255)
+plt.savefig(fname=f"./plots/zeroed_image.pdf", format="pdf")
 plt.show()
 
 """Exercise 3"""
