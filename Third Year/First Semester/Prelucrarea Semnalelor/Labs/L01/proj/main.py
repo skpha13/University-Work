@@ -1,8 +1,8 @@
-import numpy as np
 import matplotlib.pyplot as plt
+import numpy as np
 
-from proj.sinewave import sinusoidal_signal
-from proj.plot import plot, stem
+from plot import plot, stem
+from sinewave import sinusoidal_signal
 
 """Exercise 1"""
 
@@ -56,19 +56,45 @@ n = 800
 stem("800 samples 3 seconds", np.linspace(0, t, n), sinusoidal_signal(1, 800, t, 0, n))
 
 # (c)
-t = 5
-n = 200
-plot("Sawtooth", np.linspace(0, t, n), np.floor(sinusoidal_signal(1, 240, t, 0, n)))
+t = 1
+n = 1_000_000
+signal = sinusoidal_signal(1, 240, t, 0, n)
+sawtooth_signal = np.abs(signal)
+sawtooth_signal = np.mod(sawtooth_signal, 0.1)
+plot("Sawtooth", np.linspace(0, t, n), sawtooth_signal, xlim=[0, 614e-6])
 
 # (d)
-t = 5
-n = 200
-plot("Square", np.linspace(0, t, n), np.floor(sinusoidal_signal(1, 300, 5, 0, 200)))
+t = 1000
+n = 10_000
+plot("Square", np.linspace(0, t, n), np.sign(sinusoidal_signal(1, 300, t, 0, n)))
 
 # (e)
 random_signal = np.random.rand(128, 128)
 plt.imshow(random_signal)
+plt.show()
 
 # (f)
 random_signal_generated = np.zeros((128, 128))
 plt.imshow(random_signal_generated)
+plt.show()
+
+"""Exercise 3"""
+
+# (a)
+
+"""
+Depends on the value of t (time), a general formula would be t / 2000
+For 1s:
+    1 / 2000 = 0.0005s (0.5ms)
+"""
+
+# (b)
+
+"""
+Analogue to (a), depends on value of t (time)
+General formula: (4 * f * t) / 8 bytes
+For 1s:
+    (4 * 2000 * 1) / 8
+    8000 / 8
+    1000 bytes
+"""
