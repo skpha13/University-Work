@@ -79,7 +79,7 @@ plt.close()
 # (f)
 generated_signal = np.full((128, 128), 128)
 plt.imshow(generated_signal, cmap=cmap, vmin=0, vmax=255)
-plt.savefig(fname=f"./plots/zeroed_image.pdf", format="pdf")
+plt.savefig(fname=f"./plots/gray_image.pdf", format="pdf")
 plt.show()
 
 """Exercise 3"""
