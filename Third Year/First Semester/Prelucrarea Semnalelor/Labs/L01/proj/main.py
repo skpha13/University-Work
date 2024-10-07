@@ -59,9 +59,9 @@ stem("800 samples 3 seconds", np.linspace(0, t, n), sinusoidal_signal(1, 800, t,
 t = 1
 n = 1_000_000
 signal = sinusoidal_signal(1, 240, t, 0, n)
-sawtooth_signal = np.abs(signal)
+sawtooth_signal = np.arcsin(np.abs(signal))
 sawtooth_signal = np.mod(sawtooth_signal, 0.1)
-plot("Sawtooth", np.linspace(0, t, n), sawtooth_signal, xlim=[0, 614e-6])
+plot("Sawtooth", np.linspace(0, t, n), sawtooth_signal, xlim=[0, 6e-4])
 
 # (d)
 t = 1000
