@@ -39,6 +39,8 @@
 **III. Third year:**
 
 - First semester:
-  - [Numerical Computing in Computer Science](https://github.com/skpha13/University-Work/tree/main/Third%20Year/First%20Semester/Calcul%20Numeric%20in%20Informatica)
-  - [Computer Graphics](https://github.com/skpha13/University-Work/tree/main/Third%20Year/First%20Semester/Grafica%20pe%20Calculator)
-  - [Signal Processing](https://github.com/skpha13/University-Work/tree/main/Third%20Year/First%20Semester/Prelucrarea%20Semnalelor)
+  - [Computability and Complexity](https://github.com/skpha13/University-Work/tree/main/Third%20Year/First%20Semester/Computability%20and%20Complexity)
+  - [Computer Graphics](https://github.com/skpha13/University-Work/tree/main/Third%20Year/First%20Semester/Computer%20Graphics)
+  - [Numerical Computing in Computer Science](https://github.com/skpha13/University-Work/tree/main/Third%20Year/First%20Semester/Numerical%20Computing%20in%20Computer%20Science)
+  - [Signal Processing](https://github.com/skpha13/University-Work/tree/main/Third%20Year/First%20Semester/Signal%20Processing)
+  - [Software Engineering](https://github.com/skpha13/University-Work/tree/main/Third%20Year/First%20Semester/Software%20Engineering)
