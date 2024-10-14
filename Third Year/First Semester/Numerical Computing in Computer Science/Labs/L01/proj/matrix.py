@@ -45,3 +45,43 @@ def UTRIS(L: np.ndarray, b: np.ndarray) -> np.ndarray:
         x[i] = x[i] / L[i][i]
 
     return x
+
+
+def gaussian_elimination_hessenberg(matrix: np.ndarray) -> np.ndarray:
+    """Performs Gaussian elimination on an upper Hessenberg matrix to reduce it to upper triangular form.
+
+    Args:
+        matrix (np.ndarray): The matrix to be transformed, where each row represents a system equation.
+
+    Returns:
+        np.ndarray: The upper triangular form of the input matrix after applying Gaussian elimination.
+    """
+    n = len(matrix)
+    a = deepcopy(matrix)
+    for k in range(0, n - 1):
+        a[k + 1][k] = -a[k + 1][k] / a[k][k]
+
+        for i in range(k + 1, n):
+            a[k + 1][i] = a[k + 1][i] + a[k][i] * (a[k + 1][k] / a[k][k])
+
+    return np.triu(a)
+
+
+def gaussian_elimination_upper_matrix(matrix: np.ndarray) -> np.ndarray:
+    """Performs Gaussian elimination on an upper matrix with one not null line to reduce it to upper triangular form.
+
+    Args:
+        matrix (np.ndarray): The matrix to be transformed, where each row represents a system equation.
+
+    Returns:
+        np.ndarray: The upper triangular form of the input matrix after applying Gaussian elimination.
+    """
+    n = len(matrix)
+    a = deepcopy(matrix)
+    for k in range(0, n - 1):
+        a[n - 1][k] = -a[n - 1][k] / a[k][k]
+
+        for i in range(k + 1, n):
+            a[n - 1][i] = a[n - 1][i] + a[k][i] * (a[n - 1][k] / a[k][k])
+
+    return np.triu(a)
