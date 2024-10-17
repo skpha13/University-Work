@@ -484,6 +484,14 @@ xcopy /y /d "$(ProjectDir)lib\x64\SOIL\*.dll" "$(OutDir)" &amp;</Command>
     <Text Include="include\glm\CMakeLists.txt" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="03_02_Shader.frag" />
+    <None Include="03_02_Shader.vert" />
+    <None Include="03_03_Shader.frag" />
+    <None Include="03_03_Shader.vert" />
+    <None Include="03_04_Shader.frag" />
+    <None Include="03_04_Shader.vert" />
+    <None Include="03_05_Shader.frag" />
+    <None Include="03_05_Shader.vert" />
     <None Include="example.frag" />
     <None Include="example.vert" />
     <None Include="include\glm\detail\func_common.inl" />
