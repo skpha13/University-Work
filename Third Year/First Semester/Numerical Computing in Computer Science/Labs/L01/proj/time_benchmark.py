@@ -1,8 +1,6 @@
-import time
-
+from matrix import gaussian_elimination_hessenberg, gaussian_elimination_upper_matrix, gaussian_elimination
 import numpy as np
-
-from matrix import gaussian_elimination, gaussian_elimination_hessenberg, gaussian_elimination_upper_matrix
+import time
 
 
 def benchmark(number_of_elements: int = 100):
