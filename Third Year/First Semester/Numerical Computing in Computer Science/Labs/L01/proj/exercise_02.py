@@ -2,8 +2,9 @@
 
 import numpy as np
 
-from matrix import UTRIS, gaussian_elimination
-from series import generate_series
+from misc.matrix import UTRIS, gaussian_elimination
+
+np.set_printoptions(precision=4, suppress=True)
 
 print("\tExercise 02:")
 print("(a)")
@@ -24,8 +25,8 @@ print("X:")
 print(UTRIS(A_gauss, b))
 
 
-test_matrix = np.random.randint(2, 10, (6, 6))
-test_b = np.random.randint(2, 10, 6)
+test_matrix = np.random.randn(6, 6)
+test_b = np.random.randn(6)
 
 print("\n(c)")
 print("6x6:")

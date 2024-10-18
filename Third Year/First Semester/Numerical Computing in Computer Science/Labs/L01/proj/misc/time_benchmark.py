@@ -1,4 +1,4 @@
-from matrix import gaussian_elimination_hessenberg, gaussian_elimination_upper_matrix, gaussian_elimination
+from misc.matrix import gaussian_elimination_hessenberg, gaussian_elimination_upper_matrix, gaussian_elimination
 import numpy as np
 import time
 

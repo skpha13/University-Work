@@ -1,6 +1,6 @@
 """Exercise 01"""
 
-from series import generate_series
+from misc.series import generate_series
 
 print("\tExercise 01:")
 x0 = 0.1
