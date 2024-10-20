@@ -1,4 +1,4 @@
-"""Exercitiul 2"""
+"""Exercise 2"""
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -40,7 +40,8 @@ omegas = [1, 3, 4, 5, 10]
 z = winding_frequency_on_unit_circle(signal, omegas)
 
 cmap = plt.get_cmap("inferno")
-colors = cmap(normalized_distances(signal))
+points = np.array(list(zip(ts, signal)))
+colors = cmap(normalized_distances(points))
 
 axs[0][0].scatter(ts, signal, color=colors)
 axs[0][0].set_xlabel("Time (samples)")
