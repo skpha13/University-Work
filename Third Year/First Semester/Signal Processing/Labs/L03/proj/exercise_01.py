@@ -5,7 +5,7 @@ import os
 import numpy as np
 from matplotlib import pyplot as plt
 
-from utils.fourier import fourier_transform
+from utils.fourier import fourier_transform_matrix
 
 dir_path = f"{os.getcwd()}/plots"
 if not os.path.exists(dir_path):
@@ -13,7 +13,7 @@ if not os.path.exists(dir_path):
 
 N = 8
 
-fm = fourier_transform(N)
+fm = fourier_transform_matrix(N)
 fhm = np.transpose(np.conjugate(fm))
 
 fhfm = np.matmul(fhm, fm)

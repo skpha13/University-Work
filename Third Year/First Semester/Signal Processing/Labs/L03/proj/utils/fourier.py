@@ -1,7 +1,7 @@
 import numpy as np
 
 
-def fourier_transform(N: int) -> np.ndarray:
+def fourier_transform_matrix(N: int) -> np.ndarray:
     """Generate the Fourier Transform matrix of size N x N.
 
     This function constructs a complex-valued Fourier Transform matrix,
@@ -21,6 +21,55 @@ def fourier_transform(N: int) -> np.ndarray:
             fourier_matrix[i][j] = np.exp(-2 * np.pi * 1j * j * i / N)
 
     return fourier_matrix
+
+
+def fourier_transform(x: np.ndarray, number_of_components: int = None) -> np.ndarray:
+    """Computes the discrete Fourier transform (DFT) of a given signal
+
+    Args:
+        x (np.ndarray): The input array representing the signal in the time domain.
+
+        number_of_components (int, optional): The number of Fourier components to compute.
+            If None, the length of the input array `x` is used as the number of components.
+
+    Returns:
+        np.ndarray: The Fourier-transformed array, representing the signal in the frequency domain.
+    """
+
+    n = len(x) if number_of_components is None else number_of_components
+    X = np.zeros(n, dtype=np.complex128)
+
+    for m in range(n):
+        component_sum = 0
+
+        for k in range(n):
+            component_sum += x[k] * np.exp(-2 * np.pi * 1j * k * m / n)
+
+        X[m] = component_sum
+
+    return X
+
+
+def fourier_transform_using_winding_frequency(x: np.ndarray, omegas: list[float]) -> dict[float, np.complex128]:
+    """Computes the Fourier transform at specified winding frequencies.
+
+    Args:
+        x (np.ndarray): The input signal array representing the signal in the time domain.
+        omegas (list[float]): A list of winding frequencies where the Fourier transform is to be evaluated.
+
+    Returns:
+        dict[float, np.complex128]: A dictionary where each key is a winding frequency from `omegas`,
+        and the corresponding value is the Fourier transform result (complex number) at that frequency.
+    """
+
+    X: dict[float, np.complex128] = {}
+
+    winding_frequencies = winding_frequency_on_unit_circle(x, omegas)
+
+    for index, vector in enumerate(winding_frequencies):
+        X[omegas[index]] = np.sum(vector)
+
+    return X
 
 
 def display_matrix(matrix: np.ndarray) -> None:

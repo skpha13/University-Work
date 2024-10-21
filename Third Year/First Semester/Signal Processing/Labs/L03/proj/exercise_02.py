@@ -1,11 +1,17 @@
 """Exercise 2"""
 
+import os
+
 import matplotlib.pyplot as plt
 import numpy as np
 
 from utils.distance import normalized_distances
 from utils.fourier import winding_frequency_on_unit_circle
 from utils.sinewave import sinusoidal_signal
+
+dir_path = f"{os.getcwd()}/plots"
+if not os.path.exists(dir_path):
+    os.makedirs(dir_path)
 
 plt.rcParams["lines.linewidth"] = 0.9
 plt.rcParams["lines.markersize"] = 2
