@@ -1,4 +1,5 @@
 import os
+from typing import Union
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -7,7 +8,9 @@ import numpy as np
 os.makedirs(f"{os.getcwd()}/plots", exist_ok=True)
 
 
-def plot(name: str, x: np.ndarray, *ys: np.ndarray, xlim: list[float] | None = None) -> None:
+def plot(
+    name: str, x: Union[np.ndarray, list], *ys: Union[np.ndarray, list[list]], xlim: list[float] | None = None
+) -> None:
     """Plots multiple line graphs in subplots and saves them as a PDF file.
 
     Args:
