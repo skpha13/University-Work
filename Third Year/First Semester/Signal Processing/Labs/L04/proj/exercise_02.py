@@ -38,11 +38,14 @@ fig.suptitle("Sub-Nyquist Frequencies")
 
 axs[0].plot(x_domain, signals[0].plot, color="slateblue")
 axs[0].set_title(signals[0].frequency)
+axs[0].set_xlim([0, 1])
 
 for ax, signal in zip(axs[1:], signals):
     ax.plot(x_domain, signal.plot, color=signal.color, zorder=1)
-    ax.scatter(nts, signal.scatter, color="yellow", alpha=1, zorder=2)
+    ax.scatter(nts, signal.scatter, color="yellow", alpha=1, zorder=2, clip_on=False)
+
     ax.set_title(signal.frequency)
+    ax.set_xlim([0, 1])
 
 
 plt.tight_layout()
