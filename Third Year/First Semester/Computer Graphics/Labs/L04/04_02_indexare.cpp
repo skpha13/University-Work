@@ -49,7 +49,7 @@ GLfloat
 glm::mat4
 	myMatrix, resizeMatrix;
 //	Variabile pentru proiectia ortogonala;
-float xMin = -80, xMax = 80.f, yMin = -60.f, yMax = 60.f;
+float xMin = -160, xMax = 160.f, yMin = -120.f, yMax = 120.f;
 
 //  Crearea si compilarea obiectelor de tip shader;
 //	Trebuie sa fie in acelasi director cu proiectul actual;
@@ -100,7 +100,17 @@ void CreateVAO1(void)
 		55.0f, 5.0f, 0.0f, 1.0f,
 
 		65.0f, -5.0f, 0.0f, 1.0f,
-		65.0f, 5.0f, 0.0f, 1.0f
+		65.0f, 5.0f, 0.0f, 1.0f,
+
+		-5.0f, 5.0f, 0.0f, 1.0f,
+		-5.0f, -5.0f, 0.0f, 1.0f,
+		5.0f, -5.0f, 0.0f, 1.0f,
+		5.0f, 5.0f, 0.0f, 1.0f,
+
+		-5.0f, 5.0f, 0.0f, 1.0f,
+		-5.0f, -5.0f, 0.0f, 1.0f,
+		5.0f, -5.0f, 0.0f, 1.0f,
+		5.0f, 5.0f, 0.0f, 1.0f,
 	};
 
 	//	Culorile ca atribute ale varfurilor;
@@ -121,7 +131,17 @@ void CreateVAO1(void)
 		1.0f, 0.0f, 0.0f, 1.0f,
 
 		0.0f, 0.0f, 0.0f, 1.0f,
-		0.0f, 1.0f, 0.0f, 1.0f
+		0.0f, 1.0f, 0.0f, 1.0f,
+
+		1.0f, 0.0f, 0.0f, 1.0f,
+		0.0f, 1.0f, 0.0f, 1.0f,
+		0.0f, 0.0f, 1.0f, 1.0f,
+		1.0f, 0.0f, 1.0f, 1.0f,
+
+		1.0f, 0.0f, 0.0f, 1.0f,
+		0.0f, 1.0f, 0.0f, 1.0f,
+		0.0f, 0.0f, 1.0f, 1.0f,
+		1.0f, 0.0f, 1.0f, 1.0f,
 	};
 	
 	//	Indicii care determina ordinea de parcurgere a varfurilor;
@@ -131,7 +151,10 @@ void CreateVAO1(void)
 		1, 4, 5, 2, 1, 5,
 		4, 6, 7, 5, 4, 7,
 		6, 8, 9, 7, 6, 9,
-		8, 10, 11, 9, 8, 11
+		8, 10, 11, 9, 8, 11,
+
+		12, 13, 14, 15,
+		16, 17, 18, 19
 	};
 
 	//  Transmiterea datelor prin buffere;
@@ -164,14 +187,12 @@ void CreateVAO1(void)
 }
 
 void CreateVAO2(void) {
-	std::vector<GLfloat> biggerCircle = getPointsOnCircle(-40, 0, 20, 8), smallerCircle = getPointsOnCircle(-40, 0, 10, 8);
-	int n = 64, k=0;
+	std::vector<GLfloat> biggerCircle = getPointsOnCircle(-40, 30, 20, 8), smallerCircle = getPointsOnCircle(-40, 30, 10, 8);
 	std::vector<GLfloat> Vertices2;
+	int n = 64, k=0;
 
 	Vertices2.insert(Vertices2.end(), biggerCircle.begin(), biggerCircle.end());
 	Vertices2.insert(Vertices2.end(), smallerCircle.begin(), smallerCircle.end());
-
-	printf("%d\n\n", Vertices2.size());
 
 	static const GLfloat Colors2[] =
 	{
@@ -205,6 +226,7 @@ void CreateVAO2(void) {
 		4, 5,
 		5, 6,
 		6, 7,
+		7, 0,
 		7, 8, 
 		8, 9, 
 		9, 10,
@@ -212,7 +234,25 @@ void CreateVAO2(void) {
 		11, 12,
 		12, 13,
 		13, 14,
-		14, 15
+		14, 15,
+		15, 8,
+
+		0, 8,
+		1, 9,
+		2, 10,
+		3, 11,
+		4, 12,
+		5, 13,
+		6, 14,
+		7, 15,
+
+		0, 10,
+		1, 11,
+		2, 12,
+		3, 13,
+		4, 14,
+		5, 15,
+		6, 8
 	};
 
 	glGenVertexArrays(1, &VaoId2);
@@ -304,8 +344,23 @@ void RenderFunction(void)
 	glBindVertexArray(VaoId1);
 	glDrawElements(GL_LINE_STRIP, 30, GL_UNSIGNED_INT, (void*)(0));
 
+
+	//glDrawElements(GL_TRIANGLE_FAN, 4, GL_UNSIGNED_INT, (void*)(sizeof(GLuint) * 30));
+
+	myMatrix = resizeMatrix * glm::translate(glm::mat4(1.0f), glm::vec3(100, 100, 0.0)) * glm::scale(glm::mat4(1.0f), glm::vec3(2.0, 0.5, 0.0));
+	glUniformMatrix4fv(myMatrixLocation, 1, GL_FALSE, &myMatrix[0][0]);
+	glDrawElements(GL_TRIANGLE_FAN, 4, GL_UNSIGNED_INT, (void*)(sizeof(GLuint) * 30));
+
+	myMatrix = resizeMatrix * glm::scale(glm::mat4(1.0f), glm::vec3(2.0, 0.5, 0.0)) * glm::translate(glm::mat4(1.0f), glm::vec3(100, 100, 0.0));
+	glUniformMatrix4fv(myMatrixLocation, 1, GL_FALSE, &myMatrix[0][0]);
+	glDrawElements(GL_TRIANGLE_FAN, 4, GL_UNSIGNED_INT, (void*)(sizeof(GLuint) * 34));
+
+	myMatrix = resizeMatrix;
+	glUniformMatrix4fv(myMatrixLocation, 1, GL_FALSE, &myMatrix[0][0]);
+
+	glLineWidth(1.0f);
 	glBindVertexArray(VaoId2);
-	glDrawElements(GL_LINE_LOOP, 32, GL_UNSIGNED_INT, (void*)(0));
+	glDrawElements(GL_LINES, 64, GL_UNSIGNED_INT, (void*)(0));
 	
 	glFlush();								//  Asigura rularea tuturor comenzilor OpenGL apelate anterior;
 }
