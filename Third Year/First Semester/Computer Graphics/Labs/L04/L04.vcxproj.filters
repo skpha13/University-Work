@@ -1498,4 +1498,9 @@
       <Filter>Resource Files\shaders\example</Filter>
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="text_smiley_face.png">
+      <Filter>Resource Files\textures</Filter>
+    </Image>
+  </ItemGroup>
 </Project>

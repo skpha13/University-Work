@@ -28,6 +28,6 @@ void main(void)
   {
   //  out_Color=ex_Color;                                           // Culoarea este cea asociata varfurilor;        
   //  out_Color=mix(red,green,0.9);                                 // Amestecarea a doua culori cu functia mix;
-   out_Color = mix(texture(myTexture, tex_Coord), ex_Color, 0.2);	//	Amestecarea texturii si a culorii;
+   out_Color = mix(texture(myTexture, tex_Coord), ex_Color, 0.3);	//	Amestecarea texturii si a culorii;
   }
  

@@ -29,6 +29,7 @@
 #include "glm/gtc/type_ptr.hpp"
 
 #include <vector>
+#include "SOIL.h"			//	Biblioteca pentru texturare;
 
 //  Identificatorii obiectelor de tip OpenGL;
 GLuint
@@ -41,7 +42,11 @@ GLuint
 	VboId1,
 	EboId1,
 	ProgramId,
-	myMatrixLocation;
+	myMatrixLocation,
+	texture,
+	VaoId3,
+	VboId3,
+	EboId3;
 //	Dimensiunile ferestrei de afisare;
 GLfloat
 	winWidth = 800, winHeight = 600;
@@ -49,7 +54,33 @@ GLfloat
 glm::mat4
 	myMatrix, resizeMatrix;
 //	Variabile pentru proiectia ortogonala;
-float xMin = -160, xMax = 160.f, yMin = -120.f, yMax = 120.f;
+float xMin = -80.f, xMax = 80.f, yMin = -60.f, yMax = 60.f;
+
+//	Functia de incarcare a texturilor in program;
+void LoadTexture(const char* texturePath)
+{
+	// Generarea unui obiect textura si legarea acestuia;
+	glGenTextures(1, &texture);
+	glBindTexture(GL_TEXTURE_2D, texture);
+
+	//	Desfasurarea imaginii pe orizontala/verticala in functie de parametrii de texturare;
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+	// Modul in care structura de texeli este aplicata pe cea de pixeli;
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+	// Incarcarea texturii si transferul datelor in obiectul textura; 
+	int width, height;
+	unsigned char* image = SOIL_load_image(texturePath, &width, &height, 0, SOIL_LOAD_RGB);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, image);
+	glGenerateMipmap(GL_TEXTURE_2D);
+
+	// Eliberarea resurselor
+	SOIL_free_image_data(image);
+	glBindTexture(GL_TEXTURE_2D, 0);
+}
 
 //  Crearea si compilarea obiectelor de tip shader;
 //	Trebuie sa fie in acelasi director cu proiectul actual;
@@ -105,12 +136,7 @@ void CreateVAO1(void)
 		-5.0f, 5.0f, 0.0f, 1.0f,
 		-5.0f, -5.0f, 0.0f, 1.0f,
 		5.0f, -5.0f, 0.0f, 1.0f,
-		5.0f, 5.0f, 0.0f, 1.0f,
-
-		-5.0f, 5.0f, 0.0f, 1.0f,
-		-5.0f, -5.0f, 0.0f, 1.0f,
-		5.0f, -5.0f, 0.0f, 1.0f,
-		5.0f, 5.0f, 0.0f, 1.0f,
+		5.0f, 5.0f, 0.0f, 1.0f
 	};
 
 	//	Culorile ca atribute ale varfurilor;
@@ -277,6 +303,51 @@ void CreateVAO2(void) {
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(Index2), Index2, GL_STATIC_DRAW);
 }
 
+void CreateVAO3(void)
+{
+	//	Atributele varfurilor -  COORDONATE, CULORI, COORDONATE DE TEXTURARE;
+	GLfloat Vertices[] = {
+		//	Coordonate;					Culori;				Coordonate de texturare;
+		  -5.0f, -5.0f,  0.0f,  1.0f,	1.0f, 0.0f, 0.0f,	0.0f, 0.0f,	// Stanga jos;
+		   5.0f, -5.0f,  0.0f,  1.0f,   0.0f, 1.0f, 0.0f,	1.0f, 0.0f, // Dreapta jos;
+		   5.0f,  5.0f,  0.0f,  1.0f,   1.0f, 1.0f, 0.0f,	1.0f, 1.0f,	// Dreapta sus;
+		  -5.0f,  5.0f,  0.0f,  1.0f,   0.0f, 1.0f, 1.0f,	0.0f, 1.0f  // Stanga sus;
+	};
+
+	//	Indicii care determina ordinea de parcurgere a varfurilor;
+	GLuint Indices[] = {
+	  0, 1, 2,  //	Primul triunghi;
+	  0, 2, 3	//  Al doilea triunghi;
+	};
+
+	//  Transmiterea datelor prin buffere;
+
+	//  Se creeaza / se leaga un VAO (Vertex Array Object);
+	glGenVertexArrays(1, &VaoId3);                                                   //  Generarea VAO si indexarea acestuia catre variabila VaoId;
+	glBindVertexArray(VaoId3);
+
+	//  Se creeaza un buffer pentru VARFURI - COORDONATE, CULORI si TEXTURARE;
+	glGenBuffers(1, &VboId3);													//  Generarea bufferului si indexarea acestuia catre variabila VboId;
+	glBindBuffer(GL_ARRAY_BUFFER, VboId3);										//  Setarea tipului de buffer - atributele varfurilor;
+	glBufferData(GL_ARRAY_BUFFER, sizeof(Vertices), Vertices, GL_STATIC_DRAW);
+
+	//	Se creeaza un buffer pentru INDICI;
+	glGenBuffers(1, &EboId3);														//  Generarea bufferului si indexarea acestuia catre variabila EboId;
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EboId3);									//  Setarea tipului de buffer - atributele varfurilor;
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(Indices), Indices, GL_STATIC_DRAW);
+
+	//	Se activeaza lucrul cu atribute;
+	//  Se asociaza atributul (0 = coordonate) pentru shader;
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 9 * sizeof(GLfloat), (GLvoid*)0);
+	//  Se asociaza atributul (1 =  culoare) pentru shader;
+	glEnableVertexAttribArray(1);
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(GLfloat), (GLvoid*)(4 * sizeof(GLfloat)));
+	//  Se asociaza atributul (2 =  texturare) pentru shader;
+	glEnableVertexAttribArray(2);
+	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 9 * sizeof(GLfloat), (GLvoid*)(7 * sizeof(GLfloat)));
+}
+
 //  Elimina obiectele de tip shader dupa rulare;
 void DestroyShaders(void)
 {
@@ -294,8 +365,10 @@ void DestroyVBO(void)
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glDeleteBuffers(1, &VboId1);
 	glDeleteBuffers(1, &VboId2);
+	glDeleteBuffers(1, &VboId3);
 	glDeleteBuffers(1, &EboId1);
 	glDeleteBuffers(1, &EboId2);
+	glDeleteBuffers(1, &EboId3);
 	glDeleteBuffers(1, &ColorBufferId1);
 	glDeleteBuffers(1, &ColorBufferId2);
 
@@ -303,6 +376,7 @@ void DestroyVBO(void)
 	glBindVertexArray(0);
 	glDeleteVertexArrays(1, &VaoId1);
 	glDeleteVertexArrays(1, &VaoId2);
+	glDeleteVertexArrays(1, &VaoId3);
 }
 
 //  Functia de eliberare a resurselor alocate de program;
@@ -318,7 +392,10 @@ void Initialize(void)
 	glClearColor(1.0f, 1.0f, 1.0f, 1.0f);		//  Culoarea de fond a ecranului;
 	CreateVAO1();								//  Trecerea datelor de randare spre bufferul folosit de shadere;
 	CreateVAO2();
+	CreateVAO3();
 	CreateShaders();							//  Initilizarea shaderelor;
+
+	LoadTexture("text_smiley_face.png");
 	//	Instantierea variabilelor uniforme pentru a "comunica" cu shaderele;
 	myMatrixLocation = glGetUniformLocation(ProgramId, "myMatrix");
 	//	Dreptunghiul "decupat"; 
@@ -345,15 +422,29 @@ void RenderFunction(void)
 	glDrawElements(GL_LINE_STRIP, 30, GL_UNSIGNED_INT, (void*)(0));
 
 
-	//glDrawElements(GL_TRIANGLE_FAN, 4, GL_UNSIGNED_INT, (void*)(sizeof(GLuint) * 30));
 
-	myMatrix = resizeMatrix * glm::translate(glm::mat4(1.0f), glm::vec3(100, 100, 0.0)) * glm::scale(glm::mat4(1.0f), glm::vec3(2.0, 0.5, 0.0));
+	glDrawElements(GL_TRIANGLE_FAN, 4, GL_UNSIGNED_INT, (void*)(sizeof(GLuint) * 30));
+
+	myMatrix = resizeMatrix * glm::translate(glm::mat4(1.0f), glm::vec3(30, 30, 0.0)) * glm::scale(glm::mat4(1.0f), glm::vec3(2.0, 0.5, 0.0));
 	glUniformMatrix4fv(myMatrixLocation, 1, GL_FALSE, &myMatrix[0][0]);
 	glDrawElements(GL_TRIANGLE_FAN, 4, GL_UNSIGNED_INT, (void*)(sizeof(GLuint) * 30));
 
-	myMatrix = resizeMatrix * glm::scale(glm::mat4(1.0f), glm::vec3(2.0, 0.5, 0.0)) * glm::translate(glm::mat4(1.0f), glm::vec3(100, 100, 0.0));
+
+	glBindVertexArray(VaoId3);
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, texture);
+	//	Transmiterea variabilei uniforme pentru texturare spre shaderul de fragmente;
+	glUniform1i(glGetUniformLocation(ProgramId, "myTexture"), 0);
+	glUniform1i(glGetUniformLocation(ProgramId, "hasTexture"), 1);
+
+	myMatrix = resizeMatrix * glm::scale(glm::mat4(1.0f), glm::vec3(2.0, 0.5, 0.0)) * glm::translate(glm::mat4(1.0f), glm::vec3(30, 30, 0.0));
 	glUniformMatrix4fv(myMatrixLocation, 1, GL_FALSE, &myMatrix[0][0]);
-	glDrawElements(GL_TRIANGLE_FAN, 4, GL_UNSIGNED_INT, (void*)(sizeof(GLuint) * 34));
+	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (void*)(0));
+
+	// unbind
+	glBindTexture(GL_TEXTURE_2D, 0);
+	glUniform1i(glGetUniformLocation(ProgramId, "hasTexture"), 0);
+
 
 	myMatrix = resizeMatrix;
 	glUniformMatrix4fv(myMatrixLocation, 1, GL_FALSE, &myMatrix[0][0]);
@@ -362,6 +453,7 @@ void RenderFunction(void)
 	glBindVertexArray(VaoId2);
 	glDrawElements(GL_LINES, 64, GL_UNSIGNED_INT, (void*)(0));
 	
+
 	glFlush();								//  Asigura rularea tuturor comenzilor OpenGL apelate anterior;
 }
 
