@@ -102,8 +102,8 @@
     <ClCompile Include="include\glm\detail\glm.cpp">
       <Filter>Header Files\template-built-ins\glm\detail</Filter>
     </ClCompile>
-    <ClCompile Include="04_02_indexare.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="04_03a_doua_VAO.cpp">
+      <Filter>Source Files\template-built-ins</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
