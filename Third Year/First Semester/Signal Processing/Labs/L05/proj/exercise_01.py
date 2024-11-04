@@ -38,30 +38,30 @@ answers = f"""
 """
 
 # a) & b) & c)
-# print(answers)
+print(answers)
 
 # d)
-# SignalAnalyzer.plot_frequency_magnitude("Magnitude of Signal", train_signal, train_sample_rate)
+SignalAnalyzer.plot_frequency_magnitude("Magnitude of Signal", train_signal, train_sample_rate)
 
 # e)
-# try:
-#     train_signal_norm = SignalAnalyzer.remove_continuous_component(train_signal)
-#     name = "Signal Without Continous Component"
-#
-#     fig, ax = plt.subplots(1, figsize=(10, 5))
-#     fig.suptitle(name)
-#
-#     plt.xlim([np.min(train_samples), np.max(train_samples)])
-#
-#     ax.plot(train_samples, train_signal_norm, linewidth=0.75)
-#
-#     plt.savefig(f"plots/{name}.pdf", format="pdf")
-#     plt.savefig(f"plots/{name}.png", format="png")
-#
-#     plt.show()
-#
-# except ValueError as err:
-#     print(err)
+try:
+    train_signal_norm = SignalAnalyzer.remove_continuous_component(train_signal)
+    name = "Signal Without Continous Component"
+
+    fig, ax = plt.subplots(1, figsize=(10, 5))
+    fig.suptitle(name)
+
+    plt.xlim([np.min(train_samples), np.max(train_samples)])
+
+    ax.plot(train_samples, train_signal_norm, linewidth=0.75)
+
+    plt.savefig(f"plots/{name}.pdf", format="pdf")
+    plt.savefig(f"plots/{name}.png", format="png")
+
+    plt.show()
+
+except ValueError as err:
+    print(err)
 
 # f)
 train_signal_norm = SignalAnalyzer.remove_continuous_component(train_signal)
@@ -70,6 +70,8 @@ top_k_frequencies = SignalAnalyzer.get_top_k_frequencies(train_signal_norm, trai
 frequency_in_year = np.multiply(top_k_frequencies, 3600 * 24 * 365)
 
 answer_f = f"""
+        f)
+
     The top 4 frequencies of the signal are: 
     \t{', '.join(f'{freq:.12f}' for freq in top_k_frequencies)}
 
@@ -98,14 +100,33 @@ first_monday_index = sliced_df[sliced_df["Datetime"].dt.weekday == 0].index[0]
 month_signal = train_df.loc[first_monday_index : first_monday_index + MONTH_SAMPLES_COUNT - 1, "Count"].values
 month_samples = np.array([i + 1 for i in range(MONTH_SAMPLES_COUNT)])
 
-# plot("Month Plot", month_samples, month_signal, xlim=[month_samples.min(), month_samples.max()], file_format="pdf")
-# plot("Month Plot", month_samples, month_signal, xlim=[month_samples.min(), month_samples.max()], file_format="png")
+plot("Month Plot", month_samples, month_signal, xlim=[month_samples.min(), month_samples.max()], file_format="pdf")
+plot("Month Plot", month_samples, month_signal, xlim=[month_samples.min(), month_samples.max()], file_format="png")
 
 # h)
 
-# TODO: solve this
 answer_h = """
+        h)
+
+    If we know the sample rate of this signal we could first find the time span of the signal.
+    
+    Approach:
+        If the time span is extensive, such as 2 years, you can analyze the signal for repeating patterns:
+        - by analyzing the signal over the years, we can determine when each year starts and ends. This helps us identify the months
+        - we can observe monthly patterns, knowing there are 12 in a year we can pinpoint the month in which the signal started
+            by synchronizing them with the start of the year to see which months first
+        - similarly we can do the same thing for weeks and days, thus determining the specific day of recording
+        
+    Problem:
+        It depends a lot on the time span of the signal, the higher the better
+        If we do not have all the information needed, we will not always be able to determine the exact date:
+            Example:
+                * 2 or more years: month, day
+                * 1 or less years: day
+                * 1 week or less: nothing
 """
+
+print(answer_h)
 
 # i)
 filter_amount = 0.95
