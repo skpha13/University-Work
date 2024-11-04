@@ -113,6 +113,39 @@ class SignalAnalyzer:
         sorted_magnitude_indices = np.argsort(magnitude)[-k:][::-1]
         return frequencies[sorted_magnitude_indices]
 
+    @staticmethod
+    def filter_signal(signal: np.ndarray, filter_amount: float = 0.95) -> np.ndarray:
+        """Filters the given signal in the frequency domain by removing components
+        below a certain magnitude threshold determined by the specified filter amount.
+
+        Args:
+            signal (np.ndarray): The input signal as a 1D numpy array.
+            filter_amount (float, optional):
+                The proportion of the signal's magnitude spectrum to retain.
+                Should be between 0 and 1, with a default value of 0.95.
+
+        Raises:
+            ValueError: If filter_amount is not between 0 and 1.
+
+        Returns
+            np.ndarray:
+                The filtered signal obtained by applying the inverse Fourier transform
+                to the modified frequency domain representation.
+        """
+        if not (0 <= filter_amount <= 1):
+            raise ValueError("Filter amount must be between 0 and 1")
+
+        fourier = np.fft.fft(signal)
+        magnitude = np.abs(fourier)
+
+        threshold = np.percentile(magnitude, filter_amount * 100)
+        indices_to_remove = np.where(magnitude <= threshold)[0]
+
+        for index in indices_to_remove:
+            fourier[index] = 0 + 0j
+
+        return np.real(np.fft.ifft(fourier))
+
 
 def segment_signal(signal: np.ndarray) -> np.ndarray:
     """Segments the input signal into overlapping windows.

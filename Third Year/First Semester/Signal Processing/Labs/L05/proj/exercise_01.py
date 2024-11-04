@@ -1,16 +1,18 @@
 import os
 
 import numpy as np
+import pandas as pd
 from matplotlib import pyplot as plt
+from utils.plot import plot
 from utils.signal import SignalAnalyzer
 
 dir_path = f"{os.getcwd()}/plots"
 if not os.path.exists(dir_path):
     os.makedirs(dir_path)
 
-
-train_signal = np.genfromtxt("data/train.csv", delimiter=",")[1:, 2]
-train_samples = np.genfromtxt("data/train.csv", delimiter=",")[1:, 0]
+train_df = pd.read_csv("data/train.csv", parse_dates=["Datetime"], dayfirst=True)
+train_samples = train_df["ID"].values[1:]
+train_signal = train_df["Count"].values[1:]
 train_sample_rate = 1 / 3600
 
 
@@ -36,43 +38,78 @@ answers = f"""
 """
 
 # a) & b) & c)
-print(answers)
+# print(answers)
 
 # d)
-SignalAnalyzer.plot_frequency_magnitude("Magnitude of Signal", train_signal, train_sample_rate)
+# SignalAnalyzer.plot_frequency_magnitude("Magnitude of Signal", train_signal, train_sample_rate)
 
 # e)
-try:
-    train_signal_norm = SignalAnalyzer.remove_continuous_component(train_signal)
-    name = "Signal Without Continous Component"
-
-    fig, ax = plt.subplots(1, figsize=(10, 5))
-    fig.suptitle(name)
-
-    plt.xlim([np.min(train_samples), np.max(train_samples)])
-
-    ax.plot(train_samples, train_signal_norm, linewidth=0.75)
-
-    plt.savefig(f"plots/{name}.pdf", format="pdf")
-    plt.savefig(f"plots/{name}.png", format="png")
-
-    plt.show()
-
-except ValueError as err:
-    print(err)
+# try:
+#     train_signal_norm = SignalAnalyzer.remove_continuous_component(train_signal)
+#     name = "Signal Without Continous Component"
+#
+#     fig, ax = plt.subplots(1, figsize=(10, 5))
+#     fig.suptitle(name)
+#
+#     plt.xlim([np.min(train_samples), np.max(train_samples)])
+#
+#     ax.plot(train_samples, train_signal_norm, linewidth=0.75)
+#
+#     plt.savefig(f"plots/{name}.pdf", format="pdf")
+#     plt.savefig(f"plots/{name}.png", format="png")
+#
+#     plt.show()
+#
+# except ValueError as err:
+#     print(err)
 
 # f)
 train_signal_norm = SignalAnalyzer.remove_continuous_component(train_signal)
 top_k_frequencies = SignalAnalyzer.get_top_k_frequencies(train_signal_norm, train_sample_rate, 4)
-time_in_seconds = np.divide(1, top_k_frequencies)
-time_in_days = np.divide(time_in_seconds, 3600 * 24)
-time_in_months = np.divide(time_in_days, 31)
-time_in_years = np.divide(time_in_months, 12)
 
-print(top_k_frequencies)
-print(time_in_seconds)
-print(time_in_days)
-print(time_in_months)
-print(time_in_years)
+frequency_in_year = np.multiply(top_k_frequencies, 3600 * 24 * 365)
 
-print(np.multiply(top_k_frequencies, 3600 * 24 * 365))
+answer_f = f"""
+    The top 4 frequencies of the signal are: 
+    \t{', '.join(f'{freq:.12f}' for freq in top_k_frequencies)}
+
+    The represented frequencies by year are: 
+    \t{', '.join(f'{freq:.2f}' for freq in frequency_in_year)}
+
+    For each frequency:
+        - 0.48   ≈ Every half a year
+        - 0.96   ≈ Every year
+        - 365.00 ≈ Every day 
+        - 1.44   ≈ Every year and a half
+"""
+
+print(answer_f)
+
+# g)
+
+# number of days in a month
+MONTH_SPAN = 28
+# number of samples that represent one month of data
+MONTH_SAMPLES_COUNT = 24 * MONTH_SPAN
+
+sliced_df = train_df.iloc[1001:]
+first_monday_index = sliced_df[sliced_df["Datetime"].dt.weekday == 0].index[0]
+
+month_signal = train_df.loc[first_monday_index : first_monday_index + MONTH_SAMPLES_COUNT - 1, "Count"].values
+month_samples = np.array([i + 1 for i in range(MONTH_SAMPLES_COUNT)])
+
+# plot("Month Plot", month_samples, month_signal, xlim=[month_samples.min(), month_samples.max()], file_format="pdf")
+# plot("Month Plot", month_samples, month_signal, xlim=[month_samples.min(), month_samples.max()], file_format="png")
+
+# h)
+
+# TODO: solve this
+answer_h = """
+"""
+
+# i)
+filter_amount = 0.95
+filtered_signal = SignalAnalyzer.filter_signal(month_signal, filter_amount)
+
+plot("Filtering of Signal", month_samples, month_signal, filtered_signal, file_format="pdf")
+plot("Filtering of Signal", month_samples, month_signal, filtered_signal, file_format="png")
