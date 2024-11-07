@@ -3,9 +3,9 @@ import random
 
 import networkx
 import numpy as np
-from matplotlib import pyplot as plt
 
-from power_method import power_method
+from proj.utils import plot_graph
+from utils import power_method
 
 seed = 0
 np.random.seed(seed)
@@ -18,29 +18,23 @@ r_np = np.linalg.eig(A)
 print(f"Eigen Vector: {eigen_vector}\nEigen Value: {eigen_value}")
 
 print(f"Numpy eigen vectors:\n{r_np.eigenvectors}")
-print(f"Numpy eigen value:\n{r_np.eigenvalues}")
-print()
+print(f"Numpy eigen value:\n{r_np.eigenvalues}\n")
 
 eps = 1e-5
 with open("./data/graphs.pickle", "rb") as file:
     graphs = pickle.load(file)
 
-    for graph in graphs:
-        G = networkx.convert_matrix.from_numpy_array(graph)
-        networkx.draw(G, with_labels=True)
-        plt.show()
-
     for index, graph in enumerate(graphs):
-        eigens = np.linalg.eig(graph)
         converted_graph = networkx.convert_matrix.from_numpy_array(graph)
+        eigens = np.linalg.eig(graph)
         largest_clique = networkx.algorithms.approximation.clique.max_clique(converted_graph)
-
         eigen_values = np.unique(np.round(eigens.eigenvalues, 3))
+
+        plot_graph(fname=f"graph_{index:02}", graph=converted_graph)
 
         print(f"GRAPH {index}:\nEigen Values: {eigen_values}")
         print(f"IS Complete: {len(eigen_values) == 2}")
         print(f"Largest Clique: {largest_clique}")
         print(
-            f"IS Bipartite: {-1 * max(eigens.eigenvalues) - eps <= min(eigens.eigenvalues) <= -1 * max(eigens.eigenvalues) + eps}"
+            f"IS Bipartite: {-1 * max(eigens.eigenvalues) - eps <= min(eigens.eigenvalues) <= -1 * max(eigens.eigenvalues) + eps}\n"
         )
-        print()
