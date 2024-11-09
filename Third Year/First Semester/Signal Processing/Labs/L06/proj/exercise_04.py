@@ -96,3 +96,73 @@ Although the Butterworth filter doesn't have ripples in the passband I find it b
 print(answer_e)
 
 # f)
+cutoff_frequency = train_sample_rate * 0.05
+orders = [3, 5, 7]
+rps = [2, 5, 10]
+rp_default = 5
+
+butter_orders = []
+cheby_orders = []
+cheby_rps = []
+
+for order in orders:
+    b, a = butter(order, cutoff_frequency, "low", analog=False, output="ba", fs=train_sample_rate)
+    b_cheby, a_cheby = cheby1(
+        order, rp_default, cutoff_frequency, "low", analog=False, output="ba", fs=train_sample_rate
+    )
+
+    butter_orders.append(lfilter(b, a, x))
+    cheby_orders.append(lfilter(b_cheby, a_cheby, x))
+
+plot_name = "Different Orders"
+filtered_orders = butter_orders + cheby_orders
+fig, ax = plt.subplots(1)
+fig.suptitle(plot_name)
+
+ax.plot(x_samples, x)
+
+for filtered_signal in filtered_orders:
+    ax.plot(x_samples, filtered_signal)
+
+legend_labels = (
+    ["Rough Signal"]
+    + [f"Butterworth ord: {order}" for order in orders]
+    + [f"Chebyshev ord: {order}" for order in orders]
+)
+plt.legend(legend_labels)
+
+save_plot(plot_name)
+fig.show()
+
+most_optimal_order = 3
+filtered_rps = []
+for rp in rps:
+    b, a = cheby1(most_optimal_order, rp, cutoff_frequency, "low", analog=False, output="ba", fs=train_sample_rate)
+    filtered_rps.append(lfilter(b, a, x))
+
+plot_name = "Different rps"
+fig, ax = plt.subplots(1)
+fig.suptitle(plot_name)
+
+ax.plot(x_samples, x)
+for filtered_signal in filtered_rps:
+    ax.plot(x_samples, filtered_signal)
+
+plt.legend(["Rough Signal"] + [f"rp: {rp}" for rp in rps])
+
+save_plot(plot_name)
+fig.show()
+
+most_optimal_rp = 5
+
+answer_f = f"""
+    Most optimal order: {most_optimal_order}
+    Most optimal rp: {most_optimal_rp}
+    
+    I obeserved that a higher order greatly increases the response delay, which is something 
+that would throw off the `predictions` for the number of cars at a certain hour.
+    A lower rp introduces less ripple in the passband, however it also makes the cutoff more gradual.
+I went for something in the middle to balance those 2 trade-offs.
+"""
+
+print(answer_f)
