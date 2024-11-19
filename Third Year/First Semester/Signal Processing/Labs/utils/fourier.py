@@ -115,3 +115,18 @@ def winding_frequency_on_unit_circle(x: np.ndarray, omegas: list[float]) -> np.n
         z.append(zw)
 
     return np.array(z)
+
+
+def filter_noise_2d(image: np.ndarray, radius: int) -> np.ndarray:
+    fft = np.fft.fftshift(np.fft.fft2(image))
+
+    shape = np.shape(fft)
+    center_x = shape[1] // 2
+    center_y = shape[0] // 2
+
+    for row in range(len(fft)):
+        for column in range(len(fft[row])):
+            if (column - center_x) ** 2 + (row - center_y) ** 2 >= radius**2:
+                fft[row][column] = 0
+
+    return np.real(np.fft.ifft2(np.fft.ifftshift(fft)))
