@@ -84,7 +84,8 @@ glm::mat4
 	view, projection,  
 	translateSystem, 
 	rotateSun, 
-	scalePlanet, rotatePlanetAxis, rotatePlanet, translatePlanet;
+	scalePlanet, rotatePlanetAxis, rotatePlanet, translatePlanet,
+	scaleSatellite, rotateSatelliteAxis, rotateSatellite, translateSatellite;
 
 // Stiva de matrice - inglobeaza matricea de modelare si cea de vizualizare
 std::stack<glm::mat4> mvStack;
@@ -184,7 +185,7 @@ void CreateVBO(void)
 				Indices[AUX + 4 * index + 3] = index4;
 			}
 		}
-	};
+	}
 
 	//  Transmiterea datelor prin buffere;
 
@@ -301,7 +302,11 @@ void RenderFunction(void)
 	rotatePlanet = glm::rotate(glm::mat4(1.0f), (float)0.0005 * timeElapsed, glm::vec3(-0.1, 1.0, 0.0));
 	// Planeta este translatata in raport cu astrul central
 	translatePlanet = glm::translate(glm::mat4(1.0f), glm::vec3(150.0, 0.0, 0.0));
-	
+
+	scaleSatellite = glm::scale(glm::mat4(1.0f), glm::vec3(0.2, 0.2, 0.2));
+	rotateSatelliteAxis = glm::rotate(glm::mat4(1.0f), (float)0.001 * timeElapsed, glm::vec3(0.0, 1.0, 0.0));
+	rotateSatellite = glm::rotate(glm::mat4(1.0f), (float)0.0005 * timeElapsed, glm::vec3(-0.2, 1.0, 0.0));
+	translateSatellite = glm::translate(glm::mat4(1.0f), glm::vec3(200.0, 0.0, 0.0));
 
 	// Desenarea primitivelor + manevrarea stivei de matrice
 	// 
@@ -311,7 +316,8 @@ void RenderFunction(void)
 	// 0) Pentru intregul sistem
 	// Matrice de translatie pentru intregul sistem
 	mvStack.top() *= translateSystem;	 // In varful stivei:  view * translateSystem 
-	mvStack.push(mvStack.top());         // Pe poz 2 a stivei: view * translateSystem 
+	mvStack.push(mvStack.top());         // Pe poz 2 a stivei: view * translateSystem
+	mvStack.push(mvStack.top());
 
 	// 1) Pentru Soare (astrul central)
 
@@ -363,6 +369,33 @@ void RenderFunction(void)
 	
 	glm::vec4 center(0.0f, 0.0f, 0.0f, 1.0f);
 	glm::vec4 newCenter = mvStack.top() * center;
+
+	glUniform1f(centerYLocation, newCenter.y);
+	
+	// desenarea fetelor
+	for (int patr = 0; patr < (NR_PARR + 1) * NR_MERID; patr++)
+	{
+		if ((patr + 1) % (NR_PARR + 1) != 0) // nu sunt considerate fetele in care in stanga jos este Polul Nord
+			glDrawElements(
+				GL_QUADS,
+				4,
+				GL_UNSIGNED_SHORT,
+				(GLvoid*)((2 * (NR_PARR + 1) * (NR_MERID)+4 * patr) * sizeof(GLushort)));
+	}
+
+	mvStack.pop();
+	mvStack.top() *= rotateSatellite;
+	mvStack.top() *= translateSatellite;  
+	mvStack.top() *= rotateSatelliteAxis;
+	mvStack.top() *= scaleSatellite;
+
+	glUniformMatrix4fv(viewModelLocation, 1, GL_FALSE, glm::value_ptr(mvStack.top()));
+
+	codCol = 5;														
+	glUniform1i(codColLocation, codCol);
+	glUniform1f(radiusLocation, 0.2 * radius);
+	
+	newCenter = mvStack.top() * center;
 
 	glUniform1f(centerYLocation, newCenter.y);
 	

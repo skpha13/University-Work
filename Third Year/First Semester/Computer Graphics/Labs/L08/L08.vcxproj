@@ -175,8 +175,8 @@ xcopy /y /d "$(ProjectDir)lib\x64\SOIL\*.dll" "$(OutDir)" &amp;</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="08_01_stive_matrice.cpp" />
     <ClCompile Include="include\glm\detail\glm.cpp" />
+    <ClCompile Include="main.cpp" />
     <ClCompile Include="src\glad.c" />
     <ClCompile Include="src\imageloader.cpp" />
     <ClCompile Include="src\loadShaders.cpp" />
@@ -644,8 +644,6 @@ xcopy /y /d "$(ProjectDir)lib\x64\SOIL\*.dll" "$(OutDir)" &amp;</Command>
     <None Include="lib\x64\SOIL\SOIL.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="08_01_Shader.frag" />
-    <Content Include="08_01_Shader.vert" />
     <Content Include="08_02a_Shader.frag" />
     <Content Include="08_02a_Shader.vert" />
     <Content Include="08_03_Shader.frag" />

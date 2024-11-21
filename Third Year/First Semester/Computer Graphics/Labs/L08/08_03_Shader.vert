@@ -21,10 +21,11 @@ out vec3 ex_Color;      //  Transmite culoarea (de modificat in Shader.frag);
 //  Variabile uniforme;
 uniform mat4 viewShader;
 uniform mat4 projectionShader;
+uniform mat4 myMatrix;
 
 void main(void)
 {
-    gl_Position = projectionShader*viewShader*in_Position;
+    gl_Position = projectionShader*viewShader*myMatrix*in_Position;
     ex_Color=in_Color;
 } 
  

@@ -44,6 +44,9 @@ void main(void)
         case 4:
             out_Color = mix(vec3(0.0, 0.0, 1.0), vec3(0.0, 1.0, 1.0), yCoord);
             break;
+        case 5:
+            out_Color = mix(vec3(1.0, 1.0, 0.0), vec3(1.0, 0.0, 1.0), yCoord);
+            break;
         default: 
             out_Color=ex_Color;
     }
