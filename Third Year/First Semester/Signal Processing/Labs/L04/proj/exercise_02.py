@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from utils.plot import plot_with_samples
 from utils.sinewave import sinusoidal_signal
-from utils.types import Signals
+from utils.custom_types import Signals
 
 dir_path = f"{os.getcwd()}/plots"
 if not os.path.exists(dir_path):

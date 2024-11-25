@@ -4,7 +4,7 @@ from typing import Literal, Union
 import matplotlib.pyplot as plt
 import numpy as np
 
-from utils.types import Signals
+from utils.custom_types import Signals
 
 # create folder if it does not exist
 os.makedirs(f"{os.getcwd()}/plots", exist_ok=True)
@@ -15,6 +15,7 @@ def plot(
     x: Union[np.ndarray, list],
     *ys: Union[np.ndarray, list[list]],
     xlim: list[float] | None = None,
+    titles: list[str] | None = None,
     file_format: Literal["pdf", "png", "svg"] = "pdf",
 ) -> None:
     """Plots multiple line graphs in subplots and saves them as a file.
@@ -24,6 +25,7 @@ def plot(
         x (np.ndarray, list): The x values for the plot.
         *ys (np.ndarray, list[list]): Any number of y arrays for the plots.
         xlim (list[float], optional): The limits for the x-axis as a list [xmin, xmax]. If None, default limits are used.
+        titles (list[str], optional): The titles for each subplot. If None, no titles.
         file_format: (Literal["pdf", "png", "svg"], optional): The format in which to save the plot file. Defaults to "png".
 
     Returns:
@@ -32,12 +34,19 @@ def plot(
     fig, axs = plt.subplots(len(ys), squeeze=False)
     fig.suptitle(name)
 
+    index_title = 0
     for ax, y in zip(axs.flat, ys):
         ax.plot(x, y)
 
         if xlim is not None:
             ax.set_xlim(xlim)
 
+        if titles is not None:
+            ax.set_title(titles[index_title])
+
+        index_title += 1
+
+    plt.tight_layout()
     plt.savefig(fname=f"./plots/{name}.{file_format}", format=f"{file_format}")
     plt.show()
 
