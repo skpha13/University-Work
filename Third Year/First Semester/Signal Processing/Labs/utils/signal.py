@@ -168,3 +168,28 @@ def segment_signal(signal: np.ndarray) -> np.ndarray:
         segmented_signal.append(signal[i : i + window_size])
 
     return np.array(segmented_signal)
+
+
+def kfold_split(series: np.ndarray, k: int) -> tuple[np.ndarray, np.ndarray]:
+    """Splits a 1D series into k folds.
+
+    Args:
+        series (numpy array): 1D array to be split.
+        k (int): Number of folds.
+
+    Returns:
+        list of numpy arrays: List of k folds.
+    """
+
+    folds = []
+    y_true = []
+    step = 1
+
+    for i in range(0, len(series) - k + 1, step):
+        if i + k >= len(series):
+            break
+
+        folds.append(series[i : i + k])
+        y_true.append(series[i + k])
+
+    return np.array(folds), np.array(y_true)
