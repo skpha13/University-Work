@@ -303,10 +303,10 @@ void RenderFunction(void)
 	// Planeta este translatata in raport cu astrul central
 	translatePlanet = glm::translate(glm::mat4(1.0f), glm::vec3(150.0, 0.0, 0.0));
 
-	scaleSatellite = glm::scale(glm::mat4(1.0f), glm::vec3(0.2, 0.2, 0.2));
+	scaleSatellite = glm::scale(glm::mat4(1.0f), glm::vec3(0.5, 0.5, 0.5));
 	rotateSatelliteAxis = glm::rotate(glm::mat4(1.0f), (float)0.001 * timeElapsed, glm::vec3(0.0, 1.0, 0.0));
-	rotateSatellite = glm::rotate(glm::mat4(1.0f), (float)0.0005 * timeElapsed, glm::vec3(-0.2, 1.0, 0.0));
-	translateSatellite = glm::translate(glm::mat4(1.0f), glm::vec3(200.0, 0.0, 0.0));
+	rotateSatellite = glm::rotate(glm::mat4(1.0f), (float)0.0005 * timeElapsed, glm::vec3(0.0, 1.0, 0.0));
+	translateSatellite = glm::translate(glm::mat4(1.0f), glm::vec3(150.0, 0.0, 0.0));
 
 	// Desenarea primitivelor + manevrarea stivei de matrice
 	// 
@@ -383,7 +383,7 @@ void RenderFunction(void)
 				(GLvoid*)((2 * (NR_PARR + 1) * (NR_MERID)+4 * patr) * sizeof(GLushort)));
 	}
 
-	mvStack.pop();
+	// mvStack.pop();
 	mvStack.top() *= rotateSatellite;
 	mvStack.top() *= translateSatellite;  
 	mvStack.top() *= rotateSatelliteAxis;
