@@ -11,7 +11,7 @@ class Model(ABC):
     """
 
     @abstractmethod
-    def fit(self):
+    def fit(self, series: np.ndarray):
         raise NotImplementedError("Subclasses must implement the 'fit' method.")
 
     @abstractmethod
@@ -19,10 +19,34 @@ class Model(ABC):
         raise NotImplementedError("Subclasses must implement the 'predict' method.")
 
 
-class ARModel:
-    """Implements an Auto-Regressive (AR) model for time series prediction."""
+class EMA(Model):
+    """Implements an exponential moving average (EMA) model for time series prediction."""
 
-    def __init__(self) -> None:
+    def __init__(self, alpha: float) -> None:
+        self.alpha = np.clip([alpha], 0, 1)[0]
+
+    def fit(self, series: np.ndarray) -> np.ndarray:
+        s = np.zeros(len(series)).astype(np.float64)
+        s[0] = series[0]
+
+        for t in range(1, len(series)):
+            s[t] = self.alpha * series[t] + (1 - self.alpha) * s[t - 1]
+
+        return s
+
+    def predict(self):
+        raise NotImplementedError("EMA Model does not need a predict implementation")
+
+
+class ARModel(Model):
+    """Implements an Auto-Regressive (AR) model for time series prediction.
+
+    Attributes:
+        p (int): The dimension of the AR model (number of lags).
+        m (int): The number of points in the prediction horizon.
+    """
+
+    def __init__(self, p: int, m: int) -> None:
         """Initializes an ARModel instance with default attributes set to None."""
 
         self.A: np.ndarray | None = None
@@ -32,30 +56,31 @@ class ARModel:
         self.rank: int | None = None
         self.s: np.ndarray | None = None
 
-    def fit(self, series: np.ndarray, p: int, m: int) -> None:
+        self.p: int = p
+        self.m: int = m
+
+    def fit(self, series: np.ndarray) -> None:
         """Fits the AR model to a given time series.
 
         Args:
             series (np.ndarray): The time series data as a 1D NumPy array.
-            p (int): The dimension of the AR model (number of lags).
-            m (int): The number of points in the prediction horizon.
 
         Raises:
             ValueError: If the time horizon (`m`) is smaller than the AR model dimension (`p`).
         """
 
-        if m < p:
+        if self.m < self.p:
             raise ValueError(
-                f"Invalid configuration: Time horizon (m={m}) cannot be smaller than "
-                f"the dimension of AR (p={p}). Ensure m >= p."
+                f"Invalid configuration: Time horizon (m={self.m}) cannot be smaller than "
+                f"the dimension of AR (p={self.p}). Ensure m >= p."
             )
 
         A = []
-        self.b = series[-m:]
+        self.b = series[-self.m :]
 
-        for i in range(m, 0, -1):
-            index = len(series) - i - 1
-            A.append(series[index - p + 1 : index + 1])
+        for i in range(self.m, 0, -1):
+            index = len(series) - i
+            A.append(series[index - self.p : index])
 
         self.A = np.array(A)
         self.x, self.residuals, self.rank, self.s = np.linalg.lstsq(A, self.b)

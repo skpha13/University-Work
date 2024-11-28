@@ -53,10 +53,11 @@ plt.show()
 
 # c)
 
-ar = ARModel()
 p = 7
 m = N // 2
-ar.fit(series, p, m)
+
+ar = ARModel(p, m)
+ar.fit(series)
 y_value = ar.predict()
 
 answer_c = f"""The predicted value for p={p} and m={m} is: {y_value}"""
@@ -75,8 +76,8 @@ for m in ms:
         y_pred = []
 
         for fold in folds:
-            ar = ARModel()
-            ar.fit(fold, p, m)
+            ar = ARModel(p, m)
+            ar.fit(fold)
             y_pred.append(ar.predict())
 
         errors.append(mean_squared_error(y_true, y_pred))

@@ -12,9 +12,6 @@ dir_path = f"{os.getcwd()}/plots"
 if not os.path.exists(dir_path):
     os.makedirs(dir_path)
 
-# TODO: write this in notebook:
-# convolutia unor variabile aleatoare este ca adunarea -> rezultatul va fi un gaussian bell curve
-
 x = np.random.rand(100)
 
 x2 = np.convolve(x, x)
