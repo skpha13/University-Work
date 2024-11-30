@@ -38,6 +38,40 @@ class EMA(Model):
         raise NotImplementedError("EMA Model does not need a predict implementation")
 
 
+class MA(Model):
+    def __init__(self, q: int):
+        self.A: np.ndarray | None = None
+        self.b: np.ndarray | None = None
+        self.thetas: np.ndarray | None = None
+        self.residuals: np.ndarray | None = None
+        self.rank: int | None = None
+        self.s: np.ndarray | None = None
+
+        self.q = q
+        self.mean: int = 0
+
+    def fit(self, series: np.ndarray):
+        self.mean = np.mean(series)
+        series = series - self.mean
+        m = len(series) - self.q
+
+        A = []
+        self.b = series[self.q :]
+
+        e = np.concatenate(([self.mean], np.random.normal(0, 1, size=len(series))))
+        for i in range(0, m):
+            A.append(e[i : i + self.q])
+
+        self.A = np.array(A)
+        self.thetas, self.residuals, self.rank, self.s = np.linalg.lstsq(A, self.b)
+
+    def predict(self) -> np.float64:
+        return self.mean + np.dot(self.thetas, self.b[-len(self.thetas) :])
+
+    def mse(self) -> np.float64:
+        return self.residuals[0]
+
+
 class ARModel(Model):
     """Implements an Auto-Regressive (AR) model for time series prediction.
 
@@ -110,6 +144,3 @@ class ARModel(Model):
 
         p = len(self.x)
         return np.dot(self.x, self.b[-p:])
-
-    def mse(self) -> np.float64:
-        np.sum(np.power(self.residuals, 2)) / len(self.residuals)
