@@ -1,6 +1,8 @@
 import numpy as np
 from matplotlib import pyplot as plt
 
+from utils.sinewave import sinusoidal_signal
+
 
 class SignalAnalyzer:
     """A utility class for analyzing signals using Fast Fourier Transform (FFT)."""
@@ -193,3 +195,14 @@ def kfold_split(series: np.ndarray, k: int) -> tuple[np.ndarray, np.ndarray]:
         y_true.append(series[i + k])
 
     return np.array(folds), np.array(y_true)
+
+
+def predefined_series(N: int = 1000) -> np.ndarray:
+    ts = np.linspace(0, 1, N)
+    trend_function = lambda x: x**2
+    trend = np.array([trend_function(x) for x in ts])
+    season = sinusoidal_signal(0.1, 5, 1, 0, N) + sinusoidal_signal(0.2, 3, 1, 0, N)
+    noise = np.random.normal(0, 0.01, N)
+    series = trend + season + noise
+
+    return series

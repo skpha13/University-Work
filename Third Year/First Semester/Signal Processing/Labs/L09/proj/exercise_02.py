@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from sklearn.metrics import root_mean_squared_error
 from utils.models import EMA
-from utils.sinewave import sinusoidal_signal
+from utils.signal import predefined_series
 
 os.makedirs(f"{os.getcwd()}/plots", exist_ok=True)
 np.random.seed(0)
@@ -13,11 +13,7 @@ np.random.seed(0)
 
 N = 1000
 ts = np.linspace(0, 1, N)
-trend_function = lambda x: x**2
-trend = np.array([trend_function(x) for x in ts])
-season = sinusoidal_signal(0.1, 5, 1, 0, N) + sinusoidal_signal(0.2, 3, 1, 0, N)
-noise = np.random.normal(0, 0.01, N)
-series = trend + season + noise
+series = predefined_series(N)
 
 # 2)
 alphas = []

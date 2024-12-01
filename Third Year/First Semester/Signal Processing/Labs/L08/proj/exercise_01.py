@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.colors import Normalize
 from sklearn.metrics import mean_squared_error
-from utils.models import ARModel
+from utils.models import AR
 from utils.plot import plot
 from utils.signal import kfold_split
 from utils.sinewave import sinusoidal_signal
@@ -56,7 +56,7 @@ plt.show()
 p = 7
 m = N // 2
 
-ar = ARModel(p, m)
+ar = AR(p, m)
 ar.fit(series)
 y_value = ar.predict()
 
@@ -76,7 +76,7 @@ for m in ms:
         y_pred = []
 
         for fold in folds:
-            ar = ARModel(p, m)
+            ar = AR(p, m)
             ar.fit(fold)
             y_pred.append(ar.predict())
 

@@ -72,7 +72,7 @@ class MA(Model):
         return self.residuals[0]
 
 
-class ARModel(Model):
+class AR(Model):
     """Implements an Auto-Regressive (AR) model for time series prediction.
 
     Attributes:
@@ -144,3 +144,27 @@ class ARModel(Model):
 
         p = len(self.x)
         return np.dot(self.x, self.b[-p:])
+
+
+class ARMA(Model):
+    """Implements an Auto-Regressive Moving Average (ARMA) model for time series prediction."""
+
+    def __init__(self, p: int, q: int):
+        self.p = p
+        self.q = q
+
+        self.ar = AR(p, q)
+        self.ma = MA(q)
+
+        self.mean = 0
+
+    def fit(self, series: np.ndarray):
+        self.mean = np.mean(series)
+
+        self.ar.fit(series)
+        self.ma.fit(series)
+
+    def predict(self):
+        ar_prediction = self.ar.predict()
+        ma_prediction = self.ma.predict()
+        return ar_prediction + ma_prediction - self.mean
