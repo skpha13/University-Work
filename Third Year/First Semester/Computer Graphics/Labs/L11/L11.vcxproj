@@ -175,8 +175,8 @@ xcopy /y /d "$(ProjectDir)lib\x64\SOIL\*.dll" "$(OutDir)" &amp;</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="11_02_amestecare_3D.cpp" />
     <ClCompile Include="include\glm\detail\glm.cpp" />
-    <ClCompile Include="main.cpp" />
     <ClCompile Include="src\glad.c" />
     <ClCompile Include="src\imageloader.cpp" />
     <ClCompile Include="src\loadShaders.cpp" />
@@ -642,6 +642,10 @@ xcopy /y /d "$(ProjectDir)lib\x64\SOIL\*.dll" "$(OutDir)" &amp;</Command>
     <None Include="lib\x64\GL\glew32.dll" />
     <None Include="lib\x64\GL\glew32s.dll" />
     <None Include="lib\x64\SOIL\SOIL.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="11_02_Shader.frag" />
+    <Content Include="11_02_Shader.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

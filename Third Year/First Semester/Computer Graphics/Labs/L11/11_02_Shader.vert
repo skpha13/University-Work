@@ -25,6 +25,10 @@ uniform vec3 objectColor;
 uniform vec3 lightColor;
 uniform int codCol;
 
+vec3 fogColor = vec3(1.0, 1.0, 1.0);
+float fogStart = 700.0;
+float fogEnd = 1000.0;
+
 void main(void)
   {
   	if ( codCol==0 )
@@ -56,8 +60,12 @@ void main(void)
         float spec = pow(max(dot(viewDir, reflectDir), 0.0), 1);
         vec3 specular = specularStrength * spec * lightColor;  
         
+        float z = length(FragPos - inViewPos);
+        float f = (z - fogStart) / (fogEnd - fogStart);
+        f = clamp(f, 0.0, 1.0);
+        
         vec3 result = (ambient + diffuse ) * in_Color;
-	    ex_Color = vec4(result, 1.0f);
+	    ex_Color = mix(vec4(result, 1.0), vec4(fogColor, 1.0), f);
     }
 	if ( codCol==1 )
 		gl_Position = projection*view*matrUmbra*in_Position;
