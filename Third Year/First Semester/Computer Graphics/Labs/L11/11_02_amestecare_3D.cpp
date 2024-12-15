@@ -33,6 +33,7 @@
 #include "glm/gtc/matrix_transform.hpp"
 #include "glm/gtx/transform.hpp"
 #include "glm/gtc/type_ptr.hpp"
+#include <glm/gtx/quaternion.hpp>
 
 
 using namespace std;
@@ -234,6 +235,23 @@ void Initialize(void)
 	viewPosLoc = glGetUniformLocation(ProgramId, "viewPos");
 	codColLocation = glGetUniformLocation(ProgramId, "codCol");
 }
+
+glm::mat4 rotateObjectWithAngles(float pitch, float yaw, float roll) {
+	float pitchRad = glm::radians(pitch);
+	float yawRad = glm::radians(yaw);
+	float rollRad = glm::radians(roll);
+
+	glm::quat qPitch = glm::angleAxis(pitchRad, glm::vec3(1.0f, 0.0f, 0.0f)); // X-axis
+	glm::quat qYaw = glm::angleAxis(yawRad, glm::vec3(0.0f, 1.0f, 0.0f));     // Y-axis
+	glm::quat qRoll = glm::angleAxis(rollRad, glm::vec3(0.0f, 0.0f, 1.0f));   // Z-axis
+
+	glm::quat quaternion = qYaw * qPitch * qRoll;
+	quaternion = glm::normalize(quaternion);
+
+	glm::mat4 rotationMatrix = glm::toMat4(quaternion);
+	return rotationMatrix;
+}
+
 void RenderFunction(void)
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -273,12 +291,13 @@ void RenderFunction(void)
 	glDrawElements(GL_TRIANGLES, 18, GL_UNSIGNED_BYTE, 0); // piramida
 
 
+	glm::mat4 rotate = rotateObjectWithAngles(45.0f, 0.0f, 0.0f);
 
-	glBindBuffer(GL_ARRAY_BUFFER, VboId1); // patrat
+	glBindBuffer(GL_ARRAY_BUFFER, VboId1); // cub
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EboId1);
 	AssociateAttributePointers();
 
-	view = glm::lookAt(Obs, PctRef, Vert) * glm::translate(glm::mat4(1.0f), glm::vec3(-900, -900, 0.0f));
+	view = glm::lookAt(Obs, PctRef, Vert) * glm::translate(glm::mat4(1.0f), glm::vec3(-900, -900, 0.0f)) * rotate;
 	glUniformMatrix4fv(viewLocation, 1, GL_FALSE, &view[0][0]);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_BYTE, 0);
 
