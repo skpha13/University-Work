@@ -90,9 +90,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\imageloader.cpp">
       <Filter>Source Files\template-built-ins\Utils</Filter>
     </ClCompile>
@@ -104,6 +101,9 @@
     </ClCompile>
     <ClCompile Include="include\glm\detail\glm.cpp">
       <Filter>Header Files\template-built-ins\glm\detail</Filter>
+    </ClCompile>
+    <ClCompile Include="11_02_amestecare_3D.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1478,6 +1478,12 @@
     </None>
     <None Include="lib\x64\GL\DLLs\glew32.dll">
       <Filter>Resource Files\template-built-ins\DLLs\64b</Filter>
+    </None>
+    <None Include="11_02_Shader.frag">
+      <Filter>Resource Files\shaders\example</Filter>
+    </None>
+    <None Include="11_02_Shader.vert">
+      <Filter>Resource Files\shaders\example</Filter>
     </None>
   </ItemGroup>
 </Project>

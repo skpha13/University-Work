@@ -25,9 +25,8 @@ uniform vec3 objectColor;
 uniform vec3 lightColor;
 uniform int codCol;
 
-vec3 fogColor = vec3(1.0, 1.0, 1.0);
-float fogStart = 700.0;
-float fogEnd = 1000.0;
+vec3 fogColor = vec3(0.5, 0.5, 0.5);
+float density = 0.00075f;
 
 void main(void)
   {
@@ -60,14 +59,16 @@ void main(void)
         float spec = pow(max(dot(viewDir, reflectDir), 0.0), 1);
         vec3 specular = specularStrength * spec * lightColor;  
         
-        float z = length(FragPos - inViewPos);
-        float f = (z - fogStart) / (fogEnd - fogStart);
-        f = clamp(f, 0.0, 1.0);
+        float distance = length(viewPos - FragPos);
+        float fogFactor = exp(-density * density * distance * distance);
+        fogFactor = clamp(fogFactor, 0.0, 1.0);
         
         vec3 result = (ambient + diffuse ) * in_Color;
-	    ex_Color = mix(vec4(result, 1.0), vec4(fogColor, 1.0), f);
+        vec3 color = fogFactor * vec3(result) + (1.0 - fogFactor) * fogColor;
+
+	    ex_Color = vec4(color, 1.0);
     }
 	if ( codCol==1 )
-		gl_Position = projection*view*matrUmbra*in_Position;
+		gl_Position = projection * view * matrUmbra * in_Position;
    } 
  

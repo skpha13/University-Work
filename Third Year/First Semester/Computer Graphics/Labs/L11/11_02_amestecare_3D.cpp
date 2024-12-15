@@ -271,6 +271,20 @@ void RenderFunction(void)
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EboId2);
 	AssociateAttributePointers();
 	glDrawElements(GL_TRIANGLES, 18, GL_UNSIGNED_BYTE, 0); // piramida
+
+
+
+	glBindBuffer(GL_ARRAY_BUFFER, VboId1); // patrat
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EboId1);
+	AssociateAttributePointers();
+
+	view = glm::lookAt(Obs, PctRef, Vert) * glm::translate(glm::mat4(1.0f), glm::vec3(-900, -900, 0.0f));
+	glUniformMatrix4fv(viewLocation, 1, GL_FALSE, &view[0][0]);
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_BYTE, 0);
+
+	view = glm::lookAt(Obs, PctRef, Vert);
+	glUniformMatrix4fv(viewLocation, 1, GL_FALSE, &view[0][0]);
+
 	// buffer 1
 	glBindBuffer(GL_ARRAY_BUFFER, VboId1);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EboId1);
@@ -281,14 +295,14 @@ void RenderFunction(void)
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_BYTE, 0); // umbra 
 
 	// desenare obiecte transparente
-	glEnable(GL_BLEND);
-	//glDepthMask(GL_FALSE);
-	glBlendFunc(GL_SRC_ALPHA, GL_SRC_ALPHA); // de testat alte variante https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/glBlendFunc.xhtml si factori-destinatie: GL_ONE, GL_DST_ALPHA, GL_ONE_MINUS_SRC_ALPHA
-	codCol = 0;
-	glUniform1i(codColLocation, codCol);
-	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_BYTE, 0);  // cubul
-	glDepthMask(GL_TRUE);
-	glDisable(GL_BLEND);
+	//glEnable(GL_BLEND);
+	////glDepthMask(GL_FALSE);
+	//glBlendFunc(GL_SRC_ALPHA, GL_SRC_ALPHA); // de testat alte variante https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/glBlendFunc.xhtml si factori-destinatie: GL_ONE, GL_DST_ALPHA, GL_ONE_MINUS_SRC_ALPHA
+	//codCol = 0;
+	//glUniform1i(codColLocation, codCol);
+	//glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_BYTE, 0);  // cubul
+	//glDepthMask(GL_TRUE);
+	//glDisable(GL_BLEND);
 
 	glutSwapBuffers();
 	glFlush();
