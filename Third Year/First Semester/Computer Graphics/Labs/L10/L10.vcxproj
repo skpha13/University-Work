@@ -175,8 +175,8 @@ xcopy /y /d "$(ProjectDir)lib\x64\SOIL\*.dll" "$(OutDir)" &amp;</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="10_02_umbra.cpp" />
     <ClCompile Include="include\glm\detail\glm.cpp" />
-    <ClCompile Include="main.cpp" />
     <ClCompile Include="src\glad.c" />
     <ClCompile Include="src\imageloader.cpp" />
     <ClCompile Include="src\loadShaders.cpp" />
@@ -648,6 +648,8 @@ xcopy /y /d "$(ProjectDir)lib\x64\SOIL\*.dll" "$(OutDir)" &amp;</Command>
   <ItemGroup>
     <Content Include="10_01_Shader.frag" />
     <Content Include="10_01_Shader.vert" />
+    <Content Include="10_02_Shader.frag" />
+    <Content Include="10_02_Shader.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

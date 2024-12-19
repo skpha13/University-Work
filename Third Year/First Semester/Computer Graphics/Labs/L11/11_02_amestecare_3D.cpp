@@ -62,6 +62,7 @@ float Vx = 0.0, Vy = 0.0, Vz = 1.0;
 float alpha = 0.0f, beta = 0.0f, dist = 600.0f;
 float incr_alpha1 = 0.01f, incr_alpha2 = 0.01f;
 float width = 800, height = 600, znear = 0.1, fov = 45;
+int angle_step = 1, angle = 0;
 
 // sursa de lumina
 float xL = 500.f, yL = 0.f, zL = 400.f;
@@ -236,6 +237,11 @@ void Initialize(void)
 	codColLocation = glGetUniformLocation(ProgramId, "codCol");
 }
 
+void angle_update()
+{
+	angle = (angle + angle_step) % 360;
+}
+
 glm::mat4 rotateObjectWithAngles(float pitch, float yaw, float roll) {
 	float pitchRad = glm::radians(pitch);
 	float yawRad = glm::radians(yaw);
@@ -291,13 +297,14 @@ void RenderFunction(void)
 	glDrawElements(GL_TRIANGLES, 18, GL_UNSIGNED_BYTE, 0); // piramida
 
 
-	glm::mat4 rotate = rotateObjectWithAngles(45.0f, 0.0f, 0.0f);
+	glm::mat4 rotate = rotateObjectWithAngles(angle, 0.0f, angle);
+	angle_update();
 
 	glBindBuffer(GL_ARRAY_BUFFER, VboId1); // cub
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EboId1);
 	AssociateAttributePointers();
 
-	view = glm::lookAt(Obs, PctRef, Vert) * glm::translate(glm::mat4(1.0f), glm::vec3(-900, -900, 0.0f)) * rotate;
+	view = glm::lookAt(Obs, PctRef, Vert) * glm::translate(glm::mat4(1.0f), glm::vec3(-900, -900, 200.0f)) * rotate;
 	glUniformMatrix4fv(viewLocation, 1, GL_FALSE, &view[0][0]);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_BYTE, 0);
 
