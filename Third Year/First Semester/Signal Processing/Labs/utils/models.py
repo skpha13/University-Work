@@ -168,3 +168,56 @@ class ARMA(Model):
         ar_prediction = self.ar.predict()
         ma_prediction = self.ma.predict()
         return ar_prediction + ma_prediction - self.mean
+
+
+class ARSparse(Model):
+    """Implements the AR model using sparse representation."""
+
+    MAX_ITERATIONS: int = 100
+    TOLERANCE_THRESHOLD: float = 1e-5
+
+    def __init__(self, p: int, m: int):
+        self.A: np.ndarray | None = None
+        self.b: np.ndarray | None = None
+        self.x: np.ndarray | None = None
+        self.best_indices: list[int] = []
+
+        self.p: int = p
+        self.m: int = m
+
+    def fit(self, series: np.ndarray):
+        candidate_regressors = []
+        self.b = series[-self.m :]
+        self.A = np.empty((self.m, 0))
+
+        for i in range(self.m, 0, -1):
+            index = len(series) - i
+            candidate_regressors.append(series[index - self.p : index])
+
+        candidate_regressors = np.array(candidate_regressors)
+
+        # TODO: repeat this either max iterations or until the updated error is not as big as tolerance
+        # also keep in mind to go at max m regressors
+
+        best_index = -1
+        best_residual = np.inf
+        for i in range(self.p):
+            if i in self.best_indices:
+                continue
+
+            A = np.column_stack((self.A, candidate_regressors[:, i]))
+            x, residual, _, _ = np.linalg.lstsq(A, self.b)
+
+            if residual < best_residual:
+                best_index = i
+                best_residual = residual
+
+        if best_index == -1:
+            # TODO:
+            raise Exception("TODO")
+
+        self.best_indices.append(best_index)
+        print(self.best_indices)
+
+    def predict(self):
+        pass
