@@ -240,4 +240,5 @@ class ARSparse(Model):
                 "Ensure that 'fit()' has been called with appropriate data before prediction."
             )
 
-        return np.dot(self.x, self.b[-self.s :])
+        # return np.dot(self.b[-self.s :], self.x)
+        return np.dot(self.b[-self.s :], self.x[::-1])
