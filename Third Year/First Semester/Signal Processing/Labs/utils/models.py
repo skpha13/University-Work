@@ -173,10 +173,7 @@ class ARMA(Model):
 class ARSparse(Model):
     """Implements the AR model using sparse representation."""
 
-    MAX_ITERATIONS: int = 100
-    TOLERANCE_THRESHOLD: float = 1e-5
-
-    def __init__(self, p: int, m: int):
+    def __init__(self, p: int, m: int, s: int):
         self.A: np.ndarray | None = None
         self.b: np.ndarray | None = None
         self.x: np.ndarray | None = None
@@ -184,8 +181,12 @@ class ARSparse(Model):
 
         self.p: int = p
         self.m: int = m
+        self.s: int = s
 
     def fit(self, series: np.ndarray):
+        if self.s > self.m:
+            raise ValueError("Number of columns selected should be lower then the number of constraints. (s > m)")
+
         candidate_regressors = []
         self.b = series[-self.m :]
         self.A = np.empty((self.m, 0))
@@ -196,28 +197,47 @@ class ARSparse(Model):
 
         candidate_regressors = np.array(candidate_regressors)
 
-        # TODO: repeat this either max iterations or until the updated error is not as big as tolerance
-        # also keep in mind to go at max m regressors
+        for step in range(self.s):
+            best_index = -1
+            best_residual = np.inf
+            for i in range(self.p):
+                if i in self.best_indices:
+                    continue
 
-        best_index = -1
-        best_residual = np.inf
-        for i in range(self.p):
-            if i in self.best_indices:
-                continue
+                A = np.column_stack((self.A, candidate_regressors[:, i]))
+                x, _, _, _ = np.linalg.lstsq(A, self.b)
 
-            A = np.column_stack((self.A, candidate_regressors[:, i]))
-            x, residual, _, _ = np.linalg.lstsq(A, self.b)
+                residual = self.b - A @ x
+                residual = np.sum(np.square(residual))
 
-            if residual < best_residual:
-                best_index = i
-                best_residual = residual
+                if residual < best_residual:
+                    best_index = i
+                    best_residual = residual
 
-        if best_index == -1:
-            # TODO:
-            raise Exception("TODO")
+            if best_index == -1:
+                raise RuntimeError(f"No index found at step: {step}.")
 
-        self.best_indices.append(best_index)
-        print(self.best_indices)
+            self.A = np.column_stack((self.A, candidate_regressors[:, best_index]))
+            self.best_indices.append(best_index)
+            self.x, _, _, _ = np.linalg.lstsq(self.A, self.b)
 
     def predict(self):
-        pass
+        if self.A is None:
+            raise ValueError(
+                "Prediction error: Model regressors are not initialized. "
+                "Ensure that 'fit()' has been called with appropriate data before prediction."
+            )
+
+        if self.x is None:
+            raise ValueError(
+                "Prediction error: Model coefficients are not initialized. "
+                "Ensure that 'fit()' has been called with appropriate data before prediction."
+            )
+
+        if self.b is None:
+            raise ValueError(
+                "Prediction error: Expected values (b) are not initialized. "
+                "Ensure that 'fit()' has been called with appropriate data before prediction."
+            )
+
+        return np.dot(self.x, self.b[-self.s :])
