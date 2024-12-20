@@ -79,7 +79,7 @@ class L1Selector(Selector):
 
         # select top m indices to have x the same shape as b
         # for m = 2 and p = 3, x would be of shape 3 and be of shape 2, which would not work with our predict as it computes x * b
-        x_sorted = np.argsort(x)
-        selected_x_indices = x_sorted[-self.m :]
+        # x_sorted = np.argsort(x)
+        # selected_x_indices = x_sorted[-self.m :]
 
-        return np.array(candidate_regressors[:, selected_x_indices]), x[selected_x_indices], selected_x_indices.tolist()
+        return None, x, None

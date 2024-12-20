@@ -178,6 +178,7 @@ class ARSparse(Model):
         self.b: np.ndarray | None = None
         self.x: np.ndarray | None = None
         self.best_indices: list[int] = []
+        self.b_generalized: np.ndarray | None = None
 
         self.p: int = p
         self.m: int = m
@@ -192,6 +193,8 @@ class ARSparse(Model):
 
         candidate_regressors = []
         self.b = series[-self.m :]
+        # the b column vector but of size p instead of m, used for predictions
+        self.b_generalized = series[-self.p :]
 
         for i in range(self.m, 0, -1):
             index = len(series) - i
@@ -206,8 +209,8 @@ class ARSparse(Model):
         self._validate_attribute("x")
 
         # for greedy algorithm the number of columns in A are reduced
-        index: int = 0
+        b = self.b_generalized
         if isinstance(self.selector, GreedySelector):
-            index = -self.s
+            b = b[self.best_indices]
 
-        return np.dot(self.b[index:], self.x)
+        return np.dot(b, self.x)
