@@ -4,16 +4,6 @@ import numpy as np
 
 
 class Selector(ABC):
-    @abstractmethod
-    def initialize(self, ar_sparse):
-        pass
-
-    @abstractmethod
-    def select(self, candidate_regressors: np.ndarray):
-        pass
-
-
-class GreedySelector(Selector):
     def __init__(self):
         self.s: int | None = None
         self.p: int | None = None
@@ -34,6 +24,12 @@ class GreedySelector(Selector):
         self.b = ar_sparse.b
         self.best_indices: list[int] = []
 
+    @abstractmethod
+    def select(self, candidate_regressors: np.ndarray):
+        pass
+
+
+class GreedySelector(Selector):
     def select(self, candidate_regressors: np.ndarray) -> tuple[np.ndarray, np.ndarray, list[int]]:
         self.A = np.empty((self.m, 0))
 
@@ -65,11 +61,5 @@ class GreedySelector(Selector):
 
 
 class L1(Selector):
-    def __init__(self):
-        pass
-
-    def initialize(self, ar_sparse):
-        pass
-
     def select(self, candidate_regressors: np.ndarray):
         pass

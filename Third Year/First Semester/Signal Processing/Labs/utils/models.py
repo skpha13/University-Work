@@ -198,6 +198,7 @@ class ARSparse(Model):
             candidate_regressors.append(series[index - self.p : index])
 
         candidate_regressors = np.array(candidate_regressors)
+
         self.selector.initialize(self)
         self.A, self.x, self.best_indices = self.selector.select(candidate_regressors)
 

@@ -88,4 +88,4 @@ def main_integer_series():
 
 
 if __name__ == "__main__":
-    main_predict()
+    main()
