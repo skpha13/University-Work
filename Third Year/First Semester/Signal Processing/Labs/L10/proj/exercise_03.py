@@ -58,7 +58,7 @@ def main_predict():
 
     preview_offset = 600
     preview_index = 700
-    plot_name = "ARSparse Predictions 2"
+    plot_name = "ARSparse Predictions"
 
     fig, ax = plt.subplots()
     fig.suptitle(plot_name)
@@ -76,7 +76,7 @@ def main_predict():
     plt.show()
 
 
-def main_sparse():
+def main_integer_series():
     series = np.array([i for i in range(10)])
 
     p = 3
@@ -88,4 +88,4 @@ def main_sparse():
 
 
 if __name__ == "__main__":
-    main()
+    main_predict()

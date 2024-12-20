@@ -1,6 +1,9 @@
 from abc import ABC, abstractmethod
+from typing import Literal
 
 import numpy as np
+
+from utils.sparse_selection import L1, GreedySelector, Selector
 
 
 class Model(ABC):
@@ -17,6 +20,13 @@ class Model(ABC):
     @abstractmethod
     def predict(self):
         raise NotImplementedError("Subclasses must implement the 'predict' method.")
+
+    def _validate_attribute(self, attribute_name: str):
+        if getattr(self, attribute_name) is None:
+            raise ValueError(
+                f"Prediction error: Model {attribute_name} values are not initialized. "
+                "Ensure that 'fit()' has been called with appropriate data before prediction."
+            )
 
 
 class EMA(Model):
@@ -129,18 +139,8 @@ class AR(Model):
             ValueError: If the model coefficients (`x`) are not initialized.
             ValueError: If the expected values (`b`) are not loaded.
         """
-
-        if self.x is None:
-            raise ValueError(
-                "Prediction error: Model coefficients are not initialized. "
-                "Ensure that 'fit()' has been called with appropriate data before prediction."
-            )
-
-        if self.b is None:
-            raise ValueError(
-                "Prediction error: Expected values (b) are not initialized. "
-                "Ensure that 'fit()' has been called with appropriate data before prediction."
-            )
+        self._validate_attribute("x")
+        self._validate_attribute("b")
 
         p = len(self.x)
         return np.dot(self.x, self.b[-p:])
@@ -173,7 +173,7 @@ class ARMA(Model):
 class ARSparse(Model):
     """Implements the AR model using sparse representation."""
 
-    def __init__(self, p: int, m: int, s: int):
+    def __init__(self, p: int, m: int, s: int, selector: Literal["greedy", "l1"] = "greedy"):
         self.A: np.ndarray | None = None
         self.b: np.ndarray | None = None
         self.x: np.ndarray | None = None
@@ -183,62 +183,27 @@ class ARSparse(Model):
         self.m: int = m
         self.s: int = s
 
+        self.selectors: dict[str, Selector] = {"greedy": GreedySelector(), "l1": L1()}
+        self.selector: Selector = self.selectors[selector]
+
     def fit(self, series: np.ndarray):
         if self.s > self.m:
             raise ValueError("Number of columns selected should be lower then the number of constraints. (s > m)")
 
         candidate_regressors = []
         self.b = series[-self.m :]
-        self.A = np.empty((self.m, 0))
 
         for i in range(self.m, 0, -1):
             index = len(series) - i
             candidate_regressors.append(series[index - self.p : index])
 
         candidate_regressors = np.array(candidate_regressors)
-
-        for step in range(self.s):
-            best_index = -1
-            best_residual = np.inf
-            for i in range(self.p):
-                if i in self.best_indices:
-                    continue
-
-                A = np.column_stack((self.A, candidate_regressors[:, i]))
-                x, _, _, _ = np.linalg.lstsq(A, self.b)
-
-                residual = self.b - A @ x
-                residual = np.sum(np.square(residual))
-
-                if residual < best_residual:
-                    best_index = i
-                    best_residual = residual
-
-            if best_index == -1:
-                raise RuntimeError(f"No index found at step: {step}.")
-
-            self.A = np.column_stack((self.A, candidate_regressors[:, best_index]))
-            self.best_indices.append(best_index)
-            self.x, _, _, _ = np.linalg.lstsq(self.A, self.b)
+        self.selector.initialize(self)
+        self.A, self.x, self.best_indices = self.selector.select(candidate_regressors)
 
     def predict(self):
-        if self.A is None:
-            raise ValueError(
-                "Prediction error: Model regressors are not initialized. "
-                "Ensure that 'fit()' has been called with appropriate data before prediction."
-            )
+        self._validate_attribute("A")
+        self._validate_attribute("x")
+        self._validate_attribute("b")
 
-        if self.x is None:
-            raise ValueError(
-                "Prediction error: Model coefficients are not initialized. "
-                "Ensure that 'fit()' has been called with appropriate data before prediction."
-            )
-
-        if self.b is None:
-            raise ValueError(
-                "Prediction error: Expected values (b) are not initialized. "
-                "Ensure that 'fit()' has been called with appropriate data before prediction."
-            )
-
-        # return np.dot(self.b[-self.s :], self.x)
-        return np.dot(self.b[-self.s :], self.x[::-1])
+        return np.dot(self.b[-self.s :], self.x)
