@@ -3,7 +3,7 @@ from typing import Literal
 
 import numpy as np
 
-from utils.sparse_selection import L1, GreedySelector, Selector
+from utils.sparse_selection import GreedySelector, L1Selector, Selector
 
 
 class Model(ABC):
@@ -183,7 +183,7 @@ class ARSparse(Model):
         self.m: int = m
         self.s: int = s
 
-        self.selectors: dict[str, Selector] = {"greedy": GreedySelector(), "l1": L1()}
+        self.selectors: dict[str, Selector] = {"greedy": GreedySelector(), "l1": L1Selector()}
         self.selector: Selector = self.selectors[selector]
 
     def fit(self, series: np.ndarray):
@@ -203,8 +203,11 @@ class ARSparse(Model):
         self.A, self.x, self.best_indices = self.selector.select(candidate_regressors)
 
     def predict(self):
-        self._validate_attribute("A")
         self._validate_attribute("x")
-        self._validate_attribute("b")
 
-        return np.dot(self.b[-self.s :], self.x)
+        # for greedy algorithm the number of columns in A are reduced
+        index: int = 0
+        if isinstance(self.selector, GreedySelector):
+            index = -self.s
+
+        return np.dot(self.b[index:], self.x)
