@@ -197,6 +197,82 @@ def kfold_split(series: np.ndarray, k: int) -> tuple[np.ndarray, np.ndarray]:
     return np.array(folds), np.array(y_true)
 
 
+def hankelize_series(series: np.ndarray, L: int) -> np.ndarray:
+    """Generates a Hankel-like matrix from a given time series, where sliding windows
+    of length L are represented as columns.
+
+    Args:
+        series (np.ndarray): The input time series as a 1D NumPy array.
+        L (int): The length of each sliding window.
+
+    Returns:
+        np.ndarray: A 2D NumPy array where each column is a sliding window of length L
+        extracted from the input series.
+    """
+
+    hankel_matrix = []
+
+    for i in range(0, len(series) - L + 1):
+        hankel_matrix.append(series[i : i + L])
+
+    return np.array(hankel_matrix).T
+
+
+def hankelize_matrix(matrix: np.ndarray) -> np.ndarray:
+    """Creates a Hankelized version of the given matrix by modifying its anti-diagonal elements.
+
+    This function iterates over the matrix, calculating the mean of the anti-diagonal elements
+    for each diagonal and replacing those elements with the calculated mean. A Hankelized matrix
+    has constant values along each anti-diagonal.
+
+    Args:
+        matrix (np.ndarray): The input 2D square numpy array to be Hankelized.
+
+    Returns:
+        np.ndarray: A new matrix where each anti-diagonal has been replaced with the mean of
+                    the original anti-diagonal values.
+    """
+    rows, cols = matrix.shape
+    hankelized_matrix = np.copy(matrix)
+
+    def fill_with_mean(hankelized_matrix: np.ndarray, matrix: np.ndarray, indices: np.ndarray) -> np.ndarray:
+        row_indices = indices[:, 0]
+        col_indices = indices[:, 1]
+
+        anti_diagonal_elements = matrix[row_indices, col_indices]
+        mean = np.mean(anti_diagonal_elements)
+        hankelized_matrix[row_indices, col_indices] = mean
+
+        return hankelized_matrix
+
+    # upper triangle
+    for diag in range(1, rows):
+        indices = np.array([[diag - i, i] for i in range(diag + 1)])
+        hankelized_matrix = fill_with_mean(hankelized_matrix, matrix, indices)
+
+    # everything in between
+    diag = rows - 1
+    for column_offset in range(1, cols - rows + 1):
+        indices = np.array([[diag - i, i + column_offset] for i in range(diag + 1)])
+        hankelized_matrix = fill_with_mean(hankelized_matrix, matrix, indices)
+
+    # lower triangle
+    diag = rows - 1
+    for column_offset in range(cols - rows + 1, cols - 1):
+        indices = np.array([[diag - i, i + column_offset] for i in range(diag)])
+        hankelized_matrix = fill_with_mean(hankelized_matrix, matrix, indices)
+        diag -= 1
+
+    return hankelized_matrix
+
+
+def dehankelize_matrix(matrix: np.ndarray) -> np.ndarray:
+    dehankelized_matrix = matrix[:, 0]
+    dehankelized_matrix = np.concatenate((dehankelized_matrix, matrix[-1, 1:]))
+
+    return dehankelized_matrix
+
+
 def predefined_series(N: int = 1000) -> np.ndarray:
     ts = np.linspace(0, 1, N)
     trend_function = lambda x: x**2
