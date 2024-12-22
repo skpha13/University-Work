@@ -3,7 +3,8 @@ import os
 import matplotlib.pyplot as plt
 import numpy as np
 from sklearn.metrics import root_mean_squared_error
-from utils.signal import dehankelize_matrix, hankelize_matrix, hankelize_series, predefined_series
+from utils.analysis import SingleSpectrumAnalysis
+from utils.signal import predefined_series
 
 os.makedirs(f"{os.getcwd()}/plots", exist_ok=True)
 
@@ -13,18 +14,8 @@ def main():
     series = predefined_series(N)
 
     L = 200
-    X = hankelize_series(series, L)
-
-    U, S, V = np.linalg.svd(X, full_matrices=False)
-
-    hankelized_matrix = np.zeros(V.shape)
-    for i in range(len(S)):
-        Xi = S[i] * np.outer(U.T[i], V[i])
-
-        hankelized_xi = hankelize_matrix(Xi)
-        hankelized_matrix += hankelized_xi
-
-    dehankelized_matrix = dehankelize_matrix(hankelized_matrix)
+    ssa = SingleSpectrumAnalysis(L)
+    dehankelized_matrix = ssa.analyze(series)
 
     error = root_mean_squared_error(series, dehankelized_matrix)
 
@@ -33,8 +24,8 @@ def main():
     plot_name = "Singular Spectrum Analysis"
     plt.title(plot_name)
 
-    preview_offset = 600
-    preview_index = 700
+    preview_offset = 0
+    preview_index = N
     xs = np.linspace(0, 1, preview_index)
 
     plt.plot(xs[preview_offset:], series[preview_offset:preview_index])
@@ -57,10 +48,10 @@ def test_hankel_matrix():
 
     x = np.array(x)
 
-    hankel = hankelize_matrix(x)
+    hankel = SingleSpectrumAnalysis.hankelize_matrix(x)
     print(hankel)
 
-    dehankel = dehankelize_matrix(hankel)
+    dehankel = SingleSpectrumAnalysis.dehankelize_matrix(hankel)
     print(dehankel)
 
 
