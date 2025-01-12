@@ -1,5 +1,6 @@
 import numpy as np
-from utils.signal import hankelize_series, predefined_series
+from utils.analysis import SingleSpectrumAnalysis
+from utils.signal import predefined_series
 
 seed = 0
 np.random.seed(seed)
@@ -10,7 +11,7 @@ def main():
     series = predefined_series(N)
 
     L = 200
-    X = hankelize_series(series, L)
+    X = SingleSpectrumAnalysis.hankelize_series(series, L)
 
     xxt = X @ X.T
     xtx = X.T @ X
