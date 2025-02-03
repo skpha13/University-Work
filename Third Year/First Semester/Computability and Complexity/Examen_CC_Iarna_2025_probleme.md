@@ -42,9 +42,8 @@ Poate fi scrisa ca suma de primele `k` numere intregi (suma lui Gauss)
 
 ```math
 T(0) = 0
-
-\\
-
+```
+```math
 T(k+1) = T(k) + T(k+1)
 ```
 
