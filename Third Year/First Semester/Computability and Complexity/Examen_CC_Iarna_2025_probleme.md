@@ -5,7 +5,7 @@
 Sa se arate ca bijectia lui Cantor:
 
 ```math
-<x, y> = \frac{(x+y)(x+y+1)}{2} + y
+f(x, y) = \frac{(x+y)(x+y+1)}{2} + y
 ```
 
 este o functie primitiv recursiva
