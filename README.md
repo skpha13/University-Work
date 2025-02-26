@@ -44,3 +44,9 @@
   - [Numerical Computing in Computer Science](https://github.com/skpha13/University-Work/tree/main/Third%20Year/First%20Semester/Numerical%20Computing%20in%20Computer%20Science)
   - [Signal Processing](https://github.com/skpha13/University-Work/tree/main/Third%20Year/First%20Semester/Signal%20Processing)
   - [Software Engineering](https://github.com/skpha13/University-Work/tree/main/Third%20Year/First%20Semester/Software%20Engineering)
+
+- Second semester:
+  - [Computer Systems Security](https://github.com/skpha13/University-Work/tree/main/Third%20Year/Second%20Semester/Computer%20Systems%20Security)
+  - [Cryptographic Protocols](https://github.com/skpha13/University-Work/tree/main/Third%20Year/Second%20Semester/Cryptographic%20Protocols)
+  - [Introduction to Natural Language Processing](https://github.com/skpha13/University-Work/tree/main/Third%20Year/Second%20Semester/Introduction%20to%20Natural%20Language%20Processing#introduction-to-natural-language-processing)
+  - [Machine Learning in Computer Vision](https://github.com/skpha13/University-Work/tree/main/Third%20Year/Second%20Semester/Machine%20Learning%20in%20Computer%20Vision)
