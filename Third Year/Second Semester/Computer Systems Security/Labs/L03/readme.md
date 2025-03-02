@@ -44,3 +44,100 @@ If attackers have access to multiple messages encrypted with the same key, they 
 
 ## 2
 
+### .1 Arnold Cipher
+
+#### Encryption
+
+Encryption requires a book (physical or scanned) with numbered pages.
+
+In order to encrypt a word, it must be located among the pages of the book (which implies that the book is large enough and / or contains a maximum of words).
+
+Each word is encoded by a triplet of numbers: a page number, a line number on that page and a word number on that line.
+
+#### Decryption
+
+Decryption requires knowing / possessing the book used during encryption. It is essential that it is the same book (or the same edition, with the same layout).
+
+For each triplet (X, Y, Z), the receiver must open the book on page X, count line Y on the page, and note the word number Z on the line.
+
+#### Security
+
+The total number of books in the world is finite (approximately 129,864,880), which theoretically allows for a brute-force attack to decrypt messages encoded using books as ciphers.
+
+#### Cryptanalysis
+
+An attacker could attempt a brute-force attack by systematically guessing books and checking whether the resulting message is coherent rather than random gibberish.
+
+### .2 Caesar Box Cipher
+ 
+#### Encryption
+
+1. Determine the grid size:
+
+   - The message length N must fit into a square grid of size M×M (where M=ceil(sqrt(N))
+
+   - If the message is too short, it is padded with extra characters (e.g., X, _, or spaces).
+
+2. Write the message into the grid row-wise:
+
+    - Example plaintext: `SECRETMESSAGE`
+
+    - If N=14, then M=4 (since 4×4=16, and padding is added).
+
+```
+S E C R  
+E T M E  
+S S A G  
+E X X X
+```
+
+3. Read the message column-wise to obtain ciphertext:
+
+Reading top to bottom, left to right: `SESEETSMCAXXRGEXX`
+
+#### Decryption
+
+1. The recipient must know the grid size and arrange the ciphertext column-wise into a square grid.
+
+2. The text is then read row-wise to reconstruct the original plaintext.
+
+3. Any padding characters are removed to retrieve the exact message.
+
+#### Security
+
+If the attacker knows the approximate message length, they can test possible grid sizes and attempt reconstruction.
+
+#### Cryptanalysis
+
+Brute-force attacks: Since the grid size is limited by message length, all possible transpositions can be tested.
+
+## 3
+
+Frequencies
+
+```[('J', 122), ('E', 79), ('G', 71), ('M', 66), ('W', 66), ('H', 62), ('O', 56), ('C', 48), ('F', 45), ('D', 41), ('K', 37), ('N', 36), ('A', 28), ('Q', 24), ('L', 22), ('P', 20), ('V', 19), ('R', 17), ('U', 17), ('B', 16), ('Y', 13), ('X', 6), ('T', 5), ('S', 4), ('I', 1)]```
+
+<img src="imgs/frequency_analysis.png" alt="frequency analysis">
+
+After substitution
+
+```
+ALICE AND BOB ARE THE WORLDS MOST FAMOUS CRYPTOGRAPHIC COUPLE. SINCE
+THEIR INVENTION IN 1978, THEY HAVE AT ONCE BEEN CALLED INSEPARABLE, AND
+HAVE BEEN THE SUBJECT OF NUMEROUS DIVORCES, TRAVELS, AND TORMENTS. IN THE
+ENSUING YEARS, OTHER CHARACTERS HAVE JOINED THEIR CRYPTOGRAPHIC FAMILY.
+THERES EVE, THE PASSIVE AND SUBMISSIVE EAVESDROPPER, MALLORY THE MALICIOUS
+ATTACKER, AND TRENT, TRUSTED BY ALL, JUST TO NAME A FEW. WHILE ALICE, BOB, AND
+THEIR EXTENDED FAMILY WERE ORIGINALLY USED TO EXPLAIN HOW PUBLIC KEY
+CRYPTOGRAPHY WORKS, THEY HAVE SINCE BECOME WIDELY USED ACROSS OTHER
+SCIENCE AND ENGINEERING DOMAINS. THEIR INFLUENCE CONTINUES TO GROW
+OUTSIDE OF ACADEMIA AS WELL: ALICE AND BOB ARE NOW A PART OF GEEK LORE, AND
+SUBJECT TO NARRATIVES AND VISUAL DEPICTIONS THAT COMBINE PEDAGOGY
+WITH IN-JOKES, OFTEN REFLECTING OF THE SEXIST AND HETERONORMATIVE
+ENVIRONMENTS IN WHICH THEY WERE BORN AND CONTINUE TO BE USED. MORE THAN
+JUST THE WORLDS MOST FAMOUS CRYPTOGRAPHIC COUPLE, ALICE AND BOB HAVE
+BECOME AN ARCHETYPE OF DIGITAL EXCHANGE, AND A LENS THROUGH WHICH TO VIEW
+BROADER DIGITAL CULTURE. Q.DUPONT AND A.CATTAPAN CRYPTOCOUPLE
+```
+
+<img src="imgs/solution.png" alt="solution">
