@@ -29,7 +29,7 @@
 - 2 - P
 - 3 - P
 - 4 - NP
-- 5 - P
+- 5 - NP
 - 6 - NP
 
 **P** stands for **Polynomial** or **Non-Negligible** and **NP** for **Nondeterministic-Polynomial** or **Negligible**. 
