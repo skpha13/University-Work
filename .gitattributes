@@ -6,8 +6,6 @@
 *.gif linguist-vendored
 *.xlsx linguist-vendored
 *.pptx linguist-vendored
-*.zip filter=lfs diff=lfs merge=lfs -text
 *.tar.gz linguist-vendored
 *.csv linguist-vendored
 *.pl linguist-vendored
-*.rar filter=lfs diff=lfs merge=lfs -text
