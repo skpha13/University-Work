@@ -41,12 +41,15 @@
 - First semester:
   - [Computability and Complexity](https://github.com/skpha13/University-Work/tree/main/Third%20Year/First%20Semester/Computability%20and%20Complexity)
   - [Computer Graphics](https://github.com/skpha13/University-Work/tree/main/Third%20Year/First%20Semester/Computer%20Graphics)
+  - [Concepts and Applications in Computer Vision](https://github.com/skpha13/University-Work/tree/main/Third%20Year/First%20Semester/Concepts%20and%20Applications%20in%20Computer%20Vision)
   - [Numerical Computing in Computer Science](https://github.com/skpha13/University-Work/tree/main/Third%20Year/First%20Semester/Numerical%20Computing%20in%20Computer%20Science)
   - [Signal Processing](https://github.com/skpha13/University-Work/tree/main/Third%20Year/First%20Semester/Signal%20Processing)
   - [Software Engineering](https://github.com/skpha13/University-Work/tree/main/Third%20Year/First%20Semester/Software%20Engineering)
+  - [The Archaeology of Intelligent Machines](https://github.com/skpha13/University-Work/tree/main/Third%20Year/First%20Semester/The%20Archaeology%20of%20Intelligent%20Machines)
 
 - Second semester:
   - [Computer Systems Security](https://github.com/skpha13/University-Work/tree/main/Third%20Year/Second%20Semester/Computer%20Systems%20Security)
   - [Cryptographic Protocols](https://github.com/skpha13/University-Work/tree/main/Third%20Year/Second%20Semester/Cryptographic%20Protocols)
+  - [Introduction to Deep Learning](https://github.com/skpha13/University-Work/tree/main/Third%20Year/Second%20Semester/Introduction%20to%20Deep%20Learning)
   - [Introduction to Natural Language Processing](https://github.com/skpha13/University-Work/tree/main/Third%20Year/Second%20Semester/Introduction%20to%20Natural%20Language%20Processing#introduction-to-natural-language-processing)
   - [Machine Learning in Computer Vision](https://github.com/skpha13/University-Work/tree/main/Third%20Year/Second%20Semester/Machine%20Learning%20in%20Computer%20Vision)
