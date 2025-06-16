@@ -9,3 +9,4 @@
 *.tar.gz linguist-vendored
 *.csv linguist-vendored
 *.pl linguist-vendored
+*.ipynb linguist-vendored
