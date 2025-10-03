@@ -54,10 +54,19 @@ This repository is dedicated to my university projects and homeworks.
   - [Introduction to Natural Language Processing](https://github.com/skpha13/University-Work/tree/main/Third%20Year/Second%20Semester/Introduction%20to%20Natural%20Language%20Processing#introduction-to-natural-language-processing)
   - [Machine Learning in Computer Vision](https://github.com/skpha13/University-Work/tree/main/Third%20Year/Second%20Semester/Machine%20Learning%20in%20Computer%20Vision)
  
-## Thesis
+## Bachelor's Thesis
 
 My final year thesis focused on radial image reconstruction, a problem relevant to both medical imaging and artistic rendering. Using a custom implementation of the Radon transform, I explored optimization algorithms to reconstruct images from radial projections, evaluating their visual quality, performance, and memory usage.
 
 The project uses the string art problem as an illustrative case, bridging artistic concepts with mathematical modeling and algorithmic design.
 
 [cvx-rayopt - Convex Optimization for Radial Image Reconstruction](https://github.com/skpha13/cvx-rayopt)
+
+## I. AI Master's Program – First Year
+
+### First semester
+  - [Anomaly Detection](https://github.com/skpha13/University-Work/tree/main/AI%20First%20Year/First%20Semester/Anomaly%20Detection)
+  - [Ethics and Academic Integrity](https://github.com/skpha13/University-Work/tree/main/AI%20First%20Year/First%20Semester/Ethics%20and%20Academic%20Integrity)
+  - [Knowledge Representation and Reasoning](https://github.com/skpha13/University-Work/tree/main/AI%20First%20Year/First%20Semester/Knowledge%20Representation%20and%20Reasoning)
+  - [Practical Machine Learning](https://github.com/skpha13/University-Work/tree/main/AI%20First%20Year/First%20Semester/Practical%20Machine%20Learning)
+  - [Probabilistic Programming](https://github.com/skpha13/University-Work/tree/main/AI%20First%20Year/First%20Semester/Probabilistic%20Programming)
