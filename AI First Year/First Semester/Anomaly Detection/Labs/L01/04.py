@@ -5,27 +5,26 @@ SIZE = 2
 
 mean = np.random.random(size=(SIZE, 1))
 L = np.random.normal(0, 0.01, size=(SIZE, SIZE))
-E = L @ L.T
+E = L @ L.T # ensure positive semi-definite
 C = np.linalg.cholesky(E)
 
 x = np.random.normal(0, 1, size=(SIZE, SIZE))
+y = C @ x + mean # our samples
 
-y = C @ x + mean.reshape(1, -1)
+# solve liniar system
+diff = y - mean
+system_sol = np.linalg.solve(E, diff)
 
-z_scores = None
-quantile_90 = np.quantile(z_scores, 0.9)
+# compute z-scores for each column and apply 90th quantile on it
+z_scores = (y - mean).T @ system_sol
+quantile_90 = np.quantile(z_scores, 0.9, axis=0)
 
 is_anomaly = z_scores > quantile_90
 
-print(mean.shape)
-print(E.shape)
-print(x.shape)
-print()
-print(z_scores.shape)
-print(quantile_90.shape)
-print(is_anomaly.shape)
+y_true = np.array([[0, 1],[0, 0]]).flatten() # placeholder values
+y_pred = is_anomaly.astype(int).flatten()
 
-c_matrix = confusion_matrix(y, is_anomaly)
+c_matrix = confusion_matrix(y_true, y_pred)
 TN = c_matrix[1][1]
 TP = c_matrix[0][0]
 FN = c_matrix[0][1] 

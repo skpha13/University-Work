@@ -26,7 +26,7 @@ plt.ylabel("Feature 2")
 plt.title("Predicted Anomalies (90th Quantile Method)")
 plt.legend()
 plt.grid(True)
-plt.savefig("./03.pdf")
+plt.savefig("./pdfs/03.pdf")
 
 c_matrix = confusion_matrix(y_train, is_anomaly)
 TN = c_matrix[1][1]
