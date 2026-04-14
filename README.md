@@ -70,3 +70,9 @@ The project uses the string art problem as an illustrative case, bridging artist
   - [Knowledge Representation and Reasoning](https://github.com/skpha13/University-Work/tree/main/AI%20First%20Year/First%20Semester/Knowledge%20Representation%20and%20Reasoning)
   - [Practical Machine Learning](https://github.com/skpha13/University-Work/tree/main/AI%20First%20Year/First%20Semester/Practical%20Machine%20Learning)
   - [Probabilistic Programming](https://github.com/skpha13/University-Work/tree/main/AI%20First%20Year/First%20Semester/Probabilistic%20Programming)
+
+### Second Semester
+  - [Advanced Machine Learning](https://github.com/skpha13/University-Work/tree/main/AI%20First%20Year/Second%20Semester/Advanced%20Machine%20Learning)
+  - [Computer Vision](https://github.com/skpha13/University-Work/tree/main/AI%20First%20Year/Second%20Semester/Computer%20Vision)
+  - [Natural Language Processing](https://github.com/skpha13/University-Work/tree/main/AI%20First%20Year/Second%20Semester/Natural%20Language%20Processing)
+  - [Statistics for Data Science](https://github.com/skpha13/University-Work/tree/main/AI%20First%20Year/Second%20Semester/Statistics%20for%20Data%20Science)
