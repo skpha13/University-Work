@@ -1,0 +1,75 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+
+\usepackage[a4paper, total={6in, 8in}]{geometry}
+
+\usepackage{amsfonts} 
+\def\sone{{\textbf{1}}}
+
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{bbm}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=cyan,
+    pdftitle={Overleaf Example},
+    pdfpagemode=FullScreen,
+}
+
+\title{\textbf{Assignment 1}}
+\author{\textbf{\color{red} {Deadline: Tuesday, $5^{th}$ of May 2026}}}
+\date{\textbf{\color{red} Upload your solutions at: \url{https://tinyurl.com/AML-2026-ASSIGNMENT1}
+}}
+
+\begin{document}
+
+\maketitle
+
+1. \textbf{(0.3 points)} What is the maximum value of the natural even number $n$, $n=2m$, such that there exists a hypothesis class $\mathcal{H}$ with $n$ elements that shatters a set C of $m = \frac{n}{2}$ points? Give an example of such an $\mathcal{H}$ and C. Justify your answer.
+
+
+
+
+\vspace{5mm}
+
+2. \textbf{(1.2 points)} Consider $\mathcal{H} = \mathcal{H}_1 \cup \mathcal{H}_2 \cup \mathcal{H}_3$, where:
+
+\begin{itemize}
+    \setlength{\itemindent}{-6mm}
+    \item[] $\mathcal{H}_1 = \{h_{a} : \mathbb{R} \rightarrow \{0,1\} \ | \ h_{a}(x) = \sone_{[x \geq a]}(x) = \sone_{[a, +\infty)}(x), a \in \mathbb{R}\}$,
+    \item[] $\mathcal{H}_2 = \{h_{a} : \mathbb{R} \rightarrow \{0,1\} \ | \ h_{a}(x) = \sone_{[x < a]}(x) = \sone_{(-\infty, a)}(x), a \in \mathbb{R}\}$,
+    \item[] $\mathcal{H}_3 = \{h_{a, b} : \mathbb{R} \rightarrow \{0,1\} \ | \ h_{a, b}(x) = \sone_{[a \leq x \leq b]}(x) = \sone_{[a, b]}(x), a, b \in \mathbb{R}\}$.
+\end{itemize}    
+
+Consider the realizability assumption.
+
+\begin{itemize}
+    \item[a)] Compute VCdim($\mathcal{H}$).
+    \item[b)] Give an algorithm A and determine an upper bound on the sample complexity $m_{\mathcal{H}}(\epsilon, \delta)$ such that the definition of PAC-learnability is satisfied.
+    
+\end{itemize}
+
+
+
+3. \textbf{(1.2 points)} Usually, there is a correlation between the number of parameters of a hypothesis class $\mathcal{H}$ and its VC-dimension. Consider the following hypothesis classes:
+
+\begin{itemize}
+    \setlength{\itemindent}{-6mm}
+    \item[] $\mathcal{H}_1 = \{h_{a} : \mathbb{R} \rightarrow \{0,1\} \ | \ h_{a}(x) = \sone_{[a, a+1]}(x), a \in \mathbb{R}\}$,
+    \item[] $\mathcal{H}_2 = \{h_{b} : \mathbb{R} \rightarrow \{0,1\} \ | \ h_{b}(x) = \sone_{[b,b+1] \cup [b+2,b+4]}(x), b \in \mathbb{R}\}$,
+    \item[] $\mathcal{H}_3 = \{h_{c} : \mathbb{R} \rightarrow \{0,1\} \ | \ h_{c}(x) = \sone_{[c,c+1] \cup [c+2,c+4] \cup [c+6,c+9]}(x), c \in \mathbb{R}\}$.
+\end{itemize}    
+
+Consider the realizability assumption.  Compute VCdim($\mathcal{H}_1$), VCdim($\mathcal{H}_2$), VCdim($\mathcal{H}_3$).
+
+\vspace{5mm}
+
+
+\textbf{Ex-officio: 0.3 points}
+
+\end{document}
