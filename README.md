@@ -76,3 +76,13 @@ The project uses the string art problem as an illustrative case, bridging artist
   - [Computer Vision](https://github.com/skpha13/University-Work/tree/main/AI%20First%20Year/Second%20Semester/Computer%20Vision)
   - [Natural Language Processing](https://github.com/skpha13/University-Work/tree/main/AI%20First%20Year/Second%20Semester/Natural%20Language%20Processing)
   - [Statistics for Data Science](https://github.com/skpha13/University-Work/tree/main/AI%20First%20Year/Second%20Semester/Statistics%20for%20Data%20Science)
+
+## II. AI Master's Program – Second Year
+
+### First semester
+  - [Deep Learning](https://github.com/skpha13/University-Work/tree/main/AI%20Second%20Year/First%20Semester/Deep%20Learning)
+  - [Machine Translation](https://github.com/skpha13/University-Work/tree/main/AI%20Second%20Year/First%20Semester/Machine%20Translation)
+  - [Natural Language Processing 2](https://github.com/skpha13/University-Work/tree/main/AI%20Second%20Year/First%20Semester/Natural%20Language%20Processing%202)
+  
+### Second Semester
+  - TBD
